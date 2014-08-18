@@ -13,7 +13,9 @@
 			<section id="content">
 			    % setdefault("error_description", '')
     	        % setdefault("traceback", '')
-			    % if defined('error'): include('error_dialog', error=error, error_description=error_description, traceback=traceback)
+			    % if defined('error'):
+			    %   include('error_dialog', error=error, error_description=error_description, traceback=traceback)
+			    % end
 				{{!base}}
 			</section>
     	</div>
