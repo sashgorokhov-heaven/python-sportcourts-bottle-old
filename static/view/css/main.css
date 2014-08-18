@@ -1,0 +1,72 @@
+.theme-showcase {
+    margin-top: 0px;
+}
+
+.jumbotron {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.container .jumbotron {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#rotator {
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+
+#rotator ul li {
+    float: left;
+    position: absolute;
+    list-style: none;
+}
+
+#rotator ul li.show {
+    z-index: 500;
+}
+
+.about {
+    width: 92%;
+    margin-right: 10px;
+    margin-left: 10px;
+    float: left;
+    margin-top: 20px;
+    text-align: left;
+}
+
+#about_photo {
+    float: right;
+    padding-left: 15px;
+    padding-bottom: 15px;
+    margin-right: 40px;
+    margin-top: 96px;
+    display: block;
+}
+
+#about_photo1 {
+    float: right;
+    padding-left: 50px;
+    padding-bottom: 30px;
+    margin-right: 0px;
+    margin-top: 106px;
+    display: block;
+}
+
+.about-high {
+    margin-top: -5px;
+}
+
+.registration .row {
+    margin-bottom: 10px;
+}
+
+.profile {
+    margin-top: 60px;
+}
+
+#map_canvas {
+    height: 500px;
+}
