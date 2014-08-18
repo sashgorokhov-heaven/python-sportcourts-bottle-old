@@ -1,4 +1,4 @@
-% rebase("_basicpage", title="Регистрация", keywords="Регистрация", description="Регистрация нового пользователя", loggedin=False, user_id=0)
+% rebase("_basicpage", title="Регистрация")
 % setdefault("sex", "")
 % setdefault("first_name", "")
 % setdefault("middle_name", "")
@@ -27,10 +27,6 @@
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-                % if defined('error') and defined('error_description'):
-                <p>Error: {{error}}</p>
-                <p>Description: {{error_description}}</p>
-                % end
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Пол</label>
                   <div class="col-sm-10">

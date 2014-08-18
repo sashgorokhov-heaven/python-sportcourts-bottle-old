@@ -1,7 +1,3 @@
-% setdefault("title", "Заголовок окна")
-% setdefault("keywords", "Ключевые слова")
-% setdefault("description", "Описание")
-
         <title>{{title}} | SportCourts.ru</title>
     	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     	<meta name="keywords" content="{{keywords}}" />
