@@ -1,8 +1,3 @@
-% setdefault("loggedin", False)
-% if not defined("user_id"): 
-%   setdefault("user_id", 0)
-%   setdefault("loggedin", False)
-% end
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       		<div class="container">
         		<div class="navbar-header">
