@@ -1,19 +1,17 @@
 import urllib.request
 import datetime
+import os
+
+import bottle
+
+import modules
+import modules.dbutils
 
 import modules.vk as vk
 
 
-__author__ = 'sashgorokhov'
-
-import bottle, os, json
-
-config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
-
-SERVER_ROOT = config['server_root']
 bottle.TEMPLATE_PATH.append('views')
-
-bottle.debug(config['debug'])
+bottle.debug(modules.config['debug'])
 
 
 @bottle.error(404)
@@ -32,11 +30,11 @@ def registration():
     if 'code' in bottle.request.query:
         code = bottle.request.query.code
         url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/registration"
-        url = url.format(config['api']['vk']['appid'],
-                         config['api']['vk']['secret'],
+        url = url.format(modules.config['api']['vk']['appid'],
+                         modules.config['api']['vk']['secret'],
                          code,
-                         config['server']['ip'],
-                         config['server']['port']
+                         modules.config['server']['ip'],
+                         modules.config['server']['port']
         )
         response = urllib.request.urlopen(url)
         response = response.read().decode()
@@ -68,7 +66,6 @@ def register():
     params.pop("confirm_passwd")
     params['regdate'] = str(datetime.date.today())
     params['lasttime'] = params['regdate']
-    import modules.dbutils
 
     with modules.dbutils.dbopen() as db:
         db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
@@ -87,8 +84,7 @@ def register():
 
 @bottle.route('/<path:path>')
 def static_route(path):
-    return bottle.static_file(path, os.path.join(SERVER_ROOT, 'static'))
-
+    return bottle.static_file(path, os.path.join(modules.config['server_root'], 'static'))
 
 application = bottle.default_app()
 

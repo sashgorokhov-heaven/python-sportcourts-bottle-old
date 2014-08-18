@@ -1,5 +1,3 @@
-__author__ = 'sashgorokhov'
-
 import datetime
 
 import pymysql
@@ -9,10 +7,10 @@ import modules.server
 
 class dbopen:
     def __enter__(self):
-        self._db = pymysql.connect(host=modules.server.config['api']['db']['dbhost'],
-                                   user=modules.server.config['api']['db']['dbuser'],
-                                   passwd=modules.server.config['api']['db']['dbpasswd'],
-                                   db=modules.server.config['api']['db']['dbname'],
+        self._db = pymysql.connect(host=modules.config['api']['db']['dbhost'],
+                                   user=modules.config['api']['db']['dbuser'],
+                                   passwd=modules.config['api']['db']['dbpasswd'],
+                                   db=modules.config['api']['db']['dbname'],
                                    charset='utf8'
         )
         self._cursor = self._db.cursor()

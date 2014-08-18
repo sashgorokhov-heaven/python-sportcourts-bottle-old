@@ -3,9 +3,6 @@ import urllib.request
 import urllib.parse
 
 
-__author__ = 'sashgorokhov'
-
-
 def exec(token:str, method:str, **kwargs):
     params = list()
     for key in kwargs:
