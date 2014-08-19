@@ -1,0 +1,55 @@
+            <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
+              <div class="panel-heading">
+                <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a>
+              </div>
+              <div class="panel-body">
+                <div class="col-md-2">
+                  <p>{{game['datetime']}}</p>
+                </div>
+                <div class="col-md-6">
+                  <p>{{game['description']}}</p>
+                  <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
+                  <div class="progress">
+                    <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
+                        <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
+                    </div>
+                  </div>
+                  % if game['subscribed']['count'] > 0:
+                  <div class="panel-group" id="accordion" style="margin-bottom:0px;">
+                    <div class="panel panel-default">
+                      <div class="panel-heading" style="text-align: center">
+                        <h5 class="panel-title" style="font-size:1em;">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{game['game_id']}}">Список участников <span class="caret"></span> 
+                        </h5>
+                      </div>
+                      <div id="collapse-{{game['game_id']}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          % for n, user in enumerate(game['subscribed']['users'], 1):
+                          <p><a href="/profile?user_id={{user['user_id']}}">{{'{}. {} {}'.format(n, user['first_name'], user['last_name'])}}</a></p>
+                          % end
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  % end
+                </div>
+                <div class="col-md-2">
+                  <p>{{game['cost']}} RUB за {{game['duration']}} минут</p>
+                </div>
+                <div class="col-md-2">
+
+                  % if game['subscribed']['count'] == game['capacity']:
+                    <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
+                  % end
+                  % if loggedin:
+                    <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я иду</button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li>
+                      </ul>
+                  % end
+                  % if not loggedin:
+                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">Идет набор</button>
+                  % end
+                </div>
+              </div>
+            </div>
