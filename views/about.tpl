@@ -1,3 +1,4 @@
+% rebase("_basicpage", title="О нас")
       <div class="jumbotron">
         <h1 class="text-center">Наша команда</h1>
         <div class="row">
