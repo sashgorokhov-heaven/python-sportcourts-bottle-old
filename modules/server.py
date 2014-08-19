@@ -23,6 +23,7 @@ def route_avatars(user_id:int):
         filename = 'blank'
     return bottle.static_file('{}.jpg'.format(filename), '/apiserver/data/avatars/')
 
+
 @bottle.route('/', method=['POST', 'GET'])
 @bottle.route('/<path:path>', method=['POST', 'GET'])
 def route(path:str='', ):
