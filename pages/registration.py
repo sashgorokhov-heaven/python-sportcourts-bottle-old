@@ -28,8 +28,7 @@ class Registration(pages.Page):
     @pages.handleerrors('registration')
     def get(self):
         if pages.loggedin():
-            user_id = pages.getuserid()
-            return bottle.redirect('/profile?user_id={}'.format(user_id))
+            return bottle.redirect('/profile')
         if 'code' in bottle.request.query:
             code = bottle.request.query.code
             url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/registration"
@@ -88,4 +87,4 @@ class Registration(pages.Page):
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']), ['user_id'])
             user_id = db.last()[0]['user_id']
             bottle.response.set_cookie('user_id', user_id, modules.config['secret'])
-            return bottle.redirect('/profile?user_id={}'.format(user_id))
+            return bottle.redirect('/profile')
