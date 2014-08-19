@@ -13,9 +13,13 @@ class Registration(pages.Page):
     path = ['reg', 'register', 'registration']
 
     def execute(self, method:str):
-        if method == 'GET': return self.get().template()
         if method == 'POST':
             data = self.post()
+            if isinstance(data, pages.Template):
+                return data.template()
+            return data
+        if method == 'GET':
+            data = self.get()
             if isinstance(data, pages.Template):
                 return data.template()
             return data
@@ -23,6 +27,9 @@ class Registration(pages.Page):
     @pages.setlogin
     @pages.handleerrors('registration')
     def get(self):
+        if pages.loggedin():
+            user_id = pages.getuserid()
+            return bottle.redirect('/profile?user_id={}'.format(user_id))
         if 'code' in bottle.request.query:
             code = bottle.request.query.code
             url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/registration"
@@ -78,5 +85,7 @@ class Registration(pages.Page):
                 dbkeylist=', '.join(keylist),
                 dbvaluelist=', '.join(["'{}'".format(str(params[key])) for key in keylist]))
             db.execute(sql)
-            # db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']), ['user_id'])
-        return bottle.redirect('/')
+            db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']), ['user_id'])
+            user_id = db.last()[0]['user_id']
+            bottle.response.set_cookie('user_id', user_id, modules.config['secret'])
+            return bottle.redirect('/profile?user_id={}'.format(user_id))
