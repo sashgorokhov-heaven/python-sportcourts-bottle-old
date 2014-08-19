@@ -22,9 +22,16 @@ class Profile(pages.Page):
                 user = modules.dbutils.get(db).user(bottle.request.query.user_id)
                 if len(user) == 0:
                     raise bottle.HTTPError(404)
-                return pages.Template('profile', user=user[0])
+                user = user[0]
+                modules.dbutils.strdates(user)
+                user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
+                user.pop('city_id')
+                return pages.Template('profile', user=user)
         elif pages.loggedin():
             with modules.dbutils.dbopen() as db:
                 user = modules.dbutils.get(db).user(pages.getuserid())[0]
+                modules.dbutils.strdates(user)
+                user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
+                user.pop('city_id')
                 return pages.Template('profile', user=user)
         raise bottle.HTTPError(404)
