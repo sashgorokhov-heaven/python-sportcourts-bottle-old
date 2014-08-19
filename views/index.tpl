@@ -1,8 +1,11 @@
-% rebase("_basicpage", title="Главная")
+% rebase("_basicpage", title="Главная", loggedin=loggedin, user_id=user_id)
       <div class="jumbotron">
         <h1>SportCourts</h1>
         <p class="lead">Сервис для спротсменов-любителей.</p>
         <p class="lead">Старт в августе.</p>
+        % if not loggedin:
+            <p><a class="btn btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+        % end
 <p><a class="btn btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>      </div>
 
       <div class="row marketing">
