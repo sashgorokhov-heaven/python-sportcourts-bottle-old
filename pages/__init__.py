@@ -24,6 +24,8 @@ def handleerrors(template_name):
         def wrapper(*args, **kwargs):
             try:
                 return func(*args, **kwargs)
+            except (bottle.HTTPResponse, bottle.HTTPError) as e:
+                raise e
             except Exception as e:
                 modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
                 return Template(template_name, error=e.__class__.__name__,
@@ -86,6 +88,8 @@ class PageController:
         if path in self._pages:
             try:
                 return self._pages[path].execute(method)
+            except (bottle.HTTPResponse, bottle.HTTPError) as e:
+                raise e
             except Exception as e:
                 modules.logging.error(e.__class__.__name__ + ': {}', e.args)
                 return Template('404',
