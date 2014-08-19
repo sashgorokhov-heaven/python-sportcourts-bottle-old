@@ -13,9 +13,10 @@ bottle.debug(modules.config['debug'])
 def error404(error):
     return bottle.template('404')
 
-@bottle.route('/')
-@bottle.route('/<path:path>')
-def route(path:str=''):
+
+@bottle.route('/', method=['POST', 'GET'])
+@bottle.route('/<path:path>', method=['POST', 'GET'])
+def route(path:str='', ):
     return pages.controller.execute(bottle.request.method, path)
 
 
