@@ -15,7 +15,6 @@ class Profile(pages.Page):
         return data
 
     @pages.setlogin
-    @pages.handleerrors
     def get(self):
         if 'user_id' in bottle.request.query:
             with modules.dbutils.dbopen() as db:
