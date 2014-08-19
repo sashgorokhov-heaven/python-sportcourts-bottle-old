@@ -17,7 +17,7 @@
           			  	<li><a class="topmenu" href="/profile">Мой профиль</a></li>
                         <li><a class="topmenu" href="/logout">Выход</a></li>
                         % end
-                        % else:
+                        % if not loggedin:
           			  	<li><a class="topmenu" href="#" data-toggle="modal" data-target="#loginModal">Вход</a></li>
           			  	% end
           			</ul>
