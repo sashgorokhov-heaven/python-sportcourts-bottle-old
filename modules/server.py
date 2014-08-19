@@ -11,7 +11,7 @@ bottle.debug(modules.config['debug'])
 
 @bottle.error(404)
 def error404(error):
-    return bottle.template('404')
+    return pages.Template('404', login=True).template()
 
 
 @bottle.route('/', method=['POST', 'GET'])
