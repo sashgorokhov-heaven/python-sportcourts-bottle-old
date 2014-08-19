@@ -83,25 +83,30 @@ class PageController:
                 modules.logging.error('Import error of <{}>: {}', module_name, e.args[0])
 
     def execute(self, method:str, path:str):
-        print(method, path)
-        if os.path.exists(os.path.join(modules.config['server_root'], 'static', path)):
-            return bottle.static_file(path, os.path.join(modules.config['server_root'], 'static'))
         if path in self._pages:
             try:
                 return self._pages[path].execute(method)
             except Exception as e:
                 modules.logging.error(e.__class__.__name__ + ': {}', e.args)
-                return bottle.template('404',
-                                       error=e.__class__.__name__,
-                                       error_description=e.args[0] if len(e.args) > 0 else '',
-                                       traceback=modules.extract_traceback(e))
+                return Template('404',
+                                error=e.__class__.__name__,
+                                error_description=e.args[0] if len(e.args) > 0 else '',
+                                traceback=modules.extract_traceback(e),
+                                login=True).template()
+        if os.path.exists(os.path.join(modules.config['server_root'], 'static', path)):
+            return bottle.static_file(path, os.path.join(modules.config['server_root'], 'static'))
         raise bottle.HTTPError(404)
 
 
 class Template:
-    def __init__(self, name, **kwargs):
+    def __init__(self, name, login=False, **kwargs):
         self.name = name
         self._kwargs = kwargs
+        if login:
+            user_id = int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
+            if user_id:
+                self.add_parameter('user_id', user_id)
+            self.add_parameter('loggedin', bool(user_id))
 
     def add_parameter(self, name, value):
         self._kwargs[name] = value
