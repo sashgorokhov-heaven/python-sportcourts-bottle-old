@@ -78,5 +78,5 @@ class Registration(pages.Page):
                 dbkeylist=', '.join(keylist),
                 dbvaluelist=', '.join(["'{}'".format(str(params[key])) for key in keylist]))
             db.execute(sql)
-            db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']), ['user_id'])
+            # db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']), ['user_id'])
         return bottle.redirect('/')
