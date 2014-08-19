@@ -7,10 +7,18 @@ import modules
 import modules.logging
 
 
+def getuserid():
+    return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
+
+
+def loggedin():
+    return bool(getuserid())
+
+
 def setlogin(func):
     def wrapper(*args, **kwargs):
         template = func(*args, **kwargs)
-        user_id = int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
+        user_id = getuserid()
         if user_id:
             template.add_parameter('user_id', user_id)
         template.add_parameter('loggedin', bool(user_id))
