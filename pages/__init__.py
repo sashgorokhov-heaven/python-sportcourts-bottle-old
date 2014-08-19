@@ -19,8 +19,7 @@ def setlogin(func):
     def wrapper(*args, **kwargs):
         template = func(*args, **kwargs)
         user_id = getuserid()
-        if user_id:
-            template.add_parameter('user_id', user_id)
+        template.add_parameter('user_id', user_id)
         template.add_parameter('loggedin', bool(user_id))
         return template
 

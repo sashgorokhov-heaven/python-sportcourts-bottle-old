@@ -6,7 +6,7 @@
         % if not loggedin:
             <p><a class="btn btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
         % end
-<p><a class="btn btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>      </div>
+      </div>
 
       <div class="row marketing">
         <div class="col-lg-6">

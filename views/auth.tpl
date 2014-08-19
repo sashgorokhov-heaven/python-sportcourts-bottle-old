@@ -7,6 +7,8 @@
             %if defined("error"):
                 <p>{{error}}</p>
                 <p>{{error_description}}</p>
+                % error = ""
+                % error_description = ""
             % end
             <div class="row">
               <form id="loginForm" method="post" class="form-horizontal" action="/auth">
