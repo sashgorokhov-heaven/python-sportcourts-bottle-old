@@ -9,7 +9,7 @@ class Profile(pages.Page):
     path = ['profile']
 
     def execute(self, method:str):
-        if method == 'POST':
+        if method == 'GET':
             data = self.get()
             if isinstance(data, pages.Template):
                 return data.template()
