@@ -14,6 +14,11 @@ class Registration(pages.Page):
 
     def execute(self, method:str):
         if method == 'GET': return self.get().template()
+        if method == 'POST':
+            data = self.post()
+            if isinstance(data, pages.Template):
+                return data.template()
+            return data
 
     @pages.setlogin
     @pages.handleerrors('registration')
@@ -47,12 +52,19 @@ class Registration(pages.Page):
         else:
             return pages.Template('registration')
 
+    @pages.handleerrors('registration')
     def post(self):
         params = {i: bottle.request.forms[i] for i in bottle.request.forms}
         params.pop("submit_order")
         params.pop("confirm_passwd")
         params['regdate'] = str(datetime.date.today())
         params['lasttime'] = params['regdate']
+
+        params['first_name'] = bottle.request.forms.getunicode('first_name')
+        params['middle_name'] = bottle.request.forms.getunicode('middle_name')
+        params['last_name'] = bottle.request.forms.getunicode('last_name')
+
+        # print(params)
 
         with modules.dbutils.dbopen() as db:
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
