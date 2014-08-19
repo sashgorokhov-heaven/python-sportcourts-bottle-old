@@ -1,9 +1,9 @@
 <div class="error_dialog">
-	<p>{{error}}</p>
+	<p class="bg-danger" style="padding:10px;">{{error}}</p>
 	% if error_description:
-	<p>{{error_description}}</p>
+	<p class="bg-danger" style="padding:10px;">{{error_description}}</p>
 	% end
 	% if traceback:
-	<p>{{traceback}}</p>
+	<p class="bg-danger" style="padding:10px;">{{traceback}}</p>
 	% end
 </div>
