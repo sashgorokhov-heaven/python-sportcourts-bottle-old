@@ -115,8 +115,7 @@ class Template:
         self._kwargs = kwargs
         if login:
             user_id = int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
-            if user_id:
-                self.add_parameter('user_id', user_id)
+            self.add_parameter('user_id', user_id)
             self.add_parameter('loggedin', bool(user_id))
 
     def add_parameter(self, name, value):
