@@ -65,6 +65,7 @@ class Registration(pages.Page):
         params.pop("confirm_passwd")
         params['regdate'] = str(datetime.date.today())
         params['lasttime'] = params['regdate']
+        params['city_id'] = 1
 
         params['first_name'] = bottle.request.forms.getunicode('first_name')
         params['middle_name'] = bottle.request.forms.getunicode('middle_name')

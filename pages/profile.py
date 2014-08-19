@@ -9,10 +9,11 @@ class Profile(pages.Page):
     path = ['profile']
 
     def execute(self, method:str):
-        data = self.get()
-        if isinstance(data, pages.Template):
-            return data.template()
-        return data
+        if method == 'POST':
+            data = self.get()
+            if isinstance(data, pages.Template):
+                return data.template()
+            return data
 
     @pages.setlogin
     def get(self):
