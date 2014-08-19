@@ -10,7 +10,7 @@ class Games(pages.Page):
 
     def execute(self, method:str):
         if method == 'GET':
-            return self.get()
+            return self.get().template()
 
     @pages.setlogin
     @pages.handleerrors('games')

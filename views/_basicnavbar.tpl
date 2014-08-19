@@ -7,7 +7,7 @@
             			<span class="icon-bar"></span>
             			<span class="icon-bar"></span>
           			</button>
-          			<a class="navbar-brand" href="/">SportCourts Demo</a>
+          			<a class="navbar-brand" href="/">Bottled SportCourts</a>
         		</div>
         		<div class="navbar-collapse collapse">
           			<ul class="nav navbar-nav">
