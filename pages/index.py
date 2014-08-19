@@ -1,5 +1,3 @@
-import bottle
-
 import pages
 
 
@@ -15,4 +13,4 @@ class Index(pages.Page):
     @pages.setlogin
     @pages.handleerrors('index')
     def get(self):
-        return bottle.template('index')
+        return pages.Template('index')
