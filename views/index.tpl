@@ -1,4 +1,4 @@
-% rebase("_basicpage", title="Главная", keywords="Главная", description="Главная страница", loggedin=False, user_id=0)
+% rebase("_basicpage", title="Главная")
       <div class="jumbotron">
         <h1>SportCourts</h1>
         <p class="lead">Сервис для спротсменов-любителей.</p>
