@@ -19,7 +19,7 @@
 		
     	        	<div class="modal-body">
     	        	    <!-- The form is placed inside the body of modal -->
-    	        	    <form id="loginForm" method="post" class="form-horizontal">
+    	        	    <form id="loginForm" method="post" class="form-horizontal" action="/auth">
     	        	        <div class="form-group" id="passwd">
     	        	            <label class="col-sm-2 control-label">Email</label>
     	        	            <div class="col-sm-10">
