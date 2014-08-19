@@ -4,9 +4,6 @@ import pages
 class Index(pages.Page):
     path = ['/', '', 'main']
 
-    def __init__(self):
-        pass
-
     def execute(self, method:str):
         return self.get().template()
 
