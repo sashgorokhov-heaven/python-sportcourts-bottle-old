@@ -1,15 +1,29 @@
-% rebase("_basicpage", title="Профиль")
+% rebase("_basicpage", title="Изменение профиля")
       <div class="row profile">
         <div class="col-md-12">
           <form id="profileForm" method="post" class="form-horizontal" action="/profile"
-            data-bv-message="This value is not valid"
+            data-bv-message="This value is not valid"  enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
                 <div class="form-group">
-                  <label for="photo" class="col-sm-2 control-label">Фото</label>
+                  <label for="sex" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
-                    <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="120">
+                    <script type="text/javascript">
+                        $('.fileinput').fileinput()
+                    </script>
+                    <div class="fileinput fileinput-exists" data-provides="fileinput">
+                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
+                          <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150">
+                      </div>
+                        <div>
+                          <span class="btn btn-default btn-file">
+                          <span class="fileinput-new">Выберите изображение</span>
+                          <span class="fileinput-exists">Изменить</span>
+                          <input type="file" name="avatar" accept="images/*"></span>
+                          <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Удалить</a>
+                        </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -55,12 +69,18 @@
                 <div class="form-group">
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="city" placeholder="" value="{{user['city']['title']}}"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите город" />
+                    <!-- <p class="form-control-static" style="font-size:1em;">{{city}}</p> -->
+                    <input type="text" class="form-control typeahead" name="city" value="{{user['city']['title'] if user['city']['title'] in {i['title'] for i in cities} else 'Екатеринбург'}}" data-provide="typeahead" data-bv-notempty="true" data-bv-notempty-message="Укажите город"/>
                     <span id="valid"></span>
                   </div>
                 </div>
+                <script type="text/javascript">
+                  $('.typeahead').typeahead({
+                    source: [{{!', '.join(['"{}"'.format(i['title']) for i in cities])}}],
+                    items: {{len(cities)}},
+                    minLength: 1
+                  })
+                </script>
                 <div class="form-group">
                   <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
                   <div class="col-sm-10">
