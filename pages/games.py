@@ -35,10 +35,23 @@ class Games(pages.Page):
     def execute(self, method:str):
         if method == 'GET':
             return self.get().template()
+        if method == 'POST':
+            return self.post()
+
+    def post(self):
+        pass
 
     @pages.setlogin
     @pages.handleerrors('games')
     def get(self):
+        if 'add' in bottle.request.query:
+            with modules.dbutils.dbopen() as db:
+                sports = db.execute("SELECT sport_id, title FROM sport_types")
+                game_types = db.execute("SELECT type_id, title FROM game_types")
+                cities = db.execute("SELECT city_id, title FROM cities")
+                courts = db.execute("SELECT court_id, title FROM courts")
+                return pages.Template("addgame", sports=sports,
+                                      game_types=game_types, cities=cities, courts=courts)
         if 'game_id' in bottle.request.query:
             with modules.dbutils.dbopen() as db:
                 modules.dbutils.get(db).game(bottle.request.query.get('game_id'))
