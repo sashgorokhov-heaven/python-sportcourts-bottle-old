@@ -95,8 +95,7 @@
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
                     <!-- <p class="form-control-static" style="font-size:1em;">{{city}}</p> -->
-                    <input type="text" class="control-label" data-provide="typeahead" data-items="4" value="{{city}}" data-source="["Екатеринбург","Челябинск","Москва","Березовский","Верхняя Пышма","Сысерть","Пермь"]" data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите город">
+                    <input type="text" class="form-control typeahead" name="city" value="{{city}}" data-provide="typeahead" data-bv-notempty="true" data-bv-notempty-message="Укажите город"/>
                     <span id="valid"></span>
                   </div>
                 </div>
@@ -104,7 +103,7 @@
                   $('.typeahead').typeahead({
                     source: ["Екатеринбург","Верхняя Пышма","Березовский","Челябинск","Снежинск","Обнинск","Оренбург","Пермь"],
                     items: 5,
-                    minLength: 3
+                    minLength: 1
                   })
                 </script>
                 <div class="form-group">
