@@ -28,5 +28,4 @@
     	<script type="text/javascript" src="/view/bootstrap/bootstrap_validator/js/bootstrapValidator.js"></script>
     	<script type="text/javascript" src="/view/bootstrap/bootstrap_validator/language/ru_RU.js"></script>
         <script src="/view/js/bootstrap_validator.js"></script>
-        <script src="/view/js/bootstrap_typeahead.js"></script>
     	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAHoLAwhKxJ_cIQc2LSGDNprOQbRvWHvcs&sensor=false"></script>
