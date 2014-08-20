@@ -1,3 +1,4 @@
+import os
 import urllib.request
 import datetime
 
@@ -25,7 +26,6 @@ class Registration(pages.Page):
                 return data.template()
             return data
 
-    @pages.setlogin
     @pages.handleerrors('registration')
     def get(self):
         if pages.loggedin():
@@ -77,18 +77,21 @@ class Registration(pages.Page):
         params['first_name'] = bottle.request.forms.getunicode('first_name')
         params['middle_name'] = bottle.request.forms.getunicode('middle_name')
         params['last_name'] = bottle.request.forms.getunicode('last_name')
+        params['city'] = bottle.request.forms.getunicode('city')
+        city_title = params['city']
+        params.pop('city')
 
-        print('avatar' in bottle.request.forms, 'avatar' in bottle.request.files, 'vkavatar' in bottle.request.forms,
-              'avatar' in bottle.request.files)
-        for i in bottle.request.forms:
-            try:
-                print(i, bottle.request.forms.getunicode(i))
-            except:
-                print('!!')
-        print('====')
-        for i in bottle.request.files:
-            print(i, bottle.request.files.get(i))
+        vkavatar = ''
+        if 'vkavatar' in bottle.request.forms:
+            params.pop('vkavatar')
+            vkavatar = bottle.request.forms.get('vkavatar')
+
         with modules.dbutils.dbopen() as db:
+            db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))
+            if len(db.last()) > 0:
+                params['city_id'] = db.last()[0][0]
+            else:
+                params['city_id'] = 1
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
             if len(db.last()) > 0:
                 return pages.Template('registration', error='Ошибка',
@@ -105,16 +108,15 @@ class Registration(pages.Page):
             user_id = db.last()[0]['user_id']
             bottle.response.set_cookie('user_id', user_id, modules.config['secret'])
             bottle.response.set_cookie('adminlevel', db.last()[0]['admin'], modules.config['secret'])
-#            if vkavatar !='':
-            # os.rename("/bsp/data/avatars/{}".format(os.path.split(vkavatar)[-1]),
-            #                          "/bsp/data/avatars/{}.jpg".format(user_id))
-
-            #            if image != '':
-            # filename = str(user_id) + '.jpg'
-            #                dirname = '/bsp/data/avatars'
-            #                fullname = os.path.join(dirname, filename)
-            #                if os.path.exists(fullname):
-            #                    os.remove(fullname)
-            #                bottle.request.params.get('image').save(fullname)
-            #                Image.open(fullname).crop().resize((200, 200)).save(fullname)
+            if vkavatar:
+                os.rename("/bsp/data/avatars/{}.jpg".format(os.path.split(vkavatar)[-1]),
+                          "/bsp/data/avatars/{}.jpg".format(user_id))
+            elif 'avatar' in bottle.request.files:
+                filename = str(user_id) + '.jpg'
+                dirname = '/bsp/data/avatars'
+                fullname = os.path.join(dirname, filename)
+                if os.path.exists(fullname):
+                    os.remove(fullname)
+                bottle.request.files.get('avatar').save(fullname)
+                Image.open(fullname).crop().resize((200, 200)).save(fullname)
             return bottle.redirect('/profile')
