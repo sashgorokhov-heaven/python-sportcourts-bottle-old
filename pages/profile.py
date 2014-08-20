@@ -27,6 +27,13 @@ class Profile(pages.Page):
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
                 return pages.Template('profile', user=user)
+        elif 'edit' in bottle.request.query and pages.loggedin():
+            with modules.dbutils.dbopen() as db:
+                user = modules.dbutils.get(db).user(pages.getuserid())[0]
+                modules.dbutils.strdates(user)
+                user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
+                user.pop('city_id')
+                return pages.Template('editprofile', user=user)
         elif pages.loggedin():
             with modules.dbutils.dbopen() as db:
                 user = modules.dbutils.get(db).user(pages.getuserid())[0]
