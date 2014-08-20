@@ -88,7 +88,7 @@
           });
         } else {
           $.ajax({
-            url: 'http://sportcourts.ru:4444/api/games.subscribe',
+            url: 'http://sportcourts.ru/subscribe',
             data: {
               game_id: game_id
             },
