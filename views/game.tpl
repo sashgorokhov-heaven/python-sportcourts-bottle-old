@@ -1,3 +1,7 @@
+            % setdefault("standalone", False)
+            % if standalone:
+            %   rebase("_basicpage", title=game['description'])
+            % end
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
                 <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a>
