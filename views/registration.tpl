@@ -27,16 +27,6 @@
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-                <div class="fileinput fileinput-new" data-provides="fileinput">
-                  <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                    <img data-src="holder.js/100%x100%" alt="...">
-                  </div>
-                  <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
-                  <div>
-                    <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="image" accept='image/*'></span>
-                    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
-                  </div>
-                </div>
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Пол</label>
                   <div class="col-sm-10">
