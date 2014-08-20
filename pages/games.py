@@ -1,8 +1,32 @@
+import datetime
+
 import bottle
 
 import pages
 import modules
 import modules.dbutils
+
+
+months = ['Января', 'Февраля',
+          'Марта', 'Апреля',
+          'Мая', 'Июня', 'Июля',
+          'Августа', 'Сентября',
+          'Октября', 'Ноября', 'Декабря']
+days = ['Понедельник', 'Вторник', 'Среда',
+        'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
+
+
+def beautifuldate(datetime:str):
+    date, day = datetime.split(' ')[0].split('-')[1:]
+    return '{} {}'.format(day, months[int(date) - 1])
+
+
+def beautifultime(datetime:str):
+    return datetime.split(' ')[-1]
+
+
+def beautifulday(datetime_:str):
+    return days[datetime.date(*list(map(int, datetime_.split(' ')[0].split('-')))).weekday()]
 
 
 class Games(pages.Page):
@@ -57,6 +81,8 @@ class Games(pages.Page):
                 game.pop('region_id')
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
+                game['datetime'] = (
+                beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
                 if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
                     game['is_subscribed'] = True

@@ -8,7 +8,9 @@
               </div>
               <div class="panel-body">
                 <div class="col-md-2">
-                  <p>{{game['datetime']}}</p>
+                  <p>{{game['datetime'][0]}}</p>
+                  <p>{{game['datetime'][1]}}</p>
+                  <p>{{game['datetime'][2]}}</p>
                 </div>
                 <div class="col-md-6">
                   <p>{{game['description']}}</p>
