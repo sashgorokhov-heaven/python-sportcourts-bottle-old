@@ -35,4 +35,5 @@ class Authorize(pages.Page):
                 return pages.Template('auth', email=email, error='Ошибка авторизации',
                                       error_description='Неправильный email или пароль')
             bottle.response.set_cookie('user_id', db.last()[0]['user_id'], modules.config['secret'])
+            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(db.last()[0]['user_id']))
             return bottle.redirect('/profile')
