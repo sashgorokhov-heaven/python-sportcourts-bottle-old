@@ -14,7 +14,7 @@ class Avatars(pages.Page):
 
     def post(self):
         filename = str(bottle.request.forms.get('user_id')) + '.jpg'
-        dirname = '/apiserver/data/avatars'
+        dirname = '/bsp/data/avatars'
         fullname = os.path.join(dirname, filename)
         if bottle.request.files.get('image').content_length > 5242880:
             raise bottle.HTTPError(404)

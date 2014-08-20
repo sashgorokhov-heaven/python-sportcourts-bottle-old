@@ -18,10 +18,10 @@ def error404(error):
 @bottle.get('/avatars/<user_id:int>')
 def route_avatars(user_id:int):
     filename = str(user_id)
-    fullaname = '/apiserver/data/avatars/{}.jpg'.format(filename)
+    fullaname = '/bsp/data/avatars/{}.jpg'.format(filename)
     if not os.path.exists(fullaname):
         filename = 'blank'
-    return bottle.static_file('{}.jpg'.format(filename), '/apiserver/data/avatars/')
+    return bottle.static_file('{}.jpg'.format(filename), '/bsp/data/avatars/')
 
 
 @bottle.route('/', method=['POST', 'GET'])
