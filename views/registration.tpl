@@ -88,7 +88,7 @@
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
                     <!-- <p class="form-control-static" style="font-size:1em;">{{city}}</p> -->
-                    <input type="text" data-provide="typeahead" data-items="4" value="{{city}}" data-source="["Екатеринбург","Челябинск","Москва","Березовский","Верхняя Пышма","Сысерть","Пермь"]" data-bv-notempty="true"
+                    <input type="text" class="form-control" data-provide="typeahead" data-items="4" value="{{city}}" data-source="["Екатеринбург","Челябинск","Москва","Березовский","Верхняя Пышма","Сысерть","Пермь"]" data-bv-notempty="true"
                     data-bv-notempty-message="Укажите город">
                     <span id="valid"></span>
                   </div>
