@@ -6,7 +6,7 @@
         <div class="col-md-4">
           {{user['first_name']+' '+user['last_name']}}
           % if int(user['user_id'])==int(user_id):
-            &nbsp;&nbsp;<a href="/profile?edit"><button type="button" class="btn btn-default btn-xs">Редактировать</button></a>
+            &nbsp;&nbsp;<small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/profile?edit">Ред.</a></small>
           % end
           <br>
           {{user['bdate']+', '+user['city']['title']}}<br>
