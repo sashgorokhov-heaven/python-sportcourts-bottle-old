@@ -43,7 +43,7 @@
             </div>
             <h2 class="column-top first">Елена Титенко</h2>
             <h3 class="about-high">организатор мероприятий</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, voluptate cupiditate voluptatem nostrum cumque   blanditiis id ex doloribus voluptas libero culpa dignissimos voluptatibus consectetur rerum accusantium veritatis quam ea   sint modi veniam officiis ipsum quod repellendus tenetur dicta. Nisi, sit quidem repellendus quo sint architecto velit  sapiente at culpa ratione. Tempore, nemo, autem rerum necessitatibus laborum soluta animi earum laboriosam facilis aliquid   vero recusandae quibusdam magni quae vitae iste amet voluptates doloremque impedit tenetur quam voluptatibus ea optio   molestias reprehenderit modi odio alias. Maiores, nisi sapiente in reiciendis! Velit, delectus, quos reiciendis modi  perferendis doloremque nemo repudiandae vel debitis quaerat.</p>
+            <p>Студентка третьего курса УрФУ отделения лингвистики. Изучает два иностранных языка и интересуется культурой и традициями зарубежных стран. Помимо учебы увлекается баскетболом. Считает, что этот вид спорта – самая захватывающая игра с мячом, в которой можно не только научиться играть в команде сообща, но и улучшить собственные физические возможности и навыки.</p>
           </div>
         </div>
       </div>

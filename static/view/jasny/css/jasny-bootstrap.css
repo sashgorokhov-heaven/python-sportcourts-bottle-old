@@ -615,10 +615,10 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 100%;
-    height: 100%;
+    /*width: 100%;
+    height: 100%;*/
     margin: 0;
-    font-size: 23px;
+    font-size: 12px;
     cursor: pointer;
     filter: alpha(opacity=0);
     opacity: 0;

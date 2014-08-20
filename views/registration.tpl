@@ -4,12 +4,10 @@
 % setdefault("middle_name", "")
 % setdefault("last_name", "")
 % setdefault("city", "Екатеринбург")
-% setdefault("city_id", 1)
 % setdefault("bdate", "")
 % setdefault("height", "")
 % setdefault("weight", "")
 % setdefault("email", "")
-% setdefault("photo", "")
 
       <div class="jumbotron">
         <div class="row">
@@ -32,30 +30,18 @@
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
-                 % if not photo:
-                    <script type="text/javascript">
-                      $('.fileinput').fileinput(name="avatar")
-                    </script>
-                 % end
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 200px;">\\
-                      % if photo:
-                      {{!'<img src="{}" height="200" width="200"/>'.format(photo)}}
-                      <input type="hidden" name="vkavatar" value="{{photo}}">
-                      % end
-                      </div>
-                      % if not photo:
+                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 200px;"></div>
                       <div>
-                        <span class="btn btn-default btn-file">
-                        <span class="fileinput-new">Выбрать</span>
-                        <span class="fileinput-exists">Изменить</span>
-                        <input type="file" name="avatar"></span>
+                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span><input type="file" name="..."></span>
                         <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Удалить</a>
                       </div>
-                      % end
                     </div>
                   </div>
                 </div>
+                <script type="text/javascript">
+                  $('.fileinput').fileinput()
+                </script>
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Пол</label>
                   <div class="col-sm-10">
@@ -97,16 +83,9 @@
                 <div class="form-group">
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
-                    <select name="city_id" class="form-control"
-                    data-bv-notempty="true"
+                    <!-- <p class="form-control-static" style="font-size:1em;">{{city}}</p> -->
+                    <input type="text" data-provide="typeahead" data-items="4" value="{{city}}" data-source="["Екатеринбург","Челябинск","Москва","Березовский","Верхняя Пышма","Сысерть","Пермь"]" data-bv-notempty="true"
                     data-bv-notempty-message="Укажите город">
-                    <option value="{{city_id}}">{{city}}</option>
-                    % for city in cities:
-                      % if city['city_id'] != city_id:
-                        <option value="{{city['city_id']}}">{{city['title']}}</option>
-                      % end
-                    % end
-                    </select>
                     <span id="valid"></span>
                   </div>
                 </div>
