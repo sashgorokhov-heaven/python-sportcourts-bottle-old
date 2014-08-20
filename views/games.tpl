@@ -9,7 +9,9 @@
         <li><a href="#basket" data-toggle="tab">Баскетбол</a></li>
         <li><a href="#volley" data-toggle="tab">Воллейбол</a></li>
         <li><a href="#football" data-toggle="tab">Футбол</a></li>
+        % if 0<adminlevel<10:
         <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
+        % end
       </ul>
 
       <div class="tab-content">

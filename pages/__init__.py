@@ -11,6 +11,9 @@ def getuserid():
     return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
 
 
+def getadminlevel():
+    return int(bottle.request.get_cookie('adminlevel', 0, modules.config['secret']))
+
 def loggedin():
     return bool(getuserid())
 
@@ -21,8 +24,8 @@ def setlogin(func):
         user_id = getuserid()
         template.add_parameter('user_id', user_id)
         template.add_parameter('loggedin', bool(user_id))
+        template.add_parameter('adminlevel', getadminlevel())
         return template
-
     return wrapper
 
 

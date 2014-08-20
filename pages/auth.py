@@ -29,11 +29,12 @@ class Authorize(pages.Page):
         password = bottle.request.forms.password
         with modules.dbutils.dbopen() as db:
             db.execute(
-                "SELECT user_id FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
-                ['user_id'])
+                "SELECT user_id, admin FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
+                ['user_id', 'admin'])
             if len(db.last()) == 0:
                 return pages.Template('auth', email=email, error='Ошибка авторизации',
                                       error_description='Неправильный email или пароль')
             bottle.response.set_cookie('user_id', db.last()[0]['user_id'], modules.config['secret'])
+            bottle.response.set_cookie('adminlevel', db.last()[0]['admin'], modules.config['secret'])
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(db.last()[0]['user_id']))
             return bottle.redirect('/profile')
