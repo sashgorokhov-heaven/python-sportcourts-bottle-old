@@ -23,7 +23,7 @@
             </div>
             <h2 class="column-top first">Виталий Харченко</h2>
             <h3 class="about-high">CEO</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, voluptate cupiditate voluptatem nostrum cumque blanditiis id ex doloribus voluptas libero culpa dignissimos voluptatibus consectetur rerum accusantium veritatis quam ea sint modi veniam officiis ipsum quod repellendus tenetur dicta. Nisi, sit quidem repellendus quo sint architecto velit sapiente at culpa ratione. Tempore, nemo, autem rerum necessitatibus laborum soluta animi earum laboriosam facilis aliquid vero recusandae quibusdam magni quae vitae iste amet voluptates doloremque impedit tenetur quam voluptatibus ea optio molestias reprehenderit modi odio alias. Maiores, nisi sapiente in reiciendis! Velit, delectus, quos reiciendis modi perferendis doloremque nemo repudiandae vel debitis quaerat.</p>
+            <p>4 года управления успешными проектами в сфере организации мероприятий. Физик по образованию, увлекается баскетболом, виндсерфингом и красивыми решениями в IT. Считает, что его призвание - подарить миру полноценное, живое общение. Мечтает построить активное сообщество для любителей спорта со всего света, подарить миру полноценное, живое общение.</p>
           </div>
         </div>
         <div class="row">
