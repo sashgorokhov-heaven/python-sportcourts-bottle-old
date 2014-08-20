@@ -24,21 +24,12 @@
 }
 
 .about {
-    width: 92%;
+    /*width: 100%;*/
     margin-right: 10px;
     margin-left: 10px;
     float: left;
     margin-top: 20px;
     text-align: left;
-}
-
-#about_photo {
-    float: right;
-    padding-left: 15px;
-    padding-bottom: 15px;
-    margin-right: 40px;
-    margin-top: 96px;
-    display: block;
 }
 
 #about_photo1 {
@@ -64,4 +55,24 @@
 
 #map_canvas {
     height: 500px;
+}
+
+@media (max-width: 500px) {
+
+    .about {
+        margin-top: 30px;
+    }
+
+    #about_photo1 {
+        width: 100%;
+        display: inline;
+        float: left;
+        padding: 0px;
+        margin:0;
+        padding-bottom: 10px;
+    }
+
+    #about_photo1 img {
+        width: 100%;
+    }
 }
