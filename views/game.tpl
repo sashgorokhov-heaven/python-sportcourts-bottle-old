@@ -5,6 +5,8 @@
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
                 <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a>
+                <div style="float:right;"><a href="/games?game_id={{game['game_id']}}&edit"><span class="glyphicon glyphicon-pencil"></span></a></div>
+                <!-- <div style="float:right;"><a href=""><span class="glyphicon glyphicon-remove"></span></a></div> -->
               </div>
               <div class="panel-body">
                 <div class="col-md-2">
@@ -43,20 +45,21 @@
                   <p>{{game['cost']}} RUB за {{game['duration']}} минут</p>
                 </div>
                 <div class="col-md-2">
+                  <div class="btn-group" style="float:right;">
                   % if loggedin:
                     % if game['subscribed']['count'] == game['capacity']:
-                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" {{'disabled="disabled"' if game['is_subscribed'] else ''}}data-toggle="dropdown">Места заполнены</button>
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" {{'disabled="disabled"' if game['is_subscribed'] else ''}} data-toggle="dropdown">Места заполнены</button>
                       % if game['is_subscribed']:
                         <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
                       % end
                     % end
                     % if game['subscribed']['count'] < game['capacity']:
                       % if game['is_subscribed']:
-                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Записан</button>
+                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я записан</button>
                         <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
                       % end
                       % if not game['is_subscribed']:
-                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Идет набор</button>
+                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">Идет набор</button>
                         <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}"><a style="cursor:pointer;">Пойду</a></li></ul>               
                       % end
                     % end
@@ -66,10 +69,10 @@
                       <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
                     % end
                     % if game['subscribed']['count'] < game['capacity']:
-                      <button type="button" class="btn btn-success btn-xs" disabled="disabled" data-toggle="dropdown">Идет набор</button>
+                      <button type="button" class="btn btn-primary btn-xs" disabled="disabled" data-toggle="dropdown">Идет набор</button>
                     % end
                   % end
-
+                </div>
                 </div>
               </div>
             </div>
