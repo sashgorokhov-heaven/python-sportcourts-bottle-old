@@ -44,6 +44,12 @@ class Games(pages.Page):
     @pages.setlogin
     @pages.handleerrors('games')
     def get(self):
+        if 'edit' in bottle.request.query:
+            raise bottle.HTTPError(404)
+        if 'delete' in bottle.request.query:
+            with modules.dbutils.dbopen() as db:
+                db.execute("DELETE FROM games WHERE game_id={}".format(bottle.request.query.get('delete')))
+                raise bottle.redirect('/games')
         if 'add' in bottle.request.query:
             with modules.dbutils.dbopen() as db:
                 sports = db.execute("SELECT sport_id, title FROM sport_types")
