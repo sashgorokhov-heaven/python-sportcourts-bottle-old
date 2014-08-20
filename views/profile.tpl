@@ -7,8 +7,8 @@
         <div class="col-md-4">
           {{user['first_name']+' '+user['last_name']}}<br>
           {{user['bdate']+', '+user['city']['title']}}<br>
-          Рост: {{user['height'}}<br>
-          Рост: {{user['weight'}}<br>
+          Рост: {{user['height']}}<br>
+          Рост: {{user['weight']}}<br>
           % if int(user['user_id'])==int(user_id):
             <a href="/profile?edit"><button type="button" class="btn btn-default btn-xs">Редактировать</button></a>
           % end
