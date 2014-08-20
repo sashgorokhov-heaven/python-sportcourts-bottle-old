@@ -55,6 +55,8 @@ class Profile(pages.Page):
         params = {i: bottle.request.forms[i] for i in bottle.request.forms}
         params.pop("submit_profile")
         params.pop("confirm_passwd")
+        params.pop("city")
+        params['city_id'] = 1
 
         params['first_name'] = bottle.request.forms.getunicode('first_name')
         params['middle_name'] = bottle.request.forms.getunicode('middle_name')
