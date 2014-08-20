@@ -9,6 +9,7 @@
         <li><a href="#basket" data-toggle="tab">Баскетбол</a></li>
         <li><a href="#volley" data-toggle="tab">Воллейбол</a></li>
         <li><a href="#football" data-toggle="tab">Футбол</a></li>
+        <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
       </ul>
 
       <div class="tab-content">
