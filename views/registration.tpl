@@ -25,34 +25,37 @@
               </div>
             </div>
             <form id="registrationForm" method="post" class="form-horizontal" action="/registration"
-            data-bv-message="This value is not valid"
+            data-bv-message="This value is not valid" enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
+                    % if not photo:
+                        <script type="text/javascript">
+                            $('.fileinput').fileinput()
+                        </script>
+                    % end
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 200px;">
-                      % if photo:
-                      {{!'<img src="{}" height="200" width="200"/>'.format(photo)}}
-                      <input type="hidden" name="vkavatar" value="{{photo}}">
-                      % end
+                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
+                        % if photo:
+                          {{!'<img src="{}" height="150" width="150"/>'.format(photo)}}
+                          <input type="hidden" name="vkavatar" value="{{photo}}">
+                        % end
                       </div>
                       % if not photo:
-                      <div>
-                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span><input type="file" name="..."></span>
-                        <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Удалить</a>
-                      </div>
+                        <div>
+                          <span class="btn btn-default btn-file">
+                          <span class="fileinput-new">Выберите изображение</span>
+                          <span class="fileinput-exists">Изменить</span>
+                          <input type="file" name="avatar" accept="images/*"></span>
+                          <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Удалить</a>
+                        </div>
                       % end
                     </div>
                   </div>
                 </div>
-                % if not photo:
-                <script type="text/javascript">
-                  $('.fileinput').fileinput()
-                </script>
-                % end
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Пол</label>
                   <div class="col-sm-10">
