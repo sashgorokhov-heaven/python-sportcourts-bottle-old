@@ -13,10 +13,7 @@
     	<link type="text/css" rel="stylesheet" href="/view/bootstrap/css/jumbotron-narrow.css" />
     	<link href="/view/bootstrap/css/sticky-footer.css" rel="stylesheet">
     	<link rel="stylesheet" href="/view/bootstrap/bootstrap_validator/css/bootstrapValidator.css"/>
-
         <link rel="stylesheet" href="/view/jasny/css/jasny-bootstrap.css">
-
-        <script src="/view/jasny/js/jasny-bootstrap.js"></script>
 
     	<script src="/view/js/jquery-latest.js"></script>
     	<script src="/view/js/jquery-ui.js"></script>
@@ -30,3 +27,4 @@
         <script src="/view/js/bootstrap_validator.js"></script>
         <script src="/view/js/bootstrap_typeahead.js"></script>
     	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAHoLAwhKxJ_cIQc2LSGDNprOQbRvWHvcs&sensor=false"></script>
+    	<script src="/view/jasny/js/jasny-bootstrap.js"></script>
