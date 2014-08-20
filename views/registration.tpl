@@ -100,7 +100,6 @@
                     <span id="valid"></span>
                   </div>
                 </div>
-<<<<<<< HEAD
                 <script type="text/javascript">
                   $('.typeahead').typeahead({
                     source: ["Екатеринбург","Верхняя Пышма","Березовский","Челябинск","Снежинск","Обнинск","Оренбург","Пермь"],
@@ -108,8 +107,6 @@
                     minLength: 3
                   })
                 </script>
-=======
->>>>>>> FETCH_HEAD
                 <div class="form-group">
                   <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
                   <div class="col-sm-10">
