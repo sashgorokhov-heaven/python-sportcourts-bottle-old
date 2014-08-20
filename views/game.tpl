@@ -41,29 +41,33 @@
                   <p>{{game['cost']}} RUB за {{game['duration']}} минут</p>
                 </div>
                 <div class="col-md-2">
-
-                  % if game['subscribed']['count'] == game['capacity']:
-                    <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
-                    % if loggedin and game['is_subscribed']:
-                      <ul class="dropdown-menu" role="menu">
-                        <li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li>
-                      </ul>
+                  % if loggedin:
+                    % if game['subscribed']['count'] == game['capacity']:
+                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
+                      % if game['is_subscribed']:
+                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
+                      % end
                     % end
-                  % end
-                  % if game['subscribed']['count'] <= game['capacity'] and loggedin:
-                    % if not game['is_subscribed']:
-                      <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я иду</button>
-                    % end
-                    % if game['is_subscribed']:
-                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Записан</button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li>
-                        </ul>
+                    % if game['subscribed']['count'] < game['capacity']:
+                      % if game['is_subscribed']:
+                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" disabled="disabled" data-toggle="dropdown">Записан</button>
+                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
+                      % end
+                      % if not game['is_subscribed']:
+                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Идет набор</button>
+                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}"><a style="cursor:pointer;">Пойду</a></li></ul>               
+                      % end
                     % end
                   % end
                   % if not loggedin:
-                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">Идет набор</button>
+                    % if game['subscribed']['count'] == game['capacity']:
+                      <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
+                    % end
+                    % if game['subscribed']['count'] < game['capacity']:
+                      <button type="button" class="btn btn-success btn-xs" disabled="disabled" data-toggle="dropdown">Идет набор</button>
+                    % end
                   % end
+
                 </div>
               </div>
             </div>
