@@ -41,8 +41,7 @@
                       </div>
                       % if not photo:
                       <div>
-                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span>
-                        <input type="file" name="avatar"></span>
+                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span><input type="file" name="..."></span>
                         <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Удалить</a>
                       </div>
                       % end
@@ -51,7 +50,7 @@
                 </div>
                 % if not photo:
                 <script type="text/javascript">
-                  $('.fileinput').fileinput(name="avatar")
+                  $('.fileinput').fileinput()
                 </script>
                 % end
                 <div class="form-group">
@@ -101,6 +100,16 @@
                     <span id="valid"></span>
                   </div>
                 </div>
+<<<<<<< HEAD
+                <script type="text/javascript">
+                  $('.typeahead').typeahead({
+                    source: ["Екатеринбург","Верхняя Пышма","Березовский","Челябинск","Снежинск","Обнинск","Оренбург","Пермь"],
+                    items: 5,
+                    minLength: 3
+                  })
+                </script>
+=======
+>>>>>>> FETCH_HEAD
                 <div class="form-group">
                   <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
                   <div class="col-sm-10">
