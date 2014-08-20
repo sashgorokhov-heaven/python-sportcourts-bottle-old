@@ -98,14 +98,14 @@
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
                     <!-- <p class="form-control-static" style="font-size:1em;">{{city}}</p> -->
-                    <input type="text" class="form-control typeahead" name="city" value="{{city if city in {i[1] for i in cities} else 'Екатеринбург'}}" data-provide="typeahead" data-bv-notempty="true" data-bv-notempty-message="Укажите город"/>
+                    <input type="text" class="form-control typeahead" name="city" value="{{city if city in {i['title'] for i in cities} else 'Екатеринбург'}}" data-provide="typeahead" data-bv-notempty="true" data-bv-notempty-message="Укажите город"/>
                     <span id="valid"></span>
                   </div>
                 </div>
                 <script type="text/javascript">
                   $('.typeahead').typeahead({
-                    source: [{{', '.join(['"{}"'.format(i[1]) for i in cities])}}],
-                    items: {{len(cities}},
+                    source: [{{!', '.join(['"{}"'.format(i['title']) for i in cities])}}],
+                    items: {{len(cities)}},
                     minLength: 1
                   })
                 </script>

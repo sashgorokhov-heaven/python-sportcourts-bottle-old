@@ -43,7 +43,7 @@ class Registration(pages.Page):
             response = bottle.json_loads(response)
             if 'error' in response:
                 return pages.Template('registration', error=response['error'],
-                                      error_description=response['error_description'])
+                                      error_description=response['error_description'], cities=cities)
             access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
             user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max'])[0]
             data = dict()
@@ -86,6 +86,7 @@ class Registration(pages.Page):
             vkavatar = bottle.request.forms.get('vkavatar')
 
         with modules.dbutils.dbopen() as db:
+            cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
             db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))
             if len(db.last()) > 0:
                 params['city_id'] = db.last()[0][0]
@@ -94,8 +95,8 @@ class Registration(pages.Page):
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
             if len(db.last()) > 0:
                 return pages.Template('registration', error='Ошибка',
-                                      error_description='Такой пользователь уже существует',
-                                      login=True)
+                                      error_description='Пользователь с таким email уже зарегестрирован',
+                                      cities=cities)
             sql = 'INSERT INTO users ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
             sql = sql.format(
