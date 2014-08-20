@@ -12,7 +12,7 @@ def exec(token:str, method:str, **kwargs):
             else:
                 params.append((key, str(kwargs[key])))
     params.append(("access_token", token))
-    params.append(('v', '5.21'))
+    params.append(('v', '5.24'))
     url = 'https://api.vk.com/method/{0}?{1}'.format(method, urllib.parse.urlencode(params))
     response = urllib.request.urlopen(url).read().decode()
     response = json.loads(response)

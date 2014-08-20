@@ -22,6 +22,6 @@ class Avatars(pages.Page):
             raise bottle.HTTPError(404)
         if os.path.exists(fullname):
             os.remove(fullname)
-        bottle.HTTPError(404).save(fullname)
+        bottle.request.files.get('image').save(fullname)
         Image.open(fullname).crop().resize((128, 128)).save(fullname)
         return bottle.redirect('/profile')

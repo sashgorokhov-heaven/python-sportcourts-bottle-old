@@ -1,6 +1,8 @@
+import os
 import urllib.request
 import datetime
 
+from PIL import Image
 import bottle
 
 import modules
@@ -45,7 +47,7 @@ class Registration(pages.Page):
                 return pages.Template('registration', error=response['error'],
                                       error_description=response['error_description'])
             access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
-            user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city'])[0]
+            user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max'])[0]
             data = dict()
             data['city'] = user['city']['title'] if 'city' in user else None
             data['first_name'] = user['first_name']
@@ -53,6 +55,10 @@ class Registration(pages.Page):
             data['sex'] = 'male' if user['sex'] == 2 else ('female' if user['sex'] == 1 else None)
             data['email'] = email if email else None
             data['bdate'] = vk.convert_date(user['bdate']) if 'bdate' in user else None
+            fullname = '/bsp/data/avatars/temp{}.jpg'.format(user['id'])
+            urllib.request.urlretrieve(user['photo_max'], fullname)
+            Image.open(fullname).crop().resize((200, 200)).save(fullname)
+            data['photo'] = 'http://sportcourts.ru/avatars/temp{}'.format(user['id'])
             data = {i: data[i] for i in data if data[i]}
             return pages.Template('registration', **data)
         else:
@@ -71,7 +77,10 @@ class Registration(pages.Page):
         params['middle_name'] = bottle.request.forms.getunicode('middle_name')
         params['last_name'] = bottle.request.forms.getunicode('last_name')
 
-        # print(params)
+        vkavatar = ''
+        if 'image' in params:
+            vkavatar = params['image']
+        params.pop('image')
 
         with modules.dbutils.dbopen() as db:
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
@@ -85,7 +94,21 @@ class Registration(pages.Page):
                 dbkeylist=', '.join(keylist),
                 dbvaluelist=', '.join(["'{}'".format(str(params[key])) for key in keylist]))
             db.execute(sql)
-            db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']), ['user_id'])
+            db.execute('SELECT user_id, admin FROM users WHERE email="{}"'.format(params['email']),
+                       ['user_id', 'admin'])
             user_id = db.last()[0]['user_id']
             bottle.response.set_cookie('user_id', user_id, modules.config['secret'])
+            bottle.response.set_cookie('adminlevel', db.last()[0]['admin'], modules.config['secret'])
+            if vkavatar:
+                os.rename("/bsp/data/avatars/{}.jpg".format(os.path.split(vkavatar)[-1]),
+                          "/bsp/data/avatars/{}.jpg".format(user_id))
+
+            if 'image' in bottle.request.files:
+                filename = str(bottle.request.forms.get('user_id')) + '.jpg'
+                dirname = '/bsp/data/avatars'
+                fullname = os.path.join(dirname, filename)
+                if os.path.exists(fullname):
+                    os.remove(fullname)
+                bottle.request.files.get('image').save(fullname)
+                Image.open(fullname).crop().resize((200, 200)).save(fullname)
             return bottle.redirect('/profile')

@@ -15,8 +15,8 @@ def error404(error):
     return pages.Template('404', login=True).template()
 
 
-@bottle.get('/avatars/<user_id:int>')
-def route_avatars(user_id:int):
+@bottle.get('/avatars/<user_id>')
+def route_avatars(user_id:str):
     filename = str(user_id)
     fullaname = '/bsp/data/avatars/{}.jpg'.format(filename)
     if not os.path.exists(fullaname):

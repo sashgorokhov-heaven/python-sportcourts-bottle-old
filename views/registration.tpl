@@ -8,6 +8,7 @@
 % setdefault("height", "")
 % setdefault("weight", "")
 % setdefault("email", "")
+% setdefault("photo", "")
 
       <div class="jumbotron">
         <div class="row">
@@ -31,11 +32,18 @@
                   <label for="sex" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 200px;"></div>
+                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 200px;">\\
+                      % if photo:
+                      {{!'<img src="{}" height="200" width="200"/>'.format(photo)}}
+                      <input type="hidden" name="image" value="{{photo}}">
+                      % end
+                      </div>
+                      % if not photo:
                       <div>
-                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span><input type="file" name="..."></span>
+                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span><input type="file" name="image"></span>
                         <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Удалить</a>
                       </div>
+                      % end
                     </div>
                   </div>
                 </div>
