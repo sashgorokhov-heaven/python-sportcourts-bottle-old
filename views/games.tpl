@@ -19,6 +19,10 @@
             % for game in games:
             % include("game", game=game)
             % end
+            <ul class="pager">
+              <li class="previous disabled"><a href="#">&larr; Раньше</a></li>
+              <li class="next"><a href="#">Позже &rarr;</a></li>
+            </ul>
           </div>
         </div><!-- End of All games -->
 
