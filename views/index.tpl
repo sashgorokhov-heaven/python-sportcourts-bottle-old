@@ -4,7 +4,7 @@
         <p class="lead">Сервис для спротсменов-любителей.</p>
         <p class="lead">Старт в августе.</p>
         % if not loggedin:
-            <p><a class="btn btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+            <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
         % end
       </div>
 
