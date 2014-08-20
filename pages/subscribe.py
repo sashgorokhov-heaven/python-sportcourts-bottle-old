@@ -8,37 +8,37 @@ class Subscribe(pages.Page):
     path = ['subscribe']
 
     def execute(self, method:str):
-        return self.get()
+        params = {i: bottle.request.forms[i] for i in bottle.request.forms}
+        return self.post(params)
 
-    def get(self):
+    def post(self, params:dict=None):
         """
-        user_id
         game_id
         [unsubscribe]
         """
         with modules.dbutils.dbopen() as db:
-            db.execute("SELECT subscribed FROM games WHERE game_id={}".format(bottle.request.query.get('game_id')))
+            db.execute("SELECT subscribed FROM games WHERE game_id={}".format(params['game_id']))
             if len(db.last()) == 0:
                 raise bottle.HTTPError(404)
             data = db.last()[0][0]
-            if 'unsubscribe' not in bottle.request.query:
+            if 'unsubscribe' not in params:
                 if data:
-                    if bottle.request.query.get('user_id') in data:
+                    if str(pages.getuserid()) in data:
                         raise bottle.HTTPError(404)
                     else:
-                        data = ','.join(data.split(',') + [bottle.request.query.get('user_id')])
+                        data = ','.join(data.split(',') + [str(pages.getuserid())])
                 else:
-                    data = bottle.request.query.get('user_id')
+                    data = str(pages.getuserid())
             else:
                 if data:
-                    if bottle.request.query.get('user_id') in data:
+                    if str(pages.getuserid()) in data:
                         data = data.split(',')
-                        data.remove(bottle.request.query.get('user_id'))
+                        data.remove(str(pages.getuserid()))
                         data = ','.join(data)
                     else:
                         raise bottle.HTTPError(404)
                 else:
                     raise bottle.HTTPError(404)
             db.execute(
-                "UPDATE games SET subscribed='{}' WHERE game_id={}".format(data, bottle.request.query.get('game_id')))
+                "UPDATE games SET subscribed='{}' WHERE game_id={}".format(data, params['game_id']))
             return ''

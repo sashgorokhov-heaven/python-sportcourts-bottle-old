@@ -70,7 +70,6 @@
           $.ajax({
             url: 'http://sportcourts.ru/subscribe',
             data: {
-              user_id: user_id,
               game_id: game_id,
               unsubscribe: 0
             },
@@ -91,7 +90,6 @@
           $.ajax({
             url: 'http://sportcourts.ru:4444/api/games.subscribe',
             data: {
-              user_id: user_id,
               game_id: game_id
             },
             async: true,
