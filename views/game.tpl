@@ -44,12 +44,22 @@
 
                   % if game['subscribed']['count'] == game['capacity']:
                     <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
-                  % end
-                  % if loggedin:
-                    <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я иду</button>
+                    % if loggedin and game['is_subscribed']:
                       <ul class="dropdown-menu" role="menu">
                         <li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li>
                       </ul>
+                    % end
+                  % end
+                  % if game['subscribed']['count'] <= game['capacity'] and loggedin:
+                    % if not game['is_subscribed']:
+                      <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я иду</button>
+                    % end
+                    % if game['is_subscribed']:
+                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Записан</button>
+                        <ul class="dropdown-menu" role="menu">
+                          <li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li>
+                        </ul>
+                    % end
                   % end
                   % if not loggedin:
                     <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">Идет набор</button>

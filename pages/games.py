@@ -31,6 +31,10 @@ class Games(pages.Page):
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
+                if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
+                    game['is_subscribed'] = True
+                else:
+                    game['is_subscribed'] = False
                 if len(subscribed) > 0:
                     sql = "SELECT user_id, first_name, last_name FROM users WHERE user_id IN ({})".format(
                         ','.join(subscribed))
@@ -54,6 +58,10 @@ class Games(pages.Page):
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
+                if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
+                    game['is_subscribed'] = True
+                else:
+                    game['is_subscribed'] = False
                 if len(subscribed) > 0:
                     sql = "SELECT user_id, first_name, last_name FROM users WHERE user_id IN ({})".format(
                         ','.join(subscribed))
