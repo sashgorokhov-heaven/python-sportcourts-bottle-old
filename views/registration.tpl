@@ -41,7 +41,8 @@
                       </div>
                       % if not photo:
                       <div>
-                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span><input type="file" name="..."></span>
+                        <span class="btn btn-default btn-file"><span class="fileinput-new">Выбрать</span><span class="fileinput-exists">Изменить</span>
+                        <input type="file" name="avatar"></span>
                         <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Удалить</a>
                       </div>
                       % end
@@ -50,7 +51,7 @@
                 </div>
                 % if not photo:
                 <script type="text/javascript">
-                  $('.fileinput').fileinput()
+                  $('.fileinput').fileinput(name="avatar")
                 </script>
                 % end
                 <div class="form-group">
