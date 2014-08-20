@@ -139,6 +139,8 @@ class Games(pages.Page):
                 game.pop('region_id')
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
+                game['datetime'] = (
+                    beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
                 if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
                     game['is_subscribed'] = True
