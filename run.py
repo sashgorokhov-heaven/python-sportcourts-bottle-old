@@ -7,4 +7,4 @@ application = modules.server.application
 
 import bottle
 
-bottle.run(host=modules.config['server']['ip'], port=modules.config['server']['port'])
+bottle.run(host=modules.config['server']['ip'], port=modules.config['server']['port'], reloader=True)
