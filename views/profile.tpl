@@ -1,7 +1,7 @@
 % rebase("_basicpage", title=user['first_name']+' '+user['last_name'])
       <div class="row profile">
         <div class="col-md-2">
-           <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="120" style="max-width:170%">
+           <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="240" style="max-width:100%">
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-4">
