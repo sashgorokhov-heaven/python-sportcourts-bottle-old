@@ -9,7 +9,7 @@
                 <div class="form-group">
                   <label for="photo" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
-                    <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="120" style="max-width:170%">
+                    <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="120">
                   </div>
                 </div>
                 <div class="form-group">
