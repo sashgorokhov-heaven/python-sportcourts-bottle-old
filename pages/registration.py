@@ -81,8 +81,13 @@ class Registration(pages.Page):
         params['middle_name'] = bottle.request.forms.getunicode('middle_name')
         params['last_name'] = bottle.request.forms.getunicode('last_name')
 
-        # print('avatar' in bottle.request.forms, 'avatar' in bottle.request.files, 'vkavatar' in bottle.request.forms, 'avatar' in bottle.request.files)
-        #        print(bottle.request.files.keys())
+        print('avatar' in bottle.request.forms, 'avatar' in bottle.request.files, 'vkavatar' in bottle.request.forms,
+              'avatar' in bottle.request.files)
+        for i in bottle.request.forms:
+            print(i, bottle.request.forms.getunicode(i))
+        print('====')
+        for i in bottle.request.files:
+            print(i, bottle.request.files.get(i))
         with modules.dbutils.dbopen() as db:
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
             if len(db.last()) > 0:
