@@ -56,7 +56,7 @@ class Profile(pages.Page):
     def post(self):
         if not pages.loggedin():
             raise bottle.HTTPError(404)
-        params = {i: bottle.request.forms[i] for i in bottle.request.forms}
+        params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         params.pop("submit_profile")
         params.pop("confirm_passwd")
         params.pop("city")
