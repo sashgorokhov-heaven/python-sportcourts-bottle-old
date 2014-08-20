@@ -66,7 +66,6 @@ class Registration(pages.Page):
         else:
             return pages.Template('registration', cities=cities)
 
-    @pages.handleerrors('registration')
     def post(self):
         params = {i: bottle.request.forms[i] for i in bottle.request.forms}
         params.pop("submit_order")
