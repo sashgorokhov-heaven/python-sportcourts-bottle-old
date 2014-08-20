@@ -11,7 +11,7 @@ from modules import vk
 
 
 class Registration(pages.Page):
-    path = ['reg', 'register', 'registration']
+    path = ['register', 'registration']
 
     def execute(self, method:str):
         if method == 'POST':
@@ -36,11 +36,8 @@ class Registration(pages.Page):
             code = bottle.request.query.code
             url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/registration"
             url = url.format(modules.config['api']['vk']['appid'],
-                             modules.config['api']['vk']['secret'],
-                             code,
-                             modules.config['server']['ip'],
-                             modules.config['server']['port']
-            )
+                             modules.config['api']['vk']['secret'], code,
+                             modules.config['server']['ip'], modules.config['server']['port'])
             response = urllib.request.urlopen(url)
             response = response.read().decode()
             response = bottle.json_loads(response)
@@ -84,7 +81,10 @@ class Registration(pages.Page):
         print('avatar' in bottle.request.forms, 'avatar' in bottle.request.files, 'vkavatar' in bottle.request.forms,
               'avatar' in bottle.request.files)
         for i in bottle.request.forms:
-            print(i, bottle.request.forms.getunicode(i))
+            try:
+                print(i, bottle.request.forms.getunicode(i))
+            except:
+                print('!!')
         print('====')
         for i in bottle.request.files:
             print(i, bottle.request.files.get(i))
