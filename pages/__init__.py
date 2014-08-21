@@ -67,6 +67,8 @@ class PageController:
         self.loadpages()
 
     def loadpages(self):
+        bottle.TEMPLATES.clear()
+        self._pages.clear()
         for module_name in os.listdir('pages'):
             if module_name.startswith('_'):
                 continue
@@ -96,17 +98,19 @@ class PageController:
 
     def execute(self, method:str, path:str):
         if path in self._pages:
-            # try:
-            return self._pages[path].execute(method)
-            # except (bottle.HTTPResponse, bottle.HTTPError) as e:
-        #                raise e
-        #            except Exception as e:
-        #                modules.logging.error(e.__class__.__name__ + ': {}', e.args)
-        #                return Template('404',
-        #                                error=e.__class__.__name__,
-        #                                error_description=e.args[0] if len(e.args) > 0 else '',
-        #                                traceback=modules.extract_traceback(e),
-        #                                login=True).template()
+            try:
+                return self._pages[path].execute(method)
+            except (bottle.HTTPResponse, bottle.HTTPError) as e:
+                modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
+                modules.logging.info(modules.extract_traceback(e))
+                raise e
+            except Exception as e:
+                modules.logging.error(e.__class__.__name__ + ': {}', e.args)
+                modules.logging.info(modules.extract_traceback(e))
+                return bottle.template('404', error=e.__class__.__name__,
+                                       error_description=e.args[0] if len(e.args) > 0 else '',
+                                       traceback=modules.extract_traceback(e),
+                                       login=True)
         if os.path.exists(os.path.join(modules.config['server_root'], 'static', path)):
             return bottle.static_file(path, os.path.join(modules.config['server_root'], 'static'))
         raise bottle.HTTPError(404)
