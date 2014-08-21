@@ -8,7 +8,8 @@ class Subscribe(pages.Page):
     path = ['subscribe']
 
     def execute(self, method:str):
-        params = {i: bottle.request.forms[i] for i in bottle.request.forms}
+        params = {i: bottle.request.forms[i] for i in bottle.request.forms} if method == 'POST' else {
+        i: bottle.request.query.get(i) for i in bottle.request.query}
         return self.post(params)
 
     def post(self, params:dict=None):
