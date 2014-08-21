@@ -106,10 +106,10 @@ class Registration(pages.Page):
             db.execute(sql)
             db.execute('SELECT user_id, admin FROM users WHERE email="{}"'.format(params['email']),
                        ['user_id', 'admin'])
-            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(db.last()[0]['user_id']))
             user_id = db.last()[0]['user_id']
             bottle.response.set_cookie('user_id', user_id, modules.config['secret'])
             bottle.response.set_cookie('adminlevel', db.last()[0]['admin'], modules.config['secret'])
+            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(db.last()[0]['user_id']))
             if vkavatar:
                 os.rename("/bsp/data/avatars/{}.jpg".format(os.path.split(vkavatar)[-1]),
                           "/bsp/data/avatars/{}.jpg".format(user_id))
