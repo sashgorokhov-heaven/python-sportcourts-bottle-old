@@ -119,9 +119,9 @@ class Games(pages.Page):
                 raise bottle.HTTPError(404)
             with modules.dbutils.dbopen() as db:
                 sports = db.execute("SELECT sport_id, title FROM sport_types")
-                game_types = db.execute("SELECT type_id, title FROM game_types")
+                game_types = db.execute("SELECT type_id, sport_type, title FROM game_types")
                 cities = db.execute("SELECT city_id, title FROM cities")
-                courts = db.execute("SELECT court_id, title FROM courts")
+                courts = db.execute("SELECT court_id, city_id, region_id, title FROM courts")
                 return pages.Template("addgame", sports=sports,
                                       game_types=game_types, cities=cities, courts=courts)
         if 'game_id' in bottle.request.query:
