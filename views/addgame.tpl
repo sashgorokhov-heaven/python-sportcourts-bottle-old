@@ -8,10 +8,10 @@
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Вид спорта</label>
                   <div class="col-sm-10">
-                    <select name="sport" class="form-control"
+                    <select id="sport" name="sport" class="form-control"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите вид спорта">
                     % for sport_id, title in sports:
@@ -24,7 +24,7 @@
                 <div class="form-group">
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Тип игры</label>
                   <div class="col-sm-10">
-                    <select name="game_type" class="form-control"
+                    <select id="game_type" name="game_type" class="form-control"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите тип игры">
                     % for type_id, title in game_types:
@@ -33,7 +33,42 @@
                     </select>
                     <span id="valid"></span>
                   </div>
+                </div> -->
+                <div class="form-group">
+                  <label for="inlineCheckbox" class="col-sm-2 control-label">Вид спорта</label>
+                  <div class="col-sm-10">
+                    <select id="sporttype" name="sporttype" class="form-control" data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите вид спорта">
+                      <option value="">--</option>
+                      <option value="1">Теннис</option>
+                      <option value="2">Футбол</option>
+                      <option value="3">Баскетбол</option>
+                      <option value="5">Воллейбол</option>
+                      <!-- тут в value указаны id вида спорта -->
+                    </select>
+                  </div>
                 </div>
+                <div class="form-group">
+                  <label for="inlineCheckbox" class="col-sm-2 control-label">Тип игры</label>
+                  <div class="col-sm-10">
+                    <select id="gametype" name="gametype" class="form-control" data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите тип игры">
+                      <option value="">--</option>
+                      <option value="1" class="1">Товарищеская игра</option>
+                      <option value="2" class="1">Индивидуальные тренировки</option>
+                      <option value="3" class="2">Большой футбол</option>
+                      <option value="4" class="2">Минифутбол</option>
+                      <option value="5" class="3">Стритбол</option>
+                      <option value="6" class="3">Баскетбол 5х5</option>
+                      <option value="7" class="5">Товарищеская игра</option>
+                      <option value="8" class="5">Тренировка</option>
+                      <!-- тут в value указаны id типа игры, а в class id типа спорта -->
+                    </select>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                  $("#gametype").chained("#sporttype");
+                </script>
                 <div class="form-group">
                   <label for="inputCity" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
