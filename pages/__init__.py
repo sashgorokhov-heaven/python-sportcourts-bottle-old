@@ -106,7 +106,8 @@ class PageController:
                 modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
                 raise e
             except Exception as e:
-                modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
+                modules.logging.error(path + ' | ' + e.__class__.__name__ + ': {}',
+                                      e.args[0] if len(e.args) > 0 else '')
                 modules.logging.info(modules.extract_traceback(e))
                 return bottle.template('404', error=e.__class__.__name__,
                                        error_description=e.args[0] if len(e.args) > 0 else '',

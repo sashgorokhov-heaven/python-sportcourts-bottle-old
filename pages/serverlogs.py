@@ -27,18 +27,22 @@ class ServerLogs(pages.Page):
                 parsed.append(list())
                 parsed[-1].append('info')
                 parsed[-1].append('Info')
-                parsed[-1].append(line.split(' ')[1:])
+                parsed[-1].append(' '.join(line.split(' ')[1:]))
             elif line.startswith('[WARN]'):
                 parsed.append(list())
                 parsed[-1].append('warning')
                 parsed[-1].append('Warning')
-                parsed[-1].append(line.split(' ')[1:])
+                parsed[-1].append(' '.join(line.split(' ')[1:]))
             elif line.startswith('[ERRO]'):
                 parsed.append(list())
                 parsed[-1].append('danger')
                 parsed[-1].append('Error')
-                parsed[-1].append(line.split(' ')[1:])
+                parsed[-1].append(' '.join(line.split(' ')[1:]))
+            elif 'Traceback' in line:
+                parsed[-1].append(' '.join(line.split(' ')[3:]))
+            elif not line.startswith('File'):
+                parsed[-1].append(' ' * 4 + line)
             else:
-                parsed[-1].append(line)
+                parsed[1].append(line)
 
         return pages.Template('logspage', logs=parsed)
