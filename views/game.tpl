@@ -4,7 +4,7 @@
             % end
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
-                <a href="/games?game_id={{game['game_id']}}">{{game['sport_type']['title']}}</a>
+                <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['sport_type']['title']}} - {{game['game_type']['title']}}</a>
                 % if 0<adminlevel<10:
                 <div style="float:right;"><a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a></div>
                 <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div>
