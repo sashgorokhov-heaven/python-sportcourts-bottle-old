@@ -13,7 +13,7 @@
           Рост: {{user['height']}} см.<br>
           Вес: {{user['weight']}} кг.<br>
           % if user['vkuserid']:
-            <a href="http://vk.com/id{{user['vkuserid']}}">Профиль вконтакте</aw>
+            <a href="http://vk.com/id{{user['vkuserid']}}">Профиль вконтакте</a>
           % end
         </div>
       </div>
