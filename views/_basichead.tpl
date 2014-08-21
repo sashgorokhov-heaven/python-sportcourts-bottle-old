@@ -4,6 +4,7 @@
     	<meta name="description" content="{{description}}" />
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=512">
+        <meta name="google-site-verification" content="UiLEwcYPzjypS-khlrSkBr31Qr2xp-Qd1l0RVbzZ5Uc" />
 	
     	<link type="text/css" rel="stylesheet" href="/view/css/main.css" />
     	<link type="text/css" rel="stylesheet" href="/view/css/jquery-ui.css" />
