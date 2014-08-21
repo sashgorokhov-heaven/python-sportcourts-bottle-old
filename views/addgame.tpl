@@ -4,14 +4,14 @@
           <div class="col-md-12 registration" style="text-align:left;">
             <h2 class="text-center">Новая игра</h2><br>
             <form id="gameaddForm" method="post" class="form-horizontal" action="/games"
-            data-bv-message="This value is not valid"
+            data-bv-message="This value is not valid" enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
                 <div class="form-group">
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Вид спорта</label>
                   <div class="col-sm-10">
-                    <select id="sporttype" name="sporttype" class="form-control" data-bv-notempty="true"
+                    <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                     data-bv-notempty-message="Укажите вид спорта">
                       <option value="">--</option>
                       % for sport_id, title in sports:
@@ -23,7 +23,7 @@
                 <div class="form-group">
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Тип игры</label>
                   <div class="col-sm-10">
-                    <select id="gametype" name="gametype" class="form-control" data-bv-notempty="true"
+                    <select id="gametype" name="game_type" class="form-control" data-bv-notempty="true"
                     data-bv-notempty-message="Укажите тип игры">
                       <option value="">--</option>
                       % for type_id, sport_id, title in game_types:
@@ -38,7 +38,7 @@
                 <div class="form-group">
                   <label for="inputCity" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
-                    <select name="city" class="form-control"
+                    <select id="city" name="city_id" class="form-control"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите город">
                     % for city_id, title in cities:
@@ -51,7 +51,7 @@
                 <div class="form-group">
                   <label for="inputBirght" class="col-sm-2 control-label">Площадка</label>
                   <div class="col-sm-10">
-                    <select name="court" class="form-control"
+                    <select id="court" name="court_id" class="form-control"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите площадку">
                       <option value="">--</option>
@@ -69,7 +69,7 @@
                   <div class="col-sm-10">
                     <input type="date" class="form-control" name="date"
                     data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите время проведения" />
+                    data-bv-notempty-message="Укажите дату проведения" />
                   </div>
                 </div>
                 <div class="form-group">

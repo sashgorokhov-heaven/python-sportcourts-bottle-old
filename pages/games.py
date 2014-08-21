@@ -51,11 +51,16 @@ class Games(pages.Page):
             with modules.dbutils.dbopen() as db:
                 params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
                 params.pop('submit_add')
+                params['datetime'] = params['date'] + ' ' + params['time'] + ':00'
+                params.pop('date')
+                params.pop('time')
+
                 for param in params:
                     try:
                         print(param, params[param])
                     except:
-                        continue
+                        print('Error')
+
                 sql = 'INSERT INTO games ({dbkeylist}) VALUES ({dbvaluelist})'
                 keylist = list(params.keys())
                 sql = sql.format(
@@ -82,7 +87,7 @@ class Games(pages.Page):
                     raise bottle.HTTPError(404)
                 game = db.last()[0]
                 game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
-                game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
+                # game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
                 game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
                 game['game_type'] = modules.dbutils.get(db).game_type(game['game_type'])[0]
                 game['sport_type'] = modules.dbutils.get(db).sport_type(game['sport_type'])[0]
@@ -121,7 +126,7 @@ class Games(pages.Page):
                 sports = db.execute("SELECT sport_id, title FROM sport_types")
                 game_types = db.execute("SELECT type_id, sport_type, title FROM game_types")
                 cities = db.execute("SELECT city_id, title FROM cities")
-                courts = db.execute("SELECT court_id, city_id, region_id, title FROM courts")
+                courts = db.execute("SELECT court_id, city_id, title FROM courts")
                 return pages.Template("addgame", sports=sports,
                                       game_types=game_types, cities=cities, courts=courts)
         if 'game_id' in bottle.request.query:
@@ -131,7 +136,7 @@ class Games(pages.Page):
                     raise bottle.HTTPError(404)
                 game = db.last()[0]
                 game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
-                game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
+                #game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
                 game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
                 game['game_type'] = modules.dbutils.get(db).game_type(game['game_type'])[0]
                 game['sport_type'] = modules.dbutils.get(db).sport_type(game['sport_type'])[0]
@@ -160,7 +165,7 @@ class Games(pages.Page):
             games = list()
             for game in db.last():
                 game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
-                game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
+                #game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
                 game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
                 game['game_type'] = modules.dbutils.get(db).game_type(game['game_type'])[0]
                 game['sport_type'] = modules.dbutils.get(db).sport_type(game['sport_type'])[0]
