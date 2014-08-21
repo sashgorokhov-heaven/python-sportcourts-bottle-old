@@ -35,9 +35,11 @@ def handleerrors(template_name):
             try:
                 return func(*args, **kwargs)
             except (bottle.HTTPResponse, bottle.HTTPError) as e:
+                modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
                 raise e
             except Exception as e:
                 modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
+                modules.logging.info(modules.extract_traceback(e))
                 return Template(template_name, error=e.__class__.__name__,
                                 error_description=e.args[0] if len(e.args) > 0 else '',
                                 traceback=modules.extract_traceback(e))
@@ -102,10 +104,9 @@ class PageController:
                 return self._pages[path].execute(method)
             except (bottle.HTTPResponse, bottle.HTTPError) as e:
                 modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
-                modules.logging.info(modules.extract_traceback(e))
                 raise e
             except Exception as e:
-                modules.logging.error(e.__class__.__name__ + ': {}', e.args)
+                modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
                 modules.logging.info(modules.extract_traceback(e))
                 return bottle.template('404', error=e.__class__.__name__,
                                        error_description=e.args[0] if len(e.args) > 0 else '',
