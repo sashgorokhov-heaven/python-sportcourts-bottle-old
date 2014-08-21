@@ -59,12 +59,13 @@ class Profile(pages.Page):
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         params.pop("submit_profile")
         params.pop("confirm_passwd")
-        params.pop("city")
-        params['city_id'] = 1
 
         params['first_name'] = bottle.request.forms.get('first_name')
         params['middle_name'] = bottle.request.forms.get('middle_name')
         params['last_name'] = bottle.request.forms.get('last_name')
+        params['city'] = bottle.request.forms.get('city')
+        city_title = params['city']
+        params.pop('city')
 
         if 'avatar' in params:
             params.pop('avatar')
@@ -80,6 +81,11 @@ class Profile(pages.Page):
             print(fullname)
 
         with modules.dbutils.dbopen() as db:
+            db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))
+            if len(db.last()) > 0:
+                params['city_id'] = db.last()[0][0]
+            else:
+                params['city_id'] = 1
             sql = "UPDATE users SET {} WHERE user_id={}".format(
                 ', '.join(['{}="{}"'.format(i, params[i]) for i in params]),
                 pages.getuserid())
