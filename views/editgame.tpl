@@ -126,23 +126,25 @@
                     </div>
                 </form>
               </div>
-              <div class="col-md-6">
-                <label class="control-label">Список участников</label>
-                <br>
-                <div class="table-responsive">
-                  <table class="table table-hover table-bordered">
-                    % for n, user in enumerate(game['subscribed']['users'], 1):
-                    <tr class="success">
-                      <td>{{n}}</td>
-                      <td>{{user['first_name']}}</td>
-                      <td>{{user['last_name']}}</td>
-                      <td>+7 (982) 646-94-54</td>
-                      <td><a href="/games?delete&user_id={{user['user_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
-                    </tr>
-                    % end
-                  </table>
+              % if game['subscribed']['count']>0:
+                <div class="col-md-6">
+                  <label class="control-label">Список участников</label>
+                  <br>
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                      % for n, user in enumerate(game['subscribed']['users'], 1):
+                      <tr class="success">
+                        <td>{{n}}</td>
+                        <td>{{user['first_name']}}</td>
+                        <td>{{user['last_name']}}</td>
+                        <td>+7 (982) 646-94-54</td>
+                        <td><a href="/subscribe?unsubscribe&fromedit&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                      </tr>
+                      % end
+                    </table>
+                  </div>
                 </div>
-              </div>
+              % end
             </div>
           </div>
         </div>

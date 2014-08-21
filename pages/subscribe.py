@@ -16,6 +16,7 @@ class Subscribe(pages.Page):
         """
         game_id
         [unsubscribe]
+        [fromedit]
         """
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT subscribed FROM games WHERE game_id={}".format(params['game_id']))
@@ -42,4 +43,6 @@ class Subscribe(pages.Page):
                     raise bottle.HTTPError(404)
             db.execute(
                 "UPDATE games SET subscribed='{}' WHERE game_id={}".format(data, params['game_id']))
+            if 'fromedit' in params:
+                raise bottle.redirect('/games?edit={}'.format(params['game_id']))
             return ''
