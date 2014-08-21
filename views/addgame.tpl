@@ -67,8 +67,11 @@
                   </div>
                 </div>
                 <script type="text/javascript">
+                  // тут указана зависимость
                   $("#gametype").chained("#sporttype");
                 </script>
+
+
                 <div class="form-group">
                   <label for="inputCity" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
