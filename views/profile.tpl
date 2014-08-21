@@ -12,5 +12,8 @@
           {{user['bdate']+', '+user['city']['title']}}<br>
           Рост: {{user['height']}} см.<br>
           Вес: {{user['weight']}} кг.<br>
+          % if user['vkuserid']:
+            <a href="http://vk.com/id{{user['vkuserid']}}">Профиль вконтакте</aw>
+          % end
         </div>
       </div>
