@@ -66,6 +66,13 @@ class Profile(pages.Page):
         params['middle_name'] = bottle.request.forms.getunicode('middle_name')
         params['last_name'] = bottle.request.forms.getunicode('last_name')
 
+        for param in params:
+            try:
+                print(param, params[param])
+            except:
+                print('Error')
+
+
         if 'avatar' in params:
             params.pop('avatar')
 
