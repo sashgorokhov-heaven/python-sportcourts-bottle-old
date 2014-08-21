@@ -118,5 +118,7 @@ class Registration(pages.Page):
                 if os.path.exists(fullname):
                     os.remove(fullname)
                 bottle.request.files.get('avatar').save(fullname)
-                Image.open(fullname).crop().resize((200, 200)).save(fullname)
+                im = Image.open(fullname)
+                im.crop().resize((200, 200)).save(fullname)
+                im.close()
             return bottle.redirect('/profile')

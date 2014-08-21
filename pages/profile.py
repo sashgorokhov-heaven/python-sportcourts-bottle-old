@@ -77,8 +77,9 @@ class Profile(pages.Page):
             if os.path.exists(fullname):
                 os.remove(fullname)
             bottle.request.files.get('avatar').save(fullname)
-            Image.open(fullname).crop().resize((200, 200)).save(fullname)
-            print(fullname)
+            im = Image.open(fullname)
+            im.crop().resize((200, 200)).save(fullname)
+            im.close()
 
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))
