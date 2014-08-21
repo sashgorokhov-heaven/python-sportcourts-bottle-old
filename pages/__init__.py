@@ -14,8 +14,13 @@ def getuserid():
 def getadminlevel():
     return int(bottle.request.get_cookie('adminlevel', 0, modules.config['secret']))
 
+
 def loggedin():
     return bool(getuserid())
+
+
+def activated():
+    return bool(int(bottle.request.get_cookie('activated', 0, modules.config['secret'])))
 
 
 def setlogin(func):
@@ -26,6 +31,7 @@ def setlogin(func):
         template.add_parameter('loggedin', bool(user_id))
         template.add_parameter('adminlevel', getadminlevel())
         return template
+
     return wrapper
 
 
@@ -42,7 +48,7 @@ def handleerrors(template_name):
                 modules.logging.info(modules.extract_traceback(e))
                 return Template(template_name, error=e.__class__.__name__,
                                 error_description=e.args[0] if len(e.args) > 0 else '',
-                                traceback=modules.extract_traceback(e))
+                                traceback=modules.extract_traceback(e), login=True)
 
         return wrapper
 
