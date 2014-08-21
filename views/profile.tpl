@@ -15,5 +15,8 @@
           % if user['vkuserid']:
             <a href="http://vk.com/id{{user['vkuserid']}}">Профиль вконтакте</a>
           % end
+          % if int(user['user_id'])==int(user_id) and not activated:
+            <p>Вы не активировали свой профиль!</p>
+          % end
         </div>
       </div>

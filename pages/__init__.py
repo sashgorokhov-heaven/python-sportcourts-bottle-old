@@ -30,6 +30,7 @@ def setlogin(func):
         template.add_parameter('user_id', user_id)
         template.add_parameter('loggedin', bool(user_id))
         template.add_parameter('adminlevel', getadminlevel())
+        template.add_parameter('activated', activated())
         return template
 
     return wrapper
