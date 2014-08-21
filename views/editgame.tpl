@@ -85,7 +85,7 @@
                   <label for="inputBirght" class="col-sm-2 control-label">Начало</label>
                   <div class="col-sm-4">
                     <input type="time" class="form-control" name="time"
-                    data-bv-notempty="true" value="{{':'.join(game['duration'].split(' ')[-1].split(':')[:2])}}"
+                    data-bv-notempty="true" value="{{':'.join(game['datetime'].split(' ')[-1].split(':')[:2])}}"
                     data-bv-notempty-message="Укажите время начала" />
                   </div>
                 </div>
