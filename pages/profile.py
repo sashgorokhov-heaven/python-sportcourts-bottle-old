@@ -62,16 +62,9 @@ class Profile(pages.Page):
         params.pop("city")
         params['city_id'] = 1
 
-        params['first_name'] = bottle.request.forms.getunicode('first_name')
-        params['middle_name'] = bottle.request.forms.getunicode('middle_name')
-        params['last_name'] = bottle.request.forms.getunicode('last_name')
-
-        for param in params:
-            try:
-                print(param, params[param])
-            except:
-                print('Error')
-
+        params['first_name'] = bottle.request.forms.get('first_name')
+        params['middle_name'] = bottle.request.forms.get('middle_name')
+        params['last_name'] = bottle.request.forms.get('last_name')
 
         if 'avatar' in params:
             params.pop('avatar')
