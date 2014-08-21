@@ -58,7 +58,6 @@ class Profile(pages.Page):
             raise bottle.HTTPError(404)
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         params.pop("submit_profile")
-        params.pop("confirm_passwd")
 
         params['first_name'] = bottle.request.forms.get('first_name')
         params['middle_name'] = bottle.request.forms.get('middle_name')
