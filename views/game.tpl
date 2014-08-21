@@ -7,7 +7,7 @@
                 <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a>
                 % if 0<adminlevel<10:
                 <div style="float:right;"><a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a></div>
-                <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div>
+                <!-- <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div> -->
                 % end
               </div>
               <div class="panel-body">
