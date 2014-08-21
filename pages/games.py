@@ -54,13 +54,6 @@ class Games(pages.Page):
                 params['datetime'] = params['date'] + ' ' + params['time'] + ':00'
                 params.pop('date')
                 params.pop('time')
-
-                for param in params:
-                    try:
-                        print(param, params[param])
-                    except:
-                        print('Error')
-
                 sql = 'INSERT INTO games ({dbkeylist}) VALUES ({dbvaluelist})'
                 keylist = list(params.keys())
                 sql = sql.format(
