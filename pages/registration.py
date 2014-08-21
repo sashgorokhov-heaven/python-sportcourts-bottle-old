@@ -47,6 +47,7 @@ class Registration(pages.Page):
             access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
             user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max'])[0]
             data = dict()
+            data['vkuserid'] = user_id
             data['city'] = user['city']['title'] if 'city' in user else None
             data['first_name'] = user['first_name']
             data['last_name'] = user['last_name']
@@ -73,10 +74,10 @@ class Registration(pages.Page):
         params['regdate'] = str(datetime.date.today())
         params['lasttime'] = params['regdate']
 
-        params['first_name'] = bottle.request.forms.getunicode('first_name')
-        params['middle_name'] = bottle.request.forms.getunicode('middle_name')
-        params['last_name'] = bottle.request.forms.getunicode('last_name')
-        params['city'] = bottle.request.forms.getunicode('city')
+        params['first_name'] = bottle.request.forms.get('first_name')
+        params['middle_name'] = bottle.request.forms.get('middle_name')
+        params['last_name'] = bottle.request.forms.get('last_name')
+        params['city'] = bottle.request.forms.get('city')
         city_title = params['city']
         params.pop('city')
 
@@ -105,6 +106,7 @@ class Registration(pages.Page):
             db.execute(sql)
             db.execute('SELECT user_id, admin FROM users WHERE email="{}"'.format(params['email']),
                        ['user_id', 'admin'])
+            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(db.last()[0]['user_id']))
             user_id = db.last()[0]['user_id']
             bottle.response.set_cookie('user_id', user_id, modules.config['secret'])
             bottle.response.set_cookie('adminlevel', db.last()[0]['admin'], modules.config['secret'])

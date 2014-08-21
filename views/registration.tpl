@@ -42,6 +42,7 @@
                         % if photo:
                           {{!'<img src="{}" height="150" width="150"/>'.format(photo)}}
                           <input type="hidden" name="vkavatar" value="{{photo}}">
+                          <input type="hidden" name="vkuserid" value="{{vkuserid}}">
                         % end
                       </div>
                       % if not photo:
