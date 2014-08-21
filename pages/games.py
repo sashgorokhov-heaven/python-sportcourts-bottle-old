@@ -22,7 +22,7 @@ def beautifuldate(datetime:str):
 
 
 def beautifultime(datetime:str):
-    return datetime.split(' ')[-1]
+    return ':'.join(datetime.split(' ')[-1].split(':')[:-1])
 
 
 def beautifulday(datetime_:str):
@@ -63,7 +63,19 @@ class Games(pages.Page):
                 db.execute('SELECT last_insert_id() FROM games', ['game_id'])
                 raise bottle.redirect('/games?game_id={}'.format(db.last()[0]['game_id']))
         elif 'submit_edit' in bottle.request.forms:
-            pass
+            with modules.dbutils.dbopen() as db:
+                params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
+                params.pop('submit_edit')
+                params['datetime'] = params['date'] + ' ' + params['time'] + ':00'
+                params.pop('date')
+                game_id = params['game_id']
+                params.pop('game_id')
+                params.pop('time')
+                sql = 'UPDATE games SET {} WHERE game_id={}'.format(
+                    ', '.join(['{}="{}"'.format(i, params[i]) for i in params]),
+                    game_id)
+                db.execute(sql)
+                raise bottle.redirect('/games?game_id={}'.format(game_id))
         else:
             raise bottle.HTTPError(404)
 
