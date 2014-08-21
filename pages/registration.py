@@ -5,6 +5,8 @@ import datetime
 from PIL import Image
 import bottle
 
+import modules.maillib
+
 import modules
 import modules.dbutils
 import pages
@@ -124,4 +126,9 @@ class Registration(pages.Page):
                 im = Image.open(fullname)
                 im.crop().resize((200, 200)).save(fullname)
                 im.close()
+            token = modules.generate_token()
+            modules.maillib.send(
+                'Чтобы активировать профиль, перейдите по <a href="http://sportcourts.ru/activate?token={}">ссылке</a>'.format(
+                    token), params['email'])
+            db.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
             return bottle.redirect('/profile')
