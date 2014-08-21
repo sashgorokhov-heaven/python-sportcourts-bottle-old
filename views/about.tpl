@@ -33,7 +33,7 @@
             </div>
             <h2 class="column-top first">Александр Горохов</h2>
             <h3 class="about-high">CTO</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, voluptate cupiditate voluptatem nostrum cumque   blanditiis id ex doloribus voluptas libero culpa dignissimos voluptatibus consectetur rerum accusantium veritatis quam ea   sint modi veniam officiis ipsum quod repellendus tenetur dicta. Nisi, sit quidem repellendus quo sint architecto velit  sapiente at culpa ratione. Tempore, nemo, autem rerum necessitatibus laborum soluta animi earum laboriosam facilis aliquid   vero recusandae quibusdam magni quae vitae iste amet voluptates doloremque impedit tenetur quam voluptatibus ea optio   molestias reprehenderit modi odio alias. Maiores, nisi sapiente in reiciendis! Velit, delectus, quos reiciendis modi  perferendis doloremque nemo repudiandae vel debitis quaerat.</p>
+            <p>Технический директор проекта. Программист.</p>
           </div>
         </div>
         <div class="row">
