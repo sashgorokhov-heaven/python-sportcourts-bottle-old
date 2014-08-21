@@ -128,7 +128,7 @@ class Registration(pages.Page):
                 im.close()
             token = modules.generate_token()
             modules.maillib.send(
-                'Чтобы активировать профиль, перейдите по <a href="http://sportcourts.ru/activate?token={}">ссылке</a>'.format(
+                'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
                     token), params['email'])
             db.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
             return bottle.redirect('/profile')

@@ -18,6 +18,8 @@ class Activate(pages.Page):
     @pages.handleerrors("404")
     def get(self):
         token = bottle.request.query.get('token')
+        if not token:
+            raise bottle.HTTPError(404)
         with dbutils.dbopen() as db:
             db.execute("SELECT user_id FROM activation WHERE token='{}'".format(token))
             if len(db.last()) == 0:
