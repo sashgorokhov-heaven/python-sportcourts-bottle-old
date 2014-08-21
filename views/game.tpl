@@ -12,7 +12,7 @@
             % end
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
-                <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['sport_type']['title']}} - {{game['game_type']['title']}}</a>
+                <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
                 % if 0<adminlevel<10:
                 <div style="float:right;"><a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a></div>
                 <!-- <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div> -->
@@ -25,7 +25,8 @@
                   <p>{{game['datetime'][2]}}</p>
                 </div>
                 <div class="col-md-6">
-                  <p>{{game['description']}}</p>
+                  <p>
+                  {{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
                   <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
                   <div class="progress">
                     <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
