@@ -85,18 +85,14 @@ class Games(pages.Page):
                 game['game_type'] = modules.dbutils.get(db).game_type(game['game_type'])[0]
                 game['sport_type'] = modules.dbutils.get(db).sport_type(game['sport_type'])[0]
                 sports = db.execute("SELECT sport_id, title FROM sport_types")
-                game_types = db.execute("SELECT type_id, title FROM game_types")
+                game_types = db.execute("SELECT type_id, sport_type, title FROM game_types")
                 cities = db.execute("SELECT city_id, title FROM cities")
-                courts = db.execute("SELECT court_id, title FROM courts")
+                courts = db.execute("SELECT court_id, city_id, title FROM courts")
                 game.pop('city_id')
                 game.pop('region_id')
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
-                if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
-                    game['is_subscribed'] = True
-                else:
-                    game['is_subscribed'] = False
                 if len(subscribed) > 0:
                     sql = "SELECT user_id, first_name, last_name FROM users WHERE user_id IN ({})".format(
                         ','.join(subscribed))
