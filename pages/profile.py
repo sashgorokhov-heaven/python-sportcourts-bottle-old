@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from PIL import Image
 import bottle
@@ -32,6 +33,8 @@ class Profile(pages.Page):
                     raise bottle.HTTPError(404)
                 user = user[0]
                 modules.dbutils.strdates(user)
+                user['bdate'] = str(round((datetime.date.today() - datetime.date(
+                    *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
                 return pages.Template('profile', user=user)
@@ -40,6 +43,8 @@ class Profile(pages.Page):
                 cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
                 user = modules.dbutils.get(db).user(pages.getuserid())[0]
                 modules.dbutils.strdates(user)
+                user['bdate'] = str(round((datetime.date.today() - datetime.date(
+                    *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
                 return pages.Template('editprofile', user=user, cities=cities)
@@ -47,6 +52,8 @@ class Profile(pages.Page):
             with modules.dbutils.dbopen() as db:
                 user = modules.dbutils.get(db).user(pages.getuserid())[0]
                 modules.dbutils.strdates(user)
+                user['bdate'] = str(round((datetime.date.today() - datetime.date(
+                    *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
                 return pages.Template('profile', user=user)
