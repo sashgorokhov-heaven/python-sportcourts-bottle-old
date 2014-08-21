@@ -138,7 +138,7 @@
                 <br>
                 <hr>
                 <br>
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="passwd" class="col-sm-2 control-label">Новый пароль</label>
                   <div class="col-sm-10">
                     <input type="password" class="form-control" name="passwd"
@@ -161,7 +161,7 @@
                     data-bv-identical-message="Пароль и его подтверждение различаются">
                     <span id="valid"></span>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
                     <button type="submit" class="btn btn-primary" name="submit_profile">Редактировать информацию</button>
