@@ -143,6 +143,26 @@
                       % end
                     </table>
                   </div>
+                  <div class="col-md-12">
+                    <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
+                    <div class="modal fade" id="DELETEGAMEModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>Вы действительно хотите удалить игру?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <a href=""><button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button></a>
+                            <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               % end
             </div>
