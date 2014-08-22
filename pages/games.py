@@ -54,6 +54,18 @@ class Games(pages.Page):
                 params['datetime'] = params['date'] + ' ' + params['time'] + ':00'
                 params.pop('date')
                 params.pop('time')
+                sql = """\
+                SELECT game_id FROM games WHERE court_id={court_id} AND (\
+                (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
+                (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
+                """.format(
+                    court_id=params['court_id'],
+                    datetime=params['datetime'],
+                    duration=params['duration'].encode().split(b' ')[0].decode())
+                db.execute(sql)
+                if len(db.last()) > 0:
+                    return pages.Template('404', error='Обнаружен конфликт',
+                                          error_description='В это время игра уже идет')
                 sql = 'INSERT INTO games ({dbkeylist}) VALUES ({dbvaluelist})'
                 keylist = list(params.keys())
                 sql = sql.format(
@@ -80,7 +92,6 @@ class Games(pages.Page):
             raise bottle.HTTPError(404)
 
     @pages.setlogin
-    @pages.handleerrors('games')
     def get(self):
         if 'edit' in bottle.request.query:
             if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
