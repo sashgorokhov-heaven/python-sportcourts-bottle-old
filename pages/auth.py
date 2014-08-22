@@ -29,8 +29,8 @@ class Authorize(pages.Page):
         password = bottle.request.forms.password
         with modules.dbutils.dbopen() as db:
             db.execute(
-                "SELECT user_id, admin FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
-                ['user_id', 'admin'])
+                "SELECT user_id, admin, activated FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
+                ['user_id', 'admin', 'activated'])
             if len(db.last()) == 0:
                 return pages.Template('auth', email=email, error='Ошибка авторизации',
                                       error_description='Неправильный email или пароль')
