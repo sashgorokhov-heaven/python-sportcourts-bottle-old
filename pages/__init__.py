@@ -30,11 +30,12 @@ def user_type() -> str:
 
 def get_notifications(user_id:int) -> list:
     with modules.dbutils.dbopen() as db:
-        db.execute("SELECT * FROM notifications WHERE user_id='{}' AND `read`=0 ORDER BY datetime DESC",
+        db.execute("SELECT * FROM notifications WHERE user_id='{}' AND `read`=0 ORDER BY datetime DESC".format(user_id),
                    modules.dbutils.dbfields['notifications'])
         notifications = db.last()
-        db.execute("UPDATE notifications SET `read`='1' WHERE notification_id IN ({})".format(
-            ','.join([str(i['notification_id']) for i in notifications])))
+        if len(notifications) > 0:
+            db.execute("UPDATE notifications SET `read`='1' WHERE notification_id IN ({})".format(
+                ','.join([str(i['notification_id']) for i in notifications])))
         return notifications
 
 
@@ -45,21 +46,27 @@ def get_notifycount(user_id:int) -> int:
             "SELECT * FROM notifications WHERE user_id={} AND `read`=0 ORDER BY DATETIME DESC".format(user_id)))
 
 
-def write_notification(user_id:int, notification:str):
+def write_notification(user_id:int, notification:str, level:int=0):
     with modules.dbutils.dbopen() as db:
-        db.execute("INSERT INTO notifications (user_id, datetime, text) VALUES ({}, NOW(), {})".format(user_id, str(
-            notification)))
+        db.execute(
+            "INSERT INTO notifications (user_id, datetime, text, level) VALUES ({}, NOW(), '{}', {})".format(user_id,
+                                                                                                             str(
+                                                                                                                 notification),
+                                                                                                             level))
 
 
 def setlogin(func):
     def wrapper(*args, **kwargs):
         template = func(*args, **kwargs)
+        if not isinstance(template, Template):
+            return template
         user_id = getuserid()
         template.add_parameter('user_id', user_id)
         template.add_parameter('loggedin', bool(user_id))
         template.add_parameter('adminlevel', getadminlevel())
         template.add_parameter('activated', activated())
         template.add_parameter('notifycount', get_notifycount(user_id))
+        write_notification(user_id, 'You logged in')
         return template
     return wrapper
 
