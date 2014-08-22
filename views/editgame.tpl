@@ -157,7 +157,7 @@
                           <p>Вы действительно хотите удалить игру?</p>
                         </div>
                         <div class="modal-footer">
-                          <a href=""><button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button></a>
+                          <a href="!!!!!!!!!"><button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button></a>
                           <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
                         </div>
                       </div>
