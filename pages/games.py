@@ -106,9 +106,9 @@ class Games(pages.Page):
                 modules.dbutils.strdates(game)
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
                 if len(subscribed) > 0:
-                    sql = "SELECT user_id, first_name, last_name FROM users WHERE user_id IN ({})".format(
+                    sql = "SELECT user_id, first_name, last_name, phone FROM users WHERE user_id IN ({})".format(
                         ','.join(subscribed))
-                    db.execute(sql, ['user_id', 'first_name', 'last_name'])
+                    db.execute(sql, ['user_id', 'first_name', 'last_name', 'phone'])
                     game['subscribed'] = {'count': len(db.last()), 'users': db.last()}
                 else:
                     game['subscribed'] = {'count': 0, 'users': list()}
@@ -153,9 +153,9 @@ class Games(pages.Page):
                 else:
                     game['is_subscribed'] = False
                 if len(subscribed) > 0:
-                    sql = "SELECT user_id, first_name, last_name FROM users WHERE user_id IN ({})".format(
+                    sql = "SELECT user_id, first_name, last_name, phone FROM users WHERE user_id IN ({})".format(
                         ','.join(subscribed))
-                    db.execute(sql, ['user_id', 'first_name', 'last_name'])
+                    db.execute(sql, ['user_id', 'first_name', 'last_name', 'phone'])
                     game['subscribed'] = {'count': len(db.last()), 'users': db.last()}
                 else:
                     game['subscribed'] = {'count': 0, 'users': list()}
@@ -183,9 +183,9 @@ class Games(pages.Page):
                 else:
                     game['is_subscribed'] = False
                 if len(subscribed) > 0:
-                    sql = "SELECT user_id, first_name, last_name FROM users WHERE user_id IN ({})".format(
+                    sql = "SELECT user_id, first_name, last_name, phone FROM users WHERE user_id IN ({})".format(
                         ','.join(subscribed))
-                    db.execute(sql, ['user_id', 'first_name', 'last_name'])
+                    db.execute(sql, ['user_id', 'first_name', 'last_name', 'phone'])
                     game['subscribed'] = {'count': len(db.last()), 'users': db.last()}
                 else:
                     game['subscribed'] = {'count': 0, 'users': list()}

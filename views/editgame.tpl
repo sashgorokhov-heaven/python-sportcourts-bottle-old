@@ -137,7 +137,7 @@
                       <td>{{n}}</td>
                       <td>{{user['first_name']}}</td>
                       <td>{{user['last_name']}}</td>
-                      <td>+7 (982) 646-94-54</td>
+                      <td>{{user['phone']}}</td>
                       <td><a href="/subscribe?unsubscribe&fromedit&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
                     </tr>
                     % end
