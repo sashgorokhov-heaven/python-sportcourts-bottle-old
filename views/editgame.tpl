@@ -126,45 +126,48 @@
                     </div>
                 </form>
               </div>
-              % if game['subscribed']['count']>0:
-                <div class="col-md-6">
-                  <label class="control-label">Список участников</label>
-                  <br>
-                  <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
-                      % for n, user in enumerate(game['subscribed']['users'], 1):
-                      <tr class="success">
-                        <td>{{n}}</td>
-                        <td>{{user['first_name']}}</td>
-                        <td>{{user['last_name']}}</td>
-                        <td>+7 (982) 646-94-54</td>
-                        <td><a href="/subscribe?unsubscribe&fromedit&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
-                      </tr>
-                      % end
-                    </table>
-                  </div>
-                  <div class="col-md-12">
-                    <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
-                    <div class="modal fade" id="DELETEGAMEModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
-                          </div>
-                          <div class="modal-body">
-                            <p>Вы действительно хотите удалить игру?</p>
-                          </div>
-                          <div class="modal-footer">
-                            <a href=""><button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button></a>
-                            <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
-                          </div>
+              <div class="col-md-6">
+                % if game['subscribed']['count']>0:
+                <label class="control-label">Список участников</label>
+                <br>
+                <div class="table-responsive">
+                  <table class="table table-hover table-bordered">
+                    % for n, user in enumerate(game['subscribed']['users'], 1):
+                    <tr class="success">
+                      <td>{{n}}</td>
+                      <td>{{user['first_name']}}</td>
+                      <td>{{user['last_name']}}</td>
+                      <td>+7 (982) 646-94-54</td>
+                      <td><a href="/subscribe?unsubscribe&fromedit&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                    </tr>
+                    % end
+                  </table>
+                </div>
+                % end
+                <div class="col-md-12">
+                  <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
+                  <div class="modal fade" id="DELETEGAMEModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Вы действительно хотите удалить игру?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <a href=""><button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button></a>
+                          <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              % end
+                <script type="text/javascript">
+                  $('#deleteGameModal').modal(options)
+                </script>
+              </div>
             </div>
           </div>
         </div>
