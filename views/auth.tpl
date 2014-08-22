@@ -5,10 +5,20 @@
           <div class="col-md-12 registration" style="text-align:left;">
             <h2 class="text-center">Авторизация</h2><br>
             %if defined("error"):
-                <p>{{error}}</p>
-                <p>{{error_description}}</p>
-                % error = ""
-                % error_description = ""
+              <div class="bs-example">
+                <div class="alert alert-danger fade in">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <strong>{{error}}</strong> {{error_description}}.
+                </div>
+              </div>
+              <script type="text/javascript">
+                  setInterval(function() 
+                    {$(".alert").alert('close')}
+                    , 5000
+                  );
+              </script>
+              % error = ""
+              % error_description = ""
             % end
             <div class="row">
               <form id="loginForm" method="post" class="form-horizontal" action="/auth">
