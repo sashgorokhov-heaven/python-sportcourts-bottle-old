@@ -23,6 +23,9 @@ def activated():
     return bool(int(bottle.request.get_cookie('activated', 0, modules.config['secret'])))
 
 
+def user_type():
+    return str(bottle.request.get_cookie('user_type', 'common', modules.config['secret']))
+
 def setlogin(func):
     def wrapper(*args, **kwargs):
         template = func(*args, **kwargs)

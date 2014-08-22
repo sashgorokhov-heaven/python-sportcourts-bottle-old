@@ -6,7 +6,6 @@ from PIL import Image
 import bottle
 
 import modules.maillib
-
 import modules
 import modules.dbutils
 import pages
@@ -50,6 +49,13 @@ class Registration(pages.Page):
             user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max'])[0]
             data = dict()
             data['vkuserid'] = user_id
+            with modules.dbutils.dbopen() as db:
+                db.execute("SELECT email FROM users WHERE vkuserid={}".format(data['vkuserid']))
+                if len(db.last()) > 0:
+                    return pages.Template('auth',
+                                          error='Вы уже зарегестрированы в системе',
+                                          error_description='Используйте пароль, чтобы войти',
+                                          email=db.last()[0][0])
             data['city'] = user['city']['title'] if 'city' in user else None
             data['first_name'] = user['first_name']
             data['last_name'] = user['last_name']
@@ -106,12 +112,13 @@ class Registration(pages.Page):
                 dbkeylist=', '.join(keylist),
                 dbvaluelist=', '.join(["'{}'".format(str(params[key])) for key in keylist]))
             db.execute(sql)
-            db.execute('SELECT user_id, admin FROM users WHERE email="{}"'.format(params['email']),
-                       ['user_id', 'admin'])
+            db.execute('SELECT user_id, admin, user_type FROM users WHERE email="{}"'.format(params['email']),
+                       ['user_id', 'admin', 'user_type'])
             user_id = db.last()[0]['user_id']
             bottle.response.set_cookie('user_id', user_id, modules.config['secret'])
             bottle.response.set_cookie('adminlevel', db.last()[0]['admin'], modules.config['secret'])
             bottle.response.set_cookie('activated', 0, modules.config['secret'])
+            bottle.response.set_cookie('user_type', db.last()[0]['user_type'], modules.config['secret'])
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user_id))
             if vkavatar:
                 os.rename("/bsp/data/avatars/{}.jpg".format(os.path.split(vkavatar)[-1]),
