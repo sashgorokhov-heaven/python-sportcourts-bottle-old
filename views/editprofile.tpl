@@ -140,13 +140,13 @@
                     mask: '+7 (999) 999 99 99'
                   })
                 </script>
-                <div class="form-group">
+                <!--<div class="form-group">
                   <label for="email" class="col-sm-2 control-label">Email</label>
                   <div class="col-sm-10">
                     <input type="email" class="form-control" name="email" placeholder="example@mail.com" id="email" value="{{user['email']}}"></input>
                     <span id="valid"></span>
                   </div>
-                </div>
+                </div>-->
                 <br>
                 <hr>
                 <br>
