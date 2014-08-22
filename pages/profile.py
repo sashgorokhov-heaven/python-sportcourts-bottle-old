@@ -9,6 +9,24 @@ import modules
 import modules.dbutils
 
 
+months = ['Января', 'Февраля',
+          'Марта', 'Апреля',
+          'Мая', 'Июня', 'Июля',
+          'Августа', 'Сентября',
+          'Октября', 'Ноября', 'Декабря']
+days = ['Понедельник', 'Вторник', 'Среда',
+        'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
+
+
+def beautifuldate(datetime:str):
+    date, day = datetime.split(' ')[0].split('-')[1:]
+    return '{} {}'.format(day, months[int(date) - 1])
+
+
+def beautifultime(datetime:str):
+    return ':'.join(datetime.split(' ')[-1].split(':')[:-1])
+
+
 class Profile(pages.Page):
     path = ['profile']
 
@@ -35,6 +53,7 @@ class Profile(pages.Page):
                 modules.dbutils.strdates(user)
                 user['bdate'] = str(round((datetime.date.today() - datetime.date(
                     *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
+                user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
                 return pages.Template('profile', user=user)

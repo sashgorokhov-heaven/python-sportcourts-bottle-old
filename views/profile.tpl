@@ -10,8 +10,10 @@
           % end
           <br>
           {{user['bdate']+', '+user['city']['title']}}<br>
+          Последний раз заходил: {{user['lasttime']}}<br>
           Рост: {{user['height']}} см.<br>
           Вес: {{user['weight']}} кг.<br>
+          Телефон: {{user['phone']}}<br>
           % if user['vkuserid']:
             <a href="http://vk.com/id{{user['vkuserid']}}">Профиль вконтакте</a>
           % end
