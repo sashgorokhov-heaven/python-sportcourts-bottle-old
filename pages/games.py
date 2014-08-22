@@ -45,7 +45,7 @@ class Games(pages.Page):
             return data
 
     def post(self):
-        if not pages.loggedin():
+        if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
             raise bottle.HTTPError(404)
         if 'submit_add' in bottle.request.forms:
             with modules.dbutils.dbopen() as db:
@@ -83,7 +83,7 @@ class Games(pages.Page):
     @pages.handleerrors('games')
     def get(self):
         if 'edit' in bottle.request.query:
-            if not pages.loggedin():
+            if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
                 raise bottle.HTTPError(404)
             with modules.dbutils.dbopen() as db:
                 game_id = bottle.request.query.get('edit')
@@ -115,13 +115,13 @@ class Games(pages.Page):
                 return pages.Template('editgame', game=game, sports=sports,
                                       game_types=game_types, cities=cities, courts=courts)
         if 'delete' in bottle.request.query:
-            if not pages.loggedin():
+            if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
                 raise bottle.HTTPError(404)
             with modules.dbutils.dbopen() as db:
                 db.execute("DELETE FROM games WHERE game_id={}".format(bottle.request.query.get('delete')))
                 raise bottle.redirect('/games')
         if 'add' in bottle.request.query:
-            if not pages.loggedin():
+            if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
                 raise bottle.HTTPError(404)
             with modules.dbutils.dbopen() as db:
                 sports = db.execute("SELECT sport_id, title FROM sport_types")
@@ -162,9 +162,10 @@ class Games(pages.Page):
                 return pages.Template('game', game=game, standalone=True)
         with modules.dbutils.dbopen() as db:
             sql = "SELECT *  FROM games WHERE city_id=1 AND datetime>NOW() ORDER BY datetime ASC LIMIT 20;"
-            db.execute(sql, modules.dbutils.dbfields['games'])
+            allgames = db.execute(sql, modules.dbutils.dbfields['games'])
+            sports = db.execute("SELECT * FROM sport_types", modules.dbutils.dbfields['sport_types'])
             games = list()
-            for game in db.last():
+            for game in allgames:
                 game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
                 #game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
                 game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
@@ -189,4 +190,4 @@ class Games(pages.Page):
                 else:
                     game['subscribed'] = {'count': 0, 'users': list()}
                 games.append(game)
-            return pages.Template('games', games=games)
+            return pages.Template('games', games=games, sports=sports)

@@ -6,10 +6,10 @@
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
-        <li><a href="#basket" data-toggle="tab">Баскетбол</a></li>
-        <li><a href="#volley" data-toggle="tab">Воллейбол</a></li>
-        <li><a href="#football" data-toggle="tab">Футбол</a></li>
-        % if 0<adminlevel<10:
+        % for sport_type in sports:
+            <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
+        % end
+        % if adminlevel==2:
         <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
         % end
       </ul>
@@ -26,43 +26,19 @@
               <li class="next"><a href="#">Позже &rarr;</a></li>
             </ul>
           </div>
-        </div><!-- End of All games -->
+        </div>
 
-        <!-- Basketball games -->
-        <div class="tab-pane" id="basket">
-          <div class="panel panel-deafult">
-            <br>
-            % for game in games:
-            	% if game['sport_type']['sport_id']==3:
-            	% include("game", game=game)
-            	% end
-            % end
-          </div>
-        </div><!-- End of Basketball games -->
-
-        <!-- Volleyball games -->
-        <div class="tab-pane" id="volley">
-          <div class="panel panel-deafult">
-            <br>
-            % for game in games:
-            	% if game['sport_type']['sport_id']==5:
-            	% include("game", game=game)
-            	% end
-            % end
-          </div>
-        </div><!-- End of volleyball games -->
-
-        <!-- Football games -->
-        <div class="tab-pane" id="football">
-          <div class="panel panel-deafult">
-            <br>
-            % for game in games:
-            	% if game['sport_type']['sport_id']==2:
-            	% include("game", game=game)
-            	% end
-            % end
-          </div>
-        </div><!-- End of football games -->
+        % for sport_type in sports:
+            <div class="tab-pane" id="{{sport_type['sport_id']}}">
+              <div class="panel panel-deafult">
+                <br>
+                % for game in games:
+                	% if game['sport_type']['sport_id']==sport_type['sport_id']:
+                	% include("game", game=game)
+                	% end
+                % end
+              </div>
+        % end
 
       </div>
 
