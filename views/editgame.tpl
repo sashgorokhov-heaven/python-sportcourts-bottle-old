@@ -146,7 +146,7 @@
                 % end
                 <div class="col-md-12">
                   <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
-                  <div class="modal fade" id="DELETEGAMEModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
