@@ -46,7 +46,7 @@ class Registration(pages.Page):
                 return pages.Template('registration', error=response['error'],
                                       error_description=response['error_description'], cities=cities)
             access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
-            user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max'])[0]
+            user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max', 'contacts'])[0]
             data = dict()
             data['vkuserid'] = user_id
             with modules.dbutils.dbopen() as db:
@@ -59,6 +59,7 @@ class Registration(pages.Page):
             data['city'] = user['city']['title'] if 'city' in user else None
             data['first_name'] = user['first_name']
             data['last_name'] = user['last_name']
+            data['phone'] = user['mobile_phone'] if 'mobile_phone' in user else None
             data['sex'] = 'male' if user['sex'] == 2 else ('female' if user['sex'] == 1 else None)
             data['email'] = email if email else None
             data['bdate'] = vk.convert_date(user['bdate']) if 'bdate' in user else None

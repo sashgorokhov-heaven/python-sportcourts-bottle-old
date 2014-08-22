@@ -9,6 +9,7 @@
 % setdefault("height", "")
 % setdefault("weight", "")
 % setdefault("email", "")
+% setdefault("phone", "")
 % setdefault("photo", "")
 
       <div class="jumbotron">
