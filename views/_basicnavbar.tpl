@@ -15,9 +15,10 @@
           			  	<li><a class="topmenu" href="/about">О нас</a></li>
           			  	% if loggedin:
           			  	<li><a class="topmenu" href="/profile">Мой профиль</a></li>
-                        <li><a class="topmenu" href="/logout">Выход</a></li>
-                        % end
-                        % if not loggedin:
+                    <li><a class="topmenu" href="/logout">Выход</a></li>
+                    <li><a class="topmenu"><span class="glyphicon glyphicon-envelope"></span> <span class="badge">14</span></li>
+                    % end
+                    % if not loggedin:
           			  	<li><a class="topmenu" href="#" data-toggle="modal" data-target="#loginModal">Вход</a></li>
           			  	% end
           			</ul>
