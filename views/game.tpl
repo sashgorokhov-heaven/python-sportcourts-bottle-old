@@ -53,7 +53,12 @@
                   % end
                 </div>
                 <div class="col-md-2">
-                  <p>{{game['cost']}} RUB за {{game['duration']}} минут</p>
+                  % if game['cost'] == 0:
+                    <p>FREE</p> <p>{{game['duration']}} минут</p>
+                  % end
+                  % if game['cost'] > 0:
+                    <p>{{game['cost']}} RUB </p> <p>{{game['duration']}} минут</p>
+                  % end
                 </div>
                 <div class="col-md-2">
                   <div class="btn-group" style="float:right;">
