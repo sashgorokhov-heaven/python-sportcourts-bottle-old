@@ -66,7 +66,6 @@ def setlogin(func):
         template.add_parameter('adminlevel', getadminlevel())
         template.add_parameter('activated', activated())
         template.add_parameter('notifycount', get_notifycount(user_id))
-        write_notification(user_id, 'You logged in')
         return template
     return wrapper
 
