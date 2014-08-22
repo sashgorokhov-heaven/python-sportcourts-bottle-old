@@ -4,27 +4,51 @@ import os
 import bottle
 
 import modules
+import modules.dbutils
 import modules.logging
 
 
-def getuserid():
+def getuserid() -> int:
     return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
 
 
-def getadminlevel():
+def getadminlevel() -> int:
     return int(bottle.request.get_cookie('adminlevel', 0, modules.config['secret']))
 
 
-def loggedin():
+def loggedin() -> bool:
     return bool(getuserid())
 
 
-def activated():
+def activated() -> bool:
     return bool(int(bottle.request.get_cookie('activated', 0, modules.config['secret'])))
 
 
-def user_type():
+def user_type() -> str:
     return str(bottle.request.get_cookie('user_type', 'common', modules.config['secret']))
+
+
+def get_notifications(user_id:int) -> list:
+    with modules.dbutils.dbopen() as db:
+        db.execute("SELECT * FROM notifications WHERE user_id='{}' AND `read`=0 ORDER BY datetime DESC",
+                   modules.dbutils.dbfields['notifications'])
+        notifications = db.last()
+        db.execute("UPDATE notifications SET `read`='1' WHERE notification_id IN ({})".format(
+            ','.join([i['notification_id'] for i in notifications])))
+        return notifications
+
+
+def get_notifycount(user_id:int) -> int:
+    if user_id == 0: return 0
+    with modules.dbutils.dbopen() as db:
+        return len(db.execute("SELECT * FROM notifications WHERE user_id='{}' AND `read`=0 ORDER BY datetime DESC"))
+
+
+def write_notification(user_id:int, notification:str):
+    with modules.dbutils.dbopen() as db:
+        db.execute("INSERT INTO notifications (user_id, datetime, text) VALUES ({}, NOW(), {})".format(user_id, str(
+            notification)))
+
 
 def setlogin(func):
     def wrapper(*args, **kwargs):
@@ -34,8 +58,8 @@ def setlogin(func):
         template.add_parameter('loggedin', bool(user_id))
         template.add_parameter('adminlevel', getadminlevel())
         template.add_parameter('activated', activated())
+        template.add_parameter('notifycount', get_notifycount(user_id))
         return template
-
     return wrapper
 
 
@@ -45,7 +69,7 @@ def handleerrors(template_name):
             try:
                 return func(*args, **kwargs)
             except (bottle.HTTPResponse, bottle.HTTPError) as e:
-                modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
+                # modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
                 raise e
             except Exception as e:
                 modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
@@ -113,7 +137,7 @@ class PageController:
             try:
                 return self._pages[path].execute(method)
             except (bottle.HTTPResponse, bottle.HTTPError) as e:
-                modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
+                #modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
                 raise e
             except Exception as e:
                 modules.logging.error(path + ' | ' + e.__class__.__name__ + ': {}',

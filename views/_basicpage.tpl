@@ -8,6 +8,7 @@
   	<body onload="initialize_map()">
   	    % setdefault("loggedin", False)
   	    % setdefault("user_id", 0)
+  	    % setdefault("notifycount", 0)
     	% include("_basicnavbar", loggedin=loggedin, user_id=user_id)
     	<div class="container theme-showcase">
 			<section id="content">
