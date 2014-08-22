@@ -71,6 +71,7 @@ class Profile(pages.Page):
                 modules.dbutils.strdates(user)
                 user['bdate'] = str(round((datetime.date.today() - datetime.date(
                     *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
+                user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
                 return pages.Template('profile', user=user)
