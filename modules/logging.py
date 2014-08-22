@@ -24,7 +24,10 @@ def _writelog(msg:str):
     with open(_filepath, 'a') as f:
         f.write(msg + '\n')
     if debug:
-        print(msg)
+        try:
+            print(msg)
+        except:
+            pass
 
 
 def debug(value):

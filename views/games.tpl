@@ -19,12 +19,12 @@
           <div class="panel panel-deafult">
             <br>
             % for game in games:
-            % include("game", game=game)
+                % include("game", game=game)
             % end
-            <ul class="pager">
+            <!--<ul class="pager">
               <li class="previous disabled"><a href="#">&larr; Раньше</a></li>
               <li class="next"><a href="#">Позже &rarr;</a></li>
-            </ul>
+            </ul>-->
           </div>
         </div>
 
@@ -34,10 +34,11 @@
                 <br>
                 % for game in games:
                 	% if game['sport_type']['sport_id']==sport_type['sport_id']:
-                	% include("game", game=game)
+                	    % include("game", game=game)
                 	% end
                 % end
               </div>
+            </div>
         % end
 
       </div>
