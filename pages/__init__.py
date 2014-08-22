@@ -34,14 +34,15 @@ def get_notifications(user_id:int) -> list:
                    modules.dbutils.dbfields['notifications'])
         notifications = db.last()
         db.execute("UPDATE notifications SET `read`='1' WHERE notification_id IN ({})".format(
-            ','.join([i['notification_id'] for i in notifications])))
+            ','.join([str(i['notification_id']) for i in notifications])))
         return notifications
 
 
 def get_notifycount(user_id:int) -> int:
     if user_id == 0: return 0
     with modules.dbutils.dbopen() as db:
-        return len(db.execute("SELECT * FROM notifications WHERE user_id='{}' AND `read`=0 ORDER BY datetime DESC"))
+        return len(db.execute(
+            "SELECT * FROM notifications WHERE user_id={} AND `read`=0 ORDER BY DATETIME DESC".format(user_id)))
 
 
 def write_notification(user_id:int, notification:str):
@@ -143,10 +144,10 @@ class PageController:
                 modules.logging.error(path + ' | ' + e.__class__.__name__ + ': {}',
                                       e.args[0] if len(e.args) > 0 else '')
                 modules.logging.info(modules.extract_traceback(e))
-                return bottle.template('404', error=e.__class__.__name__,
+                return Template('404', error=e.__class__.__name__,
                                        error_description=e.args[0] if len(e.args) > 0 else '',
                                        traceback=modules.extract_traceback(e),
-                                       login=True)
+                                       login=True).template()
         if os.path.exists(os.path.join(modules.config['server_root'], 'static', path)):
             return bottle.static_file(path, os.path.join(modules.config['server_root'], 'static'))
         raise bottle.HTTPError(404)
@@ -157,9 +158,12 @@ class Template:
         self.name = name
         self._kwargs = kwargs
         if login:
-            user_id = int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
+            user_id = getuserid()
             self.add_parameter('user_id', user_id)
             self.add_parameter('loggedin', bool(user_id))
+            self.add_parameter('adminlevel', getadminlevel())
+            self.add_parameter('activated', activated())
+            self.add_parameter('notifycount', get_notifycount(user_id))
 
     def add_parameter(self, name, value):
         self._kwargs[name] = value
