@@ -40,20 +40,20 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="first_name" class="col-sm-2 control-label">Имя</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="first_name" placeholder="" value="{{user['first_name']}}"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Поле имени не может быть пустым" />
-                    <span id="valid"></span>
-                  </div>
-                </div>
-                <div class="form-group">
                   <label for="last_name" class="col-sm-2 control-label">Фамилия</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" name="last_name" placeholder="" value="{{user['last_name']}}"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Поле фамилии не может быть пустым" />
+                    <span id="valid"></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="first_name" class="col-sm-2 control-label">Имя</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="first_name" placeholder="" value="{{user['first_name']}}"
+                    data-bv-notempty="true"
+                    data-bv-notempty-message="Поле имени не может быть пустым" />
                     <span id="valid"></span>
                   </div>
                 </div>
@@ -128,6 +128,18 @@
                     />
                   </div>
                 </div>
+                <div class="form-group">
+                  <label for="phone" class="col-sm-2 control-label">Телефон</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value=""></input>
+                    <span id="valid"></span>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                  $('.phonemask').inputmask({
+                    mask: '+7 (999) 999 99 99'
+                  })
+                </script>
                 <div class="form-group">
                   <label for="email" class="col-sm-2 control-label">Email</label>
                   <div class="col-sm-10">
