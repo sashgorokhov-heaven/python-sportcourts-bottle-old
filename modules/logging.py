@@ -17,6 +17,9 @@ _filepath = os.path.join(_dir, _filename)
 if not os.path.exists(_dir):
     os.mkdir(_dir)
 
+for i in os.listdir(_dir):
+    os.remove(i)
+
 _debug = False
 
 
