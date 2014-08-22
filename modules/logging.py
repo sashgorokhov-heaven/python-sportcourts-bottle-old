@@ -18,7 +18,7 @@ if not os.path.exists(_dir):
     os.mkdir(_dir)
 
 for i in os.listdir(_dir):
-    os.remove(i)
+    os.remove(os.path.join(_dir, i))
 
 _debug = False
 
