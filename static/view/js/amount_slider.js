@@ -1,7 +1,7 @@
 $(function () {
     $("#game_add_slider").slider({
         value: 180,
-        min: 100,
+        min: 0,
         max: 400,
         step: 10,
         slide: function (event, ui) {
