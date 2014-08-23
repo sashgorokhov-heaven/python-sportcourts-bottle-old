@@ -97,12 +97,12 @@ class Page:
     def execute(self, method:str):
         if method == 'POST':
             data = self.post()
-            if isinstance(data, pages.Template):
+            if isinstance(data, Template):
                 return data.template()
             return data
         if method == 'GET':
             data = self.get()
-            if isinstance(data, pages.Template):
+            if isinstance(data, Template):
                 return data.template()
             return data
 
