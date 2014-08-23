@@ -134,7 +134,7 @@
                                 <p>Вы действительно хотите удалить игру?</p>
                               </div>
                               <div class="modal-footer">
-                                <a href="/games?delete={{game['game_id']}}"><button type="button" class="btn btn-danger" data-dismiss="modal">Удалить</button></a>
+                                <a class="btn btn-danger" href="/games?delete={{game['game_id']}}"></a>
                                 <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
                               </div>
                             </div>
