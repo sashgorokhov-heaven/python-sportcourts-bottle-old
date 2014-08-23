@@ -17,7 +17,7 @@
           			  	    <li><a class="topmenu" href="/profile">Мой профиль</a></li>
                             <li><a class="topmenu" href="/logout">Выход</a></li>
                             % if notifycount>0:
-                                <li><a class="topmenu" href="/notifications"><span class="glyphicon glyphicon-envelope"></span> <span class="badge">{{notifycount}}</span></li>
+                                <li><a class="topmenu" href="/notifications"><span class="glyphicon glyphicon-envelope"></span> <span class="badge">{{notifycount}}</span></a></li>
                             % end
                         % end
                         % if not loggedin:

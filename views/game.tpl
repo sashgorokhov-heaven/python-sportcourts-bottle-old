@@ -13,7 +13,7 @@
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
                 <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
-                % if 0<adminlevel<=2:
+                % if 0<adminlevel<10:
                 <div style="float:right;"><a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a></div>
                 <!-- <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div> -->
                 % end
@@ -92,55 +92,3 @@
                 </div>
               </div>
             </div>
-
-      % if loggedin and standalone:
-      <script type="text/javascript">
-      $(document).on('click', 'li', function() {
-        arr = $(this).attr("id").split('-');
-        var user_id = arr[1],
-          game_id = arr[0],
-          unsubscribe = arr[2];
-        if (unsubscribe=='u') {
-          $.ajax({
-            url: 'http://sportcourts.ru/subscribe',
-            data: {
-              game_id: game_id,
-              unsubscribe: 0
-            },
-            async: true,
-            success: function (responseData, textStatus) {
-              // alert(responseData + ' Status: ' + textStatus);
-              alert('Теперь вас нет в списках на игру');
-              // document.location.href = 'http://sportcourts.ru/games#game' + game_id;
-              window.location.reload();
-            },
-            error: function (response, status, errorThrown) {
-              alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
-            },
-            type: "POST",
-            dataType: "text"
-          });
-        } else {
-          $.ajax({
-            url: 'http://sportcourts.ru/subscribe',
-            data: {
-              game_id: game_id
-            },
-            async: true,
-            success: function (responseData, textStatus) {
-              // alert(responseData + ' Status: ' + textStatus);
-              alert('Вы успешно записаны на игру');
-              // document.location.href = 'http://sportcourts.ru/games#game' + game_id;
-              window.location.reload();
-            },
-            error: function (response, status, errorThrown) {
-              alert('Все плохо' + response + status + errorThrown);
-            },
-            type: "POST",
-            dataType: "text"
-          });
-        }
-
-      });
-      </script>
-      % end
