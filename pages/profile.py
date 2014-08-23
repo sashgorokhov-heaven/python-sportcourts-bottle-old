@@ -30,18 +30,6 @@ def beautifultime(datetime:str):
 class Profile(pages.Page):
     path = ['profile']
 
-    def execute(self, method:str):
-        if method == 'GET':
-            data = self.get()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-        if method == 'POST':
-            data = self.post()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-
     @pages.setlogin
     def get(self):
         if 'user_id' in bottle.request.query:

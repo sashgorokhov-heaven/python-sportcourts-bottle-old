@@ -7,13 +7,6 @@ import modules.logging
 class ServerLogs(pages.Page):
     path = ['logs']
 
-    def execute(self, method:str):
-        if method == 'GET':
-            data = self.get()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-
     @pages.setlogin
     def get(self):
         if not pages.loggedin() or pages.getadminlevel() != 1:

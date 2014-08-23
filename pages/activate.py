@@ -8,13 +8,6 @@ import pages
 class Activate(pages.Page):
     path = ['activate']
 
-    def execute(self, method:str):
-        if method == 'GET':
-            data = self.get()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-
     @pages.handleerrors("404")
     def get(self):
         token = bottle.request.query.get('token')

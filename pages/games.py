@@ -32,18 +32,6 @@ def beautifulday(datetime_:str):
 class Games(pages.Page):
     path = ['games']
 
-    def execute(self, method:str):
-        if method == 'POST':
-            data = self.post()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-        if method == 'GET':
-            data = self.get()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-
     def post(self):
         if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
             raise bottle.HTTPError(404)

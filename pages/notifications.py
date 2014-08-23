@@ -25,13 +25,6 @@ def beautifultime(datetime:str):
 class Notifications(pages.Page):
     path = ['notifications']
 
-    def execute(self, method:str):
-        if method == 'GET':
-            data = self.get()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-
     @pages.setlogin
     def get(self):
         if not pages.loggedin():

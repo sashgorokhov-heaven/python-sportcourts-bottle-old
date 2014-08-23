@@ -67,6 +67,7 @@ def setlogin(func):
         template.add_parameter('activated', activated())
         template.add_parameter('notifycount', get_notifycount(user_id))
         return template
+
     return wrapper
 
 
@@ -94,14 +95,22 @@ class Page:
     path = ['']  # index
 
     def execute(self, method:str):
-        if method == 'GET': return self.get().template()
-        if method == 'POST': return self.post().template()
+        if method == 'POST':
+            data = self.post()
+            if isinstance(data, pages.Template):
+                return data.template()
+            return data
+        if method == 'GET':
+            data = self.get()
+            if isinstance(data, pages.Template):
+                return data.template()
+            return data
 
     def get(self):
-        raise NotImplementedError
+        raise bottle.HTTPError(404)
 
     def post(self):
-        raise NotImplementedError
+        raise bottle.HTTPError(404)
 
 
 class PageController:
@@ -144,16 +153,16 @@ class PageController:
             try:
                 return self._pages[path].execute(method)
             except (bottle.HTTPResponse, bottle.HTTPError) as e:
-                #modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
+                # modules.logging.warn('Bottle error {}: {}'.format(e.__class__.__name__, e.args))
                 raise e
             except Exception as e:
                 modules.logging.error(path + ' | ' + e.__class__.__name__ + ': {}',
                                       e.args[0] if len(e.args) > 0 else '')
                 modules.logging.info(modules.extract_traceback(e))
                 return Template('404', error=e.__class__.__name__,
-                                       error_description=e.args[0] if len(e.args) > 0 else '',
-                                       traceback=modules.extract_traceback(e),
-                                       login=True).template()
+                                error_description=e.args[0] if len(e.args) > 0 else '',
+                                traceback=modules.extract_traceback(e),
+                                login=True).template()
         if os.path.exists(os.path.join(modules.config['server_root'], 'static', path)):
             return bottle.static_file(path, os.path.join(modules.config['server_root'], 'static'))
         raise bottle.HTTPError(404)

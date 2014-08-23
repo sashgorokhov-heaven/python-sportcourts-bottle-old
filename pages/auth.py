@@ -7,18 +7,6 @@ import modules.dbutils
 class Authorize(pages.Page):
     path = ['auth']
 
-    def execute(self, method:str):
-        if method == 'POST':
-            data = self.post()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-        if method == 'GET':
-            data = self.get()
-            if isinstance(data, pages.Template):
-                return data.template()
-            return data
-
     def get(self):
         if pages.loggedin():
             return bottle.redirect('/profile')
