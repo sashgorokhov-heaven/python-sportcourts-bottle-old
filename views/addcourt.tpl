@@ -1,3 +1,4 @@
+% rebase("_basicpage", title="Добавить площадку")
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-12 registration" style="text-align:left;">
@@ -29,10 +30,10 @@
                     <input type="text" class="form-control" name="adress"
                       data-bv-message="Пожалуйста, введите адрес"
                       data-bv-notempty="true"
-                      onchange="showAddress(this.address.value);return false;">
-                  </div>
-                  <div class="row">
-                    <div id="YMapsID" style="width:600px;height:400px"></div>
+                      onchange="showAddress(this.value);return false;"
+                      id="adress">
+                    <div id="YMapsID" style="width:450px;height:300px;margin-top:20px;"></div>
+                    <input type="text" id="coord" name="coord"/>
                   </div>
                 </div>
                 <div class="form-group">
@@ -93,6 +94,8 @@
                               geoResult = this.get(0);
                               map.addOverlay(geoResult);
                               map.setBounds(geoResult.getBounds());
+                              document.getElementById('adress').value = geoResult.text;
+                              document.getElementById('coord').value = this.get(0).getGeoPoint();
                           }else {
                               alert("Ничего не найдено")
                           }
