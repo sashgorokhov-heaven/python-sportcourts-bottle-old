@@ -1,3 +1,4 @@
+% rebase("_basicpage", title="Спортивные площадки")
       <div class="profile">
         <div class="row">
           <div class="col-md-12">
