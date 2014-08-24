@@ -26,7 +26,6 @@ def route_avatars(user_id:str):
 
 @bottle.get('/images/courts/<court_id:int>')
 def route_images(court_id:str):
-    print(court_id)
     return bottle.static_file("{}.jpg".format(court_id), '/bsp/data/images/courts/')
 
 
