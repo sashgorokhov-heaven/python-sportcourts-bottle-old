@@ -37,3 +37,5 @@ def route(path:str='', ):
 
 application = bottle.default_app()
 
+bottle.install(modules.exec_time_measure)
+

@@ -5,6 +5,9 @@ import random
 import itertools
 import smtplib
 import traceback
+import time
+
+import bottle
 
 
 config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
@@ -75,3 +78,14 @@ def beautifultime(datetime:str):
 
 def beautifulday(datetime_:str):
     return _days[datetime.date(*list(map(int, datetime_.split(' ')[0].split('-')))).weekday()]
+
+
+def exec_time_measure(callback):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        body = callback(*args, **kwargs)
+        end = time.time()
+        bottle.response.headers['X-Exec-Time'] = str(end - start)
+        return body
+
+    return wrapper
