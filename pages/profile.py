@@ -13,29 +13,35 @@ from modules import beautifuldate, beautifultime
 class Profile(pages.Page):
     path = ['profile']
 
+    def get_user_id(self):
+        with modules.dbutils.dbopen() as db:
+            user = modules.dbutils.get(db).user(bottle.request.query.user_id)
+            if len(user) == 0:
+                raise bottle.HTTPError(404)
+            user = user[0]
+            modules.dbutils.strdates(user)
+            user['bdate'] = str(round((datetime.date.today() - datetime.date(
+                *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
+            user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
+            user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
+            user.pop('city_id')
+            return pages.Template('profile', user=user)
+
+    def get_edit(self):
+        with modules.dbutils.dbopen() as db:
+            cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
+            user = modules.dbutils.get(db).user(pages.getuserid())[0]
+            modules.dbutils.strdates(user)
+            user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
+            user.pop('city_id')
+            return pages.Template('editprofile', user=user, cities=cities)
+
     @pages.setlogin
     def get(self):
         if 'user_id' in bottle.request.query:
-            with modules.dbutils.dbopen() as db:
-                user = modules.dbutils.get(db).user(bottle.request.query.user_id)
-                if len(user) == 0:
-                    raise bottle.HTTPError(404)
-                user = user[0]
-                modules.dbutils.strdates(user)
-                user['bdate'] = str(round((datetime.date.today() - datetime.date(
-                    *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
-                user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
-                user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
-                user.pop('city_id')
-                return pages.Template('profile', user=user)
+            return self.get_user_id()
         elif 'edit' in bottle.request.query and pages.loggedin():
-            with modules.dbutils.dbopen() as db:
-                cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
-                user = modules.dbutils.get(db).user(pages.getuserid())[0]
-                modules.dbutils.strdates(user)
-                user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
-                user.pop('city_id')
-                return pages.Template('editprofile', user=user, cities=cities)
+            return self.get_edit()
         elif pages.loggedin():
             with modules.dbutils.dbopen() as db:
                 user = modules.dbutils.get(db).user(pages.getuserid())[0]
