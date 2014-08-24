@@ -60,6 +60,8 @@ class Courts(pages.Page):
         if 'submit_add' in bottle.request.forms and 0 < pages.getadminlevel() <= 2:
             params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
             params.pop('submit_add')
+            if 'photo' in params:
+                params.pop('photo')
             params['sport_types'] = ','.join(bottle.request.forms.getall('sport_type'))
             params.pop('sport_type')
             params['phone'] = params['phone'] if params['phone'] else 'Не указан'
