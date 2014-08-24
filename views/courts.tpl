@@ -7,7 +7,7 @@
         </div>
         <div class="row">
           <div class="col-md-8">
-            <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}.jpg" alt="Изображение" style="width:100%">
+            <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}" alt="Изображение" style="width:100%">
           </div>
           <div class="col-md-4">
             <p>Город: {{court['city']['title']}}</p>
@@ -68,10 +68,10 @@
                   var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
 
                   // Установка для карты ее центра и масштаба
-                  map.setCenter(new YMaps.GeoPoint({{court['city']['geopoint']}}), 10);
+                  map.setCenter(new YMaps.GeoPoint({{court['city']['geopoint']}}), 15);
 
                   // Создаем метку и добавляем ее на карту
-                  var placemark = new YMaps.Placemark(new YMaps.GeoPoint({{court['geopoint']}}));
+                  var placemark = new YMaps.Placemark(new YMaps.GeoPoint({{court['geopoint']}}), 5);
                   placemark.name = "{{court['title']}}";
                   placemark.description = "Данная площадка";
                   map.addOverlay(placemark);

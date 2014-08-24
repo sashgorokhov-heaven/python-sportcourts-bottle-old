@@ -44,6 +44,7 @@ class Courts(pages.Page):
             params.pop('submit_add')
             params['sport_types'] = ','.join(bottle.request.forms.getall('sport_type'))
             params.pop('sport_type')
+            params['phone'] = params['phone'] if params['phone'] else 'Не указан'
             params['cost'] = 1500  # FIXIT
             sql = 'INSERT INTO courts ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
