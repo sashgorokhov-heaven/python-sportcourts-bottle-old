@@ -102,8 +102,12 @@ class _Executor:
             except (bottle.HTTPError, bottle.HTTPResponse) as e:
                 raise e
             except Exception as e:
-                modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
-                modules.logging.info(modules.extract_traceback(e))
+                try:
+                    modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
+                    modules.logging.info(modules.extract_traceback(e))
+                except Exception as er:
+                    modules.logging.error(
+                        'Error while handling <{}> error: {}'.format(e.__class__.__name__, er.__class__.__name__))
                 raise bottle.HTTPError(404)
 
 
