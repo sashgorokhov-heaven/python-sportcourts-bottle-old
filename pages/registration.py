@@ -5,11 +5,10 @@ import datetime
 from PIL import Image
 import bottle
 
-import modules.maillib
 import modules
 import modules.dbutils
 import pages
-from modules import vk
+from modules import vk, sendmail
 
 
 class Registration(pages.Page):
@@ -123,7 +122,7 @@ class Registration(pages.Page):
                 im.crop().resize((200, 200)).save(fullname)
                 im.close()
             token = modules.generate_token()
-            modules.maillib.send(
+            sendmail(
                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
                     token), params['email'])
             db.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))

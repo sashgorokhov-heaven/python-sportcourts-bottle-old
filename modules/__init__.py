@@ -2,6 +2,7 @@ import json
 import os
 import random
 import itertools
+import smtplib
 import traceback
 
 
@@ -25,3 +26,29 @@ def generate_token():
 
 
 config['secret'] = generate_secret()
+
+
+def sendmail(message:str, to:str):
+    try:
+        me = config['email']['login']
+        you = to
+        text = str(message)
+        subj = 'Уведомление | Sportcourts | Спортивные площадки'
+        server = "smtp.gmail.com"
+        port = 25
+        user_name = config['email']['login']
+        user_passwd = config['email']['password']
+        msg = smtplib.email.mime.text.MIMEText(text, _charset="utf-8")
+        msg['Subject'] = subj
+        msg['From'] = me
+        msg['To'] = you
+        s = smtplib.SMTP(server, port)
+        s.ehlo()
+        s.starttls()
+        s.ehlo()
+        s.login(user_name, user_passwd)
+        s.sendmail(me, you, msg.as_string())
+        s.quit()
+    except Exception as e:
+        return False
+    return True
