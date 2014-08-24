@@ -95,24 +95,66 @@
                     <div class="form-group">
                       <label for="game_add_long" class="col-sm-4 control-label">Длительность</label>
                       <div class="col-sm-8">
-                        <input type="text" id="game_add_long" value="{{game['duration']}}" name="duration" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                        <input type="text" id="game_add_long" name="duration" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                         <div id="game_add_slider2"></div>
                       </div>
                     </div>
+                    <script type="text/javascript">
+                      $(function () {
+                          $("#game_add_slider2").slider({
+                              value: {{game['duration']}},
+                              min: 30,
+                              max: 600,
+                              step: 10,
+                              slide: function (event, ui) {
+                                  $("#game_add_long").val(ui.value + " минут");
+                              }
+                          });
+                          $("#game_add_long").val($("#game_add_slider2").slider("value") + " минут");
+                      });
+                    </script>
                     <div class="form-group">
                       <label for="game_add_amount" class="col-sm-4 control-label">Цена</label>
                       <div class="col-sm-8">
-                        <input type="text" id="game_add_amount"  value="{{game['cost']}}" name="cost" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                        <input type="text" id="game_add_amount" name="cost" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                         <div id="game_add_slider"></div>
                       </div>
                     </div>
+                    <script type="text/javascript">
+                      $(function () {
+                          $("#game_add_slider").slider({
+                              value: {{game['cost']}},
+                              min: 0,
+                              max: 400,
+                              step: 10,
+                              slide: function (event, ui) {
+                                  $("#game_add_amount").val(ui.value + " руб.");
+                              }
+                          });
+                          $("#game_add_amount").val($("#game_add_slider").slider("value") + " руб.");
+                      });
+                    </script>
                     <div class="form-group">
                       <label for="game_add_count" class="col-sm-4 control-label">Количество мест</label>
                       <div class="col-sm-8">
-                        <input type="text" id="game_add_count" value="{{game['capacity']}}" name="capacity" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                        <input type="text" id="game_add_count" name="capacity" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                         <div id="game_add_slider1"></div>
                       </div>
                     </div>
+                    <script type="text/javascript">
+                      $(function () {
+                          $("#game_add_slider1").slider({
+                              value: {{game['capacity']}},
+                              min: 8,
+                              max: 40,
+                              step: 1,
+                              slide: function (event, ui) {
+                                  $("#game_add_count").val(ui.value);
+                              }
+                          });
+                          $("#game_add_count").val($("#game_add_slider1").slider("value"));
+                      });
+                    </script>
                     <div class="form-group">
                       <label for="court_add_count" class="col-sm-4 control-label">Описание</label>
                       <div class="col-sm-8">

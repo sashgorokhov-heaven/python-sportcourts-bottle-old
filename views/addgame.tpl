@@ -59,6 +59,7 @@
                       <option value="{{court_id}}" class="{{city_id}}">{{title}}</option>
                       % end
                     </select>
+                    <small><a href="/courts?add">Создать новую...</a></small>
                   </div>
                 </div>
                 <script type="text/javascript">

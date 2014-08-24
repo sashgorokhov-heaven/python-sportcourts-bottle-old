@@ -21,10 +21,10 @@
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Вид спорта</label>
                   <div class="col-sm-10">
                   % for sport_type in sport_types:
-                    <label class="checkbox-inline" style="margin-left:-17px;">
-                      <input type="checkbox" name="sport_type" value="{{sport_type['sport_id']}}"
-                      data-bv-message="Пожалуйста, выберите хотябы один вид спорта"
-                      data-bv-notempty="true"> {{sport_type['title']}}
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="sport_type" value="{{sport_type['sport_id']}}" data-bv-message="Пожалуйста, выберите хотябы один вид спорта"
+                      data-bv-notempty="true">
+                      {{sport_type['title']}}
                     </label>
                   % end
                   </div>
@@ -163,7 +163,7 @@
                       map.setCenter(new YMaps.GeoPoint({{cities[0]['geopoint']}}), 10);
 
                       // Добавление элементов управления
-                      map.addControl(new YMaps.TypeControl());
+                      map.addControl(new YMaps.Zoom());
                   });
 
                   // Функция для отображения результата геокодирования
