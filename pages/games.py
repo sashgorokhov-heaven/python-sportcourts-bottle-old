@@ -1,32 +1,10 @@
-import datetime
-
 import bottle
 
+from modules import beautifuldate, beautifultime, beautifulday
 import pages
+
 import modules
 import modules.dbutils
-
-
-months = ['Января', 'Февраля',
-          'Марта', 'Апреля',
-          'Мая', 'Июня', 'Июля',
-          'Августа', 'Сентября',
-          'Октября', 'Ноября', 'Декабря']
-days = ['Понедельник', 'Вторник', 'Среда',
-        'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
-
-
-def beautifuldate(datetime:str):
-    date, day = datetime.split(' ')[0].split('-')[1:]
-    return '{} {}'.format(day, months[int(date) - 1])
-
-
-def beautifultime(datetime:str):
-    return ':'.join(datetime.split(' ')[-1].split(':')[:-1])
-
-
-def beautifulday(datetime_:str):
-    return days[datetime.date(*list(map(int, datetime_.split(' ')[0].split('-')))).weekday()]
 
 
 class Games(pages.Page):
