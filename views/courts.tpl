@@ -1,15 +1,16 @@
 % rebase("_basicpage", title="Спортивные площадки")
       <div class="profile">
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12">
-            <p class="lead">ID {{court['court_id']}} | {{court['title']}}</p>
+            <p class="lead">{{court['title']}}</p>
           </div>
-        </div>
+        </div> -->
         <div class="row">
           <div class="col-md-8">
             <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
           </div>
           <div class="col-md-4">
+            <p class="lead">{{court['title']}}</p>
             <div class="table-responsive">
               <table class="table">
                 <tr>
