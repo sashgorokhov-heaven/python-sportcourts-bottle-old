@@ -4,6 +4,7 @@ import os
 import bottle
 
 import modules
+from modules import get_notifycount
 import modules.dbutils
 import modules.logging
 
@@ -26,33 +27,6 @@ def activated() -> bool:
 
 def user_type() -> str:
     return str(bottle.request.get_cookie('user_type', 'common', modules.config['secret']))
-
-
-def get_notifications(user_id:int) -> list:
-    with modules.dbutils.dbopen() as db:
-        db.execute("SELECT * FROM notifications WHERE user_id='{}' AND `read`=0 ORDER BY datetime DESC".format(user_id),
-                   modules.dbutils.dbfields['notifications'])
-        notifications = db.last()
-        if len(notifications) > 0:
-            db.execute("UPDATE notifications SET `read`='1' WHERE notification_id IN ({})".format(
-                ','.join([str(i['notification_id']) for i in notifications])))
-        return notifications
-
-
-def get_notifycount(user_id:int) -> int:
-    if user_id == 0: return 0
-    with modules.dbutils.dbopen() as db:
-        return len(db.execute(
-            "SELECT * FROM notifications WHERE user_id={} AND `read`=0 ORDER BY DATETIME DESC".format(user_id)))
-
-
-def write_notification(user_id:int, notification:str, level:int=0):
-    with modules.dbutils.dbopen() as db:
-        db.execute(
-            "INSERT INTO notifications (user_id, datetime, text, level) VALUES ({}, NOW(), '{}', {})".format(user_id,
-                                                                                                             str(
-                                                                                                                 notification),
-                                                                                                             level))
 
 
 def setlogin(func):

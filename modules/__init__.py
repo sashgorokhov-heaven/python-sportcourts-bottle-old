@@ -9,6 +9,8 @@ import time
 
 import bottle
 
+from modules import dbutils
+
 
 config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
 
@@ -89,3 +91,30 @@ def exec_time_measure(callback):
         return body
 
     return wrapper
+
+
+def get_notifications(user_id:int) -> list:
+    with dbutils.dbopen() as db:
+        db.execute("SELECT * FROM notifications WHERE user_id='{}' AND `read`=0 ORDER BY datetime DESC".format(user_id),
+                   dbutils.dbfields['notifications'])
+        notifications = db.last()
+        if len(notifications) > 0:
+            db.execute("UPDATE notifications SET `read`='1' WHERE notification_id IN ({})".format(
+                ','.join([str(i['notification_id']) for i in notifications])))
+        return notifications
+
+
+def get_notifycount(user_id:int) -> int:
+    if user_id == 0: return 0
+    with dbutils.dbopen() as db:
+        return len(db.execute(
+            "SELECT * FROM notifications WHERE user_id={} AND `read`=0 ORDER BY DATETIME DESC".format(user_id)))
+
+
+def write_notification(user_id:int, notification:str, level:int=0):
+    with dbutils.dbopen() as db:
+        db.execute(
+            "INSERT INTO notifications (user_id, datetime, text, level) VALUES ({}, NOW(), '{}', {})".format(user_id,
+                                                                                                             str(
+                                                                                                                 notification),
+                                                                                                             level))

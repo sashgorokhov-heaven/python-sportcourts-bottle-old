@@ -8,7 +8,7 @@ import bottle
 import modules
 import modules.dbutils
 import pages
-from modules import vk, sendmail
+from modules import vk, sendmail, write_notification
 
 
 class Registration(pages.Page):
@@ -129,5 +129,5 @@ class Registration(pages.Page):
                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
                     token), params['email'])
             db.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
-            pages.write_notification(user_id, "Проверьте свою почту чтобы активировать профиль!", 1)
+            write_notification(user_id, "Проверьте свою почту чтобы активировать профиль!", 1)
             return bottle.redirect('/profile')
