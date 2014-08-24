@@ -91,7 +91,6 @@ class Games(pages.Page):
                     raise bottle.HTTPError(404)
                 game = db.last()[0]
                 game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
-                # game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
                 game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
                 game['game_type'] = modules.dbutils.get(db).game_type(game['game_type'])[0]
                 game['sport_type'] = modules.dbutils.get(db).sport_type(game['sport_type'])[0]
@@ -100,7 +99,6 @@ class Games(pages.Page):
                 cities = db.execute("SELECT city_id, title FROM cities")
                 courts = db.execute("SELECT court_id, city_id, title FROM courts")
                 game.pop('city_id')
-                game.pop('region_id')
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
@@ -136,12 +134,10 @@ class Games(pages.Page):
                     raise bottle.HTTPError(404)
                 game = db.last()[0]
                 game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
-                #game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
                 game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
                 game['game_type'] = modules.dbutils.get(db).game_type(game['game_type'])[0]
                 game['sport_type'] = modules.dbutils.get(db).sport_type(game['sport_type'])[0]
                 game.pop('city_id')
-                game.pop('region_id')
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
                 game['datetime'] = (
@@ -166,16 +162,14 @@ class Games(pages.Page):
             games = list()
             for game in allgames:
                 game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
-                #game['region'] = modules.dbutils.get(db).region(game['region_id'])[0]
                 game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
                 game['game_type'] = modules.dbutils.get(db).game_type(game['game_type'])[0]
                 game['sport_type'] = modules.dbutils.get(db).sport_type(game['sport_type'])[0]
                 game.pop('city_id')
-                game.pop('region_id')
                 game.pop('court_id')
                 modules.dbutils.strdates(game)
                 game['datetime'] = (
-                beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
+                    beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
                 if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
                     game['is_subscribed'] = True

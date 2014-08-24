@@ -65,9 +65,6 @@ class get:
     def user(self, user_id:int) -> list:
         return self._db.execute("SELECT * FROM users WHERE user_id={}".format(user_id), dbfields['users'])
 
-    def region(self, region_id:int) -> list:
-        return self._db.execute("SELECT * FROM regions WHERE region_id={}".format(region_id), dbfields['regions'])
-
     def court(self, court_id:int) -> list:
         return self._db.execute("SELECT * FROM courts WHERE court_id={}".format(court_id), dbfields['courts'])
 

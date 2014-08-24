@@ -22,8 +22,6 @@ class Courts(pages.Page):
                     court['sport_types'].append(dbutils.get(db).sport_type(sport_id)[0])
                 court['city'] = dbutils.get(db).city(court['city_id'])[0]
                 court.pop('city_id')
-                # court['region'] = dbutils.get(db).region(court['region_id'])[0]
-                court.pop('region_id')
                 sql = "SELECT game_id FROM games WHERE (city_id='{}' AND court_id='{}') AND datetime>NOW() ORDER BY datetime ASC LIMIT 1;".format(
                     court['city']['city_id'], court_id)
                 db.execute(sql)
