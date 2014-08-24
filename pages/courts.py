@@ -31,7 +31,7 @@ class Courts(pages.Page):
                 if len(db.last()) > 0:
                     template.add_parameter('game_id', db.last()[0][0])
                 return template
-        if 'add' in bottle.request.query:  # and 0 < pages.getadminlevel() <= 2:
+        if 'add' in bottle.request.query and 0 < pages.getadminlevel() <= 2:
             with dbutils.dbopen() as db:
                 sport_types = db.execute("SELECT * FROM sport_types", dbutils.dbfields['sport_types'])
                 cities = db.execute("SELECT * FROM cities", dbutils.dbfields['cities'])
@@ -39,7 +39,7 @@ class Courts(pages.Page):
         raise bottle.HTTPError(404)
 
     def post(self):
-        if 'submit_add' in bottle.request.forms:  # and 0 < pages.getadminlevel() <= 2:
+        if 'submit_add' in bottle.request.forms and 0 < pages.getadminlevel() <= 2:
             params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
             params.pop('submit_add')
             params['sport_types'] = ','.join(bottle.request.forms.getall('sport_type'))
