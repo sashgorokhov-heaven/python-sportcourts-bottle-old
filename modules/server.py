@@ -24,9 +24,11 @@ def route_avatars(user_id:str):
     return bottle.static_file('{}.jpg'.format(filename), '/bsp/data/avatars/')
 
 
-@bottle.get('/images/path:path')
-def route_images(path:str):
-    return bottle.static_file(path, '/bsp/data/images/')
+@bottle.get('/images/courts/<court_id:int>')
+def route_images(court_id:str):
+    print(court_id)
+    return bottle.static_file("{}.jpg".format(court_id), '/bsp/data/images/courts/')
+
 
 @bottle.route('/', method=['POST', 'GET'])
 @bottle.route('/<path:path>', method=['POST', 'GET'])

@@ -4,18 +4,26 @@
           <div class="col-md-12 registration" style="text-align:left;">
             <h2 class="text-center">Новая площадка</h2><br>
             <form id="courtaddForm" method="post" class="form-horizontal"
-            data-bv-message="This value is not valid" action="courts"
-            data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+            data-bv-message="This value is not valid" action="/courts"
+            data-bv-feedbackicons-valid="glyphicon glyphicon-ok" enctype="multipart/form-data"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+                <div class="form-group">
+                  <label for="first_name" class="col-sm-2 control-label">Название площадки</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="title" placeholder=""
+                    data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите название площадки" />
+                    <span id="valid"></span>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Вид спорта</label>
                   <div class="col-sm-10">
                   % for sport_type in sport_types:
                     <label class="checkbox-inline" style="margin-left:-17px;">
-                    <!-- WTF sport_type[] < че за скобочки? -->
-                      <input type="radio" name="sport_type[]" value="{{sport_type['sport_id']}}"
-                      data-bv-message="Пожалуйста, выберите вид спорта"
+                      <input type="checkbox" name="sport_type" value="{{sport_type['sport_id']}}"
+                      data-bv-message="Пожалуйста, выберите хотябы один вид спорта"
                       data-bv-notempty="true"> {{sport_type['title']}}
                     </label>
                   % end
@@ -41,7 +49,7 @@
                       data-bv-message="Пожалуйста, введите адрес"
                       data-bv-notempty="true"
                       onchange="showAddress(this.value);return false;"
-                      id="adress">
+                      id="address">
                     <div id="YMapsID" style="width:450px;height:300px;margin-top:20px;"></div>
                     <input type="hidden" id="geopoint" name="geopoint"/>
                   </div>

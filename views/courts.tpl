@@ -7,7 +7,7 @@
         </div>
         <div class="row">
           <div class="col-md-8">
-            <img src="http://sportcourts.ru/images/{{court['court_id']}}_title.jpg" alt="Изображение" style="width:100%">
+            <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}.jpg" alt="Изображение" style="width:100%">
           </div>
           <div class="col-md-4">
             <p>Город: {{court['city']['title']}}</p>
