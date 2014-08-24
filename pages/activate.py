@@ -6,10 +6,7 @@ import pages
 
 
 class Activate(pages.Page):
-    path = ['activate']
-
-    @pages.handleerrors("404")
-    def get(self):
+    def get(self, **params):
         token = bottle.request.query.get('token')
         if not token:
             raise bottle.HTTPError(404)
@@ -22,3 +19,5 @@ class Activate(pages.Page):
             db.execute("DELETE FROM activation WHERE user_id={}".format(user_id))
             bottle.response.set_cookie('activated', 1, modules.config['secret'])
             raise bottle.redirect('/auth')
+
+    get.route = '/activate'

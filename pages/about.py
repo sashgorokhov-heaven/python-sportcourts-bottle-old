@@ -2,8 +2,8 @@ import pages
 
 
 class About(pages.Page):
-    path = ['about']
-
     @pages.setlogin
-    def get(self):
+    def get(self, **kwargs):
         return pages.Template('about')
+
+    get.route = '/about'

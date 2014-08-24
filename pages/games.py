@@ -1,6 +1,6 @@
 import bottle
 
-from modules import beautifuldate, beautifultime, beautifulday
+from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
 
 import modules
@@ -8,8 +8,6 @@ import modules.dbutils
 
 
 class Games(pages.Page):
-    path = ['games']
-
     def post_submit_add(self):
         with modules.dbutils.dbopen() as db:
             params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
@@ -177,3 +175,6 @@ class Games(pages.Page):
                     game['subscribed'] = {'count': 0, 'users': list()}
                 games.append(game)
             return pages.Template('games', games=games, sports=sports)
+
+    get.route = '/games'
+    post.route = get.route

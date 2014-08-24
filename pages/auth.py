@@ -5,8 +5,6 @@ import modules.dbutils
 
 
 class Authorize(pages.Page):
-    path = ['auth']
-
     def get(self):
         if pages.loggedin():
             return bottle.redirect('/profile')
@@ -29,3 +27,6 @@ class Authorize(pages.Page):
             bottle.response.set_cookie('user_type', db.last()[0]['user_type'], modules.config['secret'])
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(db.last()[0]['user_id']))
             return bottle.redirect('/profile')
+
+    get.route = '/auth'
+    post.route = get.route

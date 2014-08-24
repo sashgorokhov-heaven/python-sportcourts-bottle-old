@@ -2,7 +2,7 @@ import datetime
 
 import pymysql
 
-import modules.server
+import modules
 
 
 class dbopen:

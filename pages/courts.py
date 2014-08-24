@@ -8,8 +8,6 @@ from modules import dbutils
 
 
 class Courts(pages.Page):
-    path = ['courts']
-
     def get_court_id(self):
         court_id = bottle.request.query.get('court_id')
         with dbutils.dbopen() as db:
@@ -125,3 +123,6 @@ class Courts(pages.Page):
         if 'submit_edit' in bottle.request.forms and 0 < pages.getadminlevel() <= 2:
             self.post_submit_edit()
         raise bottle.HTTPError(404)
+
+    get.route = '/courts'
+    post.route = get.route

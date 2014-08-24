@@ -1,13 +1,11 @@
 import bottle
 
+from modules.utils import beautifuldate, beautifultime, get_notifications
 import pages
 import modules.dbutils
-from modules import beautifuldate, beautifultime, get_notifications
 
 
 class Notifications(pages.Page):
-    path = ['notifications']
-
     @pages.setlogin
     def get(self):
         if not pages.loggedin():
@@ -18,3 +16,4 @@ class Notifications(pages.Page):
             i['datetime'] = '{} {}'.format(beautifuldate(i['datetime']), beautifultime(i['datetime']))
         return pages.Template("notifications", notifications=notifications)
 
+    get.route = '/notifications'

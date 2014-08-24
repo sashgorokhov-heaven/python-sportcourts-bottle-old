@@ -5,8 +5,6 @@ import modules.logging
 
 
 class ServerLogs(pages.Page):
-    path = ['logs']
-
     @pages.setlogin
     def get(self):
         if not pages.loggedin() or pages.getadminlevel() != 1:
@@ -39,3 +37,5 @@ class ServerLogs(pages.Page):
                 parsed[1].append(line)
 
         return pages.Template('logspage', logs=parsed)
+
+    get.route = '/logs'

@@ -4,15 +4,14 @@ import datetime
 from PIL import Image
 import bottle
 
+from modules.utils import beautifuldate, beautifultime
+
 import pages
 import modules
 import modules.dbutils
-from modules import beautifuldate, beautifultime
 
 
 class Profile(pages.Page):
-    path = ['profile']
-
     def get_user_id(self):
         with modules.dbutils.dbopen() as db:
             user = modules.dbutils.get(db).user(bottle.request.query.user_id)
@@ -93,3 +92,6 @@ class Profile(pages.Page):
                 pages.getuserid())
             db.execute(sql)
             bottle.redirect('/profile')
+
+    get.route = '/profile'
+    post.route = get.route

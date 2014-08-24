@@ -7,13 +7,12 @@ import bottle
 
 import modules
 import modules.dbutils
+from modules.utils import write_notification
 import pages
-from modules import vk, sendmail, write_notification
+from modules import vk, sendmail
 
 
 class Registration(pages.Page):
-    path = ['register', 'registration']
-
     def get_code(self, cities):
         code = bottle.request.query.code
         url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/registration"
@@ -55,7 +54,6 @@ class Registration(pages.Page):
         data = {i: data[i] for i in data if data[i]}
         return pages.Template('registration', cities=cities, **data)
 
-    @pages.handleerrors('registration')
     def get(self):
         if pages.loggedin():
             return bottle.redirect('/profile')
@@ -130,4 +128,7 @@ class Registration(pages.Page):
                     token), params['email'])
             db.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
             write_notification(user_id, "Проверьте свою почту чтобы активировать профиль!", 1)
-            return bottle.redirect('/profile')
+            raise bottle.redirect('/profile')
+
+    get.route = '/registration'
+    post.route = get.route
