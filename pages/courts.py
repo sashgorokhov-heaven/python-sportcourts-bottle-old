@@ -31,12 +31,12 @@ class Courts(pages.Page):
                 if len(db.last()) > 0:
                     template.add_parameter('game_id', db.last()[0][0])
                 return template
-        if 'add' in bottle.request.query:  # and 0 < pages.getadminlevel() <= 2:
+        if 'add' in bottle.request.query and 0 < pages.getadminlevel() <= 2:
             with dbutils.dbopen() as db:
                 sport_types = db.execute("SELECT * FROM sport_types", dbutils.dbfields['sport_types'])
                 cities = db.execute("SELECT * FROM cities", dbutils.dbfields['cities'])
                 return pages.Template('addcourt', sport_types=sport_types, cities=cities)
-        if 'edit' in bottle.request.query:  # and 0 < pages.getadminlevel() <= 2
+        if 'edit' in bottle.request.query and 0 < pages.getadminlevel() <= 2:
             with dbutils.dbopen() as db:
                 court_id = bottle.request.query.get('edit')
                 court = dbutils.get(db).court(court_id)[0]
@@ -57,7 +57,7 @@ class Courts(pages.Page):
         raise bottle.HTTPError(404)
 
     def post(self):
-        if 'submit_add' in bottle.request.forms:  # and 0 < pages.getadminlevel() <= 2:
+        if 'submit_add' in bottle.request.forms and 0 < pages.getadminlevel() <= 2:
             params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
             params.pop('submit_add')
             params['sport_types'] = ','.join(bottle.request.forms.getall('sport_type'))
@@ -84,9 +84,11 @@ class Courts(pages.Page):
                 im.close()
             raise bottle.redirect('/courts?court_id={}'.format(court_id))
 
-        if 'submit_edit' in bottle.request.forms:  # and 0 < pages.getadminlevel() <= 2:
+        if 'submit_edit' in bottle.request.forms and 0 < pages.getadminlevel() <= 2:
             params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
             params.pop('submit_edit')
+            if 'photo' in params:
+                params.pop('photo')
             params['sport_types'] = ','.join(bottle.request.forms.getall('sport_type'))
             params.pop('sport_type')
             params['phone'] = params['phone'] if params['phone'] else 'Не указан'
