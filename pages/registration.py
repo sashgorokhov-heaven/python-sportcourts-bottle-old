@@ -14,6 +14,47 @@ from modules import vk, sendmail
 class Registration(pages.Page):
     path = ['register', 'registration']
 
+    def get_code(self, cities):
+        code = bottle.request.query.code
+        url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/registration"
+        url = url.format(modules.config['api']['vk']['appid'],
+                         modules.config['api']['vk']['secret'], code,
+                         modules.config['server']['ip'], modules.config['server']['port'])
+        response = urllib.request.urlopen(url)
+        response = response.read().decode()
+        response = bottle.json_loads(response)
+        if 'error' in response:
+            return pages.Template('registration', error=response['error'],
+                                  error_description=response['error_description'], cities=cities)
+        access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
+        user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max', 'contacts'])[0]
+        data = dict()
+        data['vkuserid'] = user_id
+        with modules.dbutils.dbopen() as db:
+            db.execute("SELECT email FROM users WHERE vkuserid={}".format(data['vkuserid']))
+            if len(db.last()) > 0:
+                return pages.Template('auth',
+                                      error='Вы уже зарегестрированы в системе',
+                                      error_description='Используйте пароль, чтобы войти',
+                                      email=db.last()[0][0])
+        data['city'] = user['city']['title'] if 'city' in user else None
+        data['first_name'] = user['first_name']
+        data['last_name'] = user['last_name']
+        data['phone'] = user['mobile_phone'] if 'mobile_phone' in user else None
+        data['sex'] = 'male' if user['sex'] == 2 else ('female' if user['sex'] == 1 else None)
+        data['email'] = email if email else None
+        data['bdate'] = vk.convert_date(user['bdate']) if 'bdate' in user else None
+        for city in cities:
+            if city['title'] == data['city']:
+                data['city_id'] = city['city_id']
+                break
+        fullname = '/bsp/data/avatars/temp{}.jpg'.format(user['id'])
+        urllib.request.urlretrieve(user['photo_max'], fullname)
+        Image.open(fullname).crop().resize((200, 200)).save(fullname)
+        data['photo'] = 'http://sportcourts.ru/avatars/temp{}'.format(user['id'])
+        data = {i: data[i] for i in data if data[i]}
+        return pages.Template('registration', cities=cities, **data)
+
     @pages.handleerrors('registration')
     def get(self):
         if pages.loggedin():
@@ -21,45 +62,7 @@ class Registration(pages.Page):
         with modules.dbutils.dbopen() as db:
             cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
         if 'code' in bottle.request.query:
-            code = bottle.request.query.code
-            url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/registration"
-            url = url.format(modules.config['api']['vk']['appid'],
-                             modules.config['api']['vk']['secret'], code,
-                             modules.config['server']['ip'], modules.config['server']['port'])
-            response = urllib.request.urlopen(url)
-            response = response.read().decode()
-            response = bottle.json_loads(response)
-            if 'error' in response:
-                return pages.Template('registration', error=response['error'],
-                                      error_description=response['error_description'], cities=cities)
-            access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
-            user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max', 'contacts'])[0]
-            data = dict()
-            data['vkuserid'] = user_id
-            with modules.dbutils.dbopen() as db:
-                db.execute("SELECT email FROM users WHERE vkuserid={}".format(data['vkuserid']))
-                if len(db.last()) > 0:
-                    return pages.Template('auth',
-                                          error='Вы уже зарегестрированы в системе',
-                                          error_description='Используйте пароль, чтобы войти',
-                                          email=db.last()[0][0])
-            data['city'] = user['city']['title'] if 'city' in user else None
-            data['first_name'] = user['first_name']
-            data['last_name'] = user['last_name']
-            data['phone'] = user['mobile_phone'] if 'mobile_phone' in user else None
-            data['sex'] = 'male' if user['sex'] == 2 else ('female' if user['sex'] == 1 else None)
-            data['email'] = email if email else None
-            data['bdate'] = vk.convert_date(user['bdate']) if 'bdate' in user else None
-            for city in cities:
-                if city['title'] == data['city']:
-                    data['city_id'] = city['city_id']
-                    break
-            fullname = '/bsp/data/avatars/temp{}.jpg'.format(user['id'])
-            urllib.request.urlretrieve(user['photo_max'], fullname)
-            Image.open(fullname).crop().resize((200, 200)).save(fullname)
-            data['photo'] = 'http://sportcourts.ru/avatars/temp{}'.format(user['id'])
-            data = {i: data[i] for i in data if data[i]}
-            return pages.Template('registration', cities=cities, **data)
+            return self.get_code(cities)
         else:
             return pages.Template('registration', cities=cities)
 
