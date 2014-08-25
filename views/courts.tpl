@@ -80,10 +80,10 @@
                 <tr>
                   <td><small><strong>Аренда:</strong></small></td>
                   <td><small>
-                    % if court['cost'] != '0':
+                    % if court['cost'] != 0:
                     от {{court['cost']}} руб./час
                     % end
-                    % if court['cost'] == '0':
+                    % if court['cost'] == 0:
                     Бесплатная
                     % end
                   </small></td>
