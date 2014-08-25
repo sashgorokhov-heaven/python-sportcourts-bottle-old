@@ -119,24 +119,24 @@ class _PageController:
     def add_page(self, page_class:type):
         instance = page_class()
         executor = _Executor(instance)
-        self._executors[page_class.__name__] = executor
+        self._executors[executor.name] = executor
         if instance.get.route:
             bottle.get(instance.get.route, callback=executor.execute)  # <------ Route mount point
         if instance.post.route:
             bottle.post(instance.post.route, callback=executor.execute)  # <------ Route mount point
 
-    def reload(self, name:str):
+    def reload(self, name:str) -> type:
         if name not in self._executors:
             raise ValueError('Executor on <{}> not registered'.format(name))
-        module_name = self._executors[name].page().__class__.__module__
+        executor = self._executors[name]
+        module_name = executor.page().__class__.__module__
         module = sys.modules[module_name]
         reloaded = importlib.reload(module)
-        sys.modules[module_name] = reloaded
-        page_class = self._search_module(reloaded, module_name)
+        page_class = self._search_module(reloaded)
         if page_class:
-            self._executors[page_class.__name__].set_page(page_class())
+            executor.set_page(page_class())
 
-    def _search_module(self, module, module_name:str) -> type:
+    def _search_module(self, module) -> type:
         page_class = None
         for smthing in dir(module):
             if not smthing.startswith('_') \
@@ -144,11 +144,10 @@ class _PageController:
                     and issubclass(getattr(module, smthing), Page) \
                     and getattr(module, smthing).__module__.startswith('pages.'):
                 page_class = getattr(module, smthing)
+                break
         if not page_class:
-            modules.logging.warn('Subclass of Page is not found in <{}>', module_name)
-            return None
-        if page_class.__name__ not in self._executors:
-            return page_class
+            modules.logging.warn('Subclass of Page is not found in {}', module)
+        return page_class
 
     def loadpages(self):
         for module_name in os.listdir('pages'):
@@ -157,8 +156,8 @@ class _PageController:
             try:
                 module_name = os.path.splitext(module_name)[0]
                 module = importlib.import_module('pages.{}'.format(module_name))
-                page_class = self._search_module(module, module_name)
-                if page_class:
+                page_class = self._search_module(module)
+                if page_class and page_class.__name__ not in self._executors:
                     self.add_page(page_class)
             except ImportError as e:
                 modules.logging.error('Import error of <{}>: {}', module_name, e.args[0])
