@@ -28,4 +28,4 @@ class GameNotifier(eventslib.Event):
                 if (user_id, game['game_id']) not in {i[:2] for i in self._notified}:
                     utils.write_notification(user_id, 'До игры {} осталось два дня!'.format(game['game_id']))
                     self._notified.add((user_id, game['game_id'], time.time()))
-        self._notified = set(filter(lambda x: time.time() - x[-1] > BUFFERLIFE, self._notified))
+        self._notified = set(filter(lambda x: time.time() - x[-1] < BUFFERLIFE, self._notified))
