@@ -54,7 +54,7 @@ class Profile(pages.Page):
                 else:
                     activated = True
                 return pages.PageBuilder('profile', user=user, activated=activated)
-        raise bottle.HTTPError(404)
+        raise bottle.redirect('/auth')
 
     def post(self):
         if not pages.auth_dispatcher.loggedin():
