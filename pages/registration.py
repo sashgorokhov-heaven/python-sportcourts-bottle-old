@@ -37,6 +37,7 @@ class Registration(pages.Page):
                                          error_description='Используйте пароль, чтобы войти',
                                          email=db.last()[0][0])
         data['city'] = user['city']['title'] if 'city' in user else None
+        data['byvk'] = True
         data['first_name'] = user['first_name']
         data['last_name'] = user['last_name']
         data['phone'] = user['mobile_phone'] if 'mobile_phone' in user else None

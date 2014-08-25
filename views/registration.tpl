@@ -1,4 +1,5 @@
 % rebase("_basicpage", title="Регистрация")
+% setdefault("byvk", False)
 % setdefault("sex", "")
 % setdefault("first_name", "")
 % setdefault("middle_name", "")
@@ -16,15 +17,17 @@
         <div class="row">
           <div class="col-md-12 registration" style="text-align:left;">
             <h2 class="text-center">Регистрация</h2><br>
-            <div class="row">
-              <div class="col-sm-10 col-sm-offset-2">
-                <p>
-                  <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/registration&response_type=code&v=5.21">Использовать данные из ВКонтакте
-                  <img src="http://zhacker.net/uploads/posts/2014-06/1401795821_vk_com.png" height="38"/>
-                  </a>
-                </p>
-              </div>
-            </div>
+            % if not byvk:
+                <div class="row">
+                  <div class="col-sm-10 col-sm-offset-2">
+                    <p>
+                      <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/registration&response_type=code&v=5.21">Использовать данные из ВКонтакте
+                      <img src="http://zhacker.net/uploads/posts/2014-06/1401795821_vk_com.png" height="38"/>
+                      </a>
+                    </p>
+                  </div>
+                </div>
+            % end
             <form id="registrationForm" method="post" class="form-horizontal" action="/registration"
             data-bv-message="This value is not valid" enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
