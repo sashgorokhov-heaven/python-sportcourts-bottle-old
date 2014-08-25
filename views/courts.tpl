@@ -8,7 +8,50 @@
         <div class="row">
           <div class="col-md-8">
             <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
-            <br><br><br>
+          </div>
+          <div class="col-md-4">
+            <p class="lead">{{court['title']}}</p>
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <td><strong>Адрес:</strong></td>
+                  <td>
+                    {{court['address']}}
+                    <br>
+                    <a href="#YMapsID">Показать на карте</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Время работы:</strong></td>
+                  <td>{{court['worktime']}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Аренда:</strong></td>
+                  <td>от {{court['cost']}} руб./час</td>
+                </tr>
+              </table>
+              % if defined("game"):
+                <table class="table">
+                  <tr>
+                    <td colspan="2"><a href="http://sportcourts.ru/games?game_id={{game['game_id']}}">Ближайшая игра</a></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <div class="progress">
+                        <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
+                            <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              % end
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <br>
             <ul class="nav nav-tabs">
               <li class="active"><a href="#about" data-toggle="tab">Характеристики</a></li>
               <!-- <li><a href="#text" data-toggle="tab">Описание</a></li> -->
@@ -22,32 +65,32 @@
                     <div class="table-responsive">
                       <table class="table table-hover">
                         <tr>
-                          <td><small><strong>Виды спорта:</strong></small></td>
-                          <td><small>{{', '.join([sport['title'] for sport in court['sport_types']])}}</small></td>
+                          <td><strong>Виды спорта:</strong></td>
+                          <td>{{', '.join([sport['title'] for sport in court['sport_types']])}}</td>
                         </tr>
                         <tr>
-                          <td><small><strong>Вместимость:</strong></small></td>
-                          <td><small>{{court['max_players']}}</small></td>
+                          <td><strong>Вместимость:</strong></td>
+                          <td>{{court['max_players']}}</td>
                         </tr>
                         <tr>
-                          <td><small><strong>Тип площадки:</strong></small></td>
-                          <td><small>{{court['type']}}</small></td>
+                          <td><strong>Тип площадки:</strong></td>
+                          <td>{{court['type']}}</td>
                         </tr>
                         <tr>
-                          <td><small><strong>Покрытие:</strong></small></td>
-                          <td><small>{{court['cover']}}</small></td>
+                          <td><strong>Покрытие:</strong></td>
+                          <td>{{court['cover']}}</td>
                         </tr>
                         <tr>
-                          <td><small><strong>Инфрастуктура:</strong></small></td>
-                          <td><small>{{court['infrastructure']}}</small></td>
+                          <td><strong>Инфрастуктура:</strong></td>
+                          <td>{{court['infrastructure']}}</td>
                         </tr>
                         <tr>
-                          <td><small><strong>Комментарии:</strong></small></td>
-                          <td><small>{{court['description']}}</small></td>
+                          <td><strong>Комментарии:</strong></td>
+                          <td>{{court['description']}}</td>
                         </tr>
                         <tr>
-                          <td><small><strong>Телефон:</strong></small></td>
-                          <td><small>{{court['phone']}}</small></td>
+                          <td><strong>Телефон:</strong></td>
+                          <td>{{court['phone']}}</td>
                         </tr>
                       </table>
                     </div>
@@ -55,45 +98,18 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <p class="lead">{{court['title']}}</p>
-            <div class="table-responsive">
-              <table class="table">
-                <tr>
-                  <td><small><strong>Адрес:</strong></small></td>
-                  <td>
-                    <small>{{court['address']}}</small>
+              <!-- <div class="tab-pane" id="text">
+                <div class="row">
+                  <div class="col-md-12">
                     <br>
-                    <small><a href="#YMapsID">Показать на карте</a></small>
-                  </td>
-                </tr>
-                <tr>
-                  <td><small><strong>Время работы:</strong></small></td>
-                  <td><small>{{court['worktime']}}</small></td>
-                </tr>
-                <tr>
-                  <td><small><strong>Аренда:</strong></small></td>
-                  <td><small>от {{court['cost']}} руб./час</small></td>
-                </tr>
-                % if defined("game"):
-                <tr>
-                  <td colspan="2">
-                    <p><a href="http://sportcourts.ru/games?game_id={{game['game_id']}}">Ближайшая игра:</a></p>
-                    <small><p>{{game['datetime'][0]}}, {{game['datetime'][2]}}, {{game['datetime'][1]}}</p></small>
-                    <small><p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p></small>
-                    <div class="progress">
-                      <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
-                          <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                %end
-              </table>
+                    <p>{{court['description']}}</p>
+                    <br>
+                  </div>
+                </div>
+              </div> -->
             </div>
           </div>
+          <div class="col-md-4"></div>
         </div>
         <div class="row">
           <div class="col-md-12">

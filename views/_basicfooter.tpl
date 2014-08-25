@@ -42,6 +42,7 @@
     	        	                <br>
     	        	                <br>
     	        	                <a href="/recover">Восстановить пароль</a>
+    	        	                <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/auth&response_type=code&v=5.21">Войти через Вконтакте</a>
     	        	            </div>
     	        	        </div>
     	        	    </form>
