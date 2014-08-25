@@ -11,57 +11,22 @@ import modules.logging
 from modules.utils import get_notifycount
 
 
-def getuserid() -> int:
-    return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
-
-
-def getadminlevel() -> int:
-    return int(bottle.request.get_cookie('adminlevel', 0, modules.config['secret']))
-
-
-def loggedin() -> bool:
-    return bool(getuserid())
-
-
-def activated() -> bool:
-    return bool(int(bottle.request.get_cookie('activated', 0, modules.config['secret'])))
-
-
-def user_type() -> str:
-    return str(bottle.request.get_cookie('user_type', 'common', modules.config['secret']))
-
-
-def setlogin(func):
-    def wrapper(*args, **kwargs):
-        template = func(*args, **kwargs)
-        if not isinstance(template, Template):
-            return template
-        user_id = getuserid()
-        template.add_parameter('user_id', user_id)
-        template.add_parameter('loggedin', bool(user_id))
-        template.add_parameter('adminlevel', getadminlevel())
-        template.add_parameter('activated', activated())
-        template.add_parameter('notifycount', get_notifycount(user_id))
-        return template
-    return wrapper
-
-
 # +-> _Executor.execute -> page.execute
 # bottle routing -|
-#                 +-> _Executor.execute -> page.execute
-#                ....
+# +-> _Executor.execute -> page.execute
+# ....
 
 
-class Page: # this name will be reloaded by PageController.reload(name='Page')
+class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
         if method == 'POST':
             data = self.post(**kwargs)
-            if isinstance(data, Template):
+            if isinstance(data, PageBuilder):
                 return data.template()
             return data
         if method == 'GET':
             data = self.get(**kwargs)
-            if isinstance(data, Template):
+            if isinstance(data, PageBuilder):
                 return data.template()
             return data
         raise bottle.HTTPError(404)
@@ -163,28 +128,67 @@ class _PageController:
                 modules.logging.error('Import error of <{}>: {}', module_name, e.args[0])
 
 
-class Template:
-    def __init__(self, name, login=False, **kwargs):
-        self.name = name
-        self._kwargs = kwargs
-        if login:
-            user_id = getuserid()
-            self.add_parameter('user_id', user_id)
-            self.add_parameter('loggedin', bool(user_id))
-            self.add_parameter('adminlevel', getadminlevel())
-            self.add_parameter('activated', activated())
-            self.add_parameter('notifycount', get_notifycount(user_id))
+class _AuthDispatcher:
+    def set_user(self, page_builder):
+        userinfo = dict()
+        userinfo['user_id'] = self.getuserid()
+        userinfo['adminlevel'] = self.getadminlevel()
+        userinfo['notifycount'] = get_notifycount(self.getuserid())
+        userinfo['organizer'] = self.organizer()
+        userinfo['responsible'] = self.responsible()
+        userinfo['common'] = self.common()
+        page_builder.add_param('userinfo', userinfo)
+        page_builder.add_param('loggedin', self.loggedin())
 
-    def add_parameter(self, name, value):
-        self._kwargs[name] = value
+    def login(self, email:str, password:str):
+        if self.loggedin(): return
+        with modules.dbutils.dbopen() as db:
+            user = db.execute(
+                "SELECT user_id, admin FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
+                ['user_id', 'adminlevel'])
+            if len(user) == 0:
+                raise ValueError("Invalid email or password")
+            user = user[0]
+            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user['user_id']))
+            bottle.response.set_cookie('user_id', user['user_id'], modules.config['secret'])
+            bottle.response.set_cookie('adminlevel', user['adminlevel'], modules.config['secret'])
 
-    def template(self):
-        return bottle.template(self.name, **self._kwargs)
+    def logout(self):
+        bottle.response.delete_cookie('user_id')
+        bottle.response.delete_cookie('adminlevel')
 
+    def getuserid(self) -> int:
+        return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
 
-controller = _PageController()
+    def getadminlevel(self) -> int:
+        return int(bottle.request.get_cookie('adminlevel', 0, modules.config['secret']))
+
+    def loggedin(self) -> bool:
+        return bool(self.getuserid())
+
+    def organizer(self) -> bool:
+        return self.loggedin() and self.getadminlevel() == 1
+
+    def responsible(self) -> bool:
+        return self.loggedin() and (self.getadminlevel() == 2 or self.organizer())
+
+    def common(self) -> bool:
+        return self.loggedin() and (self.getadminlevel() == 3 or self.responsible() or self.organizer())
 
 
 class PageBuilder:
-    pass
+    def __init__(self, template_name:str, header_name:str='_basichead', **kwargs):
+        self._template_name = template_name
+        self._header_name = header_name
+        self._kwargs = kwargs
+        auth_dispatcher.set_user(self)
 
+    def add_param(self, name:str, value):
+        self._kwargs[name] = value
+
+    def template(self):
+        return bottle.template(self._template_name, header_name=self._header_name, **self._kwargs)
+
+
+controller = _PageController()
+auth_dispatcher = _AuthDispatcher()

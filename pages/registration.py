@@ -23,8 +23,8 @@ class Registration(pages.Page):
         response = response.read().decode()
         response = bottle.json_loads(response)
         if 'error' in response:
-            return pages.Template('registration', error=response['error'],
-                                  error_description=response['error_description'], cities=cities)
+            return pages.PageBuilder('registration', error=response['error'],
+                                     error_description=response['error_description'], cities=cities)
         access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
         user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max', 'contacts'])[0]
         data = dict()
@@ -32,10 +32,10 @@ class Registration(pages.Page):
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT email FROM users WHERE vkuserid={}".format(data['vkuserid']))
             if len(db.last()) > 0:
-                return pages.Template('auth',
-                                      error='Вы уже зарегестрированы в системе',
-                                      error_description='Используйте пароль, чтобы войти',
-                                      email=db.last()[0][0])
+                return pages.PageBuilder('auth',
+                                         error='Вы уже зарегестрированы в системе',
+                                         error_description='Используйте пароль, чтобы войти',
+                                         email=db.last()[0][0])
         data['city'] = user['city']['title'] if 'city' in user else None
         data['first_name'] = user['first_name']
         data['last_name'] = user['last_name']
@@ -52,17 +52,17 @@ class Registration(pages.Page):
         Image.open(fullname).crop().resize((200, 200)).save(fullname)
         data['photo'] = 'http://sportcourts.ru/avatars/temp{}'.format(user['id'])
         data = {i: data[i] for i in data if data[i]}
-        return pages.Template('registration', cities=cities, **data)
+        return pages.PageBuilder('registration', cities=cities, **data)
 
     def get(self):
-        if pages.loggedin():
-            return bottle.redirect('/profile')
+        if pages.auth_dispatcher.loggedin():
+            raise bottle.redirect('/profile')
         with modules.dbutils.dbopen() as db:
             cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
         if 'code' in bottle.request.query:
             return self.get_code(cities)
         else:
-            return pages.Template('registration', cities=cities)
+            return pages.PageBuilder('registration', cities=cities)
 
     def post(self):
         params = {i: bottle.request.forms[i] for i in bottle.request.forms}
@@ -92,9 +92,9 @@ class Registration(pages.Page):
                 params['city_id'] = 1
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
             if len(db.last()) > 0:
-                return pages.Template('registration', error='Ошибка',
-                                      error_description='Пользователь с таким email уже зарегестрирован',
-                                      cities=cities)
+                return pages.PageBuilder('registration', error='Ошибка',
+                                         error_description='Пользователь с таким email уже зарегестрирован',
+                                         cities=cities)
             sql = 'INSERT INTO users ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
             sql = sql.format(

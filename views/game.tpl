@@ -13,7 +13,7 @@
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
                 <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
-                % if 0<adminlevel<=2:
+                % if userinfo['organizer']:
                 <div style="float:right;"><a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a></div>
                 <!-- <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div> -->
                 % end
@@ -66,17 +66,17 @@
                     % if game['subscribed']['count'] == game['capacity']:
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" {{'disabled="disabled"' if game['is_subscribed'] else ''}} data-toggle="dropdown">Места заполнены</button>
                       % if game['is_subscribed']:
-                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
+                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{userinfo['user_id']}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
                       % end
                     % end
                     % if game['subscribed']['count'] < game['capacity']:
                       % if game['is_subscribed']:
                         <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я записан</button>
-                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
+                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{userinfo['user_id']}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
                       % end
                       % if not game['is_subscribed']:
                         <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">Идет набор</button>
-                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{user_id}}"><a style="cursor:pointer;">Пойду</a></li></ul>               
+                        <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{userinfo['user_id']}}"><a style="cursor:pointer;">Пойду</a></li></ul>
                       % end
                     % end
                   % end

@@ -9,7 +9,7 @@
         % for sport_type in sports:
             <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
         % end
-        % if 0<adminlevel<=2:
+        % if userinfo['organizer']:
         <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
         % end
       </ul>

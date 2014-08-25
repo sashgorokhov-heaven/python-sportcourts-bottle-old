@@ -5,9 +5,8 @@ import modules.logging
 
 
 class ServerLogs(pages.Page):
-    @pages.setlogin
     def get(self):
-        if not pages.loggedin() or pages.getadminlevel() != 1:
+        if not pages.auth_dispatcher.organizer():
             raise bottle.HTTPError(404)
 
         logs = list(filter(lambda x: x != '', map(lambda x: x.strip(), modules.logging.get_log().split('\n'))))
@@ -36,6 +35,6 @@ class ServerLogs(pages.Page):
             else:
                 parsed[1].append(line)
 
-        return pages.Template('logspage', logs=parsed)
+        return pages.PageBuilder('logspage', logs=parsed)
 
     get.route = '/logs'

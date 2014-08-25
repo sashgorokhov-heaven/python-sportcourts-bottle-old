@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	% setdefault("keywords", 'Ключевые слова')
-    % setdefault("description", 'Описание')
-	% include("_basichead", title=title, keywords=keywords, description=description)
+    % setdefault("header_name", '_basichead')
+	% include(header_name, title=title)
   	</head>
   	<body onload="initialize_map()">
-  	    % setdefault("loggedin", False)
-  	    % setdefault("user_id", 0)
-  	    % setdefault("notifycount", 0)
-    	% include("_basicnavbar", loggedin=loggedin, user_id=user_id)
+    	% include("_basicnavbar", loggedin=loggedin, userinfo=userinfo)
     	<div class="container theme-showcase">
 			<section id="content">
 			    % setdefault("error_description", '')

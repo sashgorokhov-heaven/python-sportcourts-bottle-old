@@ -5,7 +5,6 @@ from PIL import Image
 import bottle
 
 from modules.utils import beautifuldate, beautifultime
-
 import pages
 import modules
 import modules.dbutils
@@ -24,38 +23,41 @@ class Profile(pages.Page):
             user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
             user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
             user.pop('city_id')
-            return pages.Template('profile', user=user)
+            return pages.PageBuilder('profile', user=user)
 
     def get_edit(self):
         with modules.dbutils.dbopen() as db:
             cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
-            user = modules.dbutils.get(db).user(pages.getuserid())[0]
+            user = modules.dbutils.get(db).user(pages.auth_dispatcher.getuserid())[0]
             modules.dbutils.strdates(user)
             user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
             user.pop('city_id')
-            return pages.Template('editprofile', user=user, cities=cities)
+            return pages.PageBuilder('editprofile', user=user, cities=cities)
 
-    @pages.setlogin
     def get(self):
         if 'user_id' in bottle.request.query:
             return self.get_user_id()
-        elif 'edit' in bottle.request.query and pages.loggedin():
+        elif 'edit' in bottle.request.query and pages.auth_dispatcher.loggedin():
             return self.get_edit()
-        elif pages.loggedin():
+        elif pages.auth_dispatcher.loggedin():
             with modules.dbutils.dbopen() as db:
-                user = modules.dbutils.get(db).user(pages.getuserid())[0]
+                user = modules.dbutils.get(db).user(pages.auth_dispatcher.getuserid())[0]
                 modules.dbutils.strdates(user)
                 user['bdate'] = str(round((datetime.date.today() - datetime.date(
                     *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
                 user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
-                return pages.Template('profile', user=user)
+                db.execute("SELECT user_id FROM activation WHERE user_id={}".format(user['user_id']))
+                if len(db.last()) > 0:
+                    activated = False
+                else:
+                    activated = True
+                return pages.PageBuilder('profile', user=user, activated=activated)
         raise bottle.HTTPError(404)
 
-    @pages.setlogin
     def post(self):
-        if not pages.loggedin():
+        if not pages.auth_dispatcher.loggedin():
             raise bottle.HTTPError(404)
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         params.pop("submit_profile")
@@ -71,7 +73,7 @@ class Profile(pages.Page):
             params.pop('avatar')
 
         if 'avatar' in bottle.request.files:
-            filename = str(pages.getuserid()) + '.jpg'
+            filename = str(pages.auth_dispatcher.getuserid()) + '.jpg'
             dirname = '/bsp/data/avatars'
             fullname = os.path.join(dirname, filename)
             if os.path.exists(fullname):
@@ -89,9 +91,9 @@ class Profile(pages.Page):
                 params['city_id'] = 1
             sql = "UPDATE users SET {} WHERE user_id={}".format(
                 ', '.join(['{}="{}"'.format(i, params[i]) for i in params]),
-                pages.getuserid())
+                pages.auth_dispatcher.getuserid())
             db.execute(sql)
-            bottle.redirect('/profile')
+            raise bottle.redirect('/profile')
 
     get.route = '/profile'
     post.route = get.route

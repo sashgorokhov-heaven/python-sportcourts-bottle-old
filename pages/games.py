@@ -2,7 +2,6 @@ import bottle
 
 from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
-
 import modules
 import modules.dbutils
 
@@ -25,7 +24,7 @@ class Games(pages.Page):
                 duration=params['duration'].encode().split(b' ')[0].decode())
             db.execute(sql)
             if len(db.last()) > 0:
-                return pages.Template('404', error='Обнаружен конфликт',
+                return pages.PageBuilder('404', error='Обнаружен конфликт',
                                       error_description='В это время игра уже идет')
             sql = 'INSERT INTO games ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
@@ -52,7 +51,7 @@ class Games(pages.Page):
             return bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
-        if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
+        if pages.auth_dispatcher.organizer():
             raise bottle.HTTPError(404)
         if 'submit_add' in bottle.request.forms:
             return self.post_submit_add()
@@ -62,13 +61,13 @@ class Games(pages.Page):
             raise bottle.HTTPError(404)
 
     def get_edit(self):
-        if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
-            return bottle.HTTPError(404)
+        if not pages.auth_dispatcher.organizer():
+            raise bottle.HTTPError(404)
         with modules.dbutils.dbopen() as db:
             game_id = bottle.request.query.get('edit')
             modules.dbutils.get(db).game(game_id)
             if len(db.last()) == 0:
-                return bottle.HTTPError(404)
+                raise bottle.HTTPError(404)
             game = db.last()[0]
             game['city'] = modules.dbutils.get(db).city(game['city_id'])[0]
             game['court'] = modules.dbutils.get(db).court(game['court_id'])[0]
@@ -89,18 +88,18 @@ class Games(pages.Page):
                 game['subscribed'] = {'count': len(db.last()), 'users': db.last()}
             else:
                 game['subscribed'] = {'count': 0, 'users': list()}
-            return pages.Template('editgame', game=game, sports=sports,
+            return pages.PageBuilder('editgame', game=game, sports=sports,
                                   game_types=game_types, cities=cities, courts=courts)
 
     def get_add(self):
-        if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
+        if not pages.auth_dispatcher.organizer():
             return bottle.HTTPError(404)
         with modules.dbutils.dbopen() as db:
             sports = db.execute("SELECT sport_id, title FROM sport_types")
             game_types = db.execute("SELECT type_id, sport_type, title FROM game_types")
             cities = db.execute("SELECT city_id, title FROM cities")
             courts = db.execute("SELECT court_id, city_id, title FROM courts")
-            return pages.Template("addgame", sports=sports,
+            return pages.PageBuilder("addgame", sports=sports,
                                   game_types=game_types, cities=cities, courts=courts)
 
     def get_game_id(self):
@@ -119,7 +118,7 @@ class Games(pages.Page):
             game['datetime'] = (
                 beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
             subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
-            if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
+            if pages.auth_dispatcher.loggedin() and str(pages.auth_dispatcher.getuserid()) in set(subscribed):
                 game['is_subscribed'] = True
             else:
                 game['is_subscribed'] = False
@@ -130,14 +129,13 @@ class Games(pages.Page):
                 game['subscribed'] = {'count': len(db.last()), 'users': db.last()}
             else:
                 game['subscribed'] = {'count': 0, 'users': list()}
-            return pages.Template('game', game=game, standalone=True)
+            return pages.PageBuilder('game', game=game, standalone=True)
 
-    @pages.setlogin
     def get(self):
         if 'edit' in bottle.request.query:
             return self.get_edit()
         if 'delete' in bottle.request.query:
-            if not pages.loggedin() or not 0 < pages.getadminlevel() <= 2:
+            if not pages.auth_dispatcher.organizer():
                 return bottle.HTTPError(404)
             with modules.dbutils.dbopen() as db:
                 db.execute("DELETE FROM games WHERE game_id={}".format(bottle.request.query.get('delete')))
@@ -162,7 +160,7 @@ class Games(pages.Page):
                 game['datetime'] = (
                     beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
                 subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
-                if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
+                if pages.auth_dispatcher.loggedin() and str(pages.auth_dispatcher.getuserid()) in set(subscribed):
                     game['is_subscribed'] = True
                 else:
                     game['is_subscribed'] = False
@@ -174,7 +172,7 @@ class Games(pages.Page):
                 else:
                     game['subscribed'] = {'count': 0, 'users': list()}
                 games.append(game)
-            return pages.Template('games', games=games, sports=sports)
+            return pages.PageBuilder('games', games=games, sports=sports)
 
     get.route = '/games'
     post.route = get.route

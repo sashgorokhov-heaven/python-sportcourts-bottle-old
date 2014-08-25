@@ -2,8 +2,7 @@ import pages
 
 
 class Index(pages.Page):
-    @pages.setlogin
     def get(self):
-        return pages.Template('index')
+        return pages.PageBuilder('index')
 
     get.route = '/'

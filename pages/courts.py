@@ -22,10 +22,10 @@ class Courts(pages.Page):
             sql = "SELECT game_id FROM games WHERE (city_id='{}' AND court_id='{}') AND datetime>NOW() ORDER BY datetime ASC LIMIT 1;".format(
                 court['city']['city_id'], court_id)
             db.execute(sql)
-            template = pages.Template('courts', court=court)
+            page = pages.PageBuilder('courts', court=court)
             if len(db.last()) > 0:
-                template.add_parameter('game', self.get_game_by_id(db, db.last()[0][0]))
-            return template
+                page.add_param('game', self.get_game_by_id(db, db.last()[0][0]))
+            return page
 
     def get_game_by_id(self, db, game_id:int) -> dict:
         game = dbutils.get(db).game(game_id)[0]
@@ -39,7 +39,7 @@ class Courts(pages.Page):
         game['datetime'] = (
             beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
         subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
-        if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
+        if pages.auth_dispatcher.loggedin() and str(pages.auth_dispatcher.getuserid()) in set(subscribed):
             game['is_subscribed'] = True
         else:
             game['is_subscribed'] = False
@@ -56,34 +56,29 @@ class Courts(pages.Page):
         with dbutils.dbopen() as db:
             sport_types = db.execute("SELECT * FROM sport_types", dbutils.dbfields['sport_types'])
             cities = db.execute("SELECT * FROM cities", dbutils.dbfields['cities'])
-            return pages.Template('addcourt', sport_types=sport_types, cities=cities)
+            return pages.PageBuilder('addcourt', sport_types=sport_types, cities=cities)
 
     def get_edit(self):
         with dbutils.dbopen() as db:
             court_id = bottle.request.query.get('edit')
             court = dbutils.get(db).court(court_id)[0]
-
             sport_types = db.execute("SELECT * FROM sport_types", dbutils.dbfields['sport_types'])
             cities = db.execute("SELECT * FROM cities", dbutils.dbfields['cities'])
-
             court_sport_types = list(
                 filter(lambda x: x != '', map(lambda x: x.strip(), court['sport_types'].split(','))))
             court['sport_types'] = list()
             for sport_id in court_sport_types:
                 court['sport_types'].append(dbutils.get(db).sport_type(sport_id)[0])
-
             court['city'] = dbutils.get(db).city(court['city_id'])[0]
             court.pop('city_id')
+            return pages.PageBuilder('editcourt', sport_types=sport_types, cities=cities, court=court)
 
-            return pages.Template('editcourt', sport_types=sport_types, cities=cities, court=court)
-
-    @pages.setlogin
     def get(self):
         if 'court_id' in bottle.request.query:
             return self.get_court_id()
-        if 'add' in bottle.request.query and 0 < pages.getadminlevel() <= 2:
+        if 'add' in bottle.request.query and pages.auth_dispatcher.organizer():
             return self.get_add()
-        if 'edit' in bottle.request.query and 0 < pages.getadminlevel() <= 2:
+        if 'edit' in bottle.request.query and pages.auth_dispatcher.organizer():
             return self.get_edit()
         raise bottle.HTTPError(404)
 
@@ -143,10 +138,9 @@ class Courts(pages.Page):
         raise bottle.redirect('/courts?court_id={}'.format(params['court_id']))
 
     def post(self):
-        if 'submit_add' in bottle.request.forms and 0 < pages.getadminlevel() <= 2:
+        if 'submit_add' in bottle.request.forms and pages.auth_dispatcher.organizer():
             self.post_submit_add()
-
-        if 'submit_edit' in bottle.request.forms and 0 < pages.getadminlevel() <= 2:
+        if 'submit_edit' in bottle.request.forms and pages.auth_dispatcher.organizer():
             self.post_submit_edit()
         raise bottle.HTTPError(404)
 

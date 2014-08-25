@@ -1,7 +1,6 @@
 import bottle
 
 from modules import dbutils
-import modules
 import pages
 
 
@@ -17,7 +16,8 @@ class Activate(pages.Page):
             user_id = db.last()[0][0]
             db.execute("UPDATE users SET activated={} WHERE user_id={}".format(1, user_id))
             db.execute("DELETE FROM activation WHERE user_id={}".format(user_id))
-            bottle.response.set_cookie('activated', 1, modules.config['secret'])
-            raise bottle.redirect('/auth')
+            db.execute("SELECT email, passwd FROM users WHERE user_id={}".format(user_id))
+            pages.auth_dispatcher.login(*db.last()[0])
+            raise bottle.redirect('/profile')
 
     get.route = '/activate'

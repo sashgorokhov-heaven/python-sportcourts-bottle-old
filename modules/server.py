@@ -11,7 +11,7 @@ import pages
 
 @bottle.error(404)
 def error404(error):
-    return pages.Template('404', login=True).template()
+    return pages.PageBuilder('404').template()
 
 
 application = bottle.default_app()
