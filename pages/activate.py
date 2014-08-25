@@ -1,6 +1,6 @@
 import bottle
 
-from modules import dbutils
+from modules import dbutils, utils
 import pages
 
 
@@ -18,6 +18,7 @@ class Activate(pages.Page):
             db.execute("DELETE FROM activation WHERE user_id={}".format(user_id))
             db.execute("SELECT email, passwd FROM users WHERE user_id={}".format(user_id))
             pages.auth_dispatcher.login(*db.last()[0])
+            utils.write_notification(user_id, "Ваш профиль успешно активирован!")
             raise bottle.redirect('/profile')
 
     get.route = '/activate'
