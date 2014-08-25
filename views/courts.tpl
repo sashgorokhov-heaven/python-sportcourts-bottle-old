@@ -37,17 +37,15 @@
               </table>
               <table class="table">
                 <tr>
+                  <td colspan="2"><a href="http://sportcourts.ru/games?game_id={{game_id}}">Ближайшая игра</a></td>
+                </tr>
+                <tr>
                   <td colspan="2">
-                    <a href="http://sportcourts.ru/games?game_id={{game_id}}">Ближайшая игра</a>
                     <div class="progress">
                       <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
                           <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
                       </div>
                     </div>
-                    <p>{{game['datetime'][0]}}</p>
-                    <p>{{game['datetime'][1]}}</p>
-                    <p>{{game['datetime'][2]}}</p>
-                    <p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
                   </td>
                 </tr>
               </table>

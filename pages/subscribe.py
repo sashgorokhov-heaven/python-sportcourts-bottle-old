@@ -5,13 +5,13 @@ import modules.dbutils
 
 
 class Subscribe(pages.Page):
-    def get(self):
+    def post(self):
         """
         game_id
         [unsubscribe]
         [fromedit]
         """
-        params = {i: bottle.request.query.get(i) for i in bottle.request.query}
+        params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT subscribed FROM games WHERE game_id={}".format(params['game_id']))
             if len(db.last()) == 0:
@@ -41,4 +41,4 @@ class Subscribe(pages.Page):
                 raise bottle.redirect('/games?edit={}'.format(params['game_id']))
             return ''
 
-    get.route = '/subscribe'
+    post.route = '/subscribe'

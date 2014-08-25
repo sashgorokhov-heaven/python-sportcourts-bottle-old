@@ -3,6 +3,7 @@ import os
 from PIL import Image
 import bottle
 
+from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
 from modules import dbutils
 
@@ -23,8 +24,33 @@ class Courts(pages.Page):
             db.execute(sql)
             template = pages.Template('courts', court=court)
             if len(db.last()) > 0:
-                template.add_parameter('game_id', db.last()[0][0])
+                template.add_parameter('game', self.get_game_by_id(db, db.last()[0][0]))
             return template
+
+    def get_game_by_id(self, db, game_id:int) -> dict:
+        game = dbutils.get(db).game(game_id)[0]
+        game['city'] = dbutils.get(db).city(game['city_id'])[0]
+        game['court'] = dbutils.get(db).court(game['court_id'])[0]
+        game['game_type'] = dbutils.get(db).game_type(game['game_type'])[0]
+        game['sport_type'] = dbutils.get(db).sport_type(game['sport_type'])[0]
+        game.pop('city_id')
+        game.pop('court_id')
+        dbutils.strdates(game)
+        game['datetime'] = (
+            beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
+        subscribed = list(filter(lambda x: x != '', map(lambda x: x.strip(), game['subscribed'].split(','))))
+        if pages.loggedin() and str(pages.getuserid()) in set(subscribed):
+            game['is_subscribed'] = True
+        else:
+            game['is_subscribed'] = False
+        if len(subscribed) > 0:
+            sql = "SELECT user_id, first_name, last_name, phone FROM users WHERE user_id IN ({})".format(
+                ','.join(subscribed))
+            db.execute(sql, ['user_id', 'first_name', 'last_name', 'phone'])
+            game['subscribed'] = {'count': len(db.last()), 'users': db.last()}
+        else:
+            game['subscribed'] = {'count': 0, 'users': list()}
+        return game
 
     def get_add(self):
         with dbutils.dbopen() as db:
