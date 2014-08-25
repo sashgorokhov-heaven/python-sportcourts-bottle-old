@@ -18,6 +18,7 @@
     	        	</div>
 		
     	        	<div class="modal-body">
+                        <div id="auth_button" class="flat_button button_wide" onclick="window.authBtnClick();">Войти через ВКонтакте</div>
     	        	    <!-- The form is placed inside the body of modal -->
     	        	    <form id="loginForm" method="post" class="form-horizontal" action="/auth">
     	        	        <div class="form-group" id="passwd">
