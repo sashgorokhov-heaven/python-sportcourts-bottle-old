@@ -82,17 +82,46 @@
                 <div class="form-group">
                   <label for="court_add_amount" class="col-sm-2 control-label">Аренда</label>
                   <div class="col-sm-10">
-                    <input type="text" value="{{court['cost']}}" name="cost" id="court_add_amount" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0); width:150%;">
+                    <input type="text" value="" name="cost" id="court_add_amount" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0); width:150%;">
                     <div id="court_add_slider"></div>
                   </div>
                 </div>
+                <script type="text/javascript">
+                  $(function () {
+                      $("#court_add_slider").slider({
+                          range: true,
+                          values: [ {{court['cost']}}, {{court['cost']}} ],
+                          min: 0,
+                          max: 10000,
+                          step: 50,
+                          slide: function (event, ui) {
+                              $("#court_add_amount").val("от " + ui.values[0] + " до " + ui.values[1] + " руб. в час");
+                          }
+                      });
+                      $("#court_add_amount").val("от " + $("#court_add_slider").slider("values", 0) + " до " + $("#court_add_slider").slider("values", 1) + " руб. в час");
+                  });
+                </script>
                 <div class="form-group">
                   <label for="court_add_count" class="col-sm-2 control-label">Вместимость</label>
                   <div class="col-sm-10">
-                    <input type="text" value="{{court['max_players']}}" name="max_players" id="court_add_count" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                    <input type="text" value="" name="max_players" id="court_add_count" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                     <div id="court_add_slider1"></div>
                   </div>
                 </div>
+                <script type="text/javascript">
+                  $(function () {
+                      $("#court_add_slider1").slider({
+                          value: {{court['max_players']}},
+                          min: 8,
+                          max: 60,
+                          step: 1,
+                          slide: function (event, ui) {
+                              $("#court_add_count").val(ui.value);
+                          }
+                      });
+                      $("#court_add_count").val($("#court_add_slider1").slider("value"));
+                  });
+                </script>
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Время работы</label>
                   <div class="col-sm-10">
