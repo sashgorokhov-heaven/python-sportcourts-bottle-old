@@ -29,26 +29,23 @@
                   <td><strong>Аренда:</strong></td>
                   <td>от {{court['cost']}} руб./час</td>
                 </tr>
-                % if defined("game_id"):
-                <tr>
-                  <td colspan="2"><a href="http://sportcourts.ru/games?game_id={{game_id}}">Ближайшая игра</a></td>
-                </tr>
-                % end
               </table>
-              <table class="table">
-                <tr>
-                  <td colspan="2"><a href="http://sportcourts.ru/games?game_id={{game_id}}">Ближайшая игра</a></td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <div class="progress">
-                      <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
-                          <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
+              % if defined("game"):
+                <table class="table">
+                  <tr>
+                    <td colspan="2"><a href="http://sportcourts.ru/games?game_id={{game['game_id']}}">Ближайшая игра</a></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <div class="progress">
+                        <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
+                            <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
+                    </td>
+                  </tr>
+                </table>
+              % end
             </div>
           </div>
         </div>
