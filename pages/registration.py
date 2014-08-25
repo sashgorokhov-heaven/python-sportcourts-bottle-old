@@ -125,7 +125,7 @@ class Registration(pages.Page):
             token = modules.generate_token()
             sendmail(
                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
-                    token), params['email'])
+                    token), params['email'], 'Активация профиля')
             db.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
             write_notification(user_id, "Проверьте свою почту чтобы активировать профиль!", 1)
             raise bottle.redirect('/profile')

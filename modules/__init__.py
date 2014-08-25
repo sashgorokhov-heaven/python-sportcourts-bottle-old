@@ -31,12 +31,12 @@ def generate_token():
 config['secret'] = _generate_secret()
 
 
-def sendmail(message:str, to:str):
+def sendmail(message:str, to:str, subject:str='Уведомление'):
     try:
         me = config['email']['login']
         you = to
         text = str(message)
-        subj = 'Уведомление | Sportcourts | Спортивные площадки'
+        subj = '{} | Sportcourts | Спортивные площадки'.format(subject)
         server = "smtp.gmail.com"
         port = 25
         user_name = config['email']['login']
