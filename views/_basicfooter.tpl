@@ -39,9 +39,9 @@
     	        	        <div class="form-group">
     	        	            <div class="col-sm-10 col-sm-offset-2">
     	        	                <button type="submit" class="btn btn-default" name="submit_reg">Войти</button> &nbsp; или &nbsp; <a href="/registration">		Зарегистрироваться</a>
+    	        	                <!--<br>
     	        	                <br>
-    	        	                <br>
-    	        	                <a href="/recover">Восстановить пароль</a>
+    	        	                <a href="/recover">Восстановить пароль</a> -->
     	        	            </div>
     	        	        </div>
     	        	    </form>
