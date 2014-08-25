@@ -58,7 +58,11 @@
             </div>
           </div>
           <div class="col-md-4">
-            <p class="lead">{{court['title']}}</p>
+            <p class="lead">{{court['title']}}
+              % if userinfo['organizer']:
+              <small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/courts?edit={{court['court_id']}}">Ред.</a></small>
+              % end
+            </p>
             <div class="table-responsive">
               <table class="table">
                 <tr>
