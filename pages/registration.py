@@ -7,9 +7,9 @@ import bottle
 
 import modules
 import modules.dbutils
-from modules.utils import write_notification
+from modules.utils import write_notification, sendmail
 import pages
-from modules import vk, sendmail
+from modules import vk
 
 
 class Registration(pages.Page):
