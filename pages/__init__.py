@@ -134,7 +134,7 @@ class _PageController:
         sys.modules[module_name] = reloaded
         page_class = self._search_module(reloaded, module_name)
         if page_class:
-            self._executors[name].set_page(page_class())
+            self._executors[page_class.__name__].set_page(page_class())
 
     def _search_module(self, module, module_name:str) -> type:
         page_class = None
@@ -147,7 +147,7 @@ class _PageController:
         if not page_class:
             modules.logging.warn('Subclass of Page is not found in <{}>', module_name)
             return None
-        if page_class.__class__.__name__ not in self._executors:
+        if page_class.__name__ not in self._executors:
             return page_class
 
     def loadpages(self):
