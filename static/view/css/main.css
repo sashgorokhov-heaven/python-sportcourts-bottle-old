@@ -81,3 +81,26 @@
 .panel-body a{
     font-size: 14px;
 }
+
+#auth_button{
+    background-color: rgb(99, 131, 168);
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    font-family: tahoma, arial, verdana, sans-serif, 'Lucida Sans';
+    font-size: 11px;
+    height: 26px;
+    line-height: 13px;
+    padding-bottom: 7px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 6px;
+    text-align: center;
+    text-decoration: none solid rgb(255, 255, 255);
+    vertical-align: top;
+    white-space: nowrap;
+    width: 168px;
+    zoom: 1;
+    margin: 0;
+    margin-bottom: 0px;
+    clear: both;
+}
