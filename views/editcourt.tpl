@@ -136,15 +136,6 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="first_name" class="col-sm-2 control-label">Размер</label>
-                  <div class="col-sm-10">
-                    <input type="text" value="{{court['size']}}" class="form-control" name="size" placeholder="35х49"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите размер площадки" />
-                    <span id="valid"></span>
-                  </div>
-                </div>
-                <div class="form-group">
                   <label for="court_add_count" class="col-sm-2 control-label">Описание</label>
                   <div class="col-sm-10">
                     <textarea class="form-control" name="description" rows="3">{{court['description']}}</textarea>
