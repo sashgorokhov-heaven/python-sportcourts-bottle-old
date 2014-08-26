@@ -104,3 +104,7 @@
     margin-bottom: 0px;
     clear: both;
 }
+
+.profile-avatar{
+    max-width:300px;
+}
