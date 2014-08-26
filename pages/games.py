@@ -48,17 +48,16 @@ class Games(pages.Page):
                 ', '.join(['{}="{}"'.format(i, params[i]) for i in params]),
                 game_id)
             db.execute(sql)
-            return bottle.redirect('/games?game_id={}'.format(game_id))
+            raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
-        if pages.auth_dispatcher.organizer():
+        if not pages.auth_dispatcher.organizer():
             raise bottle.HTTPError(404)
         if 'submit_add' in bottle.request.forms:
             return self.post_submit_add()
         if 'submit_edit' in bottle.request.forms:
             return self.post_submit_edit()
-        else:
-            raise bottle.HTTPError(404)
+        raise bottle.HTTPError(404)
 
     def get_edit(self):
         if not pages.auth_dispatcher.organizer():

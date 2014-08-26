@@ -1,5 +1,6 @@
 import datetime
 import smtplib
+import threading
 
 from modules import dbutils, config
 
@@ -77,3 +78,12 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
     except Exception as e:
         return False
     return True
+
+
+def threaded(func):
+    def wrapper(*args, **kwargs):
+        thread = threading.Thread(target=func, args=args, kwargs=kwargs, name=func.__qualname__)
+        thread.start()
+        return thread
+
+    return wrapper

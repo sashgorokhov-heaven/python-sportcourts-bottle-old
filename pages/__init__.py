@@ -11,6 +11,7 @@ import modules.logging
 from modules.utils import get_notifycount
 
 
+
 # +-> _Executor.execute -> page.execute
 # bottle routing -|
 # +-> _Executor.execute -> page.execute
@@ -68,7 +69,8 @@ class _Executor:
                 raise e
             except Exception as e:
                 try:
-                    modules.logging.error(e.__class__.__name__ + ': {}', e.args[0] if len(e.args) > 0 else '')
+                    modules.logging.error(self.name + ' - ' + e.__class__.__name__ + ': {}',
+                                          e.args[0] if len(e.args) > 0 else '')
                     modules.logging.info(modules.extract_traceback(e))
                 except Exception as er:
                     modules.logging.error(

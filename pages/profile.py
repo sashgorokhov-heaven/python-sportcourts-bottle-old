@@ -36,6 +36,9 @@ class Profile(pages.Page):
 
     def get(self):
         if 'user_id' in bottle.request.query:
+            if pages.auth_dispatcher.loggedin() and int(
+                    bottle.request.query.get('user_id')) == pages.auth_dispatcher.getuserid():
+                raise bottle.redirect('/profile')
             return self.get_user_id()
         elif 'edit' in bottle.request.query and pages.auth_dispatcher.loggedin():
             return self.get_edit()
@@ -54,7 +57,7 @@ class Profile(pages.Page):
                 else:
                     activated = True
                 return pages.PageBuilder('profile', user=user, activated=activated)
-        raise bottle.HTTPError(404)
+        raise bottle.redirect('/auth')
 
     def post(self):
         if not pages.auth_dispatcher.loggedin():

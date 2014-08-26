@@ -8,21 +8,21 @@
                     <div class="alert alert-info fade in">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">х</button>
                         <small><p>Информационное уведомление | {{notification['datetime']}}</p></small>
-                        <p class="lead">{{notification['text']}}</p>
+                        <p class="lead">{{!notification['text']}}</p>
                     </div>
                 % end
                 % if notification['level']==1:
                     <div class="alert alert-warning fade in">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">х</button>
                         <small><p>Предупреждение | {{notification['datetime']}}</p></small>
-                        <p class="lead">{{notification['text']}}</p>
+                        <p class="lead">{{!notification['text']}}</p>
                     </div>
                 % end
                 % if notification['level']==2:
                     <div class="alert alert-danger fade in">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">х</button>
                         <small><p>Внимание | {{notification['datetime']}}</p></small>
-                        <p class="lead">{{notification['text']}}</p>
+                        <p class="lead">{{!notification['text']}}</p>
                     </div>
                 % end
             </div>
