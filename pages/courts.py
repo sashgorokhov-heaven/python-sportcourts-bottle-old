@@ -90,7 +90,6 @@ class Courts(pages.Page):
         params['sport_types'] = ','.join(bottle.request.forms.getall('sport_type'))
         params.pop('sport_type')
         params['phone'] = params['phone'] if params['phone'] else 'Не указан'
-        params['cost'] = 1500  # FIXIT
         sql = 'INSERT INTO courts ({dbkeylist}) VALUES ({dbvaluelist})'
         keylist = list(params.keys())
         sql = sql.format(
@@ -119,7 +118,6 @@ class Courts(pages.Page):
         params['sport_types'] = ','.join(bottle.request.forms.getall('sport_type'))
         params.pop('sport_type')
         params['phone'] = params['phone'] if params['phone'] else 'Не указан'
-        params['cost'] = 1500  # FIXIT
         sql = 'UPDATE courts SET {} WHERE court_id={}'.format(
             ', '.join(['{}="{}"'.format(i, params[i]) for i in params]),
             params['court_id'])

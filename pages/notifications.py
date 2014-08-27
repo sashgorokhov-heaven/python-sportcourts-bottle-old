@@ -19,6 +19,6 @@ class Notifications(pages.Page):
         for i in notifications:
             modules.dbutils.strdates(i)
             i['datetime'] = '{} {}'.format(beautifuldate(i['datetime']), beautifultime(i['datetime']))
-        return pages.PageBuilder("notifications", notifications=notifications)
+        return pages.PageBuilder("notifications", notifications=notifications, header_name='notifications_head')
 
     get.route = '/notifications'
