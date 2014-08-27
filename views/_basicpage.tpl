@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-    % setdefault("header_name", '_basichead')
-	% include(header_name, title=title)
+	% include("_basichead", title=title)
+	% if defined("header_name"):
+	    % include(header_name)
+	% end
   	</head>
   	<body onload="initialize_map()">
     	% include("_basicnavbar", loggedin=loggedin, userinfo=userinfo)

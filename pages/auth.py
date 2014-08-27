@@ -25,8 +25,7 @@ class Authorize(pages.Page):
         response = response.read().decode()
         response = bottle.json_loads(response)
         if 'error' in response:
-            return pages.PageBuilder('auth', error=response['error'],
-                                     error_description=response['error_description'])
+            return pages.PageBuilder('auth', error=response['error'], error_description=response['error_description'])
         access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
         with dbutils.dbopen() as db:
             db.execute("SELECT passwd FROM users WHERE email='{}'".format(email))
@@ -37,8 +36,7 @@ class Authorize(pages.Page):
             try:
                 pages.auth_dispatcher.login(email, password)
             except ValueError:
-                return pages.PageBuilder('auth', error='Ошибка авторизации',
-                                         error_description='Чтото не так')
+                return pages.PageBuilder('auth', error='Ошибка авторизации', error_description='Чтото не так')
             raise bottle.redirect('/profile')
 
     def post(self):

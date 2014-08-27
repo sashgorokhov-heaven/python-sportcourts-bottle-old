@@ -12,6 +12,7 @@ from modules.utils import get_notifycount
 
 
 
+
 # +-> _Executor.execute -> page.execute
 # bottle routing -|
 # +-> _Executor.execute -> page.execute
@@ -179,9 +180,8 @@ class _AuthDispatcher:
 
 
 class PageBuilder:
-    def __init__(self, template_name:str, header_name:str='_basichead', **kwargs):
+    def __init__(self, template_name:str, **kwargs):
         self._template_name = template_name
-        self._header_name = header_name
         self._kwargs = kwargs
         auth_dispatcher.set_user(self)
 
@@ -189,7 +189,9 @@ class PageBuilder:
         self._kwargs[name] = value
 
     def template(self):
-        return bottle.template(self._template_name, header_name=self._header_name, **self._kwargs)
+        if os.path.exists(os.path.join(modules.config['server_root'], 'views', self._template_name + '_head.tpl')):
+            return bottle.template(self._template_name, header_name=self._template_name + '_head.tpl', **self._kwargs)
+        return bottle.template(self._template_name, **self._kwargs)
 
 
 controller = _PageController()

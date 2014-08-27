@@ -25,7 +25,7 @@ class Games(pages.Page):
             db.execute(sql)
             if len(db.last()) > 0:
                 return pages.PageBuilder('404', error='Обнаружен конфликт',
-                                      error_description='В это время игра уже идет')
+                                         error_description='В это время игра уже идет')
             sql = 'INSERT INTO games ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
             sql = sql.format(
@@ -87,8 +87,8 @@ class Games(pages.Page):
                 game['subscribed'] = {'count': len(db.last()), 'users': db.last()}
             else:
                 game['subscribed'] = {'count': 0, 'users': list()}
-            return pages.PageBuilder('editgame', game=game, sports=sports,
-                                  game_types=game_types, cities=cities, courts=courts)
+            return pages.PageBuilder('editgame', game=game, sports=sports, game_types=game_types, cities=cities,
+                                     courts=courts)
 
     def get_add(self):
         if not pages.auth_dispatcher.organizer():
@@ -98,8 +98,7 @@ class Games(pages.Page):
             game_types = db.execute("SELECT type_id, sport_type, title FROM game_types")
             cities = db.execute("SELECT city_id, title FROM cities")
             courts = db.execute("SELECT court_id, city_id, title FROM courts")
-            return pages.PageBuilder("addgame", sports=sports,
-                                  game_types=game_types, cities=cities, courts=courts)
+            return pages.PageBuilder("addgame", sports=sports, game_types=game_types, cities=cities, courts=courts)
 
     def get_game_id(self):
         with modules.dbutils.dbopen() as db:

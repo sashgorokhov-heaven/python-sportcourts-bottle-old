@@ -32,10 +32,8 @@ class Registration(pages.Page):
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT email FROM users WHERE vkuserid={}".format(data['vkuserid']))
             if len(db.last()) > 0:
-                return pages.PageBuilder('auth',
-                                         error='Вы уже зарегестрированы в системе',
-                                         error_description='Используйте пароль, чтобы войти',
-                                         email=db.last()[0][0])
+                return pages.PageBuilder('auth', error='Вы уже зарегестрированы в системе',
+                                         error_description='Используйте пароль, чтобы войти', email=db.last()[0][0])
         data['city'] = user['city']['title'] if 'city' in user else None
         data['byvk'] = True
         data['first_name'] = user['first_name']
@@ -53,7 +51,7 @@ class Registration(pages.Page):
         Image.open(fullname).crop().resize((200, 200)).save(fullname)
         data['photo'] = 'http://sportcourts.ru/avatars/temp{}'.format(user['id'])
         data = {i: data[i] for i in data if data[i]}
-        return pages.PageBuilder('registration', cities=cities, **data)
+        return pages.PageBuilder('registration', cities=cities)
 
     def get(self):
         if pages.auth_dispatcher.loggedin():
