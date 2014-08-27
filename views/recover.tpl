@@ -10,7 +10,7 @@
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
                 <div class="container theme-showcase">
                   <br>
-                  <p class="bg-danger" style="padding:20px;">Для восстановления пароля, пожалуйста, введите адрес совей электронной почты.</p>
+                  <p class="bg-danger" style="padding:20px;">Для восстановления пароля, пожалуйста, введите адрес своей электронной почты.</p>
                 </div>
                 <div class="form-group">
                   <label for="email" class="col-sm-2 control-label">Email</label>

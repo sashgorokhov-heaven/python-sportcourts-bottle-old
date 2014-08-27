@@ -1,5 +1,6 @@
 import datetime
 import smtplib
+import email.mime.text
 import threading
 
 from modules import dbutils, config
@@ -64,7 +65,7 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
         port = 25
         user_name = config['email']['login']
         user_passwd = config['email']['password']
-        msg = smtplib.email.mime.text.MIMEText(text, _charset="utf-8")
+        msg = email.mime.text.MIMEText(text, _charset="utf-8")
         msg['Subject'] = subj
         msg['From'] = me
         msg['To'] = you
@@ -76,6 +77,7 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
         s.sendmail(me, you, msg.as_string())
         s.quit()
     except Exception as e:
+        print(e.__class__.__name__, e.args)
         return False
     return True
 

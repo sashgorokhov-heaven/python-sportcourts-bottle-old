@@ -20,7 +20,8 @@ class Recover(pages.Page):
                 return pages.PageBuilder('/auth', error='Неверный email.',
                                          error_description='Пользователь с таким email не найден.')
             utils.sendmail('Ваш пароль: {}'.format(db.last()[0][1]), email, 'Восстановление пароля')
-            return pages.PageBuilder('/auth', error='Проверьте email',
+            utils.write_notification(db.last()[0][0], 'Вы недавно восстанавливливали пароль', 1)
+            return pages.PageBuilder('auth', error='Проверьте email',
                                      error_description='Вам было отправлено письмо с дальнейшими инструкциями.')
 
 
