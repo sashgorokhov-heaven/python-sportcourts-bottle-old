@@ -18,8 +18,17 @@ class Profile(pages.Page):
                 raise bottle.HTTPError(404)
             user = user[0]
             modules.dbutils.strdates(user)
-            user['bdate'] = str(round((datetime.date.today() - datetime.date(
-                *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
+            age = str(round((datetime.date.today() - datetime.date(
+                *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926))
+            postfix = ''
+            prefix = int(age[-1])
+            if prefix == 0 or 5 <= prefix <= 9:
+                postfix = 'лет'
+            elif prefix == 1:
+                postfix = 'год'
+            elif 2 <= prefix <= 4:
+                postfix = 'года'
+            user['bdate'] = age + ' ' + postfix
             user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
             user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
             user.pop('city_id')
@@ -46,8 +55,17 @@ class Profile(pages.Page):
             with modules.dbutils.dbopen() as db:
                 user = modules.dbutils.get(db).user(pages.auth_dispatcher.getuserid())[0]
                 modules.dbutils.strdates(user)
-                user['bdate'] = str(round((datetime.date.today() - datetime.date(
-                    *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926)) + ' лет'
+                age = str(round((datetime.date.today() - datetime.date(
+                    *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926))
+                postfix = ''
+                prefix = int(age[-1])
+                if prefix == 0 or 5 <= prefix <= 9:
+                    postfix = 'лет'
+                elif prefix == 1:
+                    postfix = 'год'
+                elif 2 <= prefix <= 4:
+                    postfix = 'года'
+                user['bdate'] = age + ' ' + postfix
                 user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
                 user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
                 user.pop('city_id')
