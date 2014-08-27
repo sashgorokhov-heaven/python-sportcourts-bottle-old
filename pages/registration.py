@@ -76,6 +76,7 @@ class Registration(pages.Page):
         params['middle_name'] = bottle.request.forms.get('middle_name')
         params['last_name'] = bottle.request.forms.get('last_name')
         params['city'] = bottle.request.forms.get('city')
+        params['phone'] = params['phone'] if params['phone'] else 'Не указан'
         city_title = params['city']
         params.pop('city')
 
