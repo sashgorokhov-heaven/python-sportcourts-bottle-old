@@ -162,7 +162,8 @@
                 <div class="form-group">
                   <label for="phone" class="col-sm-2 control-label">Телефон</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value="" data-toggle="tooltip" data-placement="bottom" title="Телефон необходим для координаторов игр"></input>
+                    <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value="" data-toggle="tooltip" data-placement="bottom" title="Телефон необходим для координаторов игр" data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите телефон"></input>
                     <span id="valid"></span>
                   </div>
                 </div>
