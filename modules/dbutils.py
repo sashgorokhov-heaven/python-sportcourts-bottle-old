@@ -5,8 +5,8 @@ import pymysql
 import modules
 
 
-class dbopen:
-    def __enter__(self):
+class DBConnection:
+    def __init__(self):
         self._db = pymysql.connect(host=modules.config['api']['db']['dbhost'],
                                    user=modules.config['api']['db']['dbuser'],
                                    passwd=modules.config['api']['db']['dbpasswd'],
@@ -15,11 +15,6 @@ class dbopen:
         )
         self._cursor = self._db.cursor()
         self._last = None
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self._cursor.close()
-        self._db.close()
 
     def execute(self, query:str, mapnames:list=None) -> list:
         """
@@ -40,6 +35,18 @@ class dbopen:
     def last(self) -> list:
         return self._last
 
+    def close(self):
+        self._cursor.close()
+        self._db.close()
+
+
+class dbopen:
+    def __enter__(self):
+        self._db = DBConnection()
+        return self._db
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._db.close()
 
 def _setdbfields():
     with dbopen() as db:
