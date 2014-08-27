@@ -2,8 +2,12 @@ import json
 import urllib.request
 import urllib.parse
 
+import bottle
 
-def exec(token:str, method:str, **kwargs):
+import modules
+
+
+def exec(token:str, method:str, **kwargs) -> dict:
     params = list()
     for key in kwargs:
         if len(str(kwargs[key])) != 0:
@@ -19,7 +23,29 @@ def exec(token:str, method:str, **kwargs):
     return response['response']
 
 
-def convert_date(vkdate:str):
+def auth_code(code:str, redirec_page:str) -> (str, int, str):
+    url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/auth"
+    url = url.format(modules.config['api']['vk']['appid'],
+                     modules.config['api']['vk']['secret'], code,
+                     modules.config['server']['ip'], modules.config['server']['port'])
+    try:
+        response = urllib.request.urlopen(url)
+    except Exception as e:
+        e = ValueError()
+        e.vkerror = dict()
+        e.vkerror['error'] = "Auth error"
+        e.vkerror['error_description'] = "Unauthorized"
+        raise e
+    response = response.read().decode()
+    response = bottle.json_loads(response)
+    if 'error' in response:
+        e = ValueError()
+        e.vkerror = response
+        raise e
+    return response['access_token'], response['user_id'], response.get('email')
+
+
+def convert_date(vkdate:str) -> str:
     vkdate = vkdate.split('.')
     vkdate.reverse()
     vkdate[1] = vkdate[1] if len(vkdate[1]) == 2 else '0' + vkdate[1]
