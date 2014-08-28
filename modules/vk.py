@@ -24,7 +24,7 @@ def exec(token:str, method:str, **kwargs) -> dict:
 
 
 def auth_code(code:str, redirec_page:str) -> (str, int, str):
-    url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/auth"
+    url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}" + redirec_page
     url = url.format(modules.config['api']['vk']['appid'],
                      modules.config['api']['vk']['secret'], code,
                      modules.config['server']['ip'], modules.config['server']['port'])
