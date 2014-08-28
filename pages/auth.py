@@ -1,9 +1,6 @@
-import urllib.request
-
 import bottle
 
-import modules
-from modules import dbutils
+from modules import dbutils, vk
 import pages
 
 
@@ -17,16 +14,11 @@ class Authorize(pages.Page):
 
     def get_code(self):
         code = bottle.request.query.code
-        url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}/auth"
-        url = url.format(modules.config['api']['vk']['appid'],
-                         modules.config['api']['vk']['secret'], code,
-                         modules.config['server']['ip'], modules.config['server']['port'])
-        response = urllib.request.urlopen(url)
-        response = response.read().decode()
-        response = bottle.json_loads(response)
-        if 'error' in response:
-            return pages.PageBuilder('auth', error=response['error'], error_description=response['error_description'])
-        access_token, user_id, email = response['access_token'], response['user_id'], response.get('email')
+        try:
+            access_token, user_id, email = vk.auth_code(code, '/auth')
+        except ValueError as e:
+            return pages.PageBuilder('auth', error=e.vkerror['error'], error_description=e.vkerror['error_description'])
+
         with dbutils.dbopen() as db:
             db.execute("SELECT passwd FROM users WHERE email='{}'".format(email))
             if len(db.last()) == 0:
