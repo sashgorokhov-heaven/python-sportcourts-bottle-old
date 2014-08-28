@@ -13,6 +13,7 @@ from modules.utils import get_notifycount
 
 
 
+
 # +-> _Executor.execute -> page.execute
 # bottle routing -|
 # +-> _Executor.execute -> page.execute
@@ -69,14 +70,16 @@ class _Executor:
             except (bottle.HTTPError, bottle.HTTPResponse) as e:
                 raise e
             except Exception as e:
-                try:
-                    modules.logging.error(self.name + ' - ' + e.__class__.__name__ + ': {}',
-                                          e.args[0] if len(e.args) > 0 else '')
-                    modules.logging.info(modules.extract_traceback(e))
-                except Exception as er:
-                    modules.logging.error(
-                        'Error while handling <{}> error: {}'.format(e.__class__.__name__, er.__class__.__name__))
-                raise bottle.HTTPError(404)
+                if not modules.config['debug']:
+                    try:
+                        modules.logging.error(self.name + ' - ' + e.__class__.__name__ + ': {}',
+                                              e.args[0] if len(e.args) > 0 else '')
+                        modules.logging.info(modules.extract_traceback(e))
+                    except Exception as er:
+                        modules.logging.error(
+                            'Error while handling <{}> error: {}'.format(e.__class__.__name__, er.__class__.__name__))
+                    raise bottle.HTTPError(404)
+                raise e
 
 
 class _PageController:
