@@ -1,4 +1,5 @@
-from modules import eventslib, dbutils, utils, time
+from modules import eventslib, dbutils, time
+from models import notifications
 
 BUFFERLIFE = 60 * 30  # 15 minutes
 
@@ -11,7 +12,7 @@ class GameNotifier(eventslib.Event):
     def condition(self):
         with dbutils.dbopen() as db:
             db.execute(
-                "SELECT * FROM games WHERE datetime BETWEEN NOW() + INTERVAL 2 DAY - INTERVAL 5 MINUTE AND NOW() + INTERVAL 2 DAY + INTERVAL 5 MINUTE",
+                "SELECT * FROM games WHERE datetime BETWEEN NOW() + INTERVAL 1 DAY - INTERVAL 5 MINUTE AND NOW() + INTERVAL 1 DAY + INTERVAL 5 MINUTE",
                 dbutils.dbfields['games'])
             if len(db.last()) == 0:
                 return False
@@ -26,6 +27,11 @@ class GameNotifier(eventslib.Event):
                 continue
             for user_id in game['subscribed']:
                 if (user_id, game['game_id']) not in {i[:2] for i in self._notified}:
-                    utils.write_notification(user_id, 'До игры {} осталось два дня!'.format(game['game_id']))
+                    notifications.add(user_id, 'Завтра состоится игра "{}"<br>Не пропустите!'.format(
+                        '<a href="/games?game_id={}">#{} | {}</a>">'.format(
+                            game['game_id'],
+                            game['game_id'],
+                            game['description'])
+                    ))
                     self._notified.add((user_id, game['game_id'], time.time()))
         self._notified = set(filter(lambda x: time.time() - x[-1] < BUFFERLIFE, self._notified))
