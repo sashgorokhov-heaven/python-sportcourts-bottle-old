@@ -14,8 +14,8 @@
                     <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                     data-bv-notempty-message="Укажите вид спорта">
                       <option value="">--</option>
-                      % for sport_id, title in sports:
-                        <option value="{{sport_id}}">{{title}}</option>
+                      % for sport_type in sports:
+                          <option value="{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
                       % end
                     </select>
                   </div>
@@ -26,8 +26,8 @@
                     <select id="gametype" name="game_type" class="form-control" data-bv-notempty="true"
                     data-bv-notempty-message="Укажите тип игры">
                       <option value="">--</option>
-                      % for type_id, sport_id, title in game_types:
-                        <option value="{{type_id}}" class="{{sport_id}}">{{title}}</option>
+                      % for type in game_types:
+                        <option value="{{type['type_id']}}" class="{{type['sport_type']}}">{{type['title']}}</option>
                       % end
                     </select>
                   </div>
@@ -41,8 +41,8 @@
                     <select id="city" name="city_id" class="form-control"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите город">
-                    % for city_id, title in cities:
-                      <option value="{{city_id}}">{{title}}</option>
+                    % for city in cities:
+                      <option value="{{city['city_id']}}">{{city['title']}}</option>
                     % end
                     </select>
                     <span id="valid"></span>
@@ -55,8 +55,8 @@
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите площадку">
                       <option value="">--</option>
-                      % for court_id, city_id, title in courts:
-                      <option value="{{court_id}}" class="{{city_id}}">{{title}}</option>
+                      % for court in courts:
+                        <option value="{{court['court_id']}}" class="{{court['city_id']}}">{{court['title']}}</option>
                       % end
                     </select>
                     <small><a href="/courts?add">Создать новую...</a></small>

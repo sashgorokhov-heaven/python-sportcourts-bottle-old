@@ -1,7 +1,7 @@
 import bottle
 
 import pages
-import modules.dbutils
+from models import games, notifications
 
 
 class Subscribe(pages.Page):
@@ -9,38 +9,46 @@ class Subscribe(pages.Page):
         """
         game_id
         [unsubscribe]
-        [fromedit]
         """
         if not pages.auth_dispatcher.loggedin():
             raise bottle.HTTPError(404)
-        params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
-        with modules.dbutils.dbopen() as db:
-            db.execute("SELECT subscribed FROM games WHERE game_id={}".format(params['game_id']))
-            if len(db.last()) == 0:
-                raise bottle.HTTPError(404)
-            data = db.last()[0][0]
-            if 'unsubscribe' not in params:
-                if data:
-                    if str(pages.auth_dispatcher.getuserid()) in data:
-                        raise bottle.HTTPError(404)
-                    else:
-                        data = ','.join(data.split(',') + [str(pages.auth_dispatcher.getuserid())])
-                else:
-                    data = str(pages.auth_dispatcher.getuserid())
+        game_id = int(bottle.request.forms.get('game_id'))
+        user_id = int(pages.auth_dispatcher.getuserid())
+        unsubscribe = 'unsubscribe' in bottle.request.forms
+
+        try:
+            if unsubscribe:
+                games.unsubscribe(user_id, game_id)
             else:
-                if data:
-                    if str(pages.auth_dispatcher.getuserid()) in data:
-                        data = data.split(',')
-                        data.remove(str(pages.auth_dispatcher.getuserid()))
-                        data = ','.join(data)
-                    else:
-                        raise bottle.HTTPError(404)
-                else:
-                    raise bottle.HTTPError(404)
-            db.execute(
-                "UPDATE games SET subscribed='{}' WHERE game_id={}".format(data, params['game_id']))
-            if 'fromedit' in params:
-                raise bottle.redirect('/games?edit={}'.format(params['game_id']))
-            return ''
+                games.subscribe(user_id, game_id)
+        except ValueError:
+            pass
+
+    def get(self):
+        """
+        game_id
+        user_id
+        [unsubscribe]
+        """
+        if not pages.auth_dispatcher.organizer():
+            raise bottle.HTTPError(404)
+        game_id = int(bottle.request.query.get('game_id'))
+        user_id = int(bottle.request.query.get('user_id'))
+        unsubscribe = 'unsubscribe' in bottle.request.query
+
+        try:
+            if unsubscribe:
+                games.unsubscribe(user_id, game_id)
+            else:
+                games.subscribe(user_id, game_id)
+        except ValueError:
+            pass
+
+        notifications.add(user_id,
+                          'Вы были удалены с игры "<a href="/games?game_id={}">#{} | {}</a>"'.format(
+                              game_id, game_id,
+                              games.get_by_id(game_id, fields=['description'])['description']))
+
+        raise bottle.redirect('/games?edit={}'.format(game_id))
 
     post.route = '/subscribe'

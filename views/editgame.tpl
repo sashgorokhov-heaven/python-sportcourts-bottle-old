@@ -17,9 +17,9 @@
                         <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                         data-bv-notempty-message="Укажите вид спорта">
                           <option value="{{game['sport_type']['sport_id']}}">{{game['sport_type']['title']}}</option>
-                          % for sport_id, title in sports:
-                            % if sport_id != game['sport_type']['sport_id']:
-                              <option value="{{sport_id}}">{{title}}</option>
+                          % for sport_type in sports:
+                            % if sport_type['sport_id'] != game['sport_type']['sport_id']:
+                              <option value="{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
                             % end
                           % end
                         </select>
@@ -31,9 +31,9 @@
                         <select id="gametype" name="game_type" class="form-control" data-bv-notempty="true"
                         data-bv-notempty-message="Укажите тип игры">
                           <option value="{{game['game_type']['type_id']}}" class="{{game['game_type']['sport_type']}}">{{game['game_type']['title']}}</option>
-                          % for type_id, sport_id, title in game_types:
-                            % if type_id != game['game_type']['type_id']:
-                              <option value="{{type_id}}" class="{{sport_id}}">{{title}}</option>
+                          % for type in game_types:
+                            % if type['type_id'] != game['game_type']['type_id']:
+                              <option value="{{type['type_id']}}" class="{{type['sport_type']}}">{{type['title']}}</option>
                             % end
                           % end
                         </select>
@@ -49,9 +49,9 @@
                         data-bv-notempty="true"
                         data-bv-notempty-message="Укажите город">
                         <option value="{{game['city']['city_id']}}">{{game['city']['title']}}</option>
-                        % for city_id, title in cities:
-                            % if city_id != game['city']['city_id']:
-                              <option value="{{city_id}}">{{title}}</option>
+                        % for city in cities:
+                            % if city['city_id'] != game['city']['city_id']:
+                              <option value="{{city['city_id']}}">{{city['title']}}</option>
                             % end
                         % end
                         </select>
@@ -65,9 +65,9 @@
                         data-bv-notempty="true"
                         data-bv-notempty-message="Укажите площадку">
                           <option value="{{game['court']['court_id']}}" class="{{game['court']['city_id']}}">{{game['court']['title']}}</option>
-                          % for court_id, city_id, title in courts:
-                            % if court_id!=game['court']['court_id']:
-                              <option value="{{court_id}}" class="{{city_id}}">{{title}}</option>
+                          % for court in courts:
+                            % if court['court_id']!=game['court']['court_id']:
+                              <option value="{{court['court_id']}}" class="{{court['city_id']}}">{{court['title']}}</option>
                             % end
                           % end
                         </select>
@@ -201,7 +201,7 @@
                           <td>{{user['first_name']}}</td>
                           <td>{{user['last_name']}}</td>
                           <td>{{user['phone']}}</td>
-                          <td><a href="/subscribe?unsubscribe&fromedit&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                          <td><a href="/subscribe?&user_id={{user['user_id']}}&unsubscribe&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
                         </tr>
                         % end
                       </table>

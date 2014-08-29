@@ -12,7 +12,7 @@
             &nbsp;&nbsp;<small>Последний раз заходил{{'a' if user['sex']=='female' else ''}}: {{user['lasttime']}}</small><br>
           % end
           <br>
-          {{user['bdate']+', '+user['city']['title']}}<br>
+          {{user['parsed_bdate']+', '+user['city']['title']}}<br>
           <br>
           Рост: {{user['height']}} см.<br>
           Вес: {{user['weight']}} кг.<br>

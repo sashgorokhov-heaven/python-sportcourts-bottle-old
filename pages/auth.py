@@ -28,7 +28,8 @@ class Authorize(pages.Page):
             try:
                 pages.auth_dispatcher.login(email, password)
             except ValueError:
-                return pages.PageBuilder('auth', error='Ошибка авторизации', error_description='Чтото не так')
+                return pages.PageBuilder('auth', error='Ошибка авторизации',
+                                         error_description='Неверный email или пароль')
             raise bottle.redirect('/profile')
 
     def post(self):
@@ -38,7 +39,7 @@ class Authorize(pages.Page):
             pages.auth_dispatcher.login(email, password)
         except ValueError:
             return pages.PageBuilder('auth', email=email, error='Ошибка авторизации',
-                                     error_description='Неправильный email или пароль')
+                                     error_description='Неверный email или пароль')
         return bottle.redirect('/profile')
 
     get.route = '/auth'

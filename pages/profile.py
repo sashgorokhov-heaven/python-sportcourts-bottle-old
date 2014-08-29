@@ -1,47 +1,25 @@
-import os
-import datetime
-
-from PIL import Image
 import bottle
 
-from modules.utils import beautifuldate, beautifultime
 import pages
 import modules
 import modules.dbutils
+from models import users, cities, activation, images
 
 
 class Profile(pages.Page):
     def get_user_id(self):
         with modules.dbutils.dbopen() as db:
-            user = modules.dbutils.get(db).user(bottle.request.query.user_id)
+            user_id = int(bottle.request.query.user_id)
+            user = users.get(user_id, detalized=True, dbconnection=db)
             if len(user) == 0:
                 raise bottle.HTTPError(404)
-            user = user[0]
-            modules.dbutils.strdates(user)
-            age = str(round((datetime.date.today() - datetime.date(
-                *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926))
-            postfix = ''
-            prefix = int(age[-1])
-            if prefix == 0 or 5 <= prefix <= 9:
-                postfix = 'лет'
-            elif prefix == 1:
-                postfix = 'год'
-            elif 2 <= prefix <= 4:
-                postfix = 'года'
-            user['bdate'] = age + ' ' + postfix
-            user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
-            user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
-            user.pop('city_id')
             return pages.PageBuilder('profile', user=user)
 
     def get_edit(self):
         with modules.dbutils.dbopen() as db:
-            cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
-            user = modules.dbutils.get(db).user(pages.auth_dispatcher.getuserid())[0]
-            modules.dbutils.strdates(user)
-            user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
-            user.pop('city_id')
-            return pages.PageBuilder('editprofile', user=user, cities=cities)
+            _cities = cities.get(0, dbconnection=db)
+            user = users.get(pages.auth_dispatcher.getuserid(), detalized=True, dbconnection=db)
+            return pages.PageBuilder('editprofile', user=user, cities=_cities)
 
     def get(self):
         if 'user_id' in bottle.request.query:
@@ -53,40 +31,19 @@ class Profile(pages.Page):
             return self.get_edit()
         elif pages.auth_dispatcher.loggedin():
             with modules.dbutils.dbopen() as db:
-                user = modules.dbutils.get(db).user(pages.auth_dispatcher.getuserid())[0]
-                modules.dbutils.strdates(user)
-                age = str(round((datetime.date.today() - datetime.date(
-                    *list(map(int, user['bdate'].split('-'))))).total_seconds() // 31556926))
-                postfix = ''
-                prefix = int(age[-1])
-                if prefix == 0 or 5 <= prefix <= 9:
-                    postfix = 'лет'
-                elif prefix == 1:
-                    postfix = 'год'
-                elif 2 <= prefix <= 4:
-                    postfix = 'года'
-                user['bdate'] = age + ' ' + postfix
-                user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
-                user['city'] = modules.dbutils.get(db).city(user['city_id'])[0]
-                user.pop('city_id')
-                db.execute("SELECT user_id FROM activation WHERE user_id={}".format(user['user_id']))
-                if len(db.last()) > 0:
-                    activated = False
-                else:
-                    activated = True
+                user_id = pages.auth_dispatcher.getuserid()
+                user = users.get(user_id, detalized=True, dbconnection=db)
+                activated = activation.activated(user_id, dbconnection=db)
                 return pages.PageBuilder('profile', user=user, activated=activated)
         raise bottle.redirect('/auth')
 
     def post(self):
         if not pages.auth_dispatcher.loggedin():
-            raise bottle.HTTPError(404)
+            raise pages.PageBuilder('text', message='Ошибка доступа',
+                                    description='Вы должны войти чтобы просматривать эту страницу')
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         params.pop("submit_profile")
 
-        params['first_name'] = bottle.request.forms.get('first_name')
-        params['middle_name'] = bottle.request.forms.get('middle_name')
-        params['last_name'] = bottle.request.forms.get('last_name')
-        params['city'] = bottle.request.forms.get('city')
         city_title = params['city']
         params.pop('city')
 
@@ -94,15 +51,7 @@ class Profile(pages.Page):
             params.pop('avatar')
 
         if 'avatar' in bottle.request.files:
-            filename = str(pages.auth_dispatcher.getuserid()) + '.jpg'
-            dirname = '/bsp/data/avatars'
-            fullname = os.path.join(dirname, filename)
-            if os.path.exists(fullname):
-                os.remove(fullname)
-            bottle.request.files.get('avatar').save(fullname)
-            im = Image.open(fullname)
-            im.crop().resize((200, 200)).save(fullname)
-            im.close()
+            images.save_avatar(pages.auth_dispatcher.getuserid(), bottle.request.files.get('avatar'))
 
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))

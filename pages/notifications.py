@@ -1,24 +1,29 @@
 import bottle
 
-from modules.utils import beautifuldate, beautifultime, get_notifications
 import pages
 import modules.dbutils
+import models.notifications
 
 
 class Notifications(pages.Page):
     def get(self):
         if not pages.auth_dispatcher.loggedin():
+            raise pages.PageBuilder('text', message='Ошибка доступа',
+                                    description='Вы должны войти чтобы просматривать эту страницу')
+        user_id = pages.auth_dispatcher.getuserid()
+        with modules.dbutils.dbopen() as db:
+            count = models.notifications.get_count(user_id, dbconnection=db)
+            if count > 0:
+                notifications = models.notifications.get(user_id, dbconnection=db)
+            else:
+                notifications = models.notifications.get(user_id, all=True, dbconnection=db)
+        return pages.PageBuilder("notifications", notifications=notifications, all=count == 0)
+
+    def post(self):
+        if 'id' not in bottle.request.forms:
             raise bottle.HTTPError(404)
-        notifications = get_notifications(pages.auth_dispatcher.getuserid())
-        if len(notifications) == 0:
-            with modules.dbutils.dbopen() as db:
-                db.execute(
-                    "SELECT * FROM notifications WHERE user_id='{}' AND datetime>NOW() - INTERVAL 1 DAY ORDER BY datetime DESC".format(
-                        pages.auth_dispatcher.getuserid()), modules.dbutils.dbfields['notifications'])
-                notifications = db.last()
-        for i in notifications:
-            modules.dbutils.strdates(i)
-            i['datetime'] = '{} {}'.format(beautifuldate(i['datetime']), beautifultime(i['datetime']))
-        return pages.PageBuilder("notifications", notifications=notifications)
+        notification_id = int(bottle.request.forms.get('id'))
+        models.notifications.read(notification_id)
 
     get.route = '/notifications'
+    post.route = '/notifications'

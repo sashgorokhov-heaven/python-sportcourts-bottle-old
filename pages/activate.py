@@ -1,6 +1,7 @@
 import bottle
 
-from modules import dbutils, utils
+from modules import dbutils
+from models import activation, users, notifications
 import pages
 
 
@@ -10,15 +11,14 @@ class Activate(pages.Page):
         if not token:
             raise bottle.HTTPError(404)
         with dbutils.dbopen() as db:
-            db.execute("SELECT user_id FROM activation WHERE token='{}'".format(token))
-            if len(db.last()) == 0:
-                raise bottle.HTTPError(404)
-            user_id = db.last()[0][0]
-            db.execute("UPDATE users SET activated={} WHERE user_id={}".format(1, user_id))
-            db.execute("DELETE FROM activation WHERE user_id={}".format(user_id))
-            db.execute("SELECT email, passwd FROM users WHERE user_id={}".format(user_id))
-            pages.auth_dispatcher.login(*db.last()[0])
-            utils.write_notification(user_id, "Ваш профиль успешно активирован!")
+            try:
+                user_id = activation.get_userid_by_token(token, dbconnection=db)
+            except ValueError:
+                return pages.PageBuilder('text', message='Пользователь уже активирован')
+            activation.activate(user_id, dbconnection=db)
+            user = users.get(user_id, fields=['email', 'passwd'], dbconnection=db)
+            pages.auth_dispatcher.login(user['email'], user['passwd'])
+            notifications.add(user_id, "Ваш профиль успешно активирован!", dbconnection=db)
             raise bottle.redirect('/profile')
 
     get.route = '/activate'

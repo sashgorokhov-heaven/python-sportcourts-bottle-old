@@ -20,9 +20,9 @@
               </div>
               <div class="panel-body">
                 <div class="col-md-2">
-                  <p>{{game['datetime'][0]}}</p>
-                  <p>{{game['datetime'][1]}}</p>
-                  <p>{{game['datetime'][2]}}</p>
+                  <p>{{game['parsed_datetime'][0]}}</p>
+                  <p>{{game['parsed_datetime'][1]}}</p>
+                  <p>{{game['parsed_datetime'][2]}}</p>
                 </div>
                 <div class="col-md-6">
                   <p>
