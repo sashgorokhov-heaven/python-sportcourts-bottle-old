@@ -52,3 +52,4 @@ class Subscribe(pages.Page):
         raise bottle.redirect('/games?edit={}'.format(game_id))
 
     post.route = '/subscribe'
+    get.route = post.route
