@@ -5,6 +5,8 @@
         <p class="lead">Старт в августе.</p>
         % if not loggedin:
             <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+            <p class="text-center">или</p>
+            <p><a class="btn btn-main btn-lg btn-primary" href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/registration&response_type=code&v=5.21" role="button">Войти через ВКонтакте</a></p>
         % end
       </div>
 
