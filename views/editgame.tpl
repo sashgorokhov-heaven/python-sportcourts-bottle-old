@@ -201,7 +201,7 @@
                           <td>{{user['first_name']}}</td>
                           <td>{{user['last_name']}}</td>
                           <td>{{user['phone']}}</td>
-                          <td><a href="/subscribe?&user_id={{user['user_id']}}&unsubscribe&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                          <td><a href="/subscribe?user_id={{user['user_id']}}&unsubscribe&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
                         </tr>
                         % end
                       </table>
