@@ -37,7 +37,7 @@ class Games(pages.Page):
         game = games.get_by_id(game_id, detalized=True, fields=['subscribed', 'description'])
         for user in game['subscribed']['users']:
             notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                '<a href="/games?game_id={}">#{} | {}</a>"'.format(
+                '<a href="/games?game_id={}">#{} | {}</a>'.format(
                     game_id,
                     game_id,
                     game['description'])
