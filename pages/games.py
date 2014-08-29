@@ -3,7 +3,7 @@ import bottle
 import pages
 import modules
 import modules.dbutils
-from models import sport_types, game_types, cities, courts, games
+from models import sport_types, game_types, cities, courts, games, notifications
 
 
 class Games(pages.Page):
@@ -31,9 +31,17 @@ class Games(pages.Page):
         params['datetime'] = params['date'] + ' ' + params['time'] + ':00'
         params.pop('date')
         params.pop('time')
-        game_id = params['game_id']
+        game_id = int(params['game_id'])
         params.pop('game_id')
         games.update(game_id, **params)
+        game = games.get_by_id(game_id, detalized=True, fields=['subscribed', 'description'])
+        for user in game['subscribed']['users']:
+            notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
+                '<a href="/games?game_id={}">#{} | {}</a>">'.format(
+                    game_id,
+                    game_id,
+                    game['description'])
+            ), 1)
         raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
