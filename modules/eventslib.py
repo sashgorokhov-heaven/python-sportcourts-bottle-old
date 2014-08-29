@@ -39,7 +39,6 @@ class _EventServer:
             self.check_events()
             time.sleep(TICKTIME)
 
-    @utils.threaded
     def check_events(self):
         with self._lock:
             for event in self._eventlist:
