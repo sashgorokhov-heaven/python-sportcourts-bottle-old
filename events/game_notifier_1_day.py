@@ -28,7 +28,7 @@ class GameNotifier(eventslib.Event):
             for user_id in game['subscribed']:
                 if (user_id, game['game_id']) not in {i[:2] for i in self._notified}:
                     notifications.add(user_id, 'Завтра состоится игра "{}"<br>Не пропустите!'.format(
-                        '<a href="/games?game_id={}">#{} | {}</a>">'.format(
+                        '<a href="/games?game_id={}">#{} | {}</a>"'.format(
                             game['game_id'],
                             game['game_id'],
                             game['description'])
