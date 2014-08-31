@@ -25,7 +25,7 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
         beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
 
     if 'subscribed' in game and detalized:
-        subscribed = splitstrlist(game['subscribed'])
+        subscribed = game['subscribed'].split('|')[1:-1]
         if len(subscribed) > 0:
             _users = users.get(subscribed, fields=['user_id', 'first_name', 'last_name', 'phone'],
                                dbconnection=dbconnection)
@@ -64,26 +64,26 @@ def get_by_id(game_id, detalized:bool=False, fields:list=dbutils.dbfields['games
 @autodb
 def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     subscribed = dbconnection.execute("SELECT subscribed FROM games WHERE game_id='{}'".format(game_id))[0][0]
-    subscribed = splitstrlist(subscribed)
+    subscribed = subscribed.split('|')[1:-1]
     if user_id in set(subscribed):
         raise ValueError("User <{}> already subscibed".format(user_id))
     subscribed.append(user_id)
-    subscribed = ','.join(map(str, subscribed))
+    subscribed = '|' + '|'.join(map(str, subscribed)) + '|'
     dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
 
 
 @autodb
 def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     subscribed = dbconnection.execute("SELECT subscribed FROM games WHERE game_id='{}'".format(game_id))[0][0]
-    subscribed = splitstrlist(subscribed)
+    subscribed = subscribed.split('|')[1:-1]
     if user_id not in set(subscribed):
         raise ValueError("User <{}> not subscibed".format(user_id))
     subscribed.remove(user_id)
-    subscribed = ','.join(map(str, subscribed))
+    subscribed = '|' + ','.join(map(str, subscribed)) + '|'
     dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
 
 
-@autodb  # fuck PEP8 rules                                                      fuck 'em
+@autodb
 def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slice(0, 20), detalized:bool=False,
                fields:list=dbutils.dbfields['games'], dbconnection:dbutils.DBConnection=None) -> list:
     orderedfields = [i for i in dbutils.dbfields['games'] if i in set(fields)]
@@ -146,3 +146,21 @@ def update(game_id:int, dbconnection:dbutils.DBConnection=None, **kwargs):
         ', '.join(['{}="{}"'.format(i, kwargs[i]) for i in kwargs]),
         game_id)
     dbconnection.execute(sql)
+
+
+@autodb
+def get_user_games(user_id:int, detalized:bool=False, fields:list=dbutils.dbfields['games'],
+                   dbconnection:dbutils.DBConnection=None):
+    orderedfields = [i for i in dbutils.dbfields['games'] if i in set(fields)]
+    select = ','.join(orderedfields)
+
+    dbconnection.execute("SELECT " + select + " FROM games WHERE LOCATE('|{}|', subscribed)".format(user_id),
+                         orderedfields)
+
+    if len(dbconnection.last()) == 0:
+        return list()
+
+    for game in dbconnection.last():
+        detalize_game(game, detalized=detalized, dbconnection=dbconnection)
+
+    return dbconnection.last()
