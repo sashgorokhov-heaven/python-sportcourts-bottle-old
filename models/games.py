@@ -79,7 +79,7 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
     if user_id not in set(subscribed):
         raise ValueError("User <{}> not subscibed".format(user_id))
     subscribed.remove(user_id)
-    subscribed = '|' + ','.join(map(str, subscribed)) + '|'
+    subscribed = '|' + '|'.join(map(str, subscribed)) + '|'
     dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
 
 

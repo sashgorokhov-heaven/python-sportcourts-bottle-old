@@ -33,7 +33,9 @@
           <div class="panel panel-deafult">
             <br>
             % for game in games:
-                % include("game", game=game)
+                % if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}:
+                    % include("game", game=game)
+                % end
             % end
           </div>
         </div>
