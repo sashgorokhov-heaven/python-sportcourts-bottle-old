@@ -32,12 +32,19 @@ class _EventServer:
         with self._lock:
             self._eventlist.append(event)
 
+    def sighandler(self, signum, frame):
+        # print(signum)
+        self.stop()
 
     @utils.threaded
     def _loop(self):
-        while not self._stop:
+        while True:
             self.check_events()
-            time.sleep(TICKTIME)
+            for i in range(TICKTIME):
+                if not self._stop:
+                    time.sleep(1)
+                else:
+                    return
 
     def check_events(self):
         with self._lock:
