@@ -6,6 +6,7 @@
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
+        <li><a href="#my" data-toggle="tab">Мои игры</a></li>
         % for sport_type in sports:
             <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
         % end
@@ -25,6 +26,15 @@
               <li class="previous disabled"><a href="#">&larr; Раньше</a></li>
               <li class="next"><a href="#">Позже &rarr;</a></li>
             </ul>-->
+          </div>
+        </div>
+
+        <div class="tab-pane" id="my">
+          <div class="panel panel-deafult">
+            <br>
+            % for game in games:
+                % include("game", game=game)
+            % end
           </div>
         </div>
 
