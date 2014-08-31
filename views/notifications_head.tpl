@@ -4,17 +4,18 @@
     $.ajax({
       url: 'http://sportcourts.ru/notifications',
       data: {
-        id: n_id
+      % if not all:
+        read: n_id
+      % end
+      % if all:
+        delete: n_id
+      % end
       },
       async: true,
       success: function (responseData, textStatus) {
-        // alert(responseData + ' Status: ' + textStatus);
-        // alert('Вы прочитали эту заметку');
-        // document.location.href = 'http://sportcourts.ru/games#game' + game_id;
-        window.location.reload();
+        // window.location.reload();
       },
       error: function (response, status, errorThrown) {
-        // alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
       },
       type: "POST",
       dataType: "text"

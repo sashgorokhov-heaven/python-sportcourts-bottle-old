@@ -28,7 +28,7 @@ def get(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=None) -> 
 
 
 @autodb
-def read(notification_id:int, dbconnection:dbutils.DBConnection=None):
+def read(notification_id, dbconnection:dbutils.DBConnection=None):
     if isinstance(notification_id, str) and len(notification_id.split(',')) > 0:
         notification_id = splitstrlist(notification_id)
         if len(notification_id) == 1:
@@ -43,3 +43,21 @@ def read(notification_id:int, dbconnection:dbutils.DBConnection=None):
     elif notification_id < 0:
         user_id = abs(notification_id)
         dbconnection.execute("UPDATE notifications SET `read`=1 WHERE `read`=0 AND user_id={}".format(user_id))
+
+
+@autodb
+def delete(notification_id, dbconnection:dbutils.DBConnection=None):
+    if isinstance(notification_id, str) and len(notification_id.split(',')) > 0:
+        notification_id = splitstrlist(notification_id)
+        if len(notification_id) == 1:
+            notification_id = notification_id[0]
+
+    if isinstance(notification_id, int) and notification_id > 0:
+        dbconnection.execute(
+            "DELETE FROM notifications WHERE `read`=1 AND notification_id={}".format(notification_id))
+    elif isinstance(notification_id, list):
+        dbconnection.execute("DELETE FROM notifications WHERE `read`=1 AND notification_id IN (" + ','.join(
+            map(str, notification_id)) + ")")
+    elif notification_id < 0:
+        user_id = abs(notification_id)
+        dbconnection.execute("DELETE FROM notifications WHERE `read`=1 AND user_id={}".format(user_id))
