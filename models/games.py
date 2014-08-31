@@ -69,7 +69,7 @@ def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
         raise ValueError("User <{}> already subscibed".format(user_id))
     subscribed.append(user_id)
     subscribed = ','.join(map(str, subscribed))
-    dbconnection.execute("UPDATE games SET subscribed='{}'".format(subscribed))
+    dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
 
 
 @autodb
@@ -80,7 +80,7 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
         raise ValueError("User <{}> not subscibed".format(user_id))
     subscribed.remove(user_id)
     subscribed = ','.join(map(str, subscribed))
-    dbconnection.execute("UPDATE games SET subscribed='{}'".format(subscribed))
+    dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
 
 
 @autodb  # fuck PEP8 rules                                                      fuck 'em
