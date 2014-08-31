@@ -64,7 +64,7 @@ def get_by_id(game_id, detalized:bool=False, fields:list=dbutils.dbfields['games
 @autodb
 def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     subscribed = dbconnection.execute("SELECT subscribed FROM games WHERE game_id='{}'".format(game_id))[0][0]
-    subscribed = subscribed.split('|')[1:-1]
+    subscribed = list(map(int, subscribed.split('|')[1:-1]))
     if user_id in set(subscribed):
         raise ValueError("User <{}> already subscibed".format(user_id))
     subscribed.append(user_id)
@@ -75,7 +75,7 @@ def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
 @autodb
 def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     subscribed = dbconnection.execute("SELECT subscribed FROM games WHERE game_id='{}'".format(game_id))[0][0]
-    subscribed = subscribed.split('|')[1:-1]
+    subscribed = list(map(int, subscribed.split('|')[1:-1]))
     if user_id not in set(subscribed):
         raise ValueError("User <{}> not subscibed".format(user_id))
     subscribed.remove(user_id)
