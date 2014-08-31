@@ -40,7 +40,15 @@ def get(user_id, detalized:bool=False, fields:list=dbutils.dbfields['users'],
                 postfix = 'года'
             user['parsed_bdate'] = age + ' ' + postfix
         if 'lasttime' in user:
-            user['lasttime'] = '{} в {}'.format(beautifuldate(user['lasttime']), beautifultime(user['lasttime']))
+            date = user['lasttime'].split(' ')[0]
+            timedelta = datetime.date.today() - datetime.date(*date.split('-'))
+            if timedelta == 0:
+                date = 'сегодня'
+            elif timedelta == 1:
+                date = 'вчера'
+            else:
+                date = beautifuldate(user['lasttime'])
+            user['lasttime'] = '{} в {}'.format(date, beautifultime(user['lasttime']))
         if detalized and 'city_id' in user:
             user['city'] = cities.get(user['city_id'], dbconnection=dbconnection)
             user.pop('city_id')
