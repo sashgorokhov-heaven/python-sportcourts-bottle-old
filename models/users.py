@@ -41,7 +41,7 @@ def get(user_id, detalized:bool=False, fields:list=dbutils.dbfields['users'],
             user['parsed_bdate'] = age + ' ' + postfix
         if 'lasttime' in user:
             date = user['lasttime'].split(' ')[0]
-            timedelta = datetime.date.today() - datetime.date(*date.split('-'))
+            timedelta = (datetime.date.today() - datetime.date(*map(int, date.split('-')))).days
             if timedelta == 0:
                 date = 'сегодня'
             elif timedelta == 1:
