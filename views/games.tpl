@@ -6,7 +6,9 @@
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
+        % if loggedin:
         <li><a href="#my" data-toggle="tab">Мои игры</a></li>
+        % end
         % for sport_type in sports:
             <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
         % end
@@ -29,6 +31,7 @@
           </div>
         </div>
 
+        % if loggedin:
         <div class="tab-pane" id="my">
           <div class="panel panel-deafult">
             <br>
@@ -39,6 +42,7 @@
             % end
           </div>
         </div>
+        % end
 
         % for sport_type in sports:
             <div class="tab-pane" id="{{sport_type['sport_id']}}">
