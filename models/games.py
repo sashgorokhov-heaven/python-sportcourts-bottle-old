@@ -51,6 +51,9 @@ def get_by_id(game_id, detalized:bool=False, fields:list=dbutils.dbfields['games
         dbconnection.execute("SELECT " + select + " FROM games WHERE game_id IN (" + ','.join(map(str, game_id)) + ")",
                              orderedfields)
 
+    if len(dbconnection.last()) == 0:
+        return list()
+
     games = dbconnection.last()
     for game in games:
         detalize_game(game, detalized=detalized, dbconnection=dbconnection)
