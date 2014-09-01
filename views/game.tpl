@@ -85,7 +85,8 @@
                       <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
                     % end
                     % if game['subscribed']['count'] < game['capacity']:
-                      <button type="button" class="btn btn-primary btn-xs" disabled="disabled" data-toggle="dropdown">Идет набор</button>
+                      <!-- <button type="button" class="btn btn-primary btn-xs" disabled="disabled" data-toggle="dropdown">Идет набор</button> -->
+                      <a href="#" data-toggle="modal" data-target="#loginModal"><button type="button" class="btn btn-primary btn-xs">Идет набор</button></a>
                     % end
                   % end
                 </div>
