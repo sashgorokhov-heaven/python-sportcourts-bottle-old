@@ -30,7 +30,7 @@
     	<script src="/view/bootstrap/js/bootstrap.min.js"></script>
     	<script src="/view/js/current_href.js"></script>
     	<script src="/view/js/rotator.js"></script>
-        <script src="/view/js/amount_slider.js"></script>
+        <!--<script src="/view/js/amount_slider.js"></script>-->
     	<script type="text/javascript" src="/view/bootstrap/bootstrap_validator/js/bootstrapValidator.js"></script>
     	<script type="text/javascript" src="/view/bootstrap/bootstrap_validator/language/ru_RU.js"></script>
         <script src="/view/js/bootstrap_validator.js"></script>

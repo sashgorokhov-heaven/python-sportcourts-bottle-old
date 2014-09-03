@@ -73,9 +73,6 @@
                         </select>
                       </div>
                     </div>
-                    <script type="text/javascript">
-                      $("#court").chained("#city");
-                    </script>
                     <div class="form-group">
                       <label for="inputBirght" class="col-sm-4 control-label">Дата</label>
                       <div class="col-sm-8">
@@ -99,20 +96,6 @@
                         <div id="game_add_slider2"></div>
                       </div>
                     </div>
-                    <script type="text/javascript">
-                      $(function () {
-                          $("#game_add_slider2").slider({
-                              value: {{game['duration']}},
-                              min: 30,
-                              max: 600,
-                              step: 10,
-                              slide: function (event, ui) {
-                                  $("#game_add_long").val(ui.value + " минут");
-                              }
-                          });
-                          $("#game_add_long").val($("#game_add_slider2").slider("value") + " минут");
-                      });
-                    </script>
                     <div class="form-group">
                       <label for="game_add_amount" class="col-sm-4 control-label">Цена</label>
                       <div class="col-sm-8">
@@ -120,20 +103,6 @@
                         <div id="game_add_slider"></div>
                       </div>
                     </div>
-                    <script type="text/javascript">
-                      $(function () {
-                          $("#game_add_slider").slider({
-                              value: {{game['cost']}},
-                              min: 0,
-                              max: 400,
-                              step: 5,
-                              slide: function (event, ui) {
-                                  $("#game_add_amount").val(ui.value + " руб.");
-                              }
-                          });
-                          $("#game_add_amount").val($("#game_add_slider").slider("value") + " руб.");
-                      });
-                    </script>
                     <div class="form-group">
                       <label for="game_add_count" class="col-sm-4 control-label">Количество мест</label>
                       <div class="col-sm-8">
@@ -141,20 +110,6 @@
                         <div id="game_add_slider1"></div>
                       </div>
                     </div>
-                    <script type="text/javascript">
-                      $(function () {
-                          $("#game_add_slider1").slider({
-                              value: {{game['capacity']}},
-                              min: 8,
-                              max: 40,
-                              step: 1,
-                              slide: function (event, ui) {
-                                  $("#game_add_count").val(ui.value);
-                              }
-                          });
-                          $("#game_add_count").val($("#game_add_slider1").slider("value"));
-                      });
-                    </script>
                     <div class="form-group">
                       <label for="court_add_count" class="col-sm-4 control-label">Описание</label>
                       <div class="col-sm-8">
