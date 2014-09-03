@@ -6,7 +6,7 @@
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
-        % if loggedin:
+        % if loggedin and len([game for game in games if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}])>0:
         <li><a href="#my" data-toggle="tab">Мои игры</a></li>
         % end
         % for sport_type in sports:
