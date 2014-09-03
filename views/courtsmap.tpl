@@ -38,7 +38,7 @@
                 % group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
                 % courts_list = [court for court in courts if sport_type['title'] in {sport_type['title'] for sport_type in court['sport_types']} ]
                 % court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} - {address}", "<a href=\'http://sportcourts.ru/courts?court_id={court_id}\'>Подробнее</a>")'
-                % court_strings = [court_string.format(geopoint=court['geopoint'], title=court['title'], address=','.join(court['address'].split(',')[-3:]), court_id=court['court_id']) for court in courts_list]
+                % court_strings = [court_string.format(geopoint=court['geopoint'], title='\\"'.join(court['title'].split('"')), address=','.join(court['address'].split(',')[-3:]), court_id=court['court_id']) for court in courts_list]
                 % groups.append(group_string.format(title=sport_type['title'], courts=','.join(court_strings), color=colors[n]))
               % end
               // Группы объектов
