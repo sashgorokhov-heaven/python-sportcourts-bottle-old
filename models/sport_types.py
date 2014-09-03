@@ -1,4 +1,4 @@
-from models import autodb
+from models import autodb, splitstrlist
 from modules import dbutils
 
 
@@ -8,7 +8,7 @@ def get(sport_id, fields:list=dbutils.dbfields['sport_types'], dbconnection:dbut
     select = ','.join(orderedfields)
 
     if isinstance(sport_id, str) and len(sport_id.split(',')) > 0:
-        sport_id = list(filter(lambda x: x != '', map(lambda x: x.strip(), sport_id.split(','))))
+        sport_id = splitstrlist(sport_id)
         if len(sport_id) == 1:
             sport_id = sport_id[0]
 
