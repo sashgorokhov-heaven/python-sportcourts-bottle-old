@@ -30,7 +30,10 @@ def get(court_id, city_id:int=1, detalized:bool=False, fields:list=dbutils.dbfie
 
     for court in courts:
         if 'sport_types' in court and detalized:
-            court['sport_types'] = sport_types.get(court['sport_types'], dbconnection=dbconnection)
+            spt = sport_types.get(court['sport_types'], dbconnection=dbconnection)
+            if isinstance(spt, dict):
+                spt = [spt]
+            court['sport_types'] = spt
         if 'city_id' in court and detalized:
             court['city'] = cities.get(court['city_id'], dbconnection=dbconnection)
             court.pop('city_id')
