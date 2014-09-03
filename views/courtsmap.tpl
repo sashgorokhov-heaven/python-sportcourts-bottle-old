@@ -2,7 +2,7 @@
       <div class="profile">
         <!-- <div class="row">
           <div class="col-md-12">
-            <p class="lead">{{court['title']}}</p>
+            <p class="lead">court['title']</p>
           </div>
         </div> -->
         <div class="row">
@@ -22,7 +22,7 @@
               var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
 
               // Установка для карты ее центра и масштаба
-              map.setCenter(new YMaps.GeoPoint(60.609926,56.835525), 13);
+              map.setCenter(new YMaps.GeoPoint({{city['geopoint']}}), 13);
 
               // Добавление элементов управления
               map.enableScrollZoom();
@@ -30,15 +30,20 @@
               map.addControl(new YMaps.TypeControl());
               map.addControl(new YMaps.Zoom());
 
+              % colors = ['redPoint', 'greenPoint', 'bluePoint', 'yellowPoint', 'orangePoint', 'darkbluePoint', 'greyPoint', 'nightPoint']
+              % sport_types = {sport_type['title']:sport_type for court in courts for sport_type in court['sport_types']}
+              % groups = []
+              % for n, sport_type_title in enumerate(sport_types):
+                % sport_type = sport_types[sport_type_title]
+                % group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
+                % courts_list = [court for court in courts if sport_type['title'] in {sport_type['title'] for sport_type in court['sport_types']} ]
+                % court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} - {address}", "<a href=\'http://sportcourts.ru/courts?court_id={court_id}\'>Подробнее</a>")'
+                % court_strings = [court_string.format(geopoint=court['geopoint'], title=court['title'], address=','.join(court['address'].split(',')[-3:]), court_id=court['court_id']) for court in courts_list]
+                % groups.append(group_string.format(title=sport_type['title'], courts=','.join(court_strings), color=colors[n]))
+              % end
               // Группы объектов
               var groups = [
-                  createGroup("Баскетбол", [
-                      createPlacemark(new YMaps.GeoPoint(60.626331,56.83745), "110 гимназия \"Бажова, 124\"", "<a href='http://vk.com/im'>Подробнее</a>"),
-                      createPlacemark(new YMaps.GeoPoint(60.582513,56.838528), "2 гимназия", "Пестеревский переулок"),
-                  ], "default#redPoint"),
-                  createGroup("Футбол", [
-                      createPlacemark(new YMaps.GeoPoint(60.573806,56.832385), "Центральный стадион \"ФК Урал\"", "ул.Репина, 5")
-                  ], "default#greenPoint")
+                  {{!','.join(groups)}}
               ];
 
               // Создание списка групп
