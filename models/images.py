@@ -19,8 +19,6 @@ def save_avatar(user_id:int, bottlefile):
     filename = str(user_id) + '.jpg'
     dirname = '/bsp/data/avatars'
     fullname = os.path.join(dirname, filename)
-    if os.path.exists(fullname):
-        os.remove(fullname)
     _save_image(fullname, bottlefile)
 
 
