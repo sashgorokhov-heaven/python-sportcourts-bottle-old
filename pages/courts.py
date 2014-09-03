@@ -32,9 +32,18 @@ class Courts(pages.Page):
             _cities = cities.get(0, dbconnection=db)
             return pages.PageBuilder('editcourt', sport_types=_sport_types, cities=_cities, court=court)
 
+    def get_all(self):
+        with dbutils.dbopen() as db:
+            city = cities.get(1, dbconnection=db)
+            courts_list = courts.get(0, city_id=city['city_id'], detalized=True, dbconnection=db,
+                                     fields=['court_id', 'title', 'address', 'geopoint', 'sport_types'])
+        return pages.PageBuilder('courtsmap', courts=courts_list, city=city)
+
     def get(self):
         if 'court_id' in bottle.request.query:
             return self.get_court_id()
+        if 'all' in bottle.request.query:
+            return self.get_all()
         if pages.auth_dispatcher.organizer():
             if 'add' in bottle.request.query:
                 return self.get_add()
