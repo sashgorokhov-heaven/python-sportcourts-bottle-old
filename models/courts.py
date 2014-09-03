@@ -3,7 +3,7 @@ from models import cities, sport_types, autodb, splitstrlist
 
 
 @autodb
-def get(court_id, detalized:bool=False, fields:list=dbutils.dbfields['courts'],
+def get(court_id, city_id:int=1, detalized:bool=False, fields:list=dbutils.dbfields['courts'],
         dbconnection:dbutils.DBConnection=None) -> list:
     orderedfields = [i for i in dbutils.dbfields['courts'] if i in set(fields)]
     select = ','.join(orderedfields)
@@ -14,12 +14,15 @@ def get(court_id, detalized:bool=False, fields:list=dbutils.dbfields['courts'],
             court_id = court_id[0]
 
     if isinstance(court_id, int) and court_id != 0:
-        dbconnection.execute("SELECT " + select + " FROM courts WHERE court_id='{}'".format(court_id), orderedfields)
+        dbconnection.execute(
+            "SELECT " + select + " FROM courts WHERE court_id={} AND city_id={}".format(court_id, city_id),
+            orderedfields)
     elif isinstance(court_id, list):
         dbconnection.execute(
-            "SELECT " + select + " FROM courts WHERE court_id IN (" + ','.join(map(str, court_id)) + ")", orderedfields)
+            "SELECT " + select + " FROM courts WHERE court_id IN (" + ','.join(
+                map(str, court_id)) + ") AND city_id={}".format(city_id), orderedfields)
     elif court_id == 0:
-        dbconnection.execute("SELECT " + select + " FROM courts", orderedfields)
+        dbconnection.execute("SELECT " + select + " FROM courts WHERE city_id={}".format(city_id), orderedfields)
 
     if len(dbconnection.last()) == 0:
         return list()
