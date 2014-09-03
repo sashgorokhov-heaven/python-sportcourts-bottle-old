@@ -19,7 +19,7 @@
                                 <a class="topmenu" href="/notifications">
                                     <span class="glyphicon glyphicon-envelope"></span>
                                     % if userinfo['notifycount']>0:
-                                    <span class="badge">{{userinfo['notifycount']}}
+                                    <span class="badge notify">{{userinfo['notifycount']}}
                                     % end
                                 </span>
                                 </a>
