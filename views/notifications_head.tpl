@@ -14,6 +14,10 @@
       async: true,
       success: function (responseData, textStatus) {
         // window.location.reload();
+        var count = $(".notify").html();
+        arr = $(".notify");
+        count1 = count - 1;
+        arr.html(count1);
       },
       error: function (response, status, errorThrown) {
       },
