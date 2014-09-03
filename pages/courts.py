@@ -10,10 +10,10 @@ class Courts(pages.Page):
         court_id = int(bottle.request.query.get('court_id'))
         with dbutils.dbopen() as db:
             court = courts.get(court_id, detalized=True, dbconnection=db)
-            nearest_game = games.get_recent(court_id=court_id, detalized=True, count=slice(1), dbconnection=db)[0]
+            nearest_game = games.get_recent(court_id=court_id, detalized=True, count=slice(1), dbconnection=db)
             page = pages.PageBuilder('courts', court=court)
             if len(nearest_game) > 0:
-                page.add_param('game', nearest_game)
+                page.add_param('game', nearest_game[0])
             return page
 
     def get_add(self):
@@ -40,7 +40,7 @@ class Courts(pages.Page):
                 return self.get_edit()
             raise bottle.HTTPError(404)
         else:
-            return pages.PageBuilder('text', message='Недостаточно плав',
+            return pages.PageBuilder('text', message='Недостаточно прав',
                                      description='Вы не можете просматривать эту страницу')
 
 
