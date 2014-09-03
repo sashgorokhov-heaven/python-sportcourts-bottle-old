@@ -126,7 +126,7 @@
                               value: {{game['cost']}},
                               min: 0,
                               max: 400,
-                              step: 10,
+                              step: 5,
                               slide: function (event, ui) {
                                   $("#game_add_amount").val(ui.value + " руб.");
                               }
