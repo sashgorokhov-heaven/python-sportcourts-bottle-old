@@ -1,7 +1,7 @@
 % rebase("_basicpage", title="Уведомления")
 <div class="row">
   <div class="col-md-12" style="margin-top:50px;">
-    <h1>{{'Старые' if all else 'Новые'}} уведомления <span class="badge">{{len(notifications)}}</span></h1>
+    <h1>{{'Старые' if all else 'Новые'}} уведомления <span class="badge notify">{{len(notifications)}}</span> <small><a href="#delall">Удалить прочитанные</a></small></h1>
     % for notification in notifications:
       <div class="bs-example" style="margin-top:20px;">
         % if notification['level']==0:
