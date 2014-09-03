@@ -10,6 +10,8 @@ class Courts(pages.Page):
         court_id = int(bottle.request.query.get('court_id'))
         with dbutils.dbopen() as db:
             court = courts.get(court_id, detalized=True, dbconnection=db)
+            if len(court) == 0:
+                raise bottle.HTTPError(404)
             nearest_game = games.get_recent(court_id=court_id, detalized=True, count=slice(1), dbconnection=db)
             page = pages.PageBuilder('courts', court=court)
             if len(nearest_game) > 0:
