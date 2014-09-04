@@ -6,7 +6,7 @@ from modules.utils import beautifuldate, beautifultime
 @autodb
 def add(user_id:int, text:str, level:int=0, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute(
-        "INSERT INTO notifications (user_id, datetime, text, level) VALUES ({}, NOW(), '{}', {})".format(
+        "INSERT INTO notifications (user_id, text, level) VALUES ({}, '{}', {})".format(
             user_id, text, level))
 
 
@@ -18,8 +18,8 @@ def get_count(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=Non
 
 @autodb
 def get(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT * FROM notifications WHERE user_id={}{} ORDER BY DATETIME DESC".format(
-        user_id, ' AND `read`=0' if not all else ' AND datetime>NOW() - INTERVAL 4 DAY'),
+    dbconnection.execute("SELECT * FROM notifications WHERE user_id={}{} ORDER BY DATETIME DESC{}".format(
+        user_id, ' AND `read`=0' if not all else '', ' LIMIT 20' if all else ''),
                          dbutils.dbfields['notifications'])
     for i in dbconnection.last():
         dbutils.strdates(i)
