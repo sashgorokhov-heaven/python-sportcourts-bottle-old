@@ -14,6 +14,7 @@ class Notifications(pages.Page):
         with modules.dbutils.dbopen() as db:
             if 'deleteall' in bottle.request.query:
                 models.notifications.delete(-user_id, dbconnection=db)
+                raise bottle.redirect('/notifications')
             count = models.notifications.get_count(user_id, dbconnection=db)
             if count > 0:
                 notifications = models.notifications.get(user_id, dbconnection=db)
