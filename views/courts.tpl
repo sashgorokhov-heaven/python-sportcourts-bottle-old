@@ -8,54 +8,6 @@
         <div class="row">
           <div class="col-md-8">
             <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
-            <br><br><br>
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#about" data-toggle="tab">Характеристики</a></li>
-              <!-- <li><a href="#text" data-toggle="tab">Описание</a></li> -->
-            </ul>
-            <div class="tab-content">
-              <!-- About -->
-              <div class="tab-pane active" id="about">
-                <div class="row">
-                  <div class="col-md-12">
-                    <br>
-                    <div class="table-responsive">
-                      <table class="table table-hover">
-                        <tr>
-                          <td><small><strong>Виды спорта:</strong></small></td>
-                          <td><small>{{', '.join([sport['title'] for sport in court['sport_types']])}}</small></td>
-                        </tr>
-                        <tr>
-                          <td><small><strong>Вместимость:</strong></small></td>
-                          <td><small>{{court['max_players']}}</small></td>
-                        </tr>
-                        <tr>
-                          <td><small><strong>Тип площадки:</strong></small></td>
-                          <td><small>{{court['type']}}</small></td>
-                        </tr>
-                        <tr>
-                          <td><small><strong>Покрытие:</strong></small></td>
-                          <td><small>{{court['cover']}}</small></td>
-                        </tr>
-                        <tr>
-                          <td><small><strong>Инфрастуктура:</strong></small></td>
-                          <td><small>{{court['infrastructure']}}</small></td>
-                        </tr>
-                        <tr>
-                          <td><small><strong>Комментарии:</strong></small></td>
-                          <td><small>{{court['description']}}</small></td>
-                        </tr>
-                        <tr>
-                          <td><small><strong>Телефон:</strong></small></td>
-                          <td><small>{{court['phone']}}</small></td>
-                        </tr>
-                      </table>
-                    </div>
-                    <br>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="col-md-4">
             <p class="lead">{{court['title']}}
@@ -103,6 +55,58 @@
                 </tr>
                 %end
               </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <br>
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#about" data-toggle="tab">Характеристики</a></li>
+              <!-- <li><a href="#text" data-toggle="tab">Описание</a></li> -->
+            </ul>
+            <div class="tab-content">
+              <!-- About -->
+              <div class="tab-pane active" id="about">
+                <div class="row">
+                  <div class="col-md-12">
+                    <br>
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <tr>
+                          <td><small><strong>Виды спорта:</strong></small></td>
+                          <td><small>{{', '.join([sport['title'] for sport in court['sport_types']])}}</small></td>
+                        </tr>
+                        <tr>
+                          <td><small><strong>Вместимость:</strong></small></td>
+                          <td><small>{{court['max_players']}}</small></td>
+                        </tr>
+                        <tr>
+                          <td><small><strong>Тип площадки:</strong></small></td>
+                          <td><small>{{court['type']}}</small></td>
+                        </tr>
+                        <tr>
+                          <td><small><strong>Покрытие:</strong></small></td>
+                          <td><small>{{court['cover']}}</small></td>
+                        </tr>
+                        <tr>
+                          <td><small><strong>Инфрастуктура:</strong></small></td>
+                          <td><small>{{court['infrastructure']}}</small></td>
+                        </tr>
+                        <tr>
+                          <td><small><strong>Комментарии:</strong></small></td>
+                          <td><small>{{court['description']}}</small></td>
+                        </tr>
+                        <tr>
+                          <td><small><strong>Телефон:</strong></small></td>
+                          <td><small>{{court['phone']}}</small></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <br>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

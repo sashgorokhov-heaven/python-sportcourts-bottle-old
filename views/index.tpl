@@ -2,7 +2,7 @@
       <div class="jumbotron">
         <h1>SportCourts</h1>
         <p class="lead">Сервис для спротсменов-любителей.</p>
-        <p class="lead">Старт в августе.</p>
+        <p class="lead">Наша альфа-версия стартовала!</p>
         % if not loggedin:
             <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
             <p class="text-center">или</p>

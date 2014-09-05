@@ -34,7 +34,7 @@
                     </div>
                   </div>
                   % if game['subscribed']['count'] > 0:
-                  <div class="panel-group" id="accordion" style="margin-bottom:0px;">
+                  <div class="panel-group" id="accordion" style="margin-bottom:10px;">
                     <div class="panel panel-default">
                       <div class="panel-heading" style="text-align: center">
                         <h5 class="panel-title" style="font-size:1em;">
