@@ -24,10 +24,12 @@
             % for game in games:
                 % include("game", game=game)
             % end
-            <!--<ul class="pager">
-              <li class="previous disabled"><a href="#">&larr; Раньше</a></li>
-              <li class="next"><a href="#">Позже &rarr;</a></li>
-            </ul>-->
+            <ul class="pager">
+              <!--<li class="previous disabled"><a href="#">&larr; Раньше</a></li> -->
+              % if defined("nextpage") and nextpage:
+                <li class="next"><a href="/games?page={{nextpage}}">Позже &rarr;</a></li>
+              % end
+            </ul>
           </div>
         </div>
 

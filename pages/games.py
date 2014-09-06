@@ -6,6 +6,9 @@ import modules.dbutils
 from models import sport_types, game_types, cities, courts, games, notifications
 
 
+GAMES_PER_PAGE = 20
+
+
 class Games(pages.Page):
     def post_submit_add(self):
         with modules.dbutils.dbopen() as db:
@@ -88,6 +91,27 @@ class Games(pages.Page):
                 game['is_subscribed'] = False
             return pages.PageBuilder('game', game=game, standalone=True)
 
+    def get_page(self, page_n):
+        with modules.dbutils.dbopen() as db:
+            count = int(db.execute("SELECT COUNT(game_id) FROM games")[0][0])
+            total_pages = count // GAMES_PER_PAGE + 1
+            if page_n > total_pages:
+                raise bottle.HTTPError(404)
+            allgames = games.get_recent(count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), detalized=True,
+                                        dbconnection=db)
+            sports = sport_types.get(0, dbconnection=db)
+            for game in allgames:
+                if pages.auth_dispatcher.loggedin() \
+                        and pages.auth_dispatcher.getuserid() in {user['user_id'] for user in
+                                                                  game['subscribed']['users']}:
+                    game['is_subscribed'] = True
+                else:
+                    game['is_subscribed'] = False
+            page = pages.PageBuilder('games', games=allgames, sports=sports)
+            if page_n < total_pages:
+                page.add_param("nextpage", page_n + 1)
+            return page
+
     def get(self):
         if 'delete' in bottle.request.query:
             if not pages.auth_dispatcher.organizer():
@@ -109,17 +133,9 @@ class Games(pages.Page):
                                          description='Вы не можете просматривать эту страницу')
         if 'game_id' in bottle.request.query:
             return self.get_game_id()
-        with modules.dbutils.dbopen() as db:
-            allgames = games.get_recent(detalized=True, dbconnection=db)
-            sports = sport_types.get(0, dbconnection=db)
-            for game in allgames:
-                if pages.auth_dispatcher.loggedin() \
-                        and pages.auth_dispatcher.getuserid() in {user['user_id'] for user in
-                                                                  game['subscribed']['users']}:
-                    game['is_subscribed'] = True
-                else:
-                    game['is_subscribed'] = False
-            return pages.PageBuilder('games', games=allgames, sports=sports)
+        if 'page' in bottle.request.query:
+            return self.get_page(int(bottle.request.query.get('page')))
+        return self.get_page(1)
 
     get.route = '/games'
     post.route = get.route
