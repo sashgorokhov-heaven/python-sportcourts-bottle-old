@@ -5,15 +5,10 @@ import itertools
 import traceback
 import time
 
-import qrcode
 import bottle
 
 
 config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
-
-
-def make_qrcode(text:str):
-    return qrcode.make(text)
 
 
 def _generate_secret():
