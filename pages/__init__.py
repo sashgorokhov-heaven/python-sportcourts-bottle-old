@@ -138,8 +138,9 @@ class _AuthDispatcher:
     def set_user(self, page_builder):
         userinfo = dict()
         userinfo['user_id'] = self.getuserid()
-        userinfo['adminlevel'] = self.getadminlevel()
+        userinfo['userlevel'] = self.getuserlevel()
         userinfo['notifycount'] = get_notifycount(self.getuserid())
+        userinfo['admin'] = self.admin()
         userinfo['organizer'] = self.organizer()
         userinfo['responsible'] = self.responsible()
         userinfo['common'] = self.common()
@@ -150,36 +151,39 @@ class _AuthDispatcher:
         if self.loggedin(): return
         with modules.dbutils.dbopen() as db:
             user = db.execute(
-                "SELECT user_id, admin FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
-                ['user_id', 'adminlevel'])
+                "SELECT user_id, userlevel FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
+                ['user_id', 'userlevel'])
             if len(user) == 0:
                 raise ValueError("Invalid email or password")
             user = user[0]
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user['user_id']))
             bottle.response.set_cookie('user_id', user['user_id'], modules.config['secret'])
-            bottle.response.set_cookie('adminlevel', user['adminlevel'], modules.config['secret'])
+            bottle.response.set_cookie('userlevel', user['userlevel'], modules.config['secret'])
 
     def logout(self):
         bottle.response.delete_cookie('user_id')
-        bottle.response.delete_cookie('adminlevel')
+        bottle.response.delete_cookie('userlevel')
 
     def getuserid(self) -> int:
         return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
 
-    def getadminlevel(self) -> int:
-        return int(bottle.request.get_cookie('adminlevel', 0, modules.config['secret']))
+    def getuserlevel(self) -> int:
+        return int(bottle.request.get_cookie('userlevel', 0, modules.config['secret']))
 
     def loggedin(self) -> bool:
         return bool(self.getuserid())
 
+    def admin(self) -> bool:
+        return self.loggedin() and self.getuserlevel() == 0
+
     def organizer(self) -> bool:
-        return self.loggedin() and self.getadminlevel() == 1
+        return self.loggedin() and (self.getuserlevel() == 1 or self.admin())
 
     def responsible(self) -> bool:
-        return self.loggedin() and (self.getadminlevel() == 2 or self.organizer())
+        return self.loggedin() and (self.getuserlevel() == 2 or self.organizer() or self.admin())
 
     def common(self) -> bool:
-        return self.loggedin() and (self.getadminlevel() == 3 or self.responsible() or self.organizer())
+        return self.loggedin() and (self.getuserlevel() == 3 or self.responsible() or self.organizer() or self.admin())
 
 
 class PageBuilder:
