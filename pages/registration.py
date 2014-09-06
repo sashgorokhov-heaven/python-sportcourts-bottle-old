@@ -7,7 +7,7 @@ import modules.dbutils
 from modules.utils import write_notification, sendmail
 import pages
 from modules import vk
-from models import images, cities
+from models import images, cities, settings
 
 
 class Registration(pages.Page):
@@ -81,6 +81,7 @@ class Registration(pages.Page):
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Пользователь с таким email уже зарегестрирован',
                                          cities=cities, **params)
+            params['settings'] = settings.default().format()
             sql = 'INSERT INTO users ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
             sql = sql.format(
