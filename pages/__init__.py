@@ -11,15 +11,6 @@ import modules.logging
 from modules.utils import get_notifycount
 
 
-
-
-
-# +-> _Executor.execute -> page.execute
-# bottle routing -|
-# +-> _Executor.execute -> page.execute
-# ....
-
-
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
         if method == 'POST':
