@@ -1,3 +1,4 @@
+import json
 from modules.dbutils import DBConnection
 
 
@@ -15,6 +16,33 @@ def autodb(func):
         return result
 
     return wrapper
+
+
+class JsonDBData(dict):
+    def __init__(self, data=None):
+        super().__init__()
+        if data:
+            self._data = json.loads(data)
+        else:
+            self._data = dict()
+
+    def _get(self, key:str):
+        return self._data[key] if key in self._data else False
+
+    def _set(self, key:str, value):
+        self._data[key] = value
+
+    def __getitem__(self, item):
+        return self._get(item)
+
+    def __setitem__(self, key, value):
+        return self._set(key, value)
+
+    def format(self):
+        return json.dumps(self._data)
+
+    def __str__(self):
+        return str(self._data)
 
 
 def splitstrlist(line:str) -> list:
