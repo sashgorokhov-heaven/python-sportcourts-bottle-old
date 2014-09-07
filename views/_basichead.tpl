@@ -8,12 +8,12 @@
     	<meta name="viewport" content="width=512">
         <meta name="google-site-verification" content="UiLEwcYPzjypS-khlrSkBr31Qr2xp-Qd1l0RVbzZ5Uc" />
 
-        <meta property="og:title" content="Title" />
+        <!-- <meta property="og:title" content="Title" />
         <meta property="og:site_name" content="Site Name" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="http://sportcourts.ru"/>
         <meta property="og:image" content="http://cs620526.vk.me/v620526278/11a8d/FpP29juZHm4.jpg" />
-        <meta property="og:description" content="Description"/>
+        <meta property="og:description" content="Description"/> -->
 	
     	<link type="text/css" rel="stylesheet" href="/view/css/main.css" />
     	<link type="text/css" rel="stylesheet" href="/view/css/jquery-ui.css" />
