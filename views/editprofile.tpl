@@ -131,7 +131,7 @@
                 <div class="form-group">
                   <label for="phone" class="col-sm-2 control-label">Телефон</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value="{{user['phone']}}"></input>
+                    <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value="{{user['phone']}}" data-bv-notempty="true" data-bv-notempty-message="Укажите телефон"></input>
                     <span id="valid"></span>
                   </div>
                 </div>
