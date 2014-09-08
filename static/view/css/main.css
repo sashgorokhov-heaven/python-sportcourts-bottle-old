@@ -108,3 +108,8 @@
 .profile-avatar{
     max-width:300px;
 }
+
+.round {
+    border-radius: 100px; /* Радиус скругления */
+    box-shadow: 0 0 7px #666; /* Параметры тени */
+}
