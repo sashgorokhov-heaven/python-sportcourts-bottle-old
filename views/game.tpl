@@ -12,11 +12,23 @@
             % end
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
-                <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
-                % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
-                <div style="float:right;"><a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a></div>
-                <!-- <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div> -->
-                % end
+                <div class="row panel_head">
+                  <div class="col-md-6">
+                    <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
+                  </div>
+                  <div class="col-md-6 organizer">
+                    <p class="text-right">
+                      % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
+                      <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                      % end
+                      % if userinfo['user_id']!=userinfo['admin'] and userinfo['user_id']!=game['created_by']:
+                      <a href="/profile?user_id={{game['created_by']}}">{{game['created_by_name']}}</a>
+                      &nbsp;
+                      <img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="30">
+                      % end
+                    </p>
+                  </div>
+                </div>
               </div>
               <div class="panel-body">
                 <div class="col-md-2">
@@ -25,17 +37,8 @@
                   <p>{{game['parsed_datetime'][2]}}</p>
                 </div>
                 <div class="col-md-6">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
-                      <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
-                    </div>
-                    <div class="col-md-6">
-                      <div>
-                        <img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="50">&nbsp;<a href="/profile?user_id={{game['created_by']}}">{{game['created_by_name']}}</a>
-                      </div>
-                    </div>
-                  </div>
+                  <p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
+                  <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
                   <div class="progress">
                     <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
                         <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>

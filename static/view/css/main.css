@@ -82,6 +82,16 @@
     font-size: 14px;
 }
 
+.organizer a{
+    font-size: 95%;
+    position: relative;
+    top:-2px;
+}
+
+.organizer img{
+    margin-top: -4px;
+}
+
 #auth_button{
     background-color: rgb(99, 131, 168);
     color: rgb(255, 255, 255);
@@ -112,4 +122,8 @@
 .round {
     border-radius: 100px; /* Радиус скругления */
     box-shadow: 0 0 7px #666; /* Параметры тени */
+}
+
+.panel_head{
+    height: 21px;
 }
