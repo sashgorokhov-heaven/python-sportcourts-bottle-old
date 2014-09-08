@@ -144,5 +144,3 @@
                 </script>
                 % end
             </div>
-
->>>>>>> FETCH_HEAD
