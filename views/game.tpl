@@ -90,6 +90,7 @@
                     % end
                   % end
                 </div>
+                <div><img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="50"><a href="/profile?user_id={{game['created_by']}}">{{game['created_by_name']}}</a></div>
                 </div>
               </div>
               % if loggedin and standalone:

@@ -19,6 +19,10 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
     if 'sport_type' in game and detalized:
         game['sport_type'] = sport_types.get(game['sport_type'], dbconnection=dbconnection)
 
+    if 'created_by' in game and detalized:
+        user = users.get(int(game['created_by']), fields=['first_name', 'last_name'], dbconnection=dbconnection)
+        game['created_by_name'] = user['first_name'] + ' ' + user['last_name']
+
     if 'datetime' in game:
         dbutils.strdates(game)
         game['parsed_datetime'] = (
