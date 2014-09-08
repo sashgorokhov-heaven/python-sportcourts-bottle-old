@@ -25,9 +25,17 @@
                   <p>{{game['parsed_datetime'][2]}}</p>
                 </div>
                 <div class="col-md-6">
-                  <p>
-                  {{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
-                  <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
+                      <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
+                    </div>
+                    <div class="col-md-6">
+                      <div>
+                        <img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="50">&nbsp;<a href="/profile?user_id={{game['created_by']}}">{{game['created_by_name']}}</a>
+                      </div>
+                    </div>
+                  </div>
                   <div class="progress">
                     <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
                         <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
@@ -89,8 +97,7 @@
                       <a href="#" data-toggle="modal" data-target="#loginModal"><button type="button" class="btn btn-primary btn-xs">Идет набор</button></a>
                     % end
                   % end
-                </div>
-                <div><img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="50"><a href="/profile?user_id={{game['created_by']}}"><span class="label label-info">{{game['created_by_name']}}</span></a></div>
+                  </div>
                 </div>
               </div>
               % if loggedin and standalone:
