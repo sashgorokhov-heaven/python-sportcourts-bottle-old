@@ -22,7 +22,7 @@
                       <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
                       % end
                       % if userinfo['user_id']!=userinfo['admin'] and userinfo['user_id']!=game['created_by']:
-                      <a href="/profile?user_id={{game['created_by']}}">{{game['created_by_name']}}</a>
+                      <a href="/profile?user_id={{game['created_by']}}" target="_blank">{{game['created_by_name']}}</a>
                       &nbsp;
                       <img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="30">
                       % end
@@ -45,6 +45,7 @@
                     </div>
                   </div>
                   % if game['subscribed']['count'] > 0:
+                  % if loggedin:
                   <div class="panel-group" id="accordion" style="margin-bottom:10px;">
                     <div class="panel panel-default">
                       <div class="panel-heading" style="text-align: center">
@@ -61,6 +62,7 @@
                       </div>
                     </div>
                   </div>
+                  % end
                   % end
                 </div>
                 <div class="col-md-2">
