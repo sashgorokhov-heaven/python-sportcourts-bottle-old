@@ -17,6 +17,14 @@
           Рост: {{user['height']}} см.<br>
           Вес: {{user['weight']}} кг.<br>
           <br>
+          <!-- <span class="label  label-info dropdown-toggle" data-toggle="dropdown">Сыграно: <span class="badge">42</span> часа</span>
+          <ul class="dropdown-menu" role="menu">
+              <li>Футбол: 3 часа</li>
+              <li>Баскетбол: 6 часов</li>
+              <li>Воллейбол: 30 часов</li>
+          </ul>
+          <br>
+          <br> -->
           Телефон: {{user['phone']}}<br>
           % if user['vkuserid']:
             <a href="http://vk.com/id{{user['vkuserid']}}">Профиль вконтакте</a>
