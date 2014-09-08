@@ -13,7 +13,7 @@
             <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
                 <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
-                % if userinfo['organizer']:
+                % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
                 <div style="float:right;"><a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a></div>
                 <!-- <div style="float:right;"><a href="/games?delete={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></div> -->
                 % end
