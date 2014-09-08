@@ -17,8 +17,8 @@
                   </div>
                   <div class="col-sm-12">
                     <label class="checkbox-inline" style="margin-left:-17px;">
-                      <input type="radio" name="email_notify" {{'checked' if settings.show_phone()=='organizers' else ''}}> Мой телефон видят только администраторы
-                      <input type="radio" name="email_notify" {{'checked' if settings.show_phone()=='all' else ''}}> Мой телефон видят все пользователи
+                      <input type="radio" name="phone_organizers" {{'checked' if settings.show_phone()=='organizers' else ''}}> Мой телефон видят только администраторы
+                      <input type="radio" name="phone_all" {{'checked' if settings.show_phone()=='all' else ''}}> Мой телефон видят все пользователи
                     </label>
                   </div>
                 </div>
