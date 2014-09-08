@@ -10,7 +10,7 @@
                   <label for="sex" class="col-sm-12 control-label">Уведомления</label>
                   <hr>
                   <div class="col-sm-12">
-                    <label class="checkbox-inline" style="margin-left:-17px;">
+                    <label class="checkbox-inline">
                       <input type="checkbox" name="email_notify" value="1" {{'checked' if user['sex']=='male' else ''}}> Отправлять важные уведомления на email
                     </label>
                   </div>
