@@ -30,7 +30,7 @@
                 <div class="form-group" id="passwd">
                   <label class="col-sm-2 control-label">&nbsp;</label>
                   <div class="col-sm-10">
-                    <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/auth&response_type=code&v=5.21"><img src="http://cs424830.vk.me/v424830492/6800/4W_bSTYHBEY.jpg" width="40"/></a>
+                    <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/auth&response_type=code&v=5.21"><img src="http://novosti-tchasa.ru/wp-content/themes/heatmap-adaptive/images/facebook.png" width="32"/></a>
                   </div>
                 </div>
                 <div class="form-group" id="passwd">
