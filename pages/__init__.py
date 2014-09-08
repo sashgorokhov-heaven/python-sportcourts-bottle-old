@@ -130,6 +130,7 @@ class _AuthDispatcher:
         userinfo = dict()
         userinfo['user_id'] = self.getuserid()
         userinfo['userlevel'] = self.getuserlevel()
+        userinfo['username'] = self.getusername()
         userinfo['notifycount'] = get_notifycount(self.getuserid())
         userinfo['admin'] = self.admin()
         userinfo['organizer'] = self.organizer()
@@ -142,21 +143,28 @@ class _AuthDispatcher:
         if self.loggedin(): return
         with modules.dbutils.dbopen() as db:
             user = db.execute(
-                "SELECT user_id, userlevel FROM users WHERE email='{}' AND passwd='{}'".format(email, password),
-                ['user_id', 'userlevel'])
+                "SELECT user_id, first_name, last_name, userlevel FROM users WHERE email='{}' AND passwd='{}'".format(
+                    email, password),
+                ['user_id', 'first_name', 'last_name', 'userlevel'])
             if len(user) == 0:
                 raise ValueError("Invalid email or password")
             user = user[0]
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user['user_id']))
             bottle.response.set_cookie('user_id', user['user_id'], modules.config['secret'])
             bottle.response.set_cookie('userlevel', user['userlevel'], modules.config['secret'])
+            bottle.response.set_cookie('username', user['first_name'] + ' ' + user['last_name'])
+
 
     def logout(self):
         bottle.response.delete_cookie('user_id')
         bottle.response.delete_cookie('userlevel')
+        bottle.response.delete_cookie('username')
 
     def getuserid(self) -> int:
         return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
+
+    def getusername(self) -> str:
+        return bottle.request.get_cookie('username', '', modules.config['secret'])
 
     def getuserlevel(self) -> int:
         return int(bottle.request.get_cookie('userlevel', 0, modules.config['secret']))
