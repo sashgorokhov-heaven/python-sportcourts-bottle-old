@@ -1,11 +1,22 @@
 import threading
+import traceback
 import time
-
-from modules import utils, logging
-import modules
 
 
 TICKTIME = 60  # in secs
+
+
+def threaded(func):
+    def wrapper(*args, **kwargs):
+        thread = threading.Thread(target=func, args=args, kwargs=kwargs, name=func.__qualname__)
+        thread.start()
+        return thread
+
+    return wrapper
+
+
+def extract_traceback(e):
+    return '\n'.join(traceback.format_exception(e.__class__, e, e.__traceback__))
 
 
 class Event:
@@ -32,11 +43,7 @@ class _EventServer:
         with self._lock:
             self._eventlist.append(event)
 
-    def sighandler(self, signum, frame):
-        # print(signum)
-        self.stop()
-
-    @utils.threaded
+    @threaded
     def _loop(self):
         while True:
             self.check_events()
@@ -53,18 +60,20 @@ class _EventServer:
                     if event.condition():
                         self._event_execute(event)
                 except Exception as e:
-                    logging.error('Event error ' + event.__class__.__name__ + ' - ' + e.__class__.__name__ + ': {}',
-                                  str(e.args))
-                    logging.info(modules.extract_traceback(e))
+                    pass  # TODO: Error handling
 
-    @utils.threaded
+    @threaded
     def _event_execute(self, event:Event):
         try:
             event.execute()
         except Exception as e:
-            logging.error('Event error ' + event.__class__.__name__ + ' - ' + e.__class__.__name__ + ': {}',
-                          str(e.args))
-            logging.info(modules.extract_traceback(e))
+            pass  # TODO: Error handling
 
 
 event_server = _EventServer()
+
+from .game_notifier_2_days import GameNotifier
+from .game_notifier_1_day import GameNotifier as GameNotifier2
+
+event_server.add_event(GameNotifier)
+event_server.add_event(GameNotifier2)
