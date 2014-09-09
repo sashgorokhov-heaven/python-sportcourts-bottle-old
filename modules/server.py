@@ -1,9 +1,6 @@
-import signal
-
 import bottle
-
 import modules
-import modules.eventslib
+
 
 bottle.TEMPLATE_PATH.append('views')
 bottle.debug(modules.config['debug'])
