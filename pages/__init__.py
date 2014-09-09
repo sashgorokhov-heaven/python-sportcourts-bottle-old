@@ -1,3 +1,4 @@
+import base64
 import importlib
 import os
 import threading
@@ -152,7 +153,8 @@ class _AuthDispatcher:
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user['user_id']))
             bottle.response.set_cookie('user_id', user['user_id'], modules.config['secret'])
             bottle.response.set_cookie('userlevel', user['userlevel'], modules.config['secret'])
-            bottle.response.set_cookie('username', user['first_name'] + ' ' + user['last_name'])
+            bottle.response.set_cookie('username', user['first_name'] + ' ' + user['last_name'],
+                                       modules.config['secret'])
 
 
     def logout(self):
