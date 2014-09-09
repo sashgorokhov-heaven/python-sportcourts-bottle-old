@@ -10,7 +10,7 @@
               </div>
             </div>
             % end
-            <div class="panel panel-default"><a name="{{game['game_id']}}"></a>
+            <div class="panel panel-default {{'panel-success' if userinfo['user_id']==game['created_by'] else 'panel-default'}} "><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
                 <div class="row panel_head">
                   <div class="col-md-6">
@@ -21,7 +21,8 @@
                       % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
                       <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
                       % end
-                      % if userinfo['user_id']!=userinfo['admin'] and userinfo['user_id']!=game['created_by']:
+                      % if userinfo['user_id']!=game['created_by']:
+                      &nbsp;&nbsp;
                       <a href="/profile?user_id={{game['created_by']}}" target="_blank">{{game['created_by_name']}}</a>
                       &nbsp;
                       <img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="30">
