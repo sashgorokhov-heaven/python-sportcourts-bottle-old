@@ -14,17 +14,23 @@
                     <li><a class="topmenu" href="/games">Игры</a></li>
                     <li><a class="topmenu" href="/about">О нас</a></li>
                     % if loggedin:
-                        <li><a class="topmenu" href="/profile">Мой профиль</a></li>
-                            <li>
-                                <a class="topmenu" href="/notifications">
-                                    <span class="glyphicon glyphicon-envelope"></span>
-                                    % if userinfo['notifycount']>0:
-                                    <span class="badge notify">{{userinfo['notifycount']}}
-                                    % end
-                                </span>
-                                </a>
-                            </li>
-                            <li><a class="topmenu" href="/logout">Выход</a></li>
+                        <li style="margin-top:-3px;">
+                          <a class="topmenu" href="/profile">
+                            <!-- <img src="http://sportcourts.ru/avatars/{{userinfo['user_id']}}" class="round" width="30">
+                            &nbsp; -->
+                            Мой профиль
+                          </a>
+                        </li>
+                        <li>
+                            <a class="topmenu" href="/notifications">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                                % if userinfo['notifycount']>0:
+                                <span class="badge notify">{{userinfo['notifycount']}}
+                                % end
+                            </span>
+                            </a>
+                        </li>
+                        <li><a class="topmenu" href="/logout">Выход</a></li>
                         % end
                         % if not loggedin:
                         <li><a class="topmenu" href="#" data-toggle="modal" data-target="#loginModal">Вход</a></li>
