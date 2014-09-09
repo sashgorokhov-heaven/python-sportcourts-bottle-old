@@ -34,7 +34,10 @@ class Registration(pages.Page):
         data['phone'] = user['mobile_phone'] if 'mobile_phone' in user else None
         data['sex'] = 'male' if user['sex'] == 2 else ('female' if user['sex'] == 1 else None)
         data['email'] = email if email else None
-        data['bdate'] = vk.convert_date(user['bdate']) if 'bdate' in user else None
+        try:  # dirty hack
+            data['bdate'] = vk.convert_date(user['bdate']) if 'bdate' in user else None
+        except:
+            pass
         for city in cities_list:
             if city['title'] == data['city']:
                 data['city_id'] = city['city_id']
