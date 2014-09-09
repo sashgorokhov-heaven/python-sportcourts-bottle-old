@@ -21,3 +21,4 @@ class Settings(pages.Page):
             settings.set(pages.auth_dispatcher.getuserid(), sett, dbconnection=db)
 
     get.route = '/settings'
+    post.route = '/settings'
