@@ -14,7 +14,7 @@
                     <li><a class="topmenu" href="/games">Игры</a></li>
                     <li><a class="topmenu" href="/about">О нас</a></li>
                     % if loggedin:
-                        <li style="margin-top:-3px;">
+                        <li>
                           <a class="topmenu" href="/profile">
                             <!-- <img src="http://sportcourts.ru/avatars/{{userinfo['user_id']}}" class="round" width="30">
                             &nbsp; -->
