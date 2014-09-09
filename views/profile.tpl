@@ -1,7 +1,7 @@
 % rebase("_basicpage", title=user['first_name']+' '+user['last_name'])
       <div class="row profile">
         <div class="col-md-3">
-           <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300">
+          <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300">
         </div>
         <div class="col-md-9">
           <strong>{{user['first_name']+' '+user['last_name']}}</strong>
@@ -25,9 +25,13 @@
           </ul>
           <br>
           <br> -->
-          Телефон: {{user['phone']}}<br>
+          Телефон: {{user['phone']}}
+          <br>
+          <br>
           % if user['vkuserid']:
-            <a href="http://vk.com/id{{user['vkuserid']}}">Профиль вконтакте</a>
+            <a href="http://vk.com/id{{user['vkuserid']}}" target="_blank">
+              <img src="http://cs424830.vk.me/v424830492/6800/4W_bSTYHBEY.jpg" width="32"/>
+            </a>
           % end
           % if int(user['user_id'])==int(userinfo['user_id']) and not activated:
             <p>Вы не активировали свой профиль!</p>
