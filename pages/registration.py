@@ -88,9 +88,8 @@ class Registration(pages.Page):
                 dbkeylist=', '.join(keylist),
                 dbvaluelist=', '.join(["'{}'".format(str(params[key])) for key in keylist]))
             db.execute(sql)
-            db.execute('SELECT user_id, admin FROM users WHERE email="{}"'.format(params['email']),
-                       ['user_id', 'admin'])
-            user_id = db.last()[0]['user_id']
+            db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
+            user_id = db.last()[0][0]
             # pages.auth_dispatcher.login(params['email'], params['passwd'])
             if 'avatar' in bottle.request.files:
                 images.save_avatar(user_id, bottle.request.files.get('avatar'))
