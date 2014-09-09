@@ -13,10 +13,10 @@ class Images(pages.Page):
 
     def get_avatar_image(self, name):
         filename = str(name)
-        fullaname = '/bsp/data/avatars/{}.jpg'.format(filename)
+        fullaname = '/bsp/data/images/avatars/{}.jpg'.format(filename)
         if not os.path.exists(fullaname):
             filename = 'blank'
-        return bottle.static_file('{}.jpg'.format(filename), '/bsp/data/avatars/')
+        return bottle.static_file('{}.jpg'.format(filename), '/bsp/data/images/avatars/')
 
     def get_og_image(self, name):
         return bottle.static_file(name, '/bsp/data/images/og/')
