@@ -109,7 +109,7 @@
                 </div>
               </div>
               % if loggedin and standalone:
-                 <script type="text/javascript">
+              <script type="text/javascript">
                 $(document).on('click', 'li', function() {
                   arr = $(this).attr("id").split('-');
                   var user_id = arr[1],
@@ -156,6 +156,6 @@
                     });
                   }
                 });
-                </script>
-                % end
+              </script>
+              % end
             </div>
