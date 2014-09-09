@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-</head>
-<body>
+% rebase("_basicpage", title='Пользователи')
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-12 column">
 				<div class="page-header">
+					<br>
 					<h1>
 						Пользователи <small>типо маленький текст</small>
 					</h1>
@@ -42,5 +37,3 @@
 			</div>
 		</div>
 	</div>
-</body>
-</html>
