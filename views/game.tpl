@@ -12,11 +12,11 @@
             % end
             <div class="panel panel-default {{'panel-success' if userinfo['user_id']==game['created_by'] else 'panel-default'}} "><a name="{{game['game_id']}}"></a>
               <div class="panel-heading">
-                <div class="row panel_head">
-                  <div class="col-md-6">
+                <div class="panel_head">
+                  <div style="float:left; max-width:45%;">
                     <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
                   </div>
-                  <div class="col-md-6 organizer">
+                  <div class="organizer" style="float:right; max-width:45%;">
                     <p class="text-right">
                       % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
                       <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
