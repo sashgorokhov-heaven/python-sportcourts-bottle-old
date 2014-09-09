@@ -27,7 +27,7 @@
                         {{game['created_by_name']}}
                       </a>
                       &nbsp;
-                      <img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="30">
+                      <img src="http://sportcourts.ru/images/avatars/{{str(game['created_by'])}}" class="round" width="30">
                       % end
                     </p>
                   </div>
