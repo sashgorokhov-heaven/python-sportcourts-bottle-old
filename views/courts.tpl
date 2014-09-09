@@ -7,7 +7,7 @@
         </div> -->
         <div class="row">
           <div class="col-md-8">
-            <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
+            <img src="/images/courts/{{court['court_id']}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
           </div>
           <div class="col-md-4">
             <p class="lead">{{court['title']}}
@@ -43,7 +43,7 @@
                 % if defined("game"):
                 <tr>
                   <td colspan="2">
-                    <p><a href="http://sportcourts.ru/games?game_id={{game['game_id']}}">Ближайшая игра:</a></p>
+                    <p><a href="/games?game_id={{game['game_id']}}">Ближайшая игра:</a></p>
                     <small><p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p></small>
                     <small><p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p></small>
                     <div class="progress">

@@ -8,7 +8,7 @@
               <div class="bs-example">
                 <div class="alert alert-danger fade in">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                  <strong>{{error}}</strong> {{error_description}}.
+                  <strong>{{error}}</strong><br>{{error_description}}.
                 </div>
               </div>
               <script type="text/javascript">
@@ -25,7 +25,8 @@
                   <div class="form-group" id="passwd">
                     <label class="col-sm-2 control-label">&nbsp;</label>
                     <div class="col-sm-10">
-                      <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/auth&response_type=code&v=5.21"><img src="http://cs424830.vk.me/v424830492/6800/4W_bSTYHBEY.jpg" width="40"/></a>
+                      <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/auth&response_type=code&v=5.21">
+                      <img src="/images/static/vk.png" width="32"/></a>
                     </div>
                   </div>
                   <div class="form-group" id="passwd">

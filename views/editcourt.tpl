@@ -67,7 +67,7 @@
                     </script>
                     <div class="fileinput fileinput-exists" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
-                        <img src="http://sportcourts.ru/images/courts/{{court['court_id']}}" alt="Изображение площадки" width="150">
+                        <img src="/images/courts/{{court['court_id']}}" alt="Изображение площадки" width="150">
                       </div>
                         <div>
                           <span class="btn btn-default btn-file">

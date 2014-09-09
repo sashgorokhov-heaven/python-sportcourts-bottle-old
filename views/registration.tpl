@@ -21,7 +21,7 @@
 		      <div class="col-sm-10 col-sm-offset-2">
 		        <p>
 		          <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/registration&response_type=code&v=5.21">Использовать данные из ВКонтакте
-		          <img src="http://zhacker.net/uploads/posts/2014-06/1401795821_vk_com.png" height="38"/>
+		          <img src="/images/static/vk.png" width="32"/>
 		          </a>
 		        </p>
 		      </div>

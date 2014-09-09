@@ -70,7 +70,7 @@
           unsubscribe = arr[2];
         if (unsubscribe=='u') {
           $.ajax({
-            url: 'http://sportcourts.ru/subscribe',
+            url: '/subscribe',
             data: {
               game_id: game_id,
               unsubscribe: 0
@@ -79,7 +79,7 @@
             success: function (responseData, textStatus) {
               // alert(responseData + ' Status: ' + textStatus);
               alert('Теперь вас нет в списках на игру');
-              // document.location.href = 'http://sportcourts.ru/games#game' + game_id;
+              // document.location.href = '/games#game' + game_id;
               window.location.reload();
             },
             error: function (response, status, errorThrown) {
@@ -90,7 +90,7 @@
           });
         } else {
           $.ajax({
-            url: 'http://sportcourts.ru/subscribe',
+            url: '/subscribe',
             data: {
               game_id: game_id
             },
@@ -98,7 +98,7 @@
             success: function (responseData, textStatus) {
               // alert(responseData + ' Status: ' + textStatus);
               alert('Вы успешно записаны на игру');
-              // document.location.href = 'http://sportcourts.ru/games#game' + game_id;
+              // document.location.href = '/games#game' + game_id;
               window.location.reload();
             },
             error: function (response, status, errorThrown) {

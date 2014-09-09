@@ -11,7 +11,7 @@
                   <div class="col-sm-10">
                     <div class="fileinput fileinput-exists" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
-                          <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150">
+                          <img src="/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150">
                       </div>
                         <div>
                           <span class="btn btn-default btn-file">

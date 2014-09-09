@@ -16,7 +16,7 @@
                     % if loggedin:
                         <li>
                           <a class="topmenu" href="/profile">
-                            <!-- <img src="http://sportcourts.ru/avatars/{{userinfo['user_id']}}" class="round" width="30">
+                            <!-- <img src="/avatars/{{userinfo['user_id']}}" class="round" width="30">
                             &nbsp; -->
                             Мой профиль
                           </a>
