@@ -46,7 +46,7 @@
                   </div>
                   <div class="form-group">
                       <div class="col-sm-10 col-sm-offset-2">
-                          <button type="submit" class="btn btn-default" name="submit_reg">Войти</button> &nbsp; или &nbsp; <a href="/registration">Зарегистрироваться</a>
+                          <button type="submit" class="btn btn-default">Войти</button> &nbsp; или &nbsp; <a href="/registration">Зарегистрироваться</a>
                           <br>
                           <br>
                           <a href="">Восстановить пароль</a>
