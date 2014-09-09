@@ -1,5 +1,6 @@
-from modules import eventslib, dbutils, time
+from modules import dbutils, time
 from models import notifications
+import eventslib
 
 BUFFERLIFE = 60 * 30  # 15 minutes
 
