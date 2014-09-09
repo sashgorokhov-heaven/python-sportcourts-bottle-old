@@ -37,4 +37,6 @@
 	    });
 	    $("#game_add_long").val($("#game_add_slider2").slider("value") + " минут");
 	});
+
+	$("#court").chained("#city");
 </script>

@@ -9,9 +9,6 @@
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
-                    <script type="text/javascript">
-                        $('.fileinput').fileinput()
-                    </script>
                     <div class="fileinput fileinput-exists" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
                           <img src="http://sportcourts.ru/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150">
@@ -73,13 +70,6 @@
                     <span id="valid"></span>
                   </div>
                 </div>
-                <script type="text/javascript">
-                  $('.typeahead').typeahead({
-                    source: [{{!', '.join(['"{}"'.format(i['title']) for i in cities])}}],
-                    items: {{len(cities)}},
-                    minLength: 1
-                  })
-                </script>
                 <div class="form-group">
                   <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
                   <div class="col-sm-10">
@@ -135,45 +125,9 @@
                     <span id="valid"></span>
                   </div>
                 </div>
-                <script type="text/javascript">
-                  $('.phonemask').inputmask({
-                    mask: '+7 (999) 999 99 99'
-                  })
-                </script>
-                <!--<div class="form-group">
-                  <label for="email" class="col-sm-2 control-label">Email</label>
-                  <div class="col-sm-10">
-                    <input type="email" class="form-control" name="email" placeholder="example@mail.com" id="email" value="{{user['email']}}"></input>
-                    <span id="valid"></span>
-                  </div>
-                </div>-->
                 <br>
                 <hr>
                 <br>
-                <!-- <div class="form-group">
-                  <label for="passwd" class="col-sm-2 control-label">Новый пароль</label>
-                  <div class="col-sm-10">
-                    <input type="password" class="form-control" name="passwd"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Пароль обязателен и не может быть пустым"
-                    data-bv-identical="true"
-                    data-bv-identical-field="confirm_passwd"
-                    data-bv-identical-message="Пароль и его подтверждение различаются">
-                    <span id="valid"></span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="confirm_passwd" class="col-sm-2 control-label">Подтвердите</label>
-                  <div class="col-sm-10">
-                    <input type="password" class="form-control" name="confirm_passwd"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Пароль обязателен и не может быть пустым"
-                    data-bv-identical="true"
-                    data-bv-identical-field="passwd"
-                    data-bv-identical-message="Пароль и его подтверждение различаются">
-                    <span id="valid"></span>
-                  </div>
-                </div> -->
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
                     <button type="submit" class="btn btn-primary" name="submit_profile">Редактировать информацию</button>
