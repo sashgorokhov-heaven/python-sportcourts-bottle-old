@@ -23,7 +23,9 @@
                       % end
                       % if userinfo['user_id']!=game['created_by']:
                       &nbsp;&nbsp;
-                      <a href="/profile?user_id={{game['created_by']}}" target="_blank">{{game['created_by_name']}}</a>
+                      <a href="/profile?user_id={{game['created_by']}}" target="_blank">
+                        {{game['created_by_name']}}
+                      </a>
                       &nbsp;
                       <img src="http://sportcourts.ru/avatars/{{str(game['created_by'])}}" class="round" width="30">
                       % end
