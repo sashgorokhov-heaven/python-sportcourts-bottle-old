@@ -25,7 +25,7 @@
                   <div class="form-group" id="passwd">
                     <label class="col-sm-2 control-label">&nbsp;</label>
                     <div class="col-sm-10">
-                      <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/auth&response_type=code&v=5.21">
+                      <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}auth&response_type=code&v=5.21">
                       <img src="/images/static/vk.png" width="32"/></a>
                     </div>
                   </div>

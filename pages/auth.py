@@ -1,6 +1,7 @@
 import bottle
 
 from modules import dbutils, vk
+import modules
 import pages
 
 
@@ -23,7 +24,8 @@ class Authorize(pages.Page):
             db.execute("SELECT passwd FROM users WHERE email='{}'".format(email))
             if len(db.last()) == 0:
                 raise bottle.redirect(
-                    "https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/registration&response_type=code&v=5.21")
+                    "https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{}:{}/registration&response_type=code&v=5.21".format(
+                        modules.config['server']['ip'], modules.config['server']['port']))
             password = db.last()[0][0]
             try:
                 pages.auth_dispatcher.login(email, password)

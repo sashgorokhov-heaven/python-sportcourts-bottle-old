@@ -20,7 +20,7 @@
 		    <div class="row">
 		      <div class="col-sm-10 col-sm-offset-2">
 		        <p>
-		          <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://sportcourts.ru:80/registration&response_type=code&v=5.21">Использовать данные из ВКонтакте
+		          <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/registration&response_type=code&v=5.21">Использовать данные из ВКонтакте
 		          <img src="/images/static/vk.png" width="32"/>
 		          </a>
 		        </p>
