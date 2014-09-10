@@ -8,9 +8,9 @@
       <div class="col-md-4 column">
         <div class="panel panel-default">
           <div class="panel-body">
-            <p class="lead">Наши люди</p>
+            <p class="lead">Группы игр</p>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Поиск по имени"></input>
+              <input type="text" class="form-control" placeholder="Поиск по названию"></input>
             </div>
             <div class="form-group">
               <select id="city" name="city_id" class="form-control">
@@ -63,15 +63,14 @@
                     </div>
                     <div class="col-md-6">
                       <a href="/profile" target="_blank">
-                        <p class="lead">ФОК Железнодорожный</p>
+                        <p class="lead">Таганка по средам</p>
                       </a>
-                      <p>21 год, Екатеринбург</p>
+                      <p>21 участник, Екатеринбург</p>
                     </div>
                     <div class="col-md-4 text-right">
                       <a href="/profile" target="_blank">
-                        <p class="lead">+ добавить в друзья</p>
+                        <p>+ подписаться</p>
                       </a>
-                      <p>21 год, Екатеринбург</p>
                     </div>
                   </div>
                 </div>
@@ -86,9 +85,9 @@
                     </div>
                     <div class="col-md-10">
                       <a href="/profile" target="_blank">
-                        <p class="lead">ФОК Факел</p>
+                        <p class="lead">Факел по четвергам, старики</p>
                       </a>
-                      <p>20 лет, Екатеринбург</p>
+                      <p>21 участник, Екатеринбург</p>
                     </div>
                   </div>
                 </div>

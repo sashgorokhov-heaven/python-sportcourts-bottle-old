@@ -14,7 +14,7 @@
         <div class="col-md-3">
           <div class="panel panel-default">
             <div class="panel-body">
-              <p class="lead">Наши игры</p>
+              <p class="lead">Наши игры <!-- <a href="/courts?all"><small>на карте</small></a> --></p>
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Поиск по спорту"></input>
               </div>
@@ -25,7 +25,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block">Найти</button>
+                <button type="button" class="btn btn-primary btn-block" disabled="disabled">Найти</button>
               </div>
             </div>
           </div>

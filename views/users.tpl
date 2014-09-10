@@ -68,10 +68,9 @@
                       <p>21 год, Екатеринбург</p>
                     </div>
                     <div class="col-md-4 text-right">
-                      <a href="/profile" target="_blank">
-                        <p class="lead">+ добавить в друзья</p>
+                      <a href="">
+                        <p>+ добавить в друзья</p>
                       </a>
-                      <p>21 год, Екатеринбург</p>
                     </div>
                   </div>
                 </div>
