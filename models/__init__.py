@@ -5,7 +5,7 @@ from modules.dbutils import DBConnection
 def autodb(func):
     def wrapper(*args, **kwargs):
         mydb = False
-        if 'dbconnection' not in kwargs:
+        if 'dbconnection' not in kwargs or ('dbconnection' in kwargs and not kwargs['dbconnection']):
             mydb = True
             kwargs['dbconnection'] = DBConnection()
         try:
@@ -27,7 +27,7 @@ class JsonDBData(dict):
             self._data = dict()
 
     def _get(self, key:str):
-        return self._data[key] if key in self._data else False
+        return self._data[key]
 
     def _set(self, key:str, value):
         self._data[key] = value
