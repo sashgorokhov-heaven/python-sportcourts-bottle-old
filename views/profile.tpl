@@ -25,7 +25,9 @@
           </ul>
           <br>
           <br> -->
+          % if userinfo['responsible'] or userinfo['usersettings'].show_phone()=='all':
           Телефон: {{user['phone']}}
+          % end
           <br>
           <br>
           % if user['vkuserid']:
