@@ -87,7 +87,7 @@
                     % end
                     % if game['subscribed']['count'] < game['capacity']:
                       % if game['is_subscribed']:
-                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я записан</button>
+                        <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">Я записан{{'а' if userinfo['usersex']=='female' else ''}}</button>
                         <ul class="dropdown-menu" role="menu"><li id="{{game['game_id']}}-{{userinfo['user_id']}}-u"><a style="cursor:pointer;">Не пойду</a></li></ul>
                       % end
                       % if not game['is_subscribed']:
