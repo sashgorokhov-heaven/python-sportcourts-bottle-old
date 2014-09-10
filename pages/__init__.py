@@ -178,8 +178,13 @@ class _AuthDispatcher:
     def getuserlevel(self) -> int:
         return int(bottle.request.get_cookie('userlevel', 0, modules.config['secret']))
 
-    def updatesettings(self):
-        bottle.response.set_cookie('usersettings', settings.get(self.getuserid()).format(), modules.config['secret'])
+    def updatesettings(self, sett:settings.SettingsClass=None, dbconnection:modules.dbutils.DBConnection=None):
+        if not sett:
+            bottle.response.set_cookie('usersettings',
+                                       settings.get(self.getuserid(), dbconnection=dbconnection).format(),
+                                       modules.config['secret'])
+        else:
+            bottle.response.set_cookie('usersettings', sett.format(), modules.config['secret'])
 
     def getusersettings(self) -> settings.SettingsClass:
         return settings.SettingsClass(
