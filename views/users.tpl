@@ -61,9 +61,15 @@
                         <img src="/images/avatars/1" class="img-thumbnail profile-avatar" alt="User avatar" width="120">
                       </a>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-6">
                       <a href="/profile" target="_blank">
                         <p class="lead">Виталий Харченко</p>
+                      </a>
+                      <p>21 год, Екатеринбург</p>
+                    </div>
+                    <div class="col-md-4 text-right">
+                      <a href="/profile" target="_blank">
+                        <p class="lead">+ добавить в друзья</p>
                       </a>
                       <p>21 год, Екатеринбург</p>
                     </div>
