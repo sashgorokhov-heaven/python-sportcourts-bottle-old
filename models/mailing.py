@@ -1,19 +1,19 @@
 import smtplib
 from models import autodb, settings, users
 from modules import config, dbutils
-
+from email.mime import text
 
 def sendmail(message:str, to:str, subject:str='Уведомление'):
     try:
         me = config['email']['login']
         you = to
-        text = str(message)
+        message = str(message)
         subj = '{} | Sportcourts | Спортивные площадки'.format(subject)
         server = "smtp.gmail.com"
         port = 25
         user_name = config['email']['login']
         user_passwd = config['email']['password']
-        msg = smtplib.email.mime.text.MIMEText(text, _charset="utf-8")
+        msg = text.MIMEText(message, _charset="utf-8")
         msg['Subject'] = subj
         msg['From'] = me
         msg['To'] = you

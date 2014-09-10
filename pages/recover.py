@@ -19,13 +19,16 @@ class Recover(pages.Page):
             if len(db.last()) == 0:
                 return pages.PageBuilder('text', message='Неверный email',
                                          description='Пользователь с таким email не найден.')
+            print(ascii(db.last()))
+            user_id = db.last()[0][0]
+            passwd = db.last()[0][1]
             mailing.send_to_user(
-                db.last()[0][0],
-                'Ваш пароль: {}'.format(db.last()[0][1]),
+                user_id,
+                'Ваш пароль: {}'.format(passwd),
                 'Восстановление пароля',
                 override=True,
                 dbconnection=db)
-            notifications.add(db.last()[0][0], 'Вы недавно восстанавливливали пароль', 1, dbconnection=db)
+            notifications.add(user_id, 'Вы недавно восстанавливливали пароль', 1, dbconnection=db)
             return pages.PageBuilder('text', message='Проверьте email',
                                      description='Вам было отправлено письмо с дальнейшими инструкциями.')
 
