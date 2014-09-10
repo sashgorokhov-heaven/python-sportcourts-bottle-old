@@ -35,5 +35,5 @@ def send_to_user(user_id:int, message:str, subject:str='Уведомление',
     sett = settings.get(user_id, dbconnection=dbconnection)
     if not sett.send_email():
         return True
-    email = users.get(user_id, fields=['email'], dbconnection=dbconnection)
+    email = users.get(user_id, fields=['email'], dbconnection=dbconnection)['email']
     return sendmail(message, email, subject)
