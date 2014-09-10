@@ -6,7 +6,7 @@
           </div>
         </div> -->
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="panel panel-default">
               <div class="panel-body">
                 <p class="lead">Площадки</p>
@@ -26,7 +26,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-9">
             <div id="YMapsID" style="width: 650px; height:400px; width: 100%;"></div>
           </div>
         </div>
