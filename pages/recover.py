@@ -19,7 +19,6 @@ class Recover(pages.Page):
             if len(db.last()) == 0:
                 return pages.PageBuilder('text', message='Неверный email',
                                          description='Пользователь с таким email не найден.')
-            print(ascii(db.last()))
             user_id = db.last()[0][0]
             passwd = db.last()[0][1]
             mailing.send_to_user(
