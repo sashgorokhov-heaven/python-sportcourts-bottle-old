@@ -1,15 +1,13 @@
+import bottle
+
 import importlib
 import os
 import threading
 import sys
-
-import bottle
-
 import modules
 import modules.dbutils
 import modules.logging
-from modules.utils import get_notifycount
-from models import settings
+from models import settings, notifications
 
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
@@ -133,7 +131,7 @@ class _AuthDispatcher:
         userinfo['userlevel'] = self.getuserlevel()
         userinfo['username'] = self.getusername()
         userinfo['usersex'] = self.getusersex()
-        userinfo['notifycount'] = get_notifycount(self.getuserid())
+        userinfo['notifycount'] = notifications.get_count(self.getuserid())
         userinfo['admin'] = self.admin()
         userinfo['usersettings'] = self.getusersettings()
         userinfo['organizer'] = self.organizer()
