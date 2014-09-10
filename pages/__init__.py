@@ -211,6 +211,7 @@ class PageBuilder:
         self._template_name = template_name
         self._kwargs = kwargs
         auth_dispatcher.set_user(self)
+        self.add_param('serverinfo', modules.config['server'])
 
     def add_param(self, name:str, value):
         self._kwargs[name] = value
