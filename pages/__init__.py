@@ -1,4 +1,3 @@
-import base64
 import importlib
 import os
 import threading
@@ -10,6 +9,7 @@ import modules
 import modules.dbutils
 import modules.logging
 from modules.utils import get_notifycount
+from models import settings
 
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
@@ -135,6 +135,7 @@ class _AuthDispatcher:
         userinfo['usersex'] = self.getusersex()
         userinfo['notifycount'] = get_notifycount(self.getuserid())
         userinfo['admin'] = self.admin()
+        userinfo['usersettings'] = self.getusersettings()
         userinfo['organizer'] = self.organizer()
         userinfo['responsible'] = self.responsible()
         userinfo['common'] = self.common()
@@ -145,16 +146,16 @@ class _AuthDispatcher:
         if self.loggedin(): return
         with modules.dbutils.dbopen() as db:
             user = db.execute(
-                "SELECT user_id, first_name, last_name, userlevel, sex FROM users WHERE email='{}' AND passwd='{}'".format(
-                    email, password),
-                ['user_id', 'first_name', 'last_name', 'userlevel', 'usersex'])
+                "SELECT * FROM users WHERE email='{}' AND passwd='{}'".format(
+                    email, password), modules.dbutils.dbfields['users'])
             if len(user) == 0:
                 raise ValueError("Invalid email or password")
             user = user[0]
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user['user_id']))
             bottle.response.set_cookie('user_id', user['user_id'], modules.config['secret'])
             bottle.response.set_cookie('userlevel', user['userlevel'], modules.config['secret'])
-            bottle.response.set_cookie('usersex', user['usersex'], modules.config['secret'])
+            bottle.response.set_cookie('usersex', user['sex'], modules.config['secret'])
+            bottle.response.set_cookie('usersettings', user['settings'], modules.config['secret'])
             bottle.response.set_cookie('username', user['first_name'] + ' ' + user['last_name'],
                                        modules.config['secret'])
 
@@ -162,6 +163,7 @@ class _AuthDispatcher:
         bottle.response.delete_cookie('user_id')
         bottle.response.delete_cookie('userlevel')
         bottle.response.delete_cookie('username')
+        bottle.response.delete_cookie('usersettings')
         bottle.response.delete_cookie('usersex')
 
     def getuserid(self) -> int:
@@ -175,6 +177,13 @@ class _AuthDispatcher:
 
     def getuserlevel(self) -> int:
         return int(bottle.request.get_cookie('userlevel', 0, modules.config['secret']))
+
+    def updatesettings(self):
+        bottle.response.set_cookie('usersettings', settings.get(self.getuserid()).format(), modules.config['secret'])
+
+    def getusersettings(self) -> settings.SettingsClass:
+        return settings.SettingsClass(
+            bottle.request.get_cookie('usersettings', settings.default().format(), modules.config['secret']))
 
     def loggedin(self) -> bool:
         return bool(self.getuserid())
