@@ -14,7 +14,7 @@
         <div class="col-md-3">
           <div class="panel panel-default">
             <div class="panel-body">
-              <p class="lead">Наши игры</p>
+              <p class="lead">Наши игры <!-- <a href="/courts?all"><small>на карте</small></a> --></p>
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Поиск по спорту"></input>
               </div>
