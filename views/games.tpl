@@ -25,7 +25,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block">Найти</button>
+                <button type="button" class="btn btn-primary btn-block" disabled="disabled">Найти</button>
               </div>
             </div>
           </div>

@@ -67,7 +67,7 @@
                           </h5>
                         </div>
                         <div id="collapse-{{game['game_id']}}" class="panel-collapse collapse">
-                          <div class="panel-body">
+                          <div class="panel-body" style="padding-bottom:5px;">
                             % for n, user in enumerate(game['subscribed']['users'], 1):
                             <p><a target="_blank" href="/profile?user_id={{user['user_id']}}">{{'{}. {} {}'.format(n, user['first_name'], user['last_name'])}}</a></p>
                             % end
