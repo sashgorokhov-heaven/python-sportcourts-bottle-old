@@ -31,9 +31,10 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
 
 
 @autodb
-def send_to_user(user_id:int, message:str, subject:str='Уведомление', dbconnection:dbutils.DBConnection=None) -> bool:
+def send_to_user(user_id:int, message:str, subject:str='Уведомление', override:bool=False,
+                 dbconnection:dbutils.DBConnection=None) -> bool:
     sett = settings.get(user_id, dbconnection=dbconnection)
-    if not sett.send_email():
+    if not override and not sett.send_email():
         return True
     email = users.get(user_id, fields=['email'], dbconnection=dbconnection)['email']
     return sendmail(message, email, subject)
