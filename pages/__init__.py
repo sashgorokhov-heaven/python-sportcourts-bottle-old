@@ -7,7 +7,8 @@ import sys
 import modules
 import modules.dbutils
 import modules.logging
-from models import settings, notifications
+import models.notifications
+import models.settings
 
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
@@ -131,7 +132,7 @@ class _AuthDispatcher:
         userinfo['userlevel'] = self.getuserlevel()
         userinfo['username'] = self.getusername()
         userinfo['usersex'] = self.getusersex()
-        userinfo['notifycount'] = notifications.get_count(self.getuserid())
+        userinfo['notifycount'] = models.notifications.get_count(self.getuserid())
         userinfo['admin'] = self.admin()
         userinfo['usersettings'] = self.getusersettings()
         userinfo['organizer'] = self.organizer()
@@ -176,17 +177,17 @@ class _AuthDispatcher:
     def getuserlevel(self) -> int:
         return int(bottle.request.get_cookie('userlevel', 0, modules.config['secret']))
 
-    def updatesettings(self, sett:settings.SettingsClass=None, dbconnection:modules.dbutils.DBConnection=None):
+    def updatesettings(self, sett:models.settings.SettingsClass=None, dbconnection:modules.dbutils.DBConnection=None):
         if not sett:
             bottle.response.set_cookie('usersettings',
-                                       settings.get(self.getuserid(), dbconnection=dbconnection).format(),
+                                       models.settings.get(self.getuserid(), dbconnection=dbconnection).format(),
                                        modules.config['secret'])
         else:
             bottle.response.set_cookie('usersettings', sett.format(), modules.config['secret'])
 
-    def getusersettings(self) -> settings.SettingsClass:
-        return settings.SettingsClass(
-            bottle.request.get_cookie('usersettings', settings.default().format(), modules.config['secret']))
+    def getusersettings(self) -> models.settings.SettingsClass:
+        return models.settings.SettingsClass(
+            bottle.request.get_cookie('usersettings', models.settings.default().format(), modules.config['secret']))
 
     def loggedin(self) -> bool:
         return bool(self.getuserid())
