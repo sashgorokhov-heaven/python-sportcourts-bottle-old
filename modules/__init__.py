@@ -8,7 +8,14 @@ import time
 import bottle
 
 
-config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
+TEST = True
+
+if not TEST:
+    config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
+else:
+    config = json.load(open(os.path.join('modules', 'testconfig.json'), 'r'))
+
+config['testing'] = TEST
 
 
 def pager(page, count:int=8) -> tuple:
