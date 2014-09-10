@@ -4,18 +4,18 @@ import threading
 from modules import dbutils
 
 
-_months = ['Января', 'Февраля',
-           'Марта', 'Апреля',
-           'Мая', 'Июня', 'Июля',
-           'Августа', 'Сентября',
-           'Октября', 'Ноября', 'Декабря']
+_months = ['Январь', 'Февраль',
+           'Март', 'Апрель',
+           'Май', 'Июнь', 'Июль',
+           'Август', 'Сентябрь',
+           'Октябрь', 'Ноябрь', 'Декабрь']
 _days = ['Понедельник', 'Вторник', 'Среда',
          'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 
 
 def beautifuldate(datetime:str):
     date, day = datetime.split(' ')[0].split('-')[1:]
-    return '{} {}'.format(day, _months[int(date) - 1])
+    return day, _months[int(date) - 1]
 
 
 def beautifultime(datetime:str):
