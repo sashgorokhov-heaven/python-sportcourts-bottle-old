@@ -1,64 +1,94 @@
 % rebase("_basicpage", title="Игры")
-      <div class="jumbotron">
+      <!-- <div class="jumbotron">
         <h1>Таблица игр</h1>
         <p>Здесь вы можете присоединиться к любой игре, в которой еще есть места.</p>
+      </div> -->
+
+      <div class="row">
+        <div class="col-md-12"  style="margin-top:50px;">
+          &nbsp;
+        </div>
       </div>
 
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
-        % if loggedin and len([game for game in games if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}])>0:
-        <li><a href="#my" data-toggle="tab">Мои игры</a></li>
-        % end
-        % for sport_type in sports:
-            <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
-        % end
-        % if userinfo['organizer']:
-        <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
-        % end
-      </ul>
-
-      <div class="tab-content">
-        <div class="tab-pane active" id="all">
-          <div class="panel panel-deafult">
-            <br>
-            % for game in games:
-                % include("game", game=game)
-            % end
-            <ul class="pager">
-              <!--<li class="previous disabled"><a href="#">&larr; Раньше</a></li> -->
-              % if defined("nextpage") and nextpage:
-                <li class="next"><a href="/games?page={{nextpage}}">Позже &rarr;</a></li>
-              % end
-            </ul>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <p class="lead">Наши игры</p>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Поиск по спорту"></input>
+              </div>
+              <div class="form-group">
+                <select id="city" name="city_id" class="form-control">
+                  <option value="0">Город</option>
+                  <option value="1">Екатеринбург</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn btn-primary btn-block">Найти</button>
+              </div>
+            </div>
           </div>
         </div>
-
-        % if loggedin:
-        <div class="tab-pane" id="my">
-          <div class="panel panel-deafult">
-            <br>
-            % for game in games:
-                % if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}:
-                    % include("game", game=game)
-                % end
+        <div class="col-md-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
+            % if loggedin and len([game for game in games if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}])>0:
+            <li><a href="#my" data-toggle="tab">Мои игры</a></li>
             % end
-          </div>
-        </div>
-        % end
+            % for sport_type in sports:
+                <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
+            % end
+            % if userinfo['organizer']:
+            <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
+            % end
+          </ul>
 
-        % for sport_type in sports:
-            <div class="tab-pane" id="{{sport_type['sport_id']}}">
+          <div class="tab-content">
+            <div class="tab-pane active" id="all">
               <div class="panel panel-deafult">
                 <br>
                 % for game in games:
-                	% if game['sport_type']['sport_id']==sport_type['sport_id']:
-                	    % include("game", game=game)
-                	% end
+                    % include("game", game=game)
+                % end
+                <ul class="pager">
+                  <!--<li class="previous disabled"><a href="#">&larr; Раньше</a></li> -->
+                  % if defined("nextpage") and nextpage:
+                    <li class="next"><a href="/games?page={{nextpage}}">Позже &rarr;</a></li>
+                  % end
+                </ul>
+              </div>
+            </div>
+
+            % if loggedin:
+            <div class="tab-pane" id="my">
+              <div class="panel panel-deafult">
+                <br>
+                % for game in games:
+                    % if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}:
+                        % include("game", game=game)
+                    % end
                 % end
               </div>
             </div>
-        % end
+            % end
 
+            % for sport_type in sports:
+                <div class="tab-pane" id="{{sport_type['sport_id']}}">
+                  <div class="panel panel-deafult">
+                    <br>
+                    % for game in games:
+                    	% if game['sport_type']['sport_id']==sport_type['sport_id']:
+                    	    % include("game", game=game)
+                    	% end
+                    % end
+                  </div>
+                </div>
+            % end
+
+          </div>
+
+        </div>
       </div>
 
       % if loggedin:
