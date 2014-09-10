@@ -56,12 +56,12 @@
 
                 <div class="user_card" onclick="window.open('/profile');">
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                       <a href="/profile" target="_blank">
                         <img src="/images/avatars/1" class="img-thumbnail profile-avatar" alt="User avatar" width="120">
                       </a>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                       <a href="/profile" target="_blank">
                         <p class="lead">Виталий Харченко</p>
                       </a>
@@ -73,12 +73,12 @@
 
                 <div>
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                       <a href="/profile" target="_blank">
                         <img src="/images/avatars/2" class="img-thumbnail profile-avatar" alt="User avatar" width="120">
                       </a>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                       <a href="/profile" target="_blank">
                         <p class="lead">Александр Горохов</p>
                       </a>
