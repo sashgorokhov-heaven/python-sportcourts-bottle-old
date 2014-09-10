@@ -27,3 +27,4 @@ def get_userid_by_token(token:str, dbconnection:dbutils.DBConnection=None) -> in
 def create(user_id:int, dbconnection:dbutils.DBConnection=None) -> str:
     token = modules.generate_token()
     dbconnection.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
+    return token
