@@ -1,6 +1,8 @@
 import bottle
 import modules
+import modules.logging
 
+modules.logging.DEBUG = modules.config['debug']
 
 bottle.TEMPLATE_PATH.append('views')
 bottle.debug(modules.config['debug'])

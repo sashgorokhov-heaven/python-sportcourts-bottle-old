@@ -5,11 +5,10 @@ import os
 import threading
 import sys
 import modules
-import modules.dbutils
 import modules.logging
+import modules.dbutils
 import models.notifications
 import models.settings
-
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
@@ -52,23 +51,19 @@ class _Executor:
             self._page = page
             self.name = self._page.__class__.__name__
 
+
     # @route(self._page.get.route)
     # @route(self._page.post.route)
     def execute(self, **kwargs):
         with self._lock:
             try:
+                modules.logging.access_log()
                 return self._page.execute(bottle.request.method, **kwargs)
             except (bottle.HTTPError, bottle.HTTPResponse) as e:
                 raise e
             except Exception as e:
                 if not modules.config['debug']:
-                    try:
-                        modules.logging.error(self.name + ' - ' + e.__class__.__name__ + ': {}',
-                                              e.args[0] if len(e.args) > 0 else '')
-                        modules.logging.info(modules.extract_traceback(e))
-                    except Exception as er:
-                        modules.logging.error(
-                            'Error while handling <{}> error: {}'.format(e.__class__.__name__, er.__class__.__name__))
+                    modules.logging.error_log(e)
                     raise bottle.HTTPError(404)
                 raise e
 
@@ -107,8 +102,6 @@ class _PageController:
                     and getattr(module, smthing).__module__.startswith('pages.'):
                 page_class = getattr(module, smthing)
                 break
-        if not page_class:
-            modules.logging.warn('Subclass of Page is not found in {}', module)
         return page_class
 
     def loadpages(self):
@@ -122,7 +115,7 @@ class _PageController:
                 if page_class and page_class.__name__ not in self._executors:
                     self.add_page(page_class)
             except ImportError as e:
-                modules.logging.error('Import error of <{}>: {}', module_name, e.args[0])
+                modules.logging.error_log(e, 'Import error of <{}>'.format(module_name))
 
 
 class _AuthDispatcher:

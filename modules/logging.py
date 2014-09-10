@@ -1,70 +1,59 @@
-__author__ = 'sashgorokhov'
-__email__ = 'sashgorokhov@gmail.com'
-
 import datetime
-import os
-import time
+import os, bottle
+from modules import extract_traceback
+import pages
 
+_TRACEBACK_FILE = 'logs/traceback.txt'
+_ACCESS_FILE = 'logs/access.txt'
+_LOG_FILE = 'logs/log.txt'
+DEBUG = False
 
-def _time() -> str:
-    return str(datetime.datetime.now())[:str(datetime.datetime.now()).find('.')]
+if not os.path.exists('logs'):
+    os.mkdir('logs')
 
+def _check_size():
+    for filename in [_ACCESS_FILE, _LOG_FILE]:
+        if os.stat(filename).st_size>1024*1024:
+            os.remove(filename)
 
-_dir = 'logs'
-_filename = _time().replace(':', '_') + '.log'
-_filepath = os.path.join(_dir, _filename)
-
-if not os.path.exists(_dir):
-    os.mkdir(_dir)
-
-for i in os.listdir(_dir):
-    os.remove(os.path.join(_dir, i))
-
-_debug = False
-
-
-def _writelog(msg:str):
-    with open(_filepath, 'a') as f:
-        f.write(msg + '\n')
-    if debug:
+def _write_line(filename:str, line:str):
+    #_check_size()
+    with open(filename, 'a') as f:
+        f.write(line+'\n')
+    if DEBUG:
         try:
-            print(msg)
-        except:
-            pass
+            print(line)
+        except Exception as e:
+            print('Error while writing to console:', e.__class__.__name__)
 
 
-def debug(value):
-    global _debug
-    _debug = value
-    _writelog('<<DEBUG ENABLED>>')
+def _get_access_line() -> str:
+   line = bottle.request.remote_addr + ' "' + bottle.request.method + ' ' + bottle.request.fullpath
+   if bottle.request.query_string:
+       line += '?' + bottle.request.query_string
+   line += '"'
+   return line
 
+def access_log(dontwrite:bool=False):
+    if bottle.request.fullpath.startswith('/view') or bottle.request.fullpath.startswith('/images'):
+        return
+    line = _get_access_line()
+    user_id = pages.auth_dispatcher.getuserid()
+    if user_id:
+        line += ' uid=[{}]'.format(user_id)
+    time = str(datetime.datetime.now())
+    format = '[{}] {} '.format(time, line)
+    if not dontwrite:
+        _write_line(_ACCESS_FILE, format)
+    return format
 
-def write_formatted(type_:str, msg_:str, *args):
-    _writelog('[{type_}] ({time_})\t{msg_}'.format(type_=type_, time_=_time(), msg_=msg_.format(*args)))
-
-
-def info(msg, *args):
-    write_formatted('INFO', msg, *args)
-
-
-def warn(msg, *args):
-    write_formatted('WARN', msg, *args)
-
-
-def error(msg, *args):
-    write_formatted('ERRO', msg, *args)
-
-
-def logworktime(func):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        ret_value = func(*args, **kwargs)
-        elapsed = str(time.time() - start)
-        info('Function <{}> runned {}s {}ms', func.__qualname__, *elapsed.split('.'))
-        return ret_value
-
-    return wrapper
-
-
-def get_log() -> str:
-    return open(_filepath, 'r').read()
+def error_log(e:Exception, message:str=None):
+    line = access_log(True)
+    if message:
+        line += message + '- '
+    line += e.__class__.__name__
+    if len(e.args)>0:
+        line += ': '+','.join(map(str, e.args))
+    _write_line(_LOG_FILE, line)
+    with open(_TRACEBACK_FILE, 'w') as f:
+        f.write('\n'.join(extract_traceback(e)))
