@@ -37,6 +37,9 @@
               <a href="#panel-all" data-toggle="tab">Все пользователи</a>
             </li>
             <li>
+              <a href="#panel-friends" data-toggle="tab">Мои друзья</a>
+            </li>
+            <!-- <li>
               <a href="#panel-judges" data-toggle="tab">Судьи</a>
             </li>
             <li>
@@ -44,7 +47,7 @@
             </li>
             <li>
               <a href="#panel-responsibles" data-toggle="tab">Ответсвенные</a>
-            </li>                   
+            </li>  -->                  
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="panel-all">
@@ -55,7 +58,7 @@
                   <div class="row">
                     <div class="col-md-3">
                       <a href="/profile" target="_blank">
-                        <img src="/images/avatars/1" class="img-thumbnail profile-avatar" alt="User avatar" width="300">
+                        <img src="/images/avatars/1" class="img-thumbnail profile-avatar" alt="User avatar" width="120">
                       </a>
                     </div>
                     <div class="col-md-9">
@@ -72,7 +75,7 @@
                   <div class="row">
                     <div class="col-md-3">
                       <a href="/profile" target="_blank">
-                        <img src="/images/avatars/2" class="img-thumbnail profile-avatar" alt="User avatar" width="300">
+                        <img src="/images/avatars/2" class="img-thumbnail profile-avatar" alt="User avatar" width="120">
                       </a>
                     </div>
                     <div class="col-md-9">
@@ -87,12 +90,14 @@
 
               </div>
             </div>
-            <div class="tab-pane" id="panel-judges">
+            <div class="tab-pane" id="panel-friends">
+            </div>
+            <!-- <div class="tab-pane" id="panel-judges">
             </div>
             <div class="tab-pane" id="panel-organizators">
             </div>
             <div class="tab-pane" id="panel-responsibles">
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
