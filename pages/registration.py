@@ -1,13 +1,11 @@
 import datetime
 
 import bottle
-
 import modules
 import modules.dbutils
-from modules.utils import write_notification, sendmail
 import pages
 from modules import vk
-from models import images, cities, settings
+from models import images, cities, settings, notifications, mailing, activation
 
 
 class Registration(pages.Page):
@@ -96,12 +94,14 @@ class Registration(pages.Page):
             # pages.auth_dispatcher.login(params['email'], params['passwd'])
             if 'avatar' in bottle.request.files:
                 images.save_avatar(user_id, bottle.request.files.get('avatar'))
-            token = modules.generate_token()
-            sendmail(
-                'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
-                    token), params['email'], 'Активация профиля')
-            db.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
-            write_notification(user_id, "Проверьте свою почту чтобы активировать профиль!", 1)
+            token = activation.create(user_id, dbconnection=db)
+            mailing.send_to_user(user_id,
+                                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
+                                     token),
+                                 'Активация профиля',
+                                 True,
+                                 dbconnection=db)
+            notifications.add(user_id, "Проверьте свою почту чтобы активировать профиль!", 1, dbconnection=db)
             return pages.PageBuilder('text', message='Проверьте почту',
                                      description='Вам было отправлено письмо с инструкцией по активации профиля')
 

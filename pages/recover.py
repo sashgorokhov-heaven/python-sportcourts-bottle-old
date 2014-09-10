@@ -1,8 +1,7 @@
 import bottle
-
 import pages
-from modules import utils, dbutils
-from models import notifications
+from modules import dbutils
+from models import notifications, mailing
 
 
 class Recover(pages.Page):
@@ -20,7 +19,12 @@ class Recover(pages.Page):
             if len(db.last()) == 0:
                 return pages.PageBuilder('text', message='Неверный email',
                                          description='Пользователь с таким email не найден.')
-            utils.sendmail('Ваш пароль: {}'.format(db.last()[0][1]), email, 'Восстановление пароля')
+            mailing.send_to_user(
+                db.last()[0][0],
+                'Ваш пароль: {}'.format(db.last()[0][1]),
+                'Восстановление пароля',
+                override=True,
+                dbconnection=db)
             notifications.add(db.last()[0][0], 'Вы недавно восстанавливливали пароль', 1, dbconnection=db)
             return pages.PageBuilder('text', message='Проверьте email',
                                      description='Вам было отправлено письмо с дальнейшими инструкциями.')
