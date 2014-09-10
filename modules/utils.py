@@ -1,9 +1,7 @@
 import datetime
-import smtplib
-import email.mime.text
 import threading
 
-from modules import dbutils, config
+from modules import dbutils
 
 
 _months = ['Января', 'Февраля',
@@ -53,33 +51,6 @@ def write_notification(user_id:int, notification:str, level:int=0):
                                                                                                              str(
                                                                                                                  notification),
                                                                                                              level))
-
-
-def sendmail(message:str, to:str, subject:str='Уведомление'):
-    try:
-        me = config['email']['login']
-        you = to
-        text = str(message)
-        subj = '{} | Sportcourts | Спортивные площадки'.format(subject)
-        server = "smtp.gmail.com"
-        port = 25
-        user_name = config['email']['login']
-        user_passwd = config['email']['password']
-        msg = email.mime.text.MIMEText(text, _charset="utf-8")
-        msg['Subject'] = subj
-        msg['From'] = me
-        msg['To'] = you
-        s = smtplib.SMTP(server, port)
-        s.ehlo()
-        s.starttls()
-        s.ehlo()
-        s.login(user_name, user_passwd)
-        s.sendmail(me, you, msg.as_string())
-        s.quit()
-    except Exception as e:
-        print(e.__class__.__name__, e.args)
-        return False
-    return True
 
 
 def threaded(func):
