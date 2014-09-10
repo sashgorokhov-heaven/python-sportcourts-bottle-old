@@ -19,6 +19,7 @@ class Settings(pages.Page):
             sett.send_email(True if 'email_notify' in bottle.request.forms else False)
             sett.show_phone('all' if 'phone_all' in bottle.request.forms else 'organizers')
             settings.set(pages.auth_dispatcher.getuserid(), sett, dbconnection=db)
+            pages.auth_dispatcher.updatesettings(sett, dbconnection=db)
 
     get.route = '/settings'
     post.route = '/settings'
