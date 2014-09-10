@@ -37,22 +37,6 @@ def get_notifications(user_id:int) -> list:
         return notifications
 
 
-def get_notifycount(user_id:int) -> int:
-    if user_id == 0: return 0
-    with dbutils.dbopen() as db:
-        return len(db.execute(
-            "SELECT * FROM notifications WHERE user_id={} AND `read`=0 ORDER BY DATETIME DESC".format(user_id)))
-
-
-def write_notification(user_id:int, notification:str, level:int=0):
-    with dbutils.dbopen() as db:
-        db.execute(
-            "INSERT INTO notifications (user_id, datetime, text, level) VALUES ({}, NOW(), '{}', {})".format(user_id,
-                                                                                                             str(
-                                                                                                                 notification),
-                                                                                                             level))
-
-
 def threaded(func):
     def wrapper(*args, **kwargs):
         thread = threading.Thread(target=func, args=args, kwargs=kwargs, name=func.__qualname__)
