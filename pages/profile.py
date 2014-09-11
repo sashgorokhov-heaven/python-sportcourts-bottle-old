@@ -38,7 +38,7 @@ class Profile(pages.Page):
             return ''
         elif 'removefriend' in bottle.request.query and pages.auth_dispatcher.loggedin():
             try:
-                users.remove_friend(pages.auth_dispatcher.getuserid(), int(bottle.request.query.get('addfriend')))
+                users.remove_friend(pages.auth_dispatcher.getuserid(), int(bottle.request.query.get('removefriend')))
             except ValueError:
                 pass
             return ''
