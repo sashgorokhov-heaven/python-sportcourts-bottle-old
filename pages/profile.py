@@ -19,7 +19,8 @@ class Profile(pages.Page):
         with modules.dbutils.dbopen() as db:
             _cities = cities.get(0, dbconnection=db)
             user = users.get(pages.auth_dispatcher.getuserid(), detalized=True, dbconnection=db)
-            return pages.PageBuilder('editprofile', user=user, cities=_cities)
+            return pages.PageBuilder('editprofile', user=user, cities=_cities,
+                                     haveavatar=images.have_avatar(pages.auth_dispatcher.getuserid()))
 
     def get(self):
         if 'user_id' in bottle.request.query:
@@ -42,7 +43,6 @@ class Profile(pages.Page):
             raise pages.PageBuilder('text', message='Ошибка доступа',
                                     description='Вы должны войти чтобы просматривать эту страницу')
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
-        params.pop("submit_profile")
 
         city_title = params['city']
         params.pop('city')
@@ -52,6 +52,8 @@ class Profile(pages.Page):
 
         if 'avatar' in bottle.request.files:
             images.save_avatar(pages.auth_dispatcher.getuserid(), bottle.request.files.get('avatar'))
+        else:
+            images.delete_avatar(pages.auth_dispatcher.getuserid())
 
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))

@@ -9,9 +9,11 @@
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
-                    <div class="fileinput fileinput-exists" data-provides="fileinput">
+                    <div class="fileinput fileinput-{{'exists' if haveavatar else 'new'}}" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
-                          <img src="images/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150">
+                      % if haveavatar:
+                          <img src="/images/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150">
+                      % end
                       </div>
                         <div>
                           <span class="btn btn-default btn-file">
@@ -130,7 +132,7 @@
                 <br>
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
-                    <button type="submit" class="btn btn-primary" name="submit_profile">Редактировать информацию</button>
+                    <button type="submit" class="btn btn-primary">Редактировать информацию</button>
                   </div>
                 </div>
             </form>
