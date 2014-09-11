@@ -36,9 +36,11 @@
             <li class="active">
               <a href="#panel-all" data-toggle="tab">Все пользователи</a>
             </li>
+            % if loggedin:
             <li>
               <a href="#panel-friends" data-toggle="tab">Мои друзья</a>
             </li>
+            % end
             <!-- <li>
               <a href="#panel-judges" data-toggle="tab">Судьи</a>
             </li>
@@ -80,6 +82,7 @@
                 </div>
               </div>
             </div>
+            % if loggedin:
             <div class="tab-pane" id="panel-friends">
                 % for user in myfriends:
                   <div class="row" onclick="window.open('/profile?user_id={{user['user_id']}}');">
@@ -98,6 +101,7 @@
 
                 % end
             </div>
+            % end
             <!-- <div class="tab-pane" id="panel-judges">
             </div>
             <div class="tab-pane" id="panel-organizators">
