@@ -3,7 +3,7 @@ import os
 from PIL import Image
 
 
-AVATARSIZE = (200, 200)
+AVATARSIZE = (300, 300)
 
 
 def _save_image(fullname:str, bottlefile, avatar:bool=False):
@@ -11,21 +11,15 @@ def _save_image(fullname:str, bottlefile, avatar:bool=False):
         os.remove(fullname)
     bottlefile.save(fullname)
     im = Image.open(fullname)
-    width, heigth = im.size
-    if heigth < width and avatar:
-        left = (width - heigth) // 2
-        top = 0
-        right = left + heigth
-        bottom = heigth
-        im = im.crop((left, top, right, bottom))
-    elif heigth > width and avatar:
-        left = 0
-        top = (heigth - width) // 2
-        right = width
-        bottom = top + width
-        im = im.crop((left, top, right, bottom))
+    width, height = im.size
     if avatar:
-        im = im.resize(AVATARSIZE)
+        if width > height:
+            ratio = AVATARSIZE[0] / width
+        else:
+            ratio = AVATARSIZE[1] / height
+        new_width = round(ratio * width)
+        new_height = round(ratio * height)
+        im = im.resize((new_width, new_height))
     im.save(fullname)
     im.close()
 
