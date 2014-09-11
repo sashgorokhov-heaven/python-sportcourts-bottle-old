@@ -5,7 +5,7 @@ import modules
 import modules.dbutils
 import pages
 from modules import vk
-from models import images, cities, settings, notifications, mailing, activation
+from models import images, cities, settings, notifications, mailing, activation, users
 
 
 class Registration(pages.Page):
@@ -89,8 +89,11 @@ class Registration(pages.Page):
                 dbkeylist=', '.join(keylist),
                 dbvaluelist=', '.join(["'{}'".format(str(params[key])) for key in keylist]))
             db.execute(sql)
-            db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
+            db.execute(
+                'SELECT user_id, vkuserid, first_name, last_name FROM users WHERE email="{}"'.format(params['email']))
             user_id = db.last()[0][0]
+            vkuserid = db.last()[0][1]
+            username = db.last()[0][2] + ' ' + db.last()[0][3]
             # pages.auth_dispatcher.login(params['email'], params['passwd'])
             if 'avatar' in bottle.request.files:
                 images.save_avatar(user_id, bottle.request.files.get('avatar'))
@@ -102,6 +105,23 @@ class Registration(pages.Page):
                                  True,
                                  dbconnection=db)
             notifications.add(user_id, "Проверьте свою почту чтобы активировать профиль!", 1, dbconnection=db)
+            if vkuserid:
+                friends = vk.exec(None, "friends.get", user_id=vkuserid)['items']
+                if len(friends) > 0:
+                    friends = map(str, friends)
+                    db.execute("SELECT user_id FROM users WHERE vkuserid IN ({})".format(','.join(friends)))
+                    for friend_id in db.last():
+                        friend_id = friend_id[0]
+                        try:
+                            notifications.add(friend_id,
+                                              'Ваш друг <a href="/profile?user_id={}">{}</a> зарегестрировался на сайте!'.format(
+                                                  user_id, username))
+                        except:
+                            notifications.add(friend_id,
+                                              'Ваш <a href="/profile?user_id={}">друг</a> зарегестрировался на сайте!'.format(
+                                                  user_id))
+                        users.add_friend(user_id, friend_id, dbconnection=db)
+                        users.add_friend(friend_id, user_id, dbconnection=db)
             return pages.PageBuilder('text', message='Проверьте почту',
                                      description='Вам было отправлено письмо с инструкцией по активации профиля')
 
