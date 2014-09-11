@@ -32,6 +32,9 @@
                     </select>
                   </div>
                 </div>
+                <script>
+                  $("#gametype").chained("#sporttype");
+                </script>
                 <div class="form-group">
                   <label for="inputCity" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
@@ -59,6 +62,9 @@
                     <small><a href="/courts?add">Создать новую...</a></small>
                   </div>
                 </div>
+                <script>
+                  $("#court").chained("#city");
+                </script>
                 <div class="form-group">
                   <label for="inputBirght" class="col-sm-2 control-label">Дата</label>
                   <div class="col-sm-10">
