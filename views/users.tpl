@@ -53,49 +53,50 @@
             <div class="tab-pane active" id="panel-all">
               <div class="panel panel-deafult">
                 <br>
-
-                <div class="user_card" onclick="window.open('/profile');">
-                  <div class="row">
+                <div class="user_card">
+                % for user in allusers:
+                  <div class="row" onclick="window.open('/profile?user_id={{user['user_id']}}');">
                     <div class="col-md-2">
-                      <a href="/profile" target="_blank">
-                        <img src="/images/avatars/1" class="img-thumbnail profile-avatar" alt="User avatar" width="120">
+                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
+                        <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120">
                       </a>
                     </div>
                     <div class="col-md-6">
-                      <a href="/profile" target="_blank">
-                        <p class="lead">Виталий Харченко</p>
+                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
+                        <p class="lead">{{user['first_name']+' '+user['last_name']}}</p>
                       </a>
-                      <p>21 год, Екатеринбург</p>
+                      <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
                     </div>
-                    <div class="col-md-4 text-right">
-                      <a href="">
-                        <p>+ добавить в друзья</p>
-                      </a>
-                    </div>
+                    % if loggedin and user['user_id'] not in {friend['user_id'] for friend in myfriends}:
+                        <div class="col-md-4 text-right">
+                          <a href="/profile?addfriend={{user['user_id']}}">
+                            <p>+ добавить в друзья</p>
+                          </a>
+                        </div>
+                    % end
                   </div>
+                  <hr>
+                % end
                 </div>
-                <hr>
-
-                <div>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <a href="/profile" target="_blank">
-                        <img src="/images/avatars/2" class="img-thumbnail profile-avatar" alt="User avatar" width="120">
-                      </a>
-                    </div>
-                    <div class="col-md-10">
-                      <a href="/profile" target="_blank">
-                        <p class="lead">Александр Горохов</p>
-                      </a>
-                      <p>20 лет, Екатеринбург</p>
-                    </div>
-                  </div>
-                </div>
-                <hr>
-
               </div>
             </div>
             <div class="tab-pane" id="panel-friends">
+                % for user in myfriends:
+                  <div class="row" onclick="window.open('/profile?user_id={{user['user_id']}}');">
+                    <div class="col-md-2">
+                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
+                        <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120">
+                      </a>
+                    </div>
+                    <div class="col-md-6">
+                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
+                        <p class="lead">{{user['first_name']+' '+user['last_name']}}</p>
+                      </a>
+                      <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
+                    </div>
+                  </div>
+
+                % end
             </div>
             <!-- <div class="tab-pane" id="panel-judges">
             </div>
