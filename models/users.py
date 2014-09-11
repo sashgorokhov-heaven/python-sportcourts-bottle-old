@@ -91,6 +91,20 @@ def add_friend(user_id:int, friend_id:int, dbconnection:dbutils.DBConnection=Non
 
 
 @autodb
+def remove_friend(user_id:int, friend_id:int, dbconnection:dbutils.DBConnection=None):
+    friends = dbconnection.execute("SELECT friends FROM users WHERE user_id='{}'".format(user_id))[0][0]
+    friends = list(map(int, friends.split('|')[1:-1]))
+    if friend_id not in set(friends):
+        raise ValueError("User <{}> do not have friend <{}>".format(user_id, friend_id))
+    friends.remove(friend_id)
+    if len(friends) > 0:
+        friends = '|' + '|'.join(map(str, friends)) + '|'
+    else:
+        friends = ''
+    dbconnection.execute("UPDATE users SET friends='{}' WHERE user_id={}".format(friends, user_id))
+
+
+@autodb
 def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute(
         "SELECT user_id FROM users WHERE user_id='{}' AND LOCATE('|{}|', friends)".format(user_id_1, user_id_2))

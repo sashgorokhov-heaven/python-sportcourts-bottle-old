@@ -36,6 +36,12 @@ class Profile(pages.Page):
             except ValueError:
                 pass
             return ''
+        elif 'removefriend' in bottle.request.query and pages.auth_dispatcher.loggedin():
+            try:
+                users.remove_friend(pages.auth_dispatcher.getuserid(), int(bottle.request.query.get('addfriend')))
+            except ValueError:
+                pass
+            return ''
         elif pages.auth_dispatcher.loggedin():
             with modules.dbutils.dbopen() as db:
                 user_id = pages.auth_dispatcher.getuserid()
