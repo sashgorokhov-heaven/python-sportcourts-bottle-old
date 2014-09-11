@@ -24,7 +24,10 @@ def _write_line(filename:str, line:str):
         try:
             print(line)
         except Exception as e:
-            print('Error while writing to console:', e.__class__.__name__)
+            try:
+                print('Error while writing to console:', e.__class__.__name__)
+            except:
+                pass
 
 
 def _get_access_line() -> str:
