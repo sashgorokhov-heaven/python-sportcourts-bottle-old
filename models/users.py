@@ -6,7 +6,7 @@ from models import cities, autodb, splitstrlist
 
 
 @autodb
-def get(user_id, detalized:bool=False, fields:list=dbutils.dbfields['users'],
+def get(user_id, userlevel:int=-1, detalized:bool=False, fields:list=dbutils.dbfields['users'],
         dbconnection:dbutils.DBConnection=None) -> list:
     orderedfields = [i for i in dbutils.dbfields['users'] if i in set(fields)]
     select = ','.join(orderedfields)
@@ -15,11 +15,17 @@ def get(user_id, detalized:bool=False, fields:list=dbutils.dbfields['users'],
         user_id = splitstrlist(user_id)
         if len(user_id) == 1:
             user_id = user_id[0]
-    if isinstance(user_id, int):
-        dbconnection.execute("SELECT " + select + " FROM users WHERE user_id='{}'".format(user_id), orderedfields)
+    if isinstance(user_id, int) and user_id != 0:
+        sql = "SELECT " + select + " FROM users WHERE user_id='{}'".format(user_id)
     elif isinstance(user_id, list):
-        dbconnection.execute("SELECT " + select + " FROM users WHERE user_id IN (" + ','.join(map(str, user_id)) + ")",
-                             orderedfields)
+        sql = "SELECT " + select + " FROM users WHERE user_id IN (" + ','.join(map(str, user_id)) + ")"
+    elif user_id == 0:
+        sql = "SELECT " + select + " FROM users"
+
+    if userlevel >= 0:
+        sql += (' WHERE ' if user_id == 0 else ' AND ') + 'userlevel={}'.format(userlevel)
+
+    dbconnection.execute(sql, orderedfields)
 
     if len(dbconnection.last()) == 0:
         return list()
@@ -53,7 +59,7 @@ def get(user_id, detalized:bool=False, fields:list=dbutils.dbfields['users'],
             user['city'] = cities.get(user['city_id'], dbconnection=dbconnection)
             user.pop('city_id')
 
-    if isinstance(user_id, int):
+    if isinstance(user_id, int) and user_id != 0:
         return users[0]
-    elif isinstance(user_id, list):
+    elif isinstance(user_id, list) or user_id == 0:
         return users
