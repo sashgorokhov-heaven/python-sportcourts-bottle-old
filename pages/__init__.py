@@ -1,3 +1,4 @@
+import base64
 import bottle
 
 import importlib
@@ -144,6 +145,7 @@ class _AuthDispatcher:
                 raise ValueError("Invalid email or password")
             user = user[0]
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user['user_id']))
+            # secretkey = base64.b16encode(bottle.request.remote_addr).decode()+modules.config['secret']
             bottle.response.set_cookie('user_id', user['user_id'], modules.config['secret'])
             bottle.response.set_cookie('userlevel', user['userlevel'], modules.config['secret'])
             bottle.response.set_cookie('usersex', user['sex'], modules.config['secret'])
