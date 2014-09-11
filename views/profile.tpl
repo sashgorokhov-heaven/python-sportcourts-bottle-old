@@ -25,7 +25,7 @@
           </ul>
           <br>
           <br> -->
-          % if int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or userinfo['usersettings'].show_phone()=='all':
+          % if int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or user['settings'].show_phone()=='all' or 0<user['userlevel']<=2:
           Телефон: {{user['phone']}}
           % end
           <br>
