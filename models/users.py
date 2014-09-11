@@ -2,7 +2,7 @@ import datetime
 
 from modules import dbutils
 from modules.utils import beautifuldate, beautifultime
-from models import cities, autodb, splitstrlist
+from models import cities, autodb, splitstrlist, settings
 
 
 @autodb
@@ -67,6 +67,8 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, fields:list=dbutils.dbf
                 user['friends']['users'] = get(user['friends']['users'], fields=['user_id', 'first_name', 'last_name'],
                                                dbconnection=dbconnection)
 
+        if 'settings' in user and detalized:
+            user['settings'] = settings.SettingsClass(user['settings'])
 
     if isinstance(user_id, int) and user_id != 0:
         return users[0]
