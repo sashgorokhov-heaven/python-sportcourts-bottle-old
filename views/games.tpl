@@ -3,13 +3,11 @@
         <h1>Таблица игр</h1>
         <p>Здесь вы можете присоединиться к любой игре, в которой еще есть места.</p>
       </div> -->
-
       <div class="row">
         <div class="col-md-12"  style="margin-top:50px;">
           &nbsp;
         </div>
       </div>
-
       <div class="row">
         <div class="col-md-3">
           <div class="panel panel-default">

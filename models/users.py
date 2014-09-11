@@ -6,7 +6,8 @@ from models import cities, autodb, splitstrlist, settings
 
 
 @autodb
-def get(user_id, userlevel:int=-1, detalized:bool=False, fields:list=dbutils.dbfields['users'],
+def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20),
+        fields:list=dbutils.dbfields['users'],
         dbconnection:dbutils.DBConnection=None) -> list:
     orderedfields = [i for i in dbutils.dbfields['users'] if i in set(fields)]
     select = ','.join(orderedfields)
@@ -21,7 +22,7 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, fields:list=dbutils.dbf
         if len(user_id) == 0: return list()
         sql = "SELECT " + select + " FROM users WHERE user_id IN (" + ','.join(map(str, user_id)) + ")"
     elif user_id == 0:
-        sql = "SELECT " + select + " FROM users"
+        sql = "SELECT " + select + " FROM users LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
 
     if userlevel >= 0:
         sql += (' WHERE ' if user_id == 0 else ' AND ') + 'userlevel={}'.format(userlevel)

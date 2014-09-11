@@ -81,6 +81,16 @@
                 % end
                 </div>
               </div>
+              % if paging['previous'] or paging['next']:
+                <ul class="pager">
+                  % if paging['previous']:
+                    <li class="previous"><a href="/users?page={{paging['previous']}}">&larr; Предыдущие</a></li>
+                  % end
+                  % if paging['next']:
+                    <li class="next"><a href="/users?page={{paging['next']}}">Следующие &rarr;</a></li>
+                  % end
+                </ul>
+              % end
             </div>
             % if loggedin:
             <div class="tab-pane" id="panel-friends">
