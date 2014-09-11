@@ -3,7 +3,7 @@ import traceback
 import time
 
 
-TICKTIME = 60  # in secs
+TICKTIME = 20  # in secs
 
 
 def threaded(func):
@@ -45,28 +45,36 @@ class _EventServer:
 
     @threaded
     def _loop(self):
+        print('-- Started')
         while True:
+            print('-- TICK!')
             self.check_events()
             for i in range(TICKTIME):
+                print('+', end='', flush=True)
                 if not self._stop:
                     time.sleep(1)
                 else:
                     return
+            print('!')
 
     def check_events(self):
         with self._lock:
             for event in self._eventlist:
                 try:
+                    print('-- Checking')
                     if event.condition():
                         self._event_execute(event)
                 except Exception as e:
+                    print(e.__class__.__name__, e.args)
                     pass  # TODO: Error handling
 
     @threaded
     def _event_execute(self, event:Event):
         try:
+            print('-- Executing')
             event.execute()
         except Exception as e:
+            print(e.__class__.__name__, e.args)
             pass  # TODO: Error handling
 
 
@@ -75,5 +83,5 @@ event_server = _EventServer()
 from .game_notifier_2_days import GameNotifier
 from .game_notifier_1_day import GameNotifier as GameNotifier2
 
-event_server.add_event(GameNotifier)
-event_server.add_event(GameNotifier2)
+event_server.add_event(GameNotifier())
+event_server.add_event(GameNotifier2())

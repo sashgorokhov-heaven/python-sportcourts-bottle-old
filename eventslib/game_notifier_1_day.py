@@ -1,3 +1,4 @@
+from models.mailing import sendmail
 from modules import dbutils, time, utils
 from models import notifications, users
 import eventslib
@@ -34,10 +35,10 @@ class GameNotifier(eventslib.Event):
                             game['game_id'],
                             game['description'])
                     ))
-                    utils.sendmail('Завтра состоится игра "#{} | {}" http://sportcourts.ru/games?game_id={}'.format(
+                    sendmail('Завтра состоится игра "#{} | {}" http://sportcourts.ru/games?game_id={}'.format(
                         game['game_id'],
                         game['description'],
                         game['game_id']),
-                                   users.get(int(user_id), fields=['email'])['email'])
+                             users.get(int(user_id), fields=['email'])['email'])
                     self._notified.add((user_id, game['game_id'], time.time()))
         self._notified = set(filter(lambda x: time.time() - x[-1] < BUFFERLIFE, self._notified))

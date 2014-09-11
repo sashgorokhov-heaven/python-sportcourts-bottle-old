@@ -28,11 +28,13 @@ class GameNotifier(eventslib.Event):
                 continue
             for user_id in game['subscribed']:
                 if (user_id, game['game_id']) not in {i[:2] for i in self._notified}:
-                    notifications.add(user_id, 'До игры "{}" осталось 2 дня!'.format(
+                    message = 'До игры "{}" осталось 2 дня!'.format(
                         '<a href="/games?game_id={}">#{} | {}</a>'.format(
                             game['game_id'],
                             game['game_id'],
                             game['description'])
-                    ))
+                    )
+                    print(ascii(message))
+                    notifications.add(user_id, message.replace('"', '\"'))
                     self._notified.add((user_id, game['game_id'], time.time()))
         self._notified = set(filter(lambda x: time.time() - x[-1] < BUFFERLIFE, self._notified))
