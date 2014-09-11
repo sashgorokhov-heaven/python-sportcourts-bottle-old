@@ -18,6 +18,7 @@ class Games(pages.Page):
             params.pop('date')
             params.pop('time')
             params['created_by'] = pages.auth_dispatcher.getuserid()
+            params['responsible_user_id'] = params['created_by']
             intersection = games.intersection(params['court_id'],
                                               params['datetime'],
                                               params['duration'].encode().split(b' ')[0].decode(),
