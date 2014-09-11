@@ -114,11 +114,11 @@ class Registration(pages.Page):
                         friend_id = friend_id[0]
                         try:
                             notifications.add(friend_id,
-                                              'Ваш друг <a href="/profile?user_id={}">{}</a> зарегестрировался на сайте!'.format(
+                                              'Ваш друг <a href="/profile?user_id={}">{}</a> зарегистрировался на сайте!'.format(
                                                   user_id, username))
                         except:
                             notifications.add(friend_id,
-                                              'Ваш <a href="/profile?user_id={}">друг</a> зарегестрировался на сайте!'.format(
+                                              'Ваш <a href="/profile?user_id={}">друг</a> зарегистрировался на сайте!'.format(
                                                   user_id))
                         users.add_friend(user_id, friend_id, dbconnection=db)
                         users.add_friend(friend_id, user_id, dbconnection=db)
