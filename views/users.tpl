@@ -69,7 +69,7 @@
                       </a>
                       <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
                     </div>
-                    % if loggedin and user['user_id'] not in {friend['user_id'] for friend in myfriends}:
+                    % if loggedin and user['user_id'] not in {friend['user_id'] for friend in myfriends} and user['user_id']!=userinfo['user_id']:
                         <div class="col-md-4 text-right">
                           <a href="/profile?addfriend={{user['user_id']}}">
                             <p>+ добавить в друзья</p>
@@ -84,6 +84,9 @@
             </div>
             % if loggedin:
             <div class="tab-pane" id="panel-friends">
+              <div class="panel panel-deafult">
+                <br>
+                <div class="user_card">
                 % for user in myfriends:
                   <div class="row" onclick="window.open('/profile?user_id={{user['user_id']}}');">
                     <div class="col-md-2">
@@ -98,8 +101,10 @@
                       <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
                     </div>
                   </div>
-
+                  <hr>
                 % end
+                </div>
+              </div>
             </div>
             % end
             <!-- <div class="tab-pane" id="panel-judges">
