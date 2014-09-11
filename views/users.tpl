@@ -57,7 +57,7 @@
                 <br>
                 <div class="user_card">
                 % for user in allusers:
-                  <div class="row" onclick="window.open('/profile?user_id={{user['user_id']}}');">
+                  <div class="row">
                     <div class="col-md-2">
                       <a href="/profile?user_id={{user['user_id']}}" target="_blank">
                         <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120">
@@ -88,7 +88,7 @@
                 <br>
                 <div class="user_card">
                 % for user in myfriends:
-                  <div class="row" onclick="window.open('/profile?user_id={{user['user_id']}}');">
+                  <div class="row">
                     <div class="col-md-2">
                       <a href="/profile?user_id={{user['user_id']}}" target="_blank">
                         <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120">
@@ -99,6 +99,11 @@
                         <p class="lead">{{user['first_name']+' '+user['last_name']}}</p>
                       </a>
                       <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
+                    </div>
+                    <div class="col-md-4 text-right">
+                      <a href="/profile?removefriend={{user['user_id']}}">
+                        <p>- удалить</p>
+                      </a>
                     </div>
                   </div>
                   <hr>
