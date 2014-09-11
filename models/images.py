@@ -17,7 +17,7 @@ def _save_image(fullname:str, bottlefile):
 
 def save_avatar(user_id:int, bottlefile):
     filename = str(user_id) + '.jpg'
-    dirname = '/bsp/data/avatars'
+    dirname = '/bsp/data/images/avatars'
     fullname = os.path.join(dirname, filename)
     _save_image(fullname, bottlefile)
 
