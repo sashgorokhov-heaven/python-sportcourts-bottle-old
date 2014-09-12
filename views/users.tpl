@@ -56,41 +56,13 @@
               <div class="panel panel-deafult">
                 <br>
                 <div class="user_card">
+                % setdefault("myfriends", list())
                 % for user in allusers:
-                  <div class="row">
-                    <div class="col-md-2">
-                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
-                        <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120">
-                      </a>
-                    </div>
-                    <div class="col-md-6">
-                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
-                        <p class="lead">{{user['first_name']+' '+user['last_name']}}</p>
-                      </a>
-                      <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
-                    </div>
-                    % if loggedin and user['user_id'] not in {friend['user_id'] for friend in myfriends} and user['user_id']!=userinfo['user_id']:
-                        <div class="col-md-4 text-right">
-                          <a href="/profile?addfriend={{user['user_id']}}">
-                            <p>+ добавить в друзья</p>
-                          </a>
-                        </div>
-                    % end
-                  </div>
-                  <hr>
+                    % include("user_row", user=user, myfriends=myfriends)
+                    <hr>
                 % end
                 </div>
               </div>
-              % if paging['previous'] or paging['next']:
-                <ul class="pager">
-                  % if paging['previous']:
-                    <li class="previous"><a href="/users?page={{paging['previous']}}">&larr; Предыдущие</a></li>
-                  % end
-                  % if paging['next']:
-                    <li class="next"><a href="/users?page={{paging['next']}}">Следующие &rarr;</a></li>
-                  % end
-                </ul>
-              % end
             </div>
             % if loggedin:
             <div class="tab-pane" id="panel-friends">
@@ -98,25 +70,8 @@
                 <br>
                 <div class="user_card">
                 % for user in myfriends:
-                  <div class="row">
-                    <div class="col-md-2">
-                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
-                        <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120">
-                      </a>
-                    </div>
-                    <div class="col-md-6">
-                      <a href="/profile?user_id={{user['user_id']}}" target="_blank">
-                        <p class="lead">{{user['first_name']+' '+user['last_name']}}</p>
-                      </a>
-                      <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
-                    </div>
-                    <div class="col-md-4 text-right">
-                      <a href="/profile?removefriend={{user['user_id']}}">
-                        <p>- удалить</p>
-                      </a>
-                    </div>
-                  </div>
-                  <hr>
+                    % include("user_row", user=user, myfriend=True)
+                    <hr>
                 % end
                 </div>
               </div>
