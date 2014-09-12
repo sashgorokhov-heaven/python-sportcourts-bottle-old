@@ -28,12 +28,12 @@
         }
 
         $.ajax({
-          url: '/users?next',
+          url: '/users',
           data: {
             startfrom: startFrom,
             section: section
           },
-          type: "GET",
+          type: "POST",
           dataType: "text",
           async: true,
           beforeSend: function() {
@@ -42,13 +42,13 @@
           success: function (responseData, textStatus) {
             // alert(responseData + ' Status: ' + textStatus);
             alert('Загрузили еще юзеров');
-            data = jQuery.parseJSON(data);
+            data = jQuery.parseJSON(responseData);
             // если массив не пустой
             if (data.length > 0) {
-
               $.each(data, function(index, data){
                 /* Отбираем по идентификатору блок с юзерами и дозаполняем его новыми данными */
-                $("#users").append(data);
+                alert(data);
+                $('.all').innerHTML += data+'<hr>';
                 // если сработает, забью сюда нормальный вид
               });
               /* По факту окончания запроса снова меняем значение флага на false */

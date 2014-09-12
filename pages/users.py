@@ -10,24 +10,6 @@ USERS_PER_PAGE = 8
 
 class Users(pages.Page):
     def get(self):
-        if bottle.request.is_ajax:
-            section = bottle.request.query.get("section")
-            startfrom = int(bottle.request.query.get("startfrom"))
-            data = list()
-            if section == 'all':
-                allusers = users.get(0, count=slice(startfrom, USERS_PER_PAGE), detalized=True)
-                page = pages.PageBuilder('user_row')
-                if pages.auth_dispatcher.loggedin():
-                    friends = users.get(
-                        users.get(pages.auth_dispatcher.getuserid(), fields=['friends'])['friends']['users'],
-                        detalized=True)
-                    page.add_param('myfriends', friends)
-                for user in allusers:
-                    page.add_param('user', user)
-                    user_tpl = page.template()
-                    data.append(user_tpl)
-                return bottle.json_dumps(data)
-            return ''
         with dbutils.dbopen() as db:
             paging = {'previous': 0, 'next': 0}
             count = int(db.execute("SELECT COUNT(user_id) FROM users")[0][0])
@@ -51,6 +33,30 @@ class Users(pages.Page):
                     users.get(pages.auth_dispatcher.getuserid(), fields=['friends'])['friends']['users'],
                     detalized=True)
                 page.add_param('myfriends', friends)
-        return page
+            return page
+
+    def post(self):
+        if bottle.request.is_ajax:
+            if 'section' not in bottle.request.forms or 'startfrom' not in bottle.request.forms:
+                print([i for i in bottle.request.forms])
+                return '["World!<hr>", "Hello!<hr>"]'
+            section = bottle.request.forms.get("section")
+            startfrom = int(bottle.request.forms.get("startfrom"))
+            data = list()
+            if section == 'all':
+                allusers = users.get(0, count=slice(startfrom, USERS_PER_PAGE), detalized=True)
+                page = pages.PageBuilder('user_row')
+                if pages.auth_dispatcher.loggedin():
+                    friends = users.get(
+                        users.get(pages.auth_dispatcher.getuserid(), fields=['friends'])['friends']['users'],
+                        detalized=True)
+                    page.add_param('myfriends', friends)
+                for user in allusers:
+                    page.add_param('user', user)
+                    user_tpl = page.template()
+                    data.append(user_tpl)
+                return bottle.json_dumps(data)
+            return ''
 
     get.route = '/users'
+    post.route = get.route

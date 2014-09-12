@@ -55,7 +55,7 @@
             <div class="tab-pane active" id="panel-all">
               <div class="panel panel-deafult">
                 <br>
-                <div class="user_card">
+                <div class="user_card" id='all'>
                 % setdefault("myfriends", list())
                 % for user in allusers:
                     % include("user_row", user=user, myfriends=myfriends)
@@ -78,7 +78,7 @@
             <div class="tab-pane" id="panel-friends">
               <div class="panel panel-deafult">
                 <br>
-                <div class="user_card">
+                <div class="user_card" id='friends'>>
                 % for user in myfriends:
                     % include("user_row", user=user, myfriend=True)
                     <hr>
