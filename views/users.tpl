@@ -33,29 +33,20 @@
         </div> -->
         <div class="tabbable" id="tabs-612446">
           <ul class="nav nav-tabs">
-            <li class="active">
+            <li class="panel-all active">
               <a href="#panel-all" data-toggle="tab">Все пользователи</a>
             </li>
             % if loggedin:
-            <li>
+            <li class="panel-friends">
               <a href="#panel-friends" data-toggle="tab">Мои друзья</a>
             </li>
             % end
-            <!-- <li>
-              <a href="#panel-judges" data-toggle="tab">Судьи</a>
-            </li>
-            <li>
-              <a href="#panel-organizators" data-toggle="tab">Организаторы</a>
-            </li>
-            <li>
-              <a href="#panel-responsibles" data-toggle="tab">Ответсвенные</a>
-            </li>  -->                  
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="panel-all">
               <div class="panel panel-deafult">
                 <br>
-                <div class="user_card">
+                <div class="user_card" id="users">
                 % for user in allusers:
                   <div class="row">
                     <div class="col-md-2">
