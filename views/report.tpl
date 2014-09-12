@@ -51,7 +51,7 @@
               <td></td>
             </tr>
             <tr class="user">
-              <td>1</td>
+              <td>2</td>
               <td>Виталий</td>
               <td>Харченко</td>
               <td>+7 982 646 94 54</td>
@@ -66,7 +66,7 @@
               <td></td>
             </tr>
           </table>
-          <a id="more" class="btn btn-success">+ добавить незарегистрированного юзера</a>
+          <a id="more" class="btn btn-success" role="button">+ добавить незарегистрированного юзера</a>
         </div>
       </div>
     </div>
