@@ -26,7 +26,7 @@
       </div>
       <div class="col-md-12">
         <div class="table-responsive">
-          <table class="table table-hover table-bordered">
+          <table class="table table-hover table-bordered" id="userstable">
             <tr class="success">
               <td>№</td>
               <td>Имя</td>
@@ -35,7 +35,7 @@
               <td>Статус</td>
               <td>Подпись</td>
             </tr>
-            <tr>
+            <tr class="user">
               <td>1</td>
               <td>Виталий</td>
               <td>Харченко</td>
@@ -50,7 +50,7 @@
               </td>
               <td></td>
             </tr>
-            <tr>
+            <tr class="user">
               <td>1</td>
               <td>Виталий</td>
               <td>Харченко</td>
@@ -66,7 +66,7 @@
               <td></td>
             </tr>
           </table>
-          <a href=""><p class="lead">+ добавить незарегистрированного юзера</p></a>
+          <a id="more" class="btn btn-success">+ добавить незарегистрированного юзера</a>
         </div>
       </div>
     </div>
