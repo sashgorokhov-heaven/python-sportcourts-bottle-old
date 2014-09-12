@@ -4,8 +4,10 @@
     /* Переменная-флаг для отслеживания того, происходит ли в данный момент ajax-запрос. В самом начале даем ей значение false, т.е. запрос не в процессе выполнения */
     var inProgress = false;
     /* С какого профиля надо делать выборку из базы при ajax-запросе */
-    var startFromAll = 10;
-    var startFromFriends = 10;
+    var step = 8;
+    var startFromAll = step;
+    var startFromFriends = step;
+
 
     /* Используем вариант $('#more').click(function() для того, чтобы проматывать по кнопке "Дальше"*/
     $(window).scroll(function() {
@@ -26,12 +28,12 @@
         }
 
         $.ajax({
-          url: '/moreusers',
+          url: '/users?next',
           data: {
             startfrom: startFrom,
             section: section
           },
-          type: "POST",
+          type: "GET",
           dataType: "text",
           async: true,
           beforeSend: function() {
@@ -46,18 +48,19 @@
 
               $.each(data, function(index, data){
                 /* Отбираем по идентификатору блок с юзерами и дозаполняем его новыми данными */
-                $("#users").append("<p><b>" + data.name + "</b><br />" + data.text + "</p>");
+                $("#users").append(data);
                 // если сработает, забью сюда нормальный вид
               });
               /* По факту окончания запроса снова меняем значение флага на false */
               inProgress = false;
               // Увеличиваем на 10 порядковый номер статьи, с которой надо начинать выборку из базы
-              startFrom += 10;
+              startFrom += step;
 
             }
           },
           error: function (response, status, errorThrown) {
             alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+            inProgress = false;
           }
         });
       };
