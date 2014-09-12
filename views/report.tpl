@@ -32,15 +32,14 @@
               <td>Имя</td>
               <td>Фамилия</td>
               <td>Телефон</td>
-              <td>Статус</td>
-              <td>Подпись</td>
+              <td colspan="2">Статус</td>
             </tr>
             <tr class="user">
               <td>1</td>
               <td>Виталий</td>
               <td>Харченко</td>
               <td>+7 982 646 94 54</td>
-              <td>
+              <td colspan="2">
                 <select class="form-control">
                   <option value="0"></option>
                   <option value="1">Оплатил</option>
@@ -48,14 +47,13 @@
                   <option value="3">Не пришел</option>
                 </select>
               </td>
-              <td></td>
             </tr>
             <tr class="user">
-              <td>1</td>
+              <td>2</td>
               <td>Виталий</td>
               <td>Харченко</td>
               <td>+7 982 646 94 54</td>
-              <td>
+              <td colspan="2">
                 <select class="form-control">
                   <option value="0"></option>
                   <option value="1">Оплатил</option>
@@ -63,10 +61,9 @@
                   <option value="3">Не пришел</option>
                 </select>
               </td>
-              <td></td>
             </tr>
           </table>
-          <a id="more" class="btn btn-success">+ добавить незарегистрированного юзера</a>
+          <a id="more" class="btn btn-success" role="button">+ добавить незарегистрированного юзера</a>
         </div>
       </div>
     </div>
