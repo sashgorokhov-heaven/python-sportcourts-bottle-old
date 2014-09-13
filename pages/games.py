@@ -2,6 +2,7 @@ import bottle
 
 import pages
 import modules
+from modules.utils import beautifuldate, beautifulday, beautifultime
 import modules.dbutils
 from models import sport_types, game_types, cities, courts, games, notifications
 
@@ -84,6 +85,9 @@ class Games(pages.Page):
         with modules.dbutils.dbopen() as db:
             game_id = int(bottle.request.query.get('game_id'))
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
+            game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
+                                       beautifultime(game['datetime']),
+                                       beautifulday(game['datetime']))
             if len(game) == 0:
                 return bottle.HTTPError(404)
             if pages.auth_dispatcher.loggedin() \
@@ -109,6 +113,9 @@ class Games(pages.Page):
                     game['is_subscribed'] = True
                 else:
                     game['is_subscribed'] = False
+                game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
+                                           beautifultime(game['datetime']),
+                                           beautifulday(game['datetime']))
             page = pages.PageBuilder('games', games=allgames, sports=sports)
             if page_n < total_pages:
                 page.add_param("nextpage", page_n + 1)

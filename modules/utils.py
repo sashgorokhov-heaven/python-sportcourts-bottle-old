@@ -4,18 +4,25 @@ import threading
 from modules import dbutils
 
 
-_months = ['Январь', 'Февраль',
+_months = ['Января', 'ФевралЯ',
+           'Марта', 'Апреля',
+           'Мая', 'Июня', 'Июля',
+           'Августа', 'Сентября',
+           'Октября', 'Ноября', 'Декабря']
+
+_months_game = ['Январь', 'Февраль',
            'Март', 'Апрель',
            'Май', 'Июнь', 'Июль',
            'Август', 'Сентябрь',
            'Октябрь', 'Ноябрь', 'Декабрь']
+
 _days = ['Понедельник', 'Вторник', 'Среда',
          'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 
 
-def beautifuldate(datetime:str):
+def beautifuldate(datetime:str, gamespage:bool=False):
     date, day = datetime.split(' ')[0].split('-')[1:]
-    return day, _months[int(date) - 1]
+    return (day, _months_game[int(date) - 1]) if gamespage else '{} {}'.format(day, _months[int(date) - 1])
 
 
 def beautifultime(datetime:str):
