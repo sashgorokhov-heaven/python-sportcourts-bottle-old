@@ -53,15 +53,13 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="panel-all">
-              <div class="panel panel-deafult">
-                <br>
-                <div class="user_cards_all" id='all'>
-                % setdefault("myfriends", list())
-                % for user in allusers:
-                    % include("user_row", user=user, myfriends=myfriends)
-                    <hr>
-                % end
-                </div>
+              <br>
+              <div class="user_cards_all" id='all'>
+              % setdefault("myfriends", list())
+              % for user in allusers:
+                  % include("user_row", user=user, myfriends=myfriends)
+                  <hr>
+              % end
               </div>
             </div>
             % if loggedin:
