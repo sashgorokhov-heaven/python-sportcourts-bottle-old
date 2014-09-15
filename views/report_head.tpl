@@ -25,6 +25,5 @@
           startFromNew += 1;
 
         });
-
       });
     </script>
