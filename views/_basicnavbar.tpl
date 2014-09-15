@@ -12,6 +12,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a class="topmenu" href="/games">Игры</a></li>
+                    <li><a class="topmenu" href="/users">Игроки</a></li>
                     <li><a class="topmenu" href="/about">О нас</a></li>
                     % if loggedin:
                         <li>
