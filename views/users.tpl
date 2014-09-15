@@ -5,7 +5,7 @@
       </div>
     </div>
     <div class="row clearfix">
-      <div class="col-md-4 column">
+      <div class="col-md-3 column">
         <div class="panel panel-default">
           <div class="panel-body">
             <p class="lead">Наши люди</p>
@@ -19,12 +19,12 @@
               </select>
             </div>
             <div class="form-group">
-              <button type="button" class="btn btn-primary btn-block">Найти</button>
+              <button type="button" class="btn btn-primary btn-block" disabled="disabled">Найти</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-8 column">
+      <div class="col-md-9 column">
         <!-- <div class="page-header">
           <br>
           <h1>
@@ -55,7 +55,7 @@
             <div class="tab-pane active" id="panel-all">
               <div class="panel panel-deafult">
                 <br>
-                <div class="user_card" id='all'>
+                <div class="user_cards_all" id='all'>
                 % setdefault("myfriends", list())
                 % for user in allusers:
                     % include("user_row", user=user, myfriends=myfriends)
@@ -63,22 +63,12 @@
                 % end
                 </div>
               </div>
-              % if paging['previous'] or paging['next']:
-                <ul class="pager">
-                  % if paging['previous']:
-                    <li class="previous"><a href="/users?page={{paging['previous']}}">&larr; Предыдущие</a></li>
-                  % end
-                  % if paging['next']:
-                    <li class="next"><a href="/users?page={{paging['next']}}">Следующие &rarr;</a></li>
-                  % end
-                </ul>
-              % end
             </div>
             % if loggedin:
             <div class="tab-pane" id="panel-friends">
               <div class="panel panel-deafult">
                 <br>
-                <div class="user_card" id='friends'>>
+                <div class="user_cards_friends" id='friends'>
                 % for user in myfriends:
                     % include("user_row", user=user, myfriend=True)
                     <hr>
