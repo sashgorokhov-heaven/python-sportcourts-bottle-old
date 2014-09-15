@@ -87,7 +87,7 @@
                   <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
                 </div>
                 <div class="col-md-6 text-right">
-                  <a class="btn btn-success" role="button" type="submit">Отправить отчет</a>
+                  <button class="btn btn-success" role="button" type="submit">Отправить отчет</button>
                   <p class="lead amount"></p>
                 </div>
               </div>
