@@ -34,6 +34,9 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
         game['parsed_datetime'] = (
         beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
 
+    if 'report' in game and detalized:
+        game['report'] = json.loads(game['report'])
+
     if 'subscribed' in game and detalized:
         subscribed = game['subscribed'].split('|')[1:-1]
         if len(subscribed) > 0:
@@ -150,6 +153,7 @@ def intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.
 @autodb
 def add(dbconnection:dbutils.DBConnection=None, **kwargs) -> int:
     sql = 'INSERT INTO games ({dbkeylist}) VALUES ({dbvaluelist})'
+    kwargs['report'] = '{"reported":false}'
     keylist = list(kwargs.keys())
     sql = sql.format(
         dbkeylist=', '.join(keylist),
@@ -162,7 +166,7 @@ def add(dbconnection:dbutils.DBConnection=None, **kwargs) -> int:
 @autodb
 def update(game_id:int, dbconnection:dbutils.DBConnection=None, **kwargs):
     sql = 'UPDATE games SET {} WHERE game_id={}'.format(
-        ', '.join(['{}="{}"'.format(i, kwargs[i]) for i in kwargs]),
+        ', '.join(["{}='{}'".format(i, kwargs[i]) for i in kwargs]),
         game_id)
     dbconnection.execute(sql)
 

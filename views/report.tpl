@@ -1,4 +1,5 @@
 % rebase("_basicpage", title="Отчет по игре")
+% setdefault("showreport", False)
     <div class="row">
       <div class="col-md-12"  style="margin-top:50px;">
         &nbsp;
@@ -10,7 +11,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-12">
-                <p class="lead">Отчет по игре <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a></p>
+                <p class="lead">Отчет по игре <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a> {{'[ОТПРАВЛЕН]' if showreport else ''}}</p>
               </div>
             </div>
             <div class="row">
@@ -35,6 +36,7 @@
               data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
               data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
               data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+              <input type="hidden" name="game_id" value="{{game['game_id']}}">
               <div class="row">
                 <div class="col-md-12">
                   <br>
@@ -50,6 +52,7 @@
                         <td>Телефон</td>
                         <td colspan="2">Статус</td>
                       </tr>
+                      % last_n = 0
                       % for n, user in enumerate(game['subscribed']['users'], 1):
                         <tr class="user">
                           <td>{{n}}</td>
@@ -57,19 +60,61 @@
                           <td><a href="/profile?user_id={{user['user_id']}}">{{user['last_name']}}</a></td>
                           <td>{{user['phone']}}</td>
                           <td colspan="2">
+                          % if not showreport:
                             <select class="form-control input-sm user_status" name="status={{user['user_id']}}">
                               <option value="0"></option>
                               <option value="1">Оплатил</option>
                               <option value="2">Не оплатил</option>
                               <option value="3">Не пришел</option>
                             </select>
+                          % end
+                          % if showreport:
+                            % status = int(game['report']['registered']['users'][str(user['user_id'])]['status'])
+                            % if status==1:
+                                Оплатил
+                            % end
+                            % if status==2:
+                                Не оплатил
+                            % end
+                            % if status==3:
+                                Не пришел
+                            % end
+                          % end
                           </td>
                         </tr>
+                        % last_n = n
+                      % end
+                      % if showreport:
+                        % import base64
+                        % for n, user_id in enumerate(game['report']['unregistered']['users'], last_n+1):
+                          % user = game['report']['unregistered']['users'][user_id]
+                          % user['first_name'] = base64.b64decode(user['first_name'].encode()).decode()
+                          % user['last_name'] = base64.b64decode(user['last_name'].encode()).decode()
+                          <tr class="user">
+                            <td>{{n}}</td>
+                            <td>{{user['first_name']}}</td>
+                            <td>{{user['last_name']}}</td>
+                            <td>{{user['phone']}}</td>
+                            <td colspan="2">
+                                % value = int(user['status'])
+                                % if value==1:
+                                    Оплатил
+                                % end
+                                % if value==2:
+                                    Не оплатил
+                                % end
+                                % if value==3:
+                                    Не пришел
+                                % end
+                            </td>
+                          </tr>
+                        % end
                       % end
                     </table>
                   </div>
                 </div>
               </div>
+              % if not showreport:
               <div class="row">
                 <div class="col-md-6">
                   <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
@@ -78,6 +123,7 @@
                   <input class="btn btn-success" type="submit">Отправить отчет</a>
                 </div>
               </div>
+              % end
             </form>
           </div>
         </div>
