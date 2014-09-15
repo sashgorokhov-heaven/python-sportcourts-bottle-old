@@ -1,4 +1,5 @@
 import bottle
+from modules.utils import beautifuldate, beautifultime, beautifulday
 
 import pages
 from modules import dbutils
@@ -15,6 +16,9 @@ class Courts(pages.Page):
             nearest_game = games.get_recent(court_id=court_id, detalized=True, count=slice(1), dbconnection=db)
             page = pages.PageBuilder('courts', court=court)
             if len(nearest_game) > 0:
+                nearest_game[0]['parsed_datetime'] = (beautifuldate(nearest_game[0]['datetime']),
+                                                      beautifultime(nearest_game[0]['datetime']),
+                                                      beautifulday(nearest_game[0]['datetime']))
                 page.add_param('game', nearest_game[0])
             return page
 

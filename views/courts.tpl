@@ -44,7 +44,7 @@
                 <tr>
                   <td colspan="2">
                     <p><a href="/games?game_id={{game['game_id']}}">Ближайшая игра:</a></p>
-                    <small><p>{{game['parsed_datetime'][0][1]+', '+str(game['parsed_datetime'][0][0])}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p></small>
+                    <small><p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p></small>
                     <small><p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p></small>
                     <div class="progress">
                       <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
