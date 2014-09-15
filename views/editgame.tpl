@@ -161,6 +161,12 @@
                         % end
                       </table>
                     </div>
+                    <div class="form-group">
+                      <a class="btn btn-success" role="button">Распечатать списки на игру</a>
+                    </div>
+                    <div class="form-group">
+                      <a class="btn btn-success" role="button" href="/report?game_id={{game['game_id']}}">Заполнить отчет по игре</a>
+                    </div>
                 % end
               </div>
             </div>

@@ -30,61 +30,68 @@
               </div>
               <div class="col-md-4"></div>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <br>
-                <p>Список участников</p>
-              </div>
-              <div class="col-md-12">
-                <div class="table-responsive">
-                  <table class="table table-hover table-bordered" id="userstable" style="font-size:90%">
-                    <tr class="success">
-                      <td>№</td>
-                      <td>Имя</td>
-                      <td>Фамилия</td>
-                      <td>Телефон</td>
-                      <td colspan="2">Статус</td>
-                    </tr>
-                    <tr class="user">
-                      <td>1</td>
-                      <td>Виталий</td>
-                      <td>Харченко</td>
-                      <td>+7 982 646 94 54</td>
-                      <td colspan="2">
-                        <select class="form-control input-sm">
-                          <option value="0"></option>
-                          <option value="1">Оплатил</option>
-                          <option value="2">Не оплатил</option>
-                          <option value="3">Не пришел</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr class="user">
-                      <td>2</td>
-                      <td>Виталий</td>
-                      <td>Харченко</td>
-                      <td>+7 982 646 94 54</td>
-                      <td colspan="2">
-                        <select class="form-control input-sm">
-                          <option value="0"></option>
-                          <option value="1">Оплатил</option>
-                          <option value="2">Не оплатил</option>
-                          <option value="3">Не пришел</option>
-                        </select>
-                      </td>
-                    </tr>
-                  </table>
+            <form id="reportForm" method="post" class="form-horizontal" action=""
+              data-bv-message="This value is not valid" enctype="multipart/form-data"
+              data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+              data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+              data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+              <div class="row">
+                <div class="col-md-12">
+                  <br>
+                  <p>Список участников</p>
+                </div>
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="userstable" style="font-size:90%">
+                      <tr class="success">
+                        <td>№</td>
+                        <td>Имя</td>
+                        <td>Фамилия</td>
+                        <td>Телефон</td>
+                        <td colspan="2">Статус</td>
+                      </tr>
+                      <tr class="user">
+                        <td>1</td>
+                        <td>Виталий</td>
+                        <td>Харченко</td>
+                        <td>+7 982 646 94 54</td>
+                        <td colspan="2">
+                          <select class="form-control input-sm user_status">
+                            <option value="0"></option>
+                            <option value="1">Оплатил</option>
+                            <option value="2">Не оплатил</option>
+                            <option value="3">Не пришел</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr class="user">
+                        <td>2</td>
+                        <td>Виталий</td>
+                        <td>Харченко</td>
+                        <td>+7 982 646 94 54</td>
+                        <td colspan="2">
+                          <select class="form-control input-sm user_status">
+                            <option value="0"></option>
+                            <option value="1">Оплатил</option>
+                            <option value="2">Не оплатил</option>
+                            <option value="3">Не пришел</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
+              <div class="row">
+                <div class="col-md-6">
+                  <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
+                </div>
+                <div class="col-md-6 text-right">
+                  <a class="btn btn-success" role="button" type="submit">Отправить отчет</a>
+                  <p class="lead amount"></p>
+                </div>
               </div>
-              <div class="col-md-6 text-right">
-                <a class="btn btn-success" role="button">Отправить отчет</a>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
