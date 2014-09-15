@@ -1,3 +1,4 @@
+import json
 from models import autodb, splitstrlist, cities, courts, game_types, sport_types, users
 from modules import dbutils
 from modules.utils import beautifuldate, beautifultime, beautifulday
@@ -22,6 +23,11 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
     if 'created_by' in game and detalized:
         user = users.get(int(game['created_by']), fields=['first_name', 'last_name'], dbconnection=dbconnection)
         game['created_by_name'] = user['first_name'] + ' ' + user['last_name']
+
+    if 'responsible_user_id' in game and detalized:
+        user = users.get(int(game['responsible_user_id']), fields=['first_name', 'last_name'],
+                         dbconnection=dbconnection)
+        game['responsible_user_name'] = user['first_name'] + ' ' + user['last_name']
 
     if 'datetime' in game:
         dbutils.strdates(game)
@@ -177,3 +183,11 @@ def get_user_games(user_id:int, detalized:bool=False, fields:list=dbutils.dbfiel
         detalize_game(game, detalized=detalized, dbconnection=dbconnection)
 
     return dbconnection.last()
+
+
+@autodb
+def get_report(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
+    dbconnection.execute("SELECT report FROM games WHERE game_id={}".format(game_id))
+    if len(dbconnection.last()) == 0:
+        raise KeyError("Game id not found: {}".format(game_id))
+    return json.loads(dbconnection.last()[0][0])

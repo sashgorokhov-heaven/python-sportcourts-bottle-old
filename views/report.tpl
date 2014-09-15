@@ -10,27 +10,27 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-12">
-                <p class="lead">Отчет по игре #234</p>
+                <p class="lead">Отчет по игре <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a></p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
                 <small>
-                  <p>Ответственный: Виталий Харченко</p>
-                  <p>Вид спорта: Баскетбол</p>
-                  <p>Тип игры: Стритбол 3х3</p>
+                  <p>Ответственный: <a href="/profile?user_id={{game['responsible_user_id']}}">{{game['responsible_user_name']}}</a></p>
+                  <p>Вид спорта: {{game['sport_type']['title']}}</p>
+                  <p>Тип игры: {{game['game_type']['title']}}</p>
                 </small>
               </div>
               <div class="col-md-4">
                 <small>
-                  <p>Площадка: Фок Факел</p>
-                  <p>12 сентября 2014 года, 19:00</p>
-                  <p>Продолжительность: 2 часа</p>
+                  <p>Площадка: <a href="/courts?court_id={{game['court']['court_id']}}">{{game['court']['title']}}</a></p>
+                  <p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p>
+                  <p>Продолжительность: {{game['duration']}} минут</p>
                 </small>
               </div>
               <div class="col-md-4"></div>
             </div>
-            <form id="reportForm" method="post" class="form-horizontal" action=""
+            <form id="reportForm" method="post" class="form-horizontal" action="/report"
               data-bv-message="This value is not valid" enctype="multipart/form-data"
               data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
               data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
@@ -50,34 +50,22 @@
                         <td>Телефон</td>
                         <td colspan="2">Статус</td>
                       </tr>
-                      <tr class="user">
-                        <td>1</td>
-                        <td>Виталий</td>
-                        <td>Харченко</td>
-                        <td>+7 982 646 94 54</td>
-                        <td colspan="2">
-                          <select class="form-control input-sm user_status">
-                            <option value="0"></option>
-                            <option value="1">Оплатил</option>
-                            <option value="2">Не оплатил</option>
-                            <option value="3">Не пришел</option>
-                          </select>
-                        </td>
-                      </tr>
-                      <tr class="user">
-                        <td>2</td>
-                        <td>Виталий</td>
-                        <td>Харченко</td>
-                        <td>+7 982 646 94 54</td>
-                        <td colspan="2">
-                          <select class="form-control input-sm user_status">
-                            <option value="0"></option>
-                            <option value="1">Оплатил</option>
-                            <option value="2">Не оплатил</option>
-                            <option value="3">Не пришел</option>
-                          </select>
-                        </td>
-                      </tr>
+                      % for n, user in enumerate(game['subscribed']['users'], 1):
+                        <tr class="user">
+                          <td>{{n}}</td>
+                          <td><a href="/profile?user_id={{user['user_id']}}">{{user['first_name']}}</a></td>
+                          <td><a href="/profile?user_id={{user['user_id']}}">{{user['last_name']}}</a></td>
+                          <td>{{user['phone']}}</td>
+                          <td colspan="2">
+                            <select class="form-control input-sm user_status" name="status={{user['user_id']}}">
+                              <option value="0"></option>
+                              <option value="1">Оплатил</option>
+                              <option value="2">Не оплатил</option>
+                              <option value="3">Не пришел</option>
+                            </select>
+                          </td>
+                        </tr>
+                      % end
                     </table>
                   </div>
                 </div>
@@ -87,8 +75,7 @@
                   <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
                 </div>
                 <div class="col-md-6 text-right">
-                  <button class="btn btn-success" role="button" type="submit">Отправить отчет</button>
-                  <p class="lead amount"></p>
+                  <input class="btn btn-success" type="submit">Отправить отчет</a>
                 </div>
               </div>
             </form>
