@@ -11,11 +11,11 @@
     </a>
     <p>{{user['parsed_bdate']+', '+user['city']['title']}}</p>
   </div>
-  % if loggedin and user['user_id'] not in {friend['user_id'] for friend in myfriends} and user['user_id']!=userinfo['user_id'] or myfriend:
-      <div class="col-md-4 text-right">
-        <a href="/profile?{{'add' if not myfriend else 'remove'}}friend={{user['user_id']}}">
-          <p>{{'+ добавить в друзья' if not myfriend else '- удалить'}}</p>
-        </a>
-      </div>
-  % end
+  <div class="col-md-4 text-right">
+    % if loggedin and user['user_id'] not in {friend['user_id'] for friend in myfriends} and user['user_id']!=userinfo['user_id'] or myfriend:
+    <a href="/profile?{{'add' if not myfriend else 'remove'}}friend={{user['user_id']}}">
+      <p>{{'+ добавить в друзья' if not myfriend else '- удалить'}}</p>
+    </a>
+    % end
+  </div>
 </div>

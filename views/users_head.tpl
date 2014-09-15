@@ -27,6 +27,8 @@
           var startFrom = startFromFriends;
         }
 
+        alert(section + '; ' + startFrom);
+
         $.ajax({
           url: '/users',
           data: {
