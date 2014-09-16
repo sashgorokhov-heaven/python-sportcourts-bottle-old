@@ -5,7 +5,7 @@
       </div>
     </div>
     <div class="row clearfix">
-      <--<div class="col-md-3 column">
+      <!--<div class="col-md-3 column">
         <div class="panel panel-default">
           <div class="panel-body">
             <p class="lead">Наши люди</p>
@@ -23,7 +23,7 @@
             </div>
           </div>
         </div>
-      </div>-->
+      </div>--!>
       <div class="col-md-9 column">
         <!-- <div class="page-header">
           <br>
