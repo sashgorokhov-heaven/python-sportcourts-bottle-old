@@ -6,10 +6,24 @@
         <div class="col-md-9">
           <strong>{{user['first_name']+' '+user['last_name']}}</strong>
           % if int(user['user_id'])==int(userinfo['user_id']):
-            &nbsp;&nbsp;<small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/profile?edit">Ред.</a></small><br>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <small>
+              <span class="glyphicon glyphicon-pencil"></span>
+              <a href="/profile?edit">Ред.</a>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              <span class="glyphicon glyphicon-cog"></span>
+              <a href="/settings">Настройки</a>
+            </small>
+            <br>
           % end
           % if int(user['user_id'])!=int(userinfo['user_id']):
-            &nbsp;&nbsp;<small>Последний раз заходил{{'a' if user['sex']=='female' else ''}}: {{user['lasttime']}}</small><br>
+            &nbsp;
+            &nbsp;
+            <small>Последний раз заходил{{'a' if user['sex']=='female' else ''}}: {{user['lasttime']}}</small><br>
           % end
           <br>
           {{user['parsed_bdate']+', '+user['city']['title']}}<br>
