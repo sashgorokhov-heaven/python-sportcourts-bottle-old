@@ -18,7 +18,7 @@
                   </div>
                   <div class="organizer" style="float:right; max-width:45%;">
                     <p class="text-right">
-                      % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
+                      % if userinfo['user_id']==game['created_by'] or userinfo['user_id']==game['responsible_user_id'] or userinfo['admin']:
                       <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
                       % end
                       % if userinfo['user_id']!=game['created_by']:

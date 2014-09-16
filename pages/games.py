@@ -66,6 +66,11 @@ class Games(pages.Page):
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
             if len(game) == 0:
                 raise bottle.HTTPError(404)
+            if pages.auth_dispatcher.getuserid() != game['created_by'] and \
+                            pages.auth_dispatcher.getuserid() != game['responsible_user_id'] and \
+                    not pages.auth_dispatcher.admin():
+                return pages.PageBuilder('text', message='Недостаточно прав',
+                                         description='Вы не можете просматривать эту страницу')
             _sport_types = sport_types.get(0, dbconnection=db)
             _game_types = game_types.get(0, dbconnection=db)
             _cities = cities.get(0, dbconnection=db)
@@ -135,7 +140,7 @@ class Games(pages.Page):
                 return pages.PageBuilder('text', message='Недостаточно плав',
                                          description='Вы не можете просматривать эту страницу')
         if 'edit' in bottle.request.query:
-            if pages.auth_dispatcher.organizer():
+            if pages.auth_dispatcher.responsible():
                 return self.get_edit()
             else:
                 return pages.PageBuilder('text', message='Недостаточно плав',
