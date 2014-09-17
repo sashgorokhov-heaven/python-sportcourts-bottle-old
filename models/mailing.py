@@ -25,7 +25,10 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
         s.sendmail(me, you, msg.as_string())
         s.quit()
     except Exception as e:
-        print(e.__class__.__name__, e.args)
+        try:
+            print(e.__class__.__name__, e.args)
+        except:
+            pass
         return False
     return True
 
