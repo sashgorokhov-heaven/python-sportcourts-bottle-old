@@ -48,7 +48,8 @@ class Profile(pages.Page):
                 user = users.get(user_id, detalized=True, dbconnection=db)
                 activated = activation.activated(user_id, dbconnection=db)
                 return pages.PageBuilder('profile', user=user, activated=activated)
-        raise bottle.redirect('/auth')
+        return pages.templates.message("Ошибка доступа",
+                                       "Зарегестрируйтесь, чтобы иметь свой профиль, с блекджеком и аватаркой.")
 
     def post(self):
         if not pages.auth_dispatcher.loggedin():
