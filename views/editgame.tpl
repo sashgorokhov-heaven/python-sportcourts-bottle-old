@@ -119,29 +119,29 @@
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
                       <button type="submit" name="submit_edit" class="btn btn-primary">Применить</button>
-                      <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
-                      <div class="modal fade" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-sm">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
-                            </div>
-                            <div class="modal-body">
-                              <p>Вы действительно хотите удалить игру?</p>
-                            </div>
-                            <div class="modal-footer">
-                              % if userinfo['user_id']==game['created_by']:
-                                <a class="btn btn-danger" href="/games?delete={{game['game_id']}}">Удалить</a>
-                              % end
-                              <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
+                      % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
+                        <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
+                        <div class="modal fade" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
+                              </div>
+                              <div class="modal-body">
+                                <p>Вы действительно хотите удалить игру?</p>
+                              </div>
+                              <div class="modal-footer">
+                                  <a class="btn btn-danger" href="/games?delete={{game['game_id']}}">Удалить</a>
+                                <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <script type="text/javascript">
-                        $('#deleteGameModal').modal(options)
-                      </script>
+                        <script type="text/javascript">
+                          $('#deleteGameModal').modal(options)
+                        </script>
+                      % end
                     </div>
                   </div>
                 </div>
