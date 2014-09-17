@@ -9,6 +9,12 @@
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
                 <div class="form-group">
+                  <label for="court_add_count" class="col-sm-2 control-label">Название</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="description" value="{{description}}" />
+                  </div>
+                </div>
+                <div class="form-group">
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Вид спорта</label>
                   <div class="col-sm-10">
                     <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
@@ -100,12 +106,6 @@
                   <div class="col-sm-10">
                     <input type="text" id="game_add_count" name="capacity" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                     <div id="game_add_slider1"></div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="court_add_count" class="col-sm-2 control-label">Описание</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control" name="description" rows="3"></textarea>
                   </div>
                 </div>
                 <div class="form-group">
