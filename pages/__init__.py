@@ -216,5 +216,15 @@ class PageBuilder:
         return bottle.template(self._template_name, **self._kwargs)
 
 
+class _CompleteTemplates:
+    def permission_denied(self, text:str='Доступ ограничен',
+                          description:str='Вы не можете просматривать эту страницу') -> PageBuilder:
+        return self.message(text, description)
+
+    def message(self, text:str, description:str) -> PageBuilder:
+        return PageBuilder("text", message=text, description=description)
+
+
 controller = _PageController()
 auth_dispatcher = _AuthDispatcher()
+templates = _CompleteTemplates()
