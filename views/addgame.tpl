@@ -11,7 +11,7 @@
                 <div class="form-group">
                   <label for="court_add_count" class="col-sm-2 control-label">Название</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="description" value="{{description}}" />
+                    <input type="text" class="form-control" name="description" />
                   </div>
                 </div>
                 <div class="form-group">
