@@ -32,7 +32,7 @@ class Authorize(pages.Page):
             except ValueError:
                 return pages.PageBuilder('auth', error='Ошибка авторизации',
                                          error_description='Неверный email или пароль')
-            raise bottle.redirect('/games')
+            raise bottle.redirect(bottle.request.get_header("Referer", "/games"))
 
     def post(self):
         email = bottle.request.forms.email
