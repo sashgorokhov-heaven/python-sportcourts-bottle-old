@@ -120,7 +120,7 @@
                   <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
                 </div>
                 <div class="col-md-6 text-right">
-                  <input class="btn btn-success" type="submit">Отправить отчет</a>
+                  <input class="btn btn-success" type="submit" value="Отправить отчет">
                 </div>
               </div>
               % end
