@@ -20,6 +20,7 @@ class Settings(pages.Page):
             sett.show_phone('all' if 'phone_all' in bottle.request.forms else 'organizers')
             settings.set(pages.auth_dispatcher.getuserid(), sett, dbconnection=db)
             pages.auth_dispatcher.updatesettings(sett, dbconnection=db)
+            raise bottle.redirect("/profile")
 
     get.route = '/settings'
     post.route = '/settings'
