@@ -53,16 +53,14 @@
                     <p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
                     <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
                     % if standalone:
-                      % if game['responsible_user_id']!=game['created_by']:
                       <p>
                         Ответственный:
                         <a href="/profile?user_id={{game['responsible_user_id']}}" target="_blank">
-                          Имя Фамилия
+                          {{game['responsible_user_name']}}
                         </a>
                         &nbsp;
                         <img src="/images/avatars/{{str(game['responsible_user_id'])}}" class="round" width="30" >
                       </p>
-                      % end
                     % end
                     <div class="progress">
                       <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
