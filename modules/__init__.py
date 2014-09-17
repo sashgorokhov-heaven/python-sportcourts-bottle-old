@@ -35,8 +35,8 @@ def _generate_secret():
                       random.randint(10, 30)))
 
 
-def extract_traceback(e):
-    return '\n'.join(traceback.format_exception(e.__class__, e, e.__traceback__))
+def extract_traceback(e, sep:str='\n'):
+    return sep.join(traceback.format_exception(e.__class__, e, e.__traceback__))
 
 
 def generate_token():
