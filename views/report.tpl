@@ -115,6 +115,12 @@
               </div>
               % if not showreport:
               <div class="row">
+                <div class="col-md-12">
+                  <p class="text-right amount"></p>
+                </div>
+                <div class="col-md-12">
+                  <p class="text-right dolg_amount"></p>
+                </div>
                 <div class="col-md-6">
                   <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
                 </div>

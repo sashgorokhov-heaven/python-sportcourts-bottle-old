@@ -29,18 +29,31 @@
         var Amount = 0;
         var Price = {{game['cost']}};
 
-        $('.user_status').change(function(){
-          alert('dsgfsdg');
-          if ($(this).val == '1'){
-            Amount += Price;
-            alert(Amount)
-            // Здесь изменение суммы в итоге
+        // var isArray = Array.isArray || function(obj) {
+        //     return toString.call(obj) == '[object Array]';
+        // };
+        $('.container').on('change','.user_status',function(){
+
+          var summ = 0;
+          var summ1 = 0;
+
+          var values = $.map($('.user_status'), function(element, i) {
+            return $(element).val();
+          });
+
+          for(var i=0; i<values.length; i++) {
+            if (values[i] == 1){
+              summ += Price;
+            }
+            if (values[i] == 2){
+              summ += Price;
+              summ1 += Price;
+            }
           }
-          else
-          {
-            Amount -= Price;
-            return false;
-          }
+
+
+          $('.amount').html('<p class="lead">Сумма к расчету: ' + summ + ' руб.</p>');
+          $('.dolg_amount').html('<p class="lead">Клиенты должны вам: ' + summ1 + ' руб.</p>');
         });
       });
     </script>
