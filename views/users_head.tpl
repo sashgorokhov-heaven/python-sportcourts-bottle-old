@@ -15,11 +15,10 @@
           var section = 'all';
           var startFrom = startFromAll;
         }
-        // else if($('#panel-friends').hasClass('active') == true)
-        // {
-        //   var section = 'friends';
-        //   var startFrom = startFromFriends;
-        // }
+        else if($('#panel-friends').hasClass('active') == true)
+        {
+          return false;
+        }
 
         $.ajax({
           url: '/users',

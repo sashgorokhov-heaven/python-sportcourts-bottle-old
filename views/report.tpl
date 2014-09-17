@@ -62,10 +62,9 @@
                           <td colspan="2">
                           % if not showreport:
                             <select class="form-control input-sm user_status" name="status={{user['user_id']}}">
-                              <option value="0"></option>
+                              <option value="3">Не пришел</option>
                               <option value="1">Оплатил</option>
                               <option value="2">Не оплатил</option>
-                              <option value="3">Не пришел</option>
                             </select>
                           % end
                           % if showreport:
@@ -116,11 +115,17 @@
               </div>
               % if not showreport:
               <div class="row">
+                <div class="col-md-12">
+                  <p class="text-right amount"></p>
+                </div>
+                <div class="col-md-12">
+                  <p class="text-right dolg_amount"></p>
+                </div>
                 <div class="col-md-6">
                   <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
                 </div>
                 <div class="col-md-6 text-right">
-                  <input class="btn btn-success" type="submit">Отправить отчет</a>
+                  <input class="btn btn-success" type="submit" value="Отправить отчет">
                 </div>
               </div>
               % end

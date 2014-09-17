@@ -25,12 +25,6 @@
         </div>
       </div>--!>
       <div class="col-md-9 column">
-        <!-- <div class="page-header">
-          <br>
-          <h1>
-            Пользователи <small>типо маленький текст</small>
-          </h1>
-        </div> -->
         <div class="tabbable" id="tabs-612446">
           <ul class="nav nav-tabs">
             <li class="active">
