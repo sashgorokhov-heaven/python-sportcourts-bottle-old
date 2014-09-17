@@ -52,7 +52,7 @@ def access_log(write:bool=True):
     return format
 
 def error_log(e:Exception, message:str=None):
-    line = access_log(True)
+    line = access_log(False)
     if message:
         line += message + '- '
     line += e.__class__.__name__
@@ -60,4 +60,4 @@ def error_log(e:Exception, message:str=None):
         line += ': '+','.join(map(str, e.args))
     _write_line(_LOG_FILE, line)
     with open(_TRACEBACK_FILE, 'w') as f:
-        f.write('\n'.join(extract_traceback(e)))
+        f.write(extract_traceback(e))
