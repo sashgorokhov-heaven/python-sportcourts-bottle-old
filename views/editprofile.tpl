@@ -25,6 +25,7 @@
                     </div>
                   </div>
                 </div>
+                <!--
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Пол</label>
                   <div class="col-sm-10">
@@ -65,6 +66,7 @@
                     <span id="valid"></span>
                   </div>
                 </div>
+                --!>
                 <div class="form-group">
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
@@ -72,6 +74,7 @@
                     <span id="valid"></span>
                   </div>
                 </div>
+                <!--
                 <div class="form-group">
                   <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
                   <div class="col-sm-10">
@@ -80,6 +83,7 @@
                     data-bv-notempty-message="Укажите дату рождения" />
                   </div>
                 </div>
+                --!>
                 <div class="form-group">
                   <label for="height" class="col-sm-2 control-label">Рост</label>
                   <div class="col-sm-2">
