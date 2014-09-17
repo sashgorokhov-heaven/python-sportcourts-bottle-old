@@ -38,7 +38,7 @@ def _get_access_line() -> str:
    return line
 
 
-def access_log(write:bool=False):
+def access_log(write:bool=True):
     if bottle.request.fullpath.startswith('/view') or bottle.request.fullpath.startswith('/images'):
         return
     line = _get_access_line()
