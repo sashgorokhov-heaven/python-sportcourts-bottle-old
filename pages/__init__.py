@@ -1,4 +1,3 @@
-import base64
 import bottle
 
 import importlib
@@ -10,6 +9,7 @@ import modules.logging
 import modules.dbutils
 import models.notifications
 import models.settings
+from models import mailing
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
@@ -63,10 +63,12 @@ class _Executor:
             except (bottle.HTTPError, bottle.HTTPResponse) as e:
                 raise e
             except Exception as e:
-                if not modules.config['debug']:
-                    modules.logging.error_log(e)
-                    raise bottle.HTTPError(404)
-                raise e
+                modules.logging.error_log(e)
+                mailing.send_report(e)
+                if modules.config['debug']:
+                    return templates.message(e.__class__.__name__,
+                                             modules.extract_traceback(e, '<br>').replace('\n', '<br>')).template()
+                return templates.message("Возникла непредвиденная ошибка", "Сообщите нам о ней, пожалуйста.").template()
 
 
 class _PageController:

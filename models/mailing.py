@@ -1,7 +1,9 @@
 import smtplib
+import bottle
 from models import autodb, settings, users
-from modules import config, dbutils
+from modules import config, dbutils, extract_traceback
 from email.mime import text
+import modules.logging
 
 def sendmail(message:str, to:str, subject:str='Уведомление'):
     try:
@@ -41,3 +43,17 @@ def send_to_user(user_id:int, message:str, subject:str='Уведомление',
         return True
     email = users.get(user_id, fields=['email'], dbconnection=dbconnection)['email']
     return sendmail(message, email, subject)
+
+
+def send_report(e:Exception):
+    lines = ["На сайте возникла ошибка"]
+    lines.append('')
+    lines.append("Подробности запроса:")
+    lines.append(modules.logging.access_log(False))
+    lines.append("Referer: " + bottle.request.get_header("Referer", "None"))
+    lines.append('')
+    lines.append("Подробности об ошибке:")
+    lines.append(e.__class__.__name__ + (': ' + ','.join(e.args) if len(e.args) > 0 else ''))
+    lines.append(extract_traceback(e))
+    lines = '\n'.join(lines)
+    sendmail(lines, config['admin_email'], "Ошибка")
