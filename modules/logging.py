@@ -37,7 +37,8 @@ def _get_access_line() -> str:
    line += '"'
    return line
 
-def access_log(dontwrite:bool=False):
+
+def access_log(write:bool=False):
     if bottle.request.fullpath.startswith('/view') or bottle.request.fullpath.startswith('/images'):
         return
     line = _get_access_line()
@@ -46,7 +47,7 @@ def access_log(dontwrite:bool=False):
         line += ' uid=[{}]'.format(user_id)
     time = str(datetime.datetime.now())
     format = '[{}] {} '.format(time, line)
-    if not dontwrite:
+    if write:
         _write_line(_ACCESS_FILE, format)
     return format
 
