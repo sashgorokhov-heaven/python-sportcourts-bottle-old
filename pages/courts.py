@@ -55,8 +55,7 @@ class Courts(pages.Page):
                 return self.get_edit()
             raise bottle.HTTPError(404)
         else:
-            return pages.PageBuilder('text', message='Недостаточно прав',
-                                     description='Вы не можете просматривать эту страницу')
+            return pages.templates.permission_denied()
 
 
     def post_submit_add(self):

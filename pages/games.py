@@ -52,8 +52,7 @@ class Games(pages.Page):
 
     def post(self):
         if not pages.auth_dispatcher.organizer():
-            return pages.PageBuilder('text', message='Недостаточно плав',
-                                     description='Вы не можете просматривать эту страницу')
+            return pages.templates.permission_denied()
         if 'submit_add' in bottle.request.forms:
             return self.post_submit_add()
         if 'submit_edit' in bottle.request.forms:
@@ -69,8 +68,7 @@ class Games(pages.Page):
             if pages.auth_dispatcher.getuserid() != game['created_by'] and \
                             pages.auth_dispatcher.getuserid() != game['responsible_user_id'] and \
                     not pages.auth_dispatcher.admin():
-                return pages.PageBuilder('text', message='Недостаточно прав',
-                                         description='Вы не можете просматривать эту страницу')
+                return pages.templates.permission_denied()
             _sport_types = sport_types.get(0, dbconnection=db)
             _game_types = game_types.get(0, dbconnection=db)
             _cities = cities.get(0, dbconnection=db)
@@ -129,22 +127,19 @@ class Games(pages.Page):
     def get(self):
         if 'delete' in bottle.request.query:
             if not pages.auth_dispatcher.organizer():
-                return pages.PageBuilder('text', message='Недостаточно плав',
-                                         description='Вы не можете просматривать эту страницу')
+                return pages.templates.permission_denied()
             games.delete(bottle.request.query.get('delete'))
             return bottle.redirect('/games')
         if 'add' in bottle.request.query:
             if pages.auth_dispatcher.organizer():
                 return self.get_add()
             else:
-                return pages.PageBuilder('text', message='Недостаточно плав',
-                                         description='Вы не можете просматривать эту страницу')
+                return pages.templates.permission_denied()
         if 'edit' in bottle.request.query:
             if pages.auth_dispatcher.responsible():
                 return self.get_edit()
             else:
-                return pages.PageBuilder('text', message='Недостаточно плав',
-                                         description='Вы не можете просматривать эту страницу')
+                return pages.templates.permission_denied()
         if 'game_id' in bottle.request.query:
             return self.get_game_id()
         if 'page' in bottle.request.query:
