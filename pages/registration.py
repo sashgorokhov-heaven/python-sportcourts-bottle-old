@@ -58,6 +58,13 @@ class Registration(pages.Page):
     def post(self):
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
 
+        if params['bdate'] == '0000-00-00':
+            with modules.dbutils.dbopen() as db:
+                cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
+            return pages.PageBuilder('registration', error='Ошибка',
+                                     error_description='Неверно указана дата рождения',
+                                     cities=cities, **params)
+
         params['regdate'] = str(datetime.date.today())
         params['lasttime'] = str(datetime.datetime.now())
         params.pop('confirm_passwd')
