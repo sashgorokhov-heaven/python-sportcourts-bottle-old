@@ -115,7 +115,7 @@ class _PageController:
                 page_class = self._search_module(module)
                 if page_class and page_class.__name__ not in self._executors:
                     self.add_page(page_class)
-            except ImportError as e:
+            except Exception as e:
                 modules.logging.error_log(e, 'Import error of <{}>'.format(module_name))
 
 
