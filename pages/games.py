@@ -7,7 +7,7 @@ import modules.dbutils
 from models import sport_types, game_types, cities, courts, games, notifications
 
 
-GAMES_PER_PAGE = 20
+GAMES_PER_PAGE = 4
 
 
 class Games(pages.Page):
@@ -105,7 +105,7 @@ class Games(pages.Page):
     def get_page(self, page_n):
         with modules.dbutils.dbopen() as db:
             count = int(db.execute("SELECT COUNT(game_id) FROM games")[0][0])
-            total_pages = count // GAMES_PER_PAGE + 1
+            total_pages = count // GAMES_PER_PAGE
             if page_n > total_pages:
                 raise bottle.HTTPError(404)
             allgames = games.get_recent(count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), detalized=True,
