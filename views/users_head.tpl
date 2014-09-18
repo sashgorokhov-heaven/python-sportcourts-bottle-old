@@ -9,7 +9,7 @@
         data: {
           addfriend: user_id
         },
-        type: "POST",
+        type: "GET",
         dataType: "text",
         async: true,
         beforeSend: function() {
@@ -29,7 +29,7 @@
         data: {
           removefriend: user_id
         },
-        type: "POST",
+        type: "GET",
         dataType: "text",
         async: true,
         beforeSend: function() {
