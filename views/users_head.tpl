@@ -1,10 +1,61 @@
 <script>
+  $(document).on('click','.friendsbutton',function(){
+    arr = $(this).attr("id").split('-');
+    var user_id = arr[1],
+      action = arr[0];
+    if (action == 'addfriend'){
+      $.ajax({
+        url: '/profile',
+        data: {
+          addfriend: user_id
+        },
+        type: "POST",
+        dataType: "text",
+        async: true,
+        beforeSend: function() {
+          inProgress = true;
+        },
+        success: function (responseData, textStatus) {
+          alert(responseData+textStatus);
+        },
+        error: function (response, status, errorThrown) {
+          alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+          inProgress = false;
+        }
+      });
+    } else if (action == 'removefriend'){
+      $.ajax({
+        url: '/profile',
+        data: {
+          removefriend: user_id
+        },
+        type: "POST",
+        dataType: "text",
+        async: true,
+        beforeSend: function() {
+          inProgress = true;
+        },
+        success: function (responseData, textStatus) {
+          alert(responseData+textStatus);
+        },
+        error: function (response, status, errorThrown) {
+          alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+          inProgress = false;
+        }
+      });
+    };
+      
+  });
+
+
+
   $(document).ready(function(){
 
     var inProgress = false;
     var step = 8;
     var startFromAll = step;
     var startFromFriends = step;
+
 
     $(window).scroll(function() {
 

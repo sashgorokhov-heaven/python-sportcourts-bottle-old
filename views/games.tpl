@@ -14,17 +14,35 @@
             <div class="panel-body">
               <p class="lead">Наши игры <!-- <a href="/courts?all"><small>на карте</small></a> --></p>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Поиск по спорту"></input>
+                <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
+                data-bv-notempty-message="Укажите вид спорта">
+                  <option value="">Вид спорта</option>
+                  % for sport_type in sports:
+                      <option value="{{sport_type['sport_id']}}" {{'selected' if sport_type['sport_id']==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
+                  % end
+                </select>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <select id="city" name="city_id" class="form-control">
                   <option value="0">Город</option>
                   <option value="1">Екатеринбург</option>
                 </select>
-              </div>
+              </div> -->
               <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block" disabled="disabled">Найти</button>
+                <button type="button" class="btn btn-primary btn-block gamessearch">Найти</button>
               </div>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <p class="lead">Поделиться</p>
+              <script type="text/javascript" src="//yandex.st/share/share.js"
+              charset="utf-8"></script>
+              <div class="yashare-auto-init" data-yashareL10n="ru"
+               data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"
+
+              ></div> 
             </div>
           </div>
         </div>
@@ -34,16 +52,13 @@
             % if loggedin and len([game for game in games if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}])>0:
             <li><a href="#my" data-toggle="tab">Мои игры</a></li>
             % end
-            % for sport_type in sports:
-                <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
-            % end
             % if userinfo['organizer']:
             <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
             % end
           </ul>
 
           <div class="tab-content">
-            <div class="tab-pane active" id="all">
+            <div class="tab-pane active games_cards_all" id="all">
               <div class="panel panel-deafult">
                 <br>
                 % for game in games:
@@ -71,19 +86,6 @@
             </div>
             % end
 
-            % for sport_type in sports:
-                <div class="tab-pane" id="{{sport_type['sport_id']}}">
-                  <div class="panel panel-deafult">
-                    <br>
-                    % for game in games:
-                    	% if game['sport_type']['sport_id']==sport_type['sport_id']:
-                    	    % include("game", game=game)
-                    	% end
-                    % end
-                  </div>
-                </div>
-            % end
-
           </div>
 
         </div>
@@ -105,10 +107,12 @@
             },
             async: true,
             success: function (responseData, textStatus) {
-              // alert(responseData + ' Status: ' + textStatus);
               alert('Теперь вас нет в списках на игру');
-              // document.location.href = '/games#game' + game_id;
-              window.location.reload();
+              $('.ul-'+game_id+'-'+user_id+'-u').html('<li id="'+game_id+'-'+user_id+'"><a style="cursor:pointer;">Пойду</a></li>');
+              $('.button-'+game_id+'-'+user_id+'-u').html('Идет набор');
+              $('.button-'+game_id+'-'+user_id+'-u').switchClass( "btn-success", "btn-primary", 1000, "easeInOutQuad" );
+              $('.button-'+game_id+'-'+user_id+'-u').switchClass( 'button-'+game_id+'-'+user_id+'-u' , 'button-'+game_id+'-'+user_id);
+              $('.ul-'+game_id+'-'+user_id+'-u').switchClass( 'ul-'+game_id+'-'+user_id+'-u' , 'ul-'+game_id+'-'+user_id);
             },
             error: function (response, status, errorThrown) {
               alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
@@ -127,7 +131,11 @@
               // alert(responseData + ' Status: ' + textStatus);
               alert('Вы успешно записаны на игру');
               // document.location.href = '/games#game' + game_id;
-              window.location.reload();
+              $('.ul-'+game_id+'-'+user_id).html('<li id="'+game_id+'-'+user_id+'-u"><a style="cursor:pointer;">Не пойду</a></li>');
+              $('.button-'+game_id+'-'+user_id).html('Я записан{{'а' if userinfo['usersex']=='female' else ''}}');
+              $('.button-'+game_id+'-'+user_id).switchClass( "btn-primary", "btn-success", 1000, "easeInOutQuad" );
+              $('.button-'+game_id+'-'+user_id).switchClass( 'button-'+game_id+'-'+user_id , 'button-'+game_id+'-'+user_id+'-u');
+              $('.ul-'+game_id+'-'+user_id).switchClass( 'ul-'+game_id+'-'+user_id , 'ul-'+game_id+'-'+user_id+'-u');
             },
             error: function (response, status, errorThrown) {
               alert('Все плохо' + response + status + errorThrown);

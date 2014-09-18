@@ -120,11 +120,18 @@
         <div class="form-group">
           <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
           <div class="col-sm-10">
-            <input type="date" class="form-control" name="bdate" value="{{bdate}}"
+            <input id="bdate" type="date" class="form-control bdatemask" name="bdate" value="{{bdate}}"
             data-bv-notempty="true"
             data-bv-notempty-message="Укажите дату рождения" />
           </div>
         </div>
+
+        <script type="text/javascript">
+          $('.bdatemask').inputmask({
+            mask: '99.99.9999'
+          });
+          $('#bdate').tooltip();
+        </script>
         
         <div class="form-group">
           <label for="height" class="col-sm-2 control-label">Рост</label>
@@ -199,7 +206,11 @@
             data-bv-notempty-message="Пароль обязателен и не может быть пустым"
             data-bv-identical="true"
             data-bv-identical-field="confirm_passwd"
-            data-bv-identical-message="Пароль и его подтверждение различаются">
+            data-bv-identical-message="Пароль и его подтверждение различаются"
+            data-bv-stringlength="true"
+            data-bv-stringlength-min="6"
+            data-bv-stringlength-max="30"
+            data-bv-stringlength-message="Пароль должен иметь длину от 6 до 30 символов">
             <span id="valid"></span>
           </div>
         </div>
