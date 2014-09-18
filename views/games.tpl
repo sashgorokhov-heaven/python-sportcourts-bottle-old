@@ -46,7 +46,7 @@
           </ul>
 
           <div class="tab-content">
-            <div class="tab-pane active" id="all">
+            <div class="tab-pane active games_cards_all" id="all">
               <div class="panel panel-deafult">
                 <br>
                 % for game in games:
