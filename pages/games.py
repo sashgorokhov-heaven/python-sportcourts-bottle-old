@@ -113,7 +113,10 @@ class Games(pages.Page):
             sports = sport_types.get(0, dbconnection=db)
 
             if not count:
-                return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type)
+                if not bottle.request.is_ajax():
+                    return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type)
+                else:
+                    return {"stop": True, "games": list()}
 
             allgames = games.get_recent(sport_type=sport_type,
                                         count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), detalized=True,
@@ -128,10 +131,20 @@ class Games(pages.Page):
                 game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
                                            beautifultime(game['datetime']),
                                            beautifulday(game['datetime']))
-            page = pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type)
-            if page_n < total_pages:
-                page.add_param("nextpage", page_n + 1)
-            return page
+            if not bottle.request.is_ajax:
+                page = pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type)
+                if page_n < total_pages:
+                    page.add_param("nextpage", page_n + 1)
+                return page
+            else:
+                data = {"stop": page_n >= total_pages, "games": list()}
+                page = pages.PageBuilder("game", sports=sports, bysport=sport_type)
+                for game in allgames:
+                    page.add_param("game", game)
+                    game_tpl = page.template()
+                    data["games"].append(game_tpl)
+                return data
+
 
     def get(self):
         if 'delete' in bottle.request.query:

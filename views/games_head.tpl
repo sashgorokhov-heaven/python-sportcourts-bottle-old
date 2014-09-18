@@ -22,52 +22,42 @@
   $(document).ready(function(){
 
     var inProgress = false;
-    var step = 4;
-    var startFromAll = step;
+    var page = 2;
+    var stop = false;
 
     $(window).scroll(function() {
 
-      if($(window).scrollTop() + $(window).height() >= $(document).height() - 1 && !inProgress) {
-
-        if($('#all').hasClass('active') == true)
-        {
-          var section = 'all';
-          var startFrom = startFromAll;
-        }
-        else
-        {
-          return false;
-        }
-
-        alert('sdgd');
+      if($(window).scrollTop() + $(window).height() >= $(document).height() - 1 && !inProgress && !stop && $('#all').hasClass('active')) {
 
         $.ajax({
           url: '/games',
           data: {
-            startfrom: startFrom,
-            section: section
+            page: page {{', sport_id: '+str(bysport) if bysport else ''}}
           },
-          type: "POST",
-          dataType: "text",
+          type: "GET",
+          dataType: "json",
           async: true,
           beforeSend: function() {
             inProgress = true;
           },
-          success: function (responseData, textStatus) {
-            data = jQuery.parseJSON(responseData);
-            if (data.length > 0) {
-              $.each(data, function(index, data){
-                if(section == 'all'){
-                  $('.games_cards_all').append(data);
-                }
+          success: function (data, textStatus) {
+           if (data["stop"]) {
+             stop = true;
+           }
+            if (data["games"].length > 0) {
+              $.each(data["games"], function(index, data){
+                //if(section == 'all'){
+                  $('.games_cards_all').append("<br>"+data);
+                //}
                 // else if(section == 'friends'){
                 //   $('.user_cards_friends').append(data+'<hr>');
                 // }
               });
               inProgress = false;
-              if(section == 'all'){
-                startFromAll += step;
-              }
+              page++;
+              //if(section == 'all'){
+              //  startFromAll += step;
+              //}
               // else if(section == 'friends'){
               //   startFromFriends += step;
               // }
