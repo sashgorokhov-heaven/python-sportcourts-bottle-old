@@ -37,9 +37,6 @@ class Users(pages.Page):
 
     def post(self):
         if bottle.request.is_ajax:
-            if 'section' not in bottle.request.forms or 'startfrom' not in bottle.request.forms:
-                print([i for i in bottle.request.forms])
-                return '["World!<hr>", "Hello!<hr>"]'
             section = bottle.request.forms.get("section")
             startfrom = int(bottle.request.forms.get("startfrom"))
             data = list()
