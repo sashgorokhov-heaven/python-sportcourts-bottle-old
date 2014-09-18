@@ -28,7 +28,7 @@
               </div>
               <div class="col-md-9">
             % end
-                <div class="panel panel-default {{'panel-success' if userinfo['user_id']==game['created_by'] else 'panel-default'}} "><a name="{{game['game_id']}}"></a>
+                <div class="panel panel-default {{'panel-success' if userinfo['user_id']==game['created_by']['user_id'] else 'panel-default'}} "><a name="{{game['game_id']}}"></a>
                   <div class="panel-heading">
                     <div class="panel_head">
                       <div style="float:left; max-width:45%;">
@@ -36,16 +36,16 @@
                       </div>
                       <div class="organizer" style="float:right; max-width:45%;">
                         <p class="text-right">
-                          % if userinfo['user_id']==game['created_by'] or userinfo['user_id']==game['responsible_user_id'] or userinfo['admin']:
+                          % if userinfo['user_id']==game['created_by']['user_id'] or userinfo['user_id']==game['responsible_user']['user_id'] or userinfo['admin']:
                           <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
                           % end
-                          % if userinfo['user_id']!=game['created_by']:
+                          % if userinfo['user_id']!=game['created_by']['user_id']:
                           &nbsp;&nbsp;
-                          <a href="/profile?user_id={{game['created_by']}}" target="_blank">
-                            {{game['created_by_name']}}
+                          <a href="/profile?user_id={{game['created_by']['user_id']}}" target="_blank">
+                            {{game['created_by']['first_name']+' '+game['created_by']['last_name']}}
                           </a>
                           &nbsp;
-                          <img src="/images/avatars/{{str(game['created_by'])}}" class="round" width="30">
+                          <img src="/images/avatars/{{str(game['created_by']['user_id'])}}" class="round" width="30">
                           % end
                         </p>
                       </div>
@@ -73,13 +73,13 @@
                         % if standalone:
                           <p>
                             Ответственный:
-                            <a href="/profile?user_id={{game['responsible_user_id']}}" target="_blank">
-                              {{game['responsible_user_name']}}
+                            <a href="/profile?user_id={{game['responsible_user']['user_id']}}" target="_blank">
+                              {{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}
                             </a>
                             &nbsp;
-                            <img src="/images/avatars/{{str(game['responsible_user_id'])}}" class="round" width="30" >
+                            <img src="/images/avatars/{{str(game['responsible_user']['user_id'])}}" class="round" width="30" >
                           </p>
-                          <p>{{game['responsible_user_phone']}}</p>
+                          <p>{{game['responsible_user']['phone']}}</p>
                         % end
                         <div class="progress">
                           <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
