@@ -17,6 +17,15 @@
                 <input type="text" class="form-control" placeholder="Поиск по спорту"></input>
               </div>
               <div class="form-group">
+                <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
+                data-bv-notempty-message="Укажите вид спорта">
+                  <option value="">--</option>
+                  % for sport_type in sports:
+                      <option value="{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
+                  % end
+                </select>
+              </div>
+              <div class="form-group">
                 <select id="city" name="city_id" class="form-control">
                   <option value="0">Город</option>
                   <option value="1">Екатеринбург</option>
