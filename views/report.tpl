@@ -116,15 +116,25 @@
               % if not showreport:
               <div class="row">
                 <div class="col-md-12">
+                  <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
+                </div>
+                <div class="col-md-12">
                   <p class="text-right amount"></p>
+                  <input type="hidden" class="amount_input" name="amount" value="">
                 </div>
                 <div class="col-md-12">
                   <p class="text-right dolg_amount"></p>
                 </div>
-                <div class="col-md-6">
-                  <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
-                </div>
-                <div class="col-md-6 text-right">
+                <div class="col-md-12 text-right">
+                  <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-success btn-file"><span class="fileinput-new">Прикрепить списки</span><span class="fileinput-exists">Изменить</span><input type="file" name="..."></span>
+                    <span class="fileinput-filename"></span>
+                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+                  </div>
+                  <script type="text/javascript">
+                      $('.fileinput').fileinput()
+                  </script>
+                  &nbsp;&nbsp;&nbsp;
                   <input class="btn btn-success" type="submit" value="Отправить отчет">
                 </div>
               </div>

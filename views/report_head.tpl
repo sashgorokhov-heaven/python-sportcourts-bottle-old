@@ -54,6 +54,7 @@
 
           $('.amount').html('<p class="lead">Сумма к расчету: ' + summ + ' руб.</p>');
           $('.dolg_amount').html('<p class="lead">Клиенты должны вам: ' + summ1 + ' руб.</p>');
+          $('.amount_input').val(summ);
         });
       });
     </script>
