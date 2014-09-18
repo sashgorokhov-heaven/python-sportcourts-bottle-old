@@ -227,6 +227,14 @@ class _CompleteTemplates:
         return PageBuilder("text", message=text, description=description)
 
 
+class SimpleResponse:
+    def __int__(self, body):
+        self._body = body
+
+    def template(self):
+        return self._body
+
+
 controller = _PageController()
 auth_dispatcher = _AuthDispatcher()
 templates = _CompleteTemplates()
