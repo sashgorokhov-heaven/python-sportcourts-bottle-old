@@ -69,7 +69,7 @@
                       % if defined("nextpage") and nextpage:
                         <li class="next"><a href="/games?page={{nextpage}}{{'&sport_id='+str(bysport) if bysport else ''}}">Позже &rarr;</a></li>
                       % end
-                    </ul>--!>
+                    </ul> -->
                 % end
                 % if len(games)==0:
                   <strong>Игор нет<strong>

@@ -33,7 +33,7 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
     if 'datetime' in game:
         dbutils.strdates(game)
         game['parsed_datetime'] = (
-        beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
+            beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
 
     if 'report' in game and detalized:
         game['report'] = json.loads(game['report'])
@@ -132,6 +132,12 @@ def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slic
 
 @autodb
 def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
+    game = dbconnection.execute("SELECT * FROM games WHERE game_id={}".format(game_id))
+    if len(game) > 0:
+        game = game[0]
+    else:
+        return
+    dbconnection.execute("INSERT INTO deleted_games SELECT * FROM games WHERE game_id={}".format(game_id))
     dbconnection.execute("DELETE FROM games WHERE game_id={}".format(game_id))
 
 

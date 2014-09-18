@@ -108,7 +108,11 @@ class Games(pages.Page):
             count = int(db.execute(query)[0][0])
             total_pages = count // GAMES_PER_PAGE
             if page_n > total_pages and count > 0:
-                raise bottle.HTTPError(404)
+                if not bottle.request.is_ajax:
+                    raise bottle.HTTPError(404)
+                else:
+                    return {"stop": True, "games": list()}
+
 
             sports = sport_types.get(0, dbconnection=db)
 
@@ -150,7 +154,7 @@ class Games(pages.Page):
         if 'delete' in bottle.request.query:
             if not pages.auth_dispatcher.organizer():
                 return pages.templates.permission_denied()
-            games.delete(bottle.request.query.get('delete'))
+            games.delete(int(bottle.request.query.get('delete')))
             return bottle.redirect('/games')
         if 'add' in bottle.request.query:
             if pages.auth_dispatcher.organizer():
