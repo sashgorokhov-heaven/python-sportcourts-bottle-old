@@ -25,9 +25,9 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
         game['created_by_name'] = user['first_name'] + ' ' + user['last_name']
 
     if 'responsible_user_id' in game and detalized:
-        user = users.get(int(game['responsible_user_id']), fields=['first_name', 'last_name'],
+        user = users.get(int(game['responsible_user_id']), fields=['user_id', 'first_name', 'last_name', 'phone'],
                          dbconnection=dbconnection)
-        game['responsible_user_name'] = user['first_name'] + ' ' + user['last_name']
+        game['responsible_user'] = user
 
     if 'datetime' in game:
         dbutils.strdates(game)

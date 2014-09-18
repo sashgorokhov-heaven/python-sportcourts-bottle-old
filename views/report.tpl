@@ -17,7 +17,7 @@
             <div class="row">
               <div class="col-md-4">
                 <small>
-                  <p>Ответственный: <a href="/profile?user_id={{game['responsible_user_id']}}">{{game['responsible_user_name']}}</a></p>
+                  <p>Ответственный: <a href="/profile?user_id={{game['responsible_user']['user_id']}}">{{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}</a></p>
                   <p>Вид спорта: {{game['sport_type']['title']}}</p>
                   <p>Тип игры: {{game['game_type']['title']}}</p>
                 </small>

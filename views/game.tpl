@@ -18,7 +18,7 @@
                   </div>
                   <div class="organizer" style="float:right; max-width:45%;">
                     <p class="text-right">
-                      % if userinfo['user_id']==game['created_by'] or userinfo['user_id']==game['responsible_user_id'] or userinfo['admin']:
+                      % if userinfo['user_id']==game['created_by'] or userinfo['user_id']==game['responsible_user']['user_id'] or userinfo['admin']:
                       <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
                       % end
                       % if userinfo['user_id']!=game['created_by']:
@@ -55,11 +55,11 @@
                     % if standalone:
                       <p>
                         Ответственный:
-                        <a href="/profile?user_id={{game['responsible_user_id']}}" target="_blank">
-                          {{game['responsible_user_name']}}
+                        <a href="/profile?user_id={{game['responsible_user']['user_id']}}" target="_blank">
+                          {{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}
                         </a>
                         &nbsp;
-                        <img src="/images/avatars/{{str(game['responsible_user_id'])}}" class="round" width="30" >
+                        <img src="/images/avatars/{{str(game['responsible_user']['user_id'])}}" class="round" width="30" >
                       </p>
                     % end
                     <div class="progress">

@@ -66,7 +66,7 @@ class Games(pages.Page):
             if len(game) == 0:
                 raise bottle.HTTPError(404)
             if pages.auth_dispatcher.getuserid() != game['created_by'] and \
-                            pages.auth_dispatcher.getuserid() != game['responsible_user_id'] and \
+                            pages.auth_dispatcher.getuserid() != game['responsible_user']['user_id'] and \
                     not pages.auth_dispatcher.admin():
                 return pages.templates.permission_denied()
             _sport_types = sport_types.get(0, dbconnection=db)

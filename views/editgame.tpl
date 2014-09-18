@@ -152,10 +152,10 @@
                       <select name="responsible" class="form-control">
                         % for n, user in enumerate(game['subscribed']['users'], 1):
                           % if user['user_id']!=game['created_by']:
-                          <option value="{{user['user_id']}}" {{'selected' if game['responsible_user_id']==user['user_id'] else ''}}>{{user['first_name']}} {{user['last_name']}}</option>
+                          <option value="{{user['user_id']}}" {{'selected' if game['responsible_user']['user_id']==user['user_id'] else ''}}>{{user['first_name']}} {{user['last_name']}}</option>
                           % end
                         % end
-                        <option value="{{game['created_by']}}" {{'selected' if game['responsible_user_id']==game['created_by'] else ''}}>{{game['created_by_name']}}</option>
+                        <option value="{{game['created_by']}}" {{'selected' if game['responsible_user']['user_id']==game['created_by'] else ''}}>{{game['created_by_name']}}</option>
                       </select>
                       <span id="valid"></span>
                     </div>
