@@ -116,17 +116,25 @@ class Registration(pages.Page):
                 friends = vk.exec(None, "friends.get", user_id=vkuserid)['items']
                 if len(friends) > 0:
                     friends = map(str, friends)
-                    db.execute("SELECT user_id FROM users WHERE vkuserid IN ({})".format(','.join(friends)))
-                    for friend_id in db.last():
-                        friend_id = friend_id[0]
+                    db.execute("SELECT user_id, first_name, last_name FROM users WHERE vkuserid IN ({})".format(
+                        ','.join(friends)))
+                    for friend in db.last():
+                        friend_id = friend[0]
+                        friend_name = friend[1] + ' ' + friend[2]
                         try:
                             notifications.add(friend_id,
                                               'Ваш друг <a href="/profile?user_id={}">{}</a> зарегистрировался на сайте!'.format(
                                                   user_id, username))
+                            notifications.add(user_id,
+                                              'Ваш друг <a href="/profile?user_id={}">{}</a> уже зарегистрирован на сайте.'.format(
+                                                  friend_id, friend_name))
                         except:
                             notifications.add(friend_id,
                                               'Ваш <a href="/profile?user_id={}">друг</a> зарегистрировался на сайте!'.format(
                                                   user_id))
+                            notifications.add(user_id,
+                                              'Ваш <a href="/profile?user_id={}">друг</a> уже зарегистрирован на сайте.'.format(
+                                                  friend_id))
                         users.add_friend(user_id, friend_id, dbconnection=db)
                         users.add_friend(friend_id, user_id, dbconnection=db)
             return pages.PageBuilder('text', message='Проверьте почту',
