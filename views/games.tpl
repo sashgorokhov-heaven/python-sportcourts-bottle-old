@@ -14,25 +14,22 @@
             <div class="panel-body">
               <p class="lead">Наши игры <!-- <a href="/courts?all"><small>на карте</small></a> --></p>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Поиск по спорту"></input>
-              </div>
-              <div class="form-group">
                 <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                 data-bv-notempty-message="Укажите вид спорта">
-                  <option value="">--</option>
+                  <option value="">Вид спорта</option>
                   % for sport_type in sports:
-                      <option value="{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
+                      <option value="{{sport_type['sport_id']}}" {{'selected' if sport_type['sport_id']==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
                   % end
                 </select>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <select id="city" name="city_id" class="form-control">
                   <option value="0">Город</option>
                   <option value="1">Екатеринбург</option>
                 </select>
-              </div>
+              </div> -->
               <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block" disabled="disabled">Найти</button>
+                <button type="button" class="btn btn-primary btn-block gamessearch">Найти</button>
               </div>
             </div>
           </div>
@@ -42,9 +39,6 @@
             <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
             % if loggedin and len([game for game in games if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}])>0:
             <li><a href="#my" data-toggle="tab">Мои игры</a></li>
-            % end
-            % for sport_type in sports:
-                <li><a href="#{{sport_type['sport_id']}}" data-toggle="tab">{{sport_type['title']}}</a></li>
             % end
             % if userinfo['organizer']:
             <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
@@ -78,19 +72,6 @@
                 % end
               </div>
             </div>
-            % end
-
-            % for sport_type in sports:
-                <div class="tab-pane" id="{{sport_type['sport_id']}}">
-                  <div class="panel panel-deafult">
-                    <br>
-                    % for game in games:
-                    	% if game['sport_type']['sport_id']==sport_type['sport_id']:
-                    	    % include("game", game=game)
-                    	% end
-                    % end
-                  </div>
-                </div>
             % end
 
           </div>
