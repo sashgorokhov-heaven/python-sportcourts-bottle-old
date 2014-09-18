@@ -21,8 +21,9 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
         game['sport_type'] = sport_types.get(game['sport_type'], dbconnection=dbconnection)
 
     if 'created_by' in game and detalized:
-        user = users.get(int(game['created_by']), fields=['first_name', 'last_name'], dbconnection=dbconnection)
-        game['created_by_name'] = user['first_name'] + ' ' + user['last_name']
+        user = users.get(int(game['created_by']), fields=['user_id', 'first_name', 'last_name', 'phone'],
+                         dbconnection=dbconnection)
+        game['created_by'] = user
 
     if 'responsible_user_id' in game and detalized:
         user = users.get(int(game['responsible_user_id']), fields=['user_id', 'first_name', 'last_name', 'phone'],

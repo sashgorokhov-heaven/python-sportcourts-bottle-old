@@ -119,7 +119,7 @@
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
                       <button type="submit" name="submit_edit" class="btn btn-primary">Применить</button>
-                      % if userinfo['user_id']==game['created_by'] or userinfo['admin']:
+                      % if userinfo['user_id']==game['created_by']['user_id'] or userinfo['admin']:
                         <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
                         <div class="modal fade" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-sm">
@@ -151,11 +151,11 @@
                     <div class="col-sm-8">
                       <select name="responsible" class="form-control">
                         % for n, user in enumerate(game['subscribed']['users'], 1):
-                          % if user['user_id']!=game['created_by']:
+                          % if user['user_id']!=game['created_by']['user_id']:
                           <option value="{{user['user_id']}}" {{'selected' if game['responsible_user']['user_id']==user['user_id'] else ''}}>{{user['first_name']}} {{user['last_name']}}</option>
                           % end
                         % end
-                        <option value="{{game['created_by']}}" {{'selected' if game['responsible_user']['user_id']==game['created_by'] else ''}}>{{game['created_by_name']}}</option>
+                        <option value="{{game['created_by']['user_id']}}" {{'selected' if game['responsible_user']['user_id']==game['created_by']['user_id'] else ''}}>{{game['created_by']['first_name']+' '+game['created_by']['last_name']}}</option>
                       </select>
                       <span id="valid"></span>
                     </div>
