@@ -228,7 +228,7 @@ class _CompleteTemplates:
 
 
 class SimpleResponse:
-    def __int__(self, body):
+    def __init__(self, body):
         self._body = body
 
     def template(self):
