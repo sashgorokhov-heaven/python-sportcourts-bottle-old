@@ -1,4 +1,5 @@
 % rebase("_basicpage", title='Пользователи')
+% setdefault("myfriends", list())
     <div class="row">
       <div class="col-md-12"  style="margin-top:50px;">
         &nbsp;
@@ -33,7 +34,7 @@
             % if loggedin:
             <li>
               <a href="#panel-friends" data-toggle="tab">
-                Мои друзья <span class="badge notify">12</span>
+                Мои друзья <span class="badge notify">{{len(myfriends)}}</span>
               </a>
             </li>
             % end
@@ -42,7 +43,6 @@
             <div class="tab-pane active" id="panel-all">
               <br>
               <div class="user_cards_all" id='all'>
-              % setdefault("myfriends", list())
               % for user in allusers:
                   % include("user_row", user=user, myfriends=myfriends)
                   <hr>
