@@ -100,15 +100,24 @@ class Games(pages.Page):
                 game['is_subscribed'] = False
             return pages.PageBuilder('game', game=game, standalone=True)
 
-    def get_page(self, page_n):
+    def get_page(self, page_n:int=1, sport_type:int=0):
         with modules.dbutils.dbopen() as db:
-            count = int(db.execute("SELECT COUNT(game_id) FROM games")[0][0])
+            query = "SELECT COUNT(game_id) FROM games"
+            if sport_type:
+                query += ' WHERE sport_type={}'.format(sport_type)
+            count = int(db.execute(query)[0][0])
             total_pages = count // GAMES_PER_PAGE
-            if page_n > total_pages:
+            if page_n > total_pages and count > 0:
                 raise bottle.HTTPError(404)
-            allgames = games.get_recent(count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), detalized=True,
-                                        dbconnection=db)
+
             sports = sport_types.get(0, dbconnection=db)
+
+            if not count:
+                return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type)
+
+            allgames = games.get_recent(sport_type=sport_type,
+                                        count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), detalized=True,
+                                        dbconnection=db)
             for game in allgames:
                 if pages.auth_dispatcher.loggedin() \
                         and pages.auth_dispatcher.getuserid() in {user['user_id'] for user in
@@ -119,7 +128,7 @@ class Games(pages.Page):
                 game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
                                            beautifultime(game['datetime']),
                                            beautifulday(game['datetime']))
-            page = pages.PageBuilder('games', games=allgames, sports=sports)
+            page = pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type)
             if page_n < total_pages:
                 page.add_param("nextpage", page_n + 1)
             return page
@@ -142,7 +151,12 @@ class Games(pages.Page):
                 return pages.templates.permission_denied()
         if 'game_id' in bottle.request.query:
             return self.get_game_id()
-        if 'page' in bottle.request.query:
+        if 'sport_id' in bottle.request.query:
+            if 'page' in bottle.request.query:
+                return self.get_page(int(bottle.request.query.get('page')), int(bottle.request.query.get('sport_id')))
+            else:
+                return self.get_page(1, int(bottle.request.query.get('sport_id')))
+        if 'page' in bottle.request.query and 'sport_id' not in bottle.request.query:
             return self.get_page(int(bottle.request.query.get('page')))
         return self.get_page(1)
 

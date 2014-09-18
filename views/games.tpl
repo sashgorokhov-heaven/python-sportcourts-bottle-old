@@ -1,4 +1,5 @@
 % rebase("_basicpage", title="Игры")
+% setdefault("bysport", 0)
       <!-- <div class="jumbotron">
         <h1>Таблица игр</h1>
         <p>Здесь вы можете присоединиться к любой игре, в которой еще есть места.</p>
@@ -16,9 +17,9 @@
               <div class="form-group">
                 <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                 data-bv-notempty-message="Укажите вид спорта">
-                  <option value="">Вид спорта</option>
+                  <option value="">Все</option>
                   % for sport_type in sports:
-                      <option value="{{sport_type['sport_id']}}" {{'selected' if sport_type['sport_id']==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
+                      <option value="{{sport_type['sport_id']}}" {{'selected' if bysport==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
                   % end
                 </select>
               </div>
@@ -40,9 +41,7 @@
               <script type="text/javascript" src="//yandex.st/share/share.js"
               charset="utf-8"></script>
               <div class="yashare-auto-init" data-yashareL10n="ru"
-               data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"
-
-              ></div> 
+               data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"></div>
             </div>
           </div>
         </div>
@@ -61,15 +60,20 @@
             <div class="tab-pane active games_cards_all" id="all">
               <div class="panel panel-deafult">
                 <br>
-                % for game in games:
-                    % include("game", game=game)
+                % if len(games)>0:
+                    % for game in games:
+                        % include("game", game=game)
+                    % end
+                    <ul class="pager">
+                      <!--<li class="previous disabled"><a href="#">&larr; Раньше</a></li> -->
+                      % if defined("nextpage") and nextpage:
+                        <li class="next"><a href="/games?page={{nextpage}}{{'&sport_id='+str(bysport) if bysport else ''}}">Позже &rarr;</a></li>
+                      % end
+                    </ul>
                 % end
-                <ul class="pager">
-                  <!--<li class="previous disabled"><a href="#">&larr; Раньше</a></li> -->
-                  % if defined("nextpage") and nextpage:
-                    <li class="next"><a href="/games?page={{nextpage}}">Позже &rarr;</a></li>
-                  % end
-                </ul>
+                % if len(games)==0:
+                  <strong>Игор нет<strong>
+                % end
               </div>
             </div>
 
