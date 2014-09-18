@@ -10,7 +10,12 @@
   $(document).on('click','.gamessearch',function(){
 
     var value = $('#sporttype').val();
-    location.href='/games?sport_id='+value;
+    if (value == ''){
+      location.href='/games';
+    }
+    else{
+      location.href='/games?sport_id='+value;
+    }
 
   });
 </script>
