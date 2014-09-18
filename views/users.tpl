@@ -5,7 +5,7 @@
       </div>
     </div>
     <div class="row clearfix">
-      <!--<div class="col-md-3 column">
+      <!-- <div class="col-md-3 column">
         <div class="panel panel-default">
           <div class="panel-body">
             <p class="lead">Наши люди</p>
@@ -23,7 +23,7 @@
             </div>
           </div>
         </div>
-      </div>--!>
+      </div> -->
       <div class="col-md-9 column">
         <div class="tabbable" id="tabs-612446">
           <ul class="nav nav-tabs">
@@ -32,18 +32,11 @@
             </li>
             % if loggedin:
             <li>
-              <a href="#panel-friends" data-toggle="tab">Мои друзья</a>
+              <a href="#panel-friends" data-toggle="tab">
+                Мои друзья <span class="badge notify">12</span>
+              </a>
             </li>
             % end
-            <!-- <li>
-              <a href="#panel-judges" data-toggle="tab">Судьи</a>
-            </li>
-            <li>
-              <a href="#panel-organizators" data-toggle="tab">Организаторы</a>
-            </li>
-            <li>
-              <a href="#panel-responsibles" data-toggle="tab">Ответсвенные</a>
-            </li>  -->                  
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="panel-all">
