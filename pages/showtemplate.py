@@ -5,7 +5,7 @@ import pages
 
 class ShowTemplate(pages.Page):
     def get(self):
-        if 'name' not in bottle.request.query or not pages.auth_dispatcher.organizer():
+        if 'name' not in bottle.request.query or not pages.auth_dispatcher.admin():
             raise bottle.HTTPError(404)
         return pages.PageBuilder(bottle.request.query.get("name"))
 
