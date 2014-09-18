@@ -102,17 +102,18 @@ class Games(pages.Page):
 
     def get_page(self, page_n:int=1, sport_type:int=0):
         with modules.dbutils.dbopen() as db:
-            query = "SELECT COUNT(game_id) FROM games"
-            if sport_type:
-                query += ' WHERE sport_type={}'.format(sport_type)
-            count = int(db.execute(query)[0][0])
-            total_pages = count // GAMES_PER_PAGE
-            if page_n > total_pages and count > 0:
+            count = len(games.get_recent(sport_type=sport_type,
+                                         count=slice(0, 99999),
+                                         detalized=False,
+                                         fields=['game_id'],
+                                         dbconnection=db))
+            total_pages = count // GAMES_PER_PAGE + (1 if 0 <= count <= GAMES_PER_PAGE else 0)
+
+            if page_n > total_pages:
                 if not bottle.request.is_ajax:
                     raise bottle.HTTPError(404)
                 else:
                     return {"stop": True, "games": list()}
-
 
             sports = sport_types.get(0, dbconnection=db)
 
