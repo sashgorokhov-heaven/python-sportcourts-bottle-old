@@ -4,7 +4,6 @@
         <meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/games?game_id={{game['game_id']}}>
         <meta property="og:image" content="/images/og/games.jpg" />
         <!-- перелопатить --!>
-<<<<<<< HEAD
         <meta property="og:description" content="{{game['parsed_datetime'][0][1]+' '+game['parsed_datetime'][0][0]+', '+game['parsed_datetime'][2]+', '+game['parsed_datetime'][1]}}{{'\n'+game['game_type']['title']+'\n'+str(game['cost'])+' рублей за '+str(game['duration'])+' мин'}}"/>
 
         <!-- Put this script tag to the <head> of your page -->
@@ -12,6 +11,4 @@
         <script type="text/javascript">
           VK.init({apiId: 4436558, onlyWidgets: true});
         </script>-->
-=======
         <meta property="og:description" content="{{game['parsed_datetime'][0][1]+' '+game['parsed_datetime'][0][0]+', '+game['parsed_datetime'][2]+', '+game['parsed_datetime'][1]}}{{'\n'+game['game_type']['title']+'\n'+str(game['cost'])+' рублей за '+str(game['duration'])+' мин'}}"/>
->>>>>>> FETCH_HEAD
