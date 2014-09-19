@@ -146,6 +146,8 @@
                             <a href="#" data-toggle="modal" data-target="#loginModal"><button type="button" class="btn btn-primary btn-xs">Идет набор</button></a>
                           % end
                         % end
+                          <br>
+                          <br>
                         </div>
                       </div>
                     </div>
