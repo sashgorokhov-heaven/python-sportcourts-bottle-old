@@ -144,12 +144,6 @@
                             <a href="#" data-toggle="modal" data-target="#loginModal"><button type="button" class="btn btn-primary btn-xs">Идет набор</button></a>
                           % end
                         % end
-                        <!-- Put this div tag to the place, where the Like block will be -->
-                        <div id="vk_like_{{game["game_id"]}}"></div>
-                            <script type="text/javascript">
-                                VK.Widgets.Like("vk_like_{{game["game_id"]}}", {type: "mini", height: 18, pageUrl: "http://sportcourts.ru/games?game_id={{game["game_id"]}}"});
-                            </script>
-                        </div>
                       </div>
                     </div>
                   </div>
