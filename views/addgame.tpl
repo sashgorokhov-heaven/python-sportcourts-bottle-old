@@ -109,6 +109,14 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label for="game_add_count" class="col-sm-2 control-label">Ответственный</label>
+                  <div class="col-sm-10">
+                    <select name="responsible" class="form-control">
+                      <option value="id" >Имя Фамилия</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
                     <button type="submit" name="submit_add" class="btn btn-primary">Создать</button>
                   </div>
