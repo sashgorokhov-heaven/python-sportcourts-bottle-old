@@ -3,7 +3,7 @@ import json
 import bottle
 from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
-from models import games
+from models import games, images
 
 class Report(pages.Page):
     def get(self):
@@ -20,7 +20,7 @@ class Report(pages.Page):
         return pages.PageBuilder("report", game=game, showreport=game['report']['reported'])
 
     def post(self):
-        if not pages.auth_dispatcher.loggedin() or not pages.auth_dispatcher.responsible():
+        if not pages.auth_dispatcher.organizer():
             return pages.templates.permission_denied()
         users = {int(user_id.split('=')[-1]): {"status": bottle.request.forms.get(user_id)} for user_id in
                  filter(lambda x: x.startswith("status"), bottle.request.forms)}
@@ -40,6 +40,9 @@ class Report(pages.Page):
         game_id = int(bottle.request.forms.get('game_id'))
         jsondumped = json.dumps(report)
         games.update(game_id, report=jsondumped)
+        print("photo" in bottle.request.files, "photo" in bottle.request.forms)
+        if "photo" in bottle.request.files:
+            images.save_report(game_id, bottle.request.files.get("photo"))
         raise bottle.redirect('/report?game_id={}'.format(game_id))
 
     get.route = '/report'

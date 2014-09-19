@@ -21,6 +21,11 @@ class Images(pages.Page):
     def get_og_image(self, name):
         return bottle.static_file(name, '/bsp/data/images/og/')
 
+    def get_report_image(self, game_id):
+        # if pages.auth_dispatcher.responsible() or pages.auth_dispatcher.organizer():
+        return bottle.static_file(game_id + '.jpg', '/bsp/data/images/reports/')
+        #raise bottle.HTTPError(404)
+
     def get(self, what, name):
         if what == 'courts':
             return self.get_court_image(name)
@@ -30,6 +35,8 @@ class Images(pages.Page):
             return self.get_avatar_image(name)
         if what == 'og':
             return self.get_og_image(name)
+        if what == 'reports':
+            return self.get_report_image(name)
         raise bottle.HTTPError(404)
 
 

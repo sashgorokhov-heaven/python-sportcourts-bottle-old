@@ -50,3 +50,10 @@ def save_court_photo(court_id:int, bottlefile):
     dirname = '/bsp/data/images/courts/'
     fullname = os.path.join(dirname, filename)
     _save_image(fullname, bottlefile)
+
+
+def save_report(game_id:int, bottlefile):
+    filename = str(game_id) + '.jpg'
+    dirname = '/bsp/data/images/reports/'
+    fullname = os.path.join(dirname, filename)
+    _save_image(fullname, bottlefile)
