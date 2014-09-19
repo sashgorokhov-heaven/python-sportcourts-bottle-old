@@ -3,6 +3,8 @@
             %   rebase("_basicpage", title=game['description'])
             % end
 
+            % setdefault("tab_name", "none")
+
             % if standalone:
             <div class="row">
               <div class="col-md-12"  style="margin-top:50px;">
@@ -92,10 +94,10 @@
                           <div class="panel panel-default">
                             <div class="panel-heading" style="text-align: center">
                               <h5 class="panel-title" style="font-size:1em;">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{game['game_id']}}">Список участников <span class="caret"></span> 
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{game['game_id']}}-{{tab_name}}">Список участников <span class="caret"></span>
                               </h5>
                             </div>
-                            <div id="collapse-{{game['game_id']}}" class="panel-collapse collapse">
+                            <div id="collapse-{{game['game_id']}}-{{tab_name}}" class="panel-collapse collapse">
                               <div class="panel-body" style="padding-bottom:5px;">
                                 % for n, user in enumerate(game['subscribed']['users'], 1):
                                 <p><a target="_blank" href="/profile?user_id={{user['user_id']}}">{{'{}. {} {}'.format(n, user['first_name'], user['last_name'])}}</a></p>

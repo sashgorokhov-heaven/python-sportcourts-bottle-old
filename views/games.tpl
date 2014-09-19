@@ -62,7 +62,7 @@
                 <br>
                 % if len(games)>0:
                     % for game in games:
-                        % include("game", game=game)
+                        % include("game", game=game, tab_name="all")
                     % end
                     <!--<ul class="pager">
                       <li class="previous disabled"><a href="#">&larr; Раньше</a></li>
@@ -83,7 +83,7 @@
                 <br>
                 % for game in games:
                     % if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}:
-                        % include("game", game=game)
+                        % include("game", game=game, tab_name="my")
                     % end
                 % end
               </div>
