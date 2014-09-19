@@ -20,7 +20,7 @@
                     <script type="text/javascript" src="//yandex.st/share/share.js"
                     charset="utf-8"></script>
                     <div class="yashare-auto-init" data-yashareL10n="ru"
-                     data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"
+                     data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,gplus" data-yashareTheme="counter"
 
                     ></div> 
                   </div>
@@ -145,11 +145,11 @@
                           % end
                         % end
                         <!-- Put this div tag to the place, where the Like block will be -->
-                        <div id="vk_like_{{game["game_id"]}}"></div>
+                        <!-- <div id="vk_like_{{game["game_id"]}}"></div>
                             <script type="text/javascript">
                                 VK.Widgets.Like("vk_like_{{game["game_id"]}}", {type: "mini", height: 18});
                             </script>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
