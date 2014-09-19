@@ -1,3 +1,4 @@
+import datetime
 import bottle
 
 import importlib
@@ -212,6 +213,7 @@ class PageBuilder:
         self._kwargs = kwargs
         auth_dispatcher.set_user(self)
         self.add_param('serverinfo', modules.config['server'])
+        self.add_param('current', datetime.datetime.now())
 
     def add_param(self, name:str, value):
         self._kwargs[name] = value
