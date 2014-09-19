@@ -75,7 +75,7 @@
                   <label for="inputBirght" class="col-sm-2 control-label">Дата</label>
                   <div class="col-sm-10">
                     <input type="date" class="form-control" name="date"
-                    data-bv-notempty="true"
+                    data-bv-notempty="true" value="{{str(current.date())}}"
                     data-bv-notempty-message="Укажите дату проведения" />
                   </div>
                 </div>
@@ -83,7 +83,7 @@
                   <label for="inputBirght" class="col-sm-2 control-label">Начало</label>
                   <div class="col-sm-4">
                     <input type="time" class="form-control" name="time"
-                    data-bv-notempty="true"
+                    data-bv-notempty="true" value="{{str(current.time()).split('.')[0]}}"
                     data-bv-notempty-message="Укажите время начала" />
                   </div>
                 </div>
