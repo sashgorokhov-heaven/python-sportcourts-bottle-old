@@ -17,7 +17,7 @@
               <div class="form-group">
                 <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                 data-bv-notempty-message="Укажите вид спорта">
-                  <option value="">Все</option>
+                  <option value="0">Все</option>
                   % for sport_type in sports:
                       <option value="{{sport_type['sport_id']}}" {{'selected' if bysport==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
                   % end
