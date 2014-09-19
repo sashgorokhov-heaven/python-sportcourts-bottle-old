@@ -122,12 +122,6 @@
             },
             async: true,
             success: function (responseData, textStatus) {
-              alert('Теперь вас нет в списках на игру');
-              // $('.ul-'+game_id+'-'+user_id+'-u').html('<li id="'+game_id+'-'+user_id+'"><a style="cursor:pointer;">Пойду</a></li>');
-              // $('.button-'+game_id+'-'+user_id+'-u').html('Идет набор');
-              // $('.button-'+game_id+'-'+user_id+'-u').switchClass( "btn-success", "btn-primary", 1000, "easeInOutQuad" );
-              // $('.button-'+game_id+'-'+user_id+'-u').switchClass( 'button-'+game_id+'-'+user_id+'-u' , 'button-'+game_id+'-'+user_id);
-              // $('.ul-'+game_id+'-'+user_id+'-u').switchClass( 'ul-'+game_id+'-'+user_id+'-u' , 'ul-'+game_id+'-'+user_id);
               $('#gamepane-'+game_id).html(responseData);
             },
             error: function (response, status, errorThrown) {
@@ -146,14 +140,6 @@
             },
             async: true,
             success: function (responseData, textStatus) {
-              alert(responseData + ' Status: ' + textStatus);
-              //alert('Вы успешно записаны на игру');
-              // document.location.href = '/games#game' + game_id;
-              // $('.ul-'+game_id+'-'+user_id).html('<li id="'+game_id+'-'+user_id+'-u"><a style="cursor:pointer;">Не пойду</a></li>');
-              // $('.button-'+game_id+'-'+user_id).html('Я записан{{'а' if userinfo['usersex']=='female' else ''}}');
-              // $('.button-'+game_id+'-'+user_id).switchClass( "btn-primary", "btn-success", 1000, "easeInOutQuad" );
-              // $('.button-'+game_id+'-'+user_id).switchClass( 'button-'+game_id+'-'+user_id , 'button-'+game_id+'-'+user_id+'-u');
-              // $('.ul-'+game_id+'-'+user_id).switchClass( 'ul-'+game_id+'-'+user_id , 'ul-'+game_id+'-'+user_id+'-u');
               $('#gamepane-'+game_id).html(responseData);
             },
             error: function (response, status, errorThrown) {
