@@ -48,7 +48,7 @@
             if (data["games"].length > 0) {
               $.each(data["games"], function(index, data){
                 //if(section == 'all'){
-                  $('.games_cards_all').append("<br>"+data);
+                  $('.games_cards_all').append(data);
                 //}
                 // else if(section == 'friends'){
                 //   $('.user_cards_friends').append(data+'<hr>');
