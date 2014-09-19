@@ -165,7 +165,7 @@ class Games(pages.Page):
             else:
                 return pages.templates.permission_denied()
         if 'edit' in bottle.request.query:
-            if pages.auth_dispatcher.responsible():
+            if pages.auth_dispatcher.loggedin():
                 return self.get_edit()
             else:
                 return pages.templates.permission_denied()
