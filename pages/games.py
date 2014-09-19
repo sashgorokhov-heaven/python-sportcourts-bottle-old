@@ -11,6 +11,24 @@ GAMES_PER_PAGE = 4
 
 
 class Games(pages.Page):
+    def assigned_responsible(self, game_id:int, user_id:int, db):
+        if user_id == pages.auth_dispatcher.getuserid():
+            return
+        game = games.get_by_id(game_id, fields=['game_id', 'description', 'created_by'], dbconnection=db)
+        created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
+        notification = 'Вас назначили ответственным на игру "{}"<br>Свяжитесь с "{}"!'
+        notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
+        notifications.add(user_id, notification, 2, dbconnection=db)
+
+    def unassigned_responsible(self, game_id:int, user_id:int, db):
+        if user_id == pages.auth_dispatcher.getuserid():
+            return
+        game = games.get_by_id(game_id, fields=['game_id', 'description', 'created_by'], dbconnection=db)
+        created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
+        notification = 'Вы больше не являетесь ответсвенным за игру "{}".'
+        notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
+        notifications.add(user_id, notification, 2, dbconnection=db)
+
     def post_submit_add(self):
         with modules.dbutils.dbopen() as db:
             params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
@@ -28,26 +46,30 @@ class Games(pages.Page):
                                          description='В это время уже идет другая <a href="/games?game_id={}">игра</a>'.format(
                                              intersection))
             game_id = games.add(dbconnection=db, **params)
+            self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
             return bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post_submit_edit(self):
-        params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
-        params.pop('submit_edit')
-        params['datetime'] = params['date'] + ' ' + params['time'] + ':00'
-        params.pop('date')
-        params.pop('time')
-        game_id = int(params['game_id'])
-        params.pop('game_id')
-        games.update(game_id, **params)
-        game = games.get_by_id(game_id, detalized=True, fields=['subscribed', 'description'])
-        for user in game['subscribed']['users']:
-            notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                '<a href="/games?game_id={}">#{} | {}</a>'.format(
-                    game_id,
-                    game_id,
-                    game['description'])
-            ), 1)
-        raise bottle.redirect('/games?game_id={}'.format(game_id))
+        with modules.dbutils.dbopen() as db:
+            params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
+            params.pop('submit_edit')
+            params['datetime'] = params['date'] + ' ' + params['time'] + ':00'
+            params.pop('date')
+            params.pop('time')
+            game_id = int(params['game_id'])
+            params.pop('game_id')
+            responsible_old = games.get_by_id(game_id, fields=['responsible_user_id'], dbconnection=db)[
+                'responsible_user_id']
+            if responsible_old != int(params['responsible_user_id']):
+                self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
+                self.unassigned_responsible(game_id, responsible_old, db)
+            games.update(game_id, dbconnection=db, **params)
+            game = games.get_by_id(game_id, detalized=True, fields=['game_id', 'subscribed', 'description'],
+                                   dbconnection=db)
+            for user in game['subscribed']['users']:
+                notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
+                    modules.create_link.game(game)), 1, dbconnection=db)
+            raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
         if not pages.auth_dispatcher.organizer():
