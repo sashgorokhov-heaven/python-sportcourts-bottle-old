@@ -154,8 +154,8 @@
                           % if user['user_id']!=userinfo["user_id"]:
                             <option value="{{user['user_id']}}" {{'selected' if game['responsible_user']['user_id']==user['user_id'] else ''}}>{{user['first_name']}} {{user['last_name']}}</option>
                           % end
-                          <option value="{{userinfo["user_id"]}}" selected>Я сам{{'а' if userinfo["usersex"]=='female' else ''}}</option>
                         % end
+                        <option value="{{userinfo["user_id"]}}" selected>Я сам{{'а' if userinfo["usersex"]=='female' else ''}}</option>
                       </select>
                       <span id="valid"></span>
                     </div>
