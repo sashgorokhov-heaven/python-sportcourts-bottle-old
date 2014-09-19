@@ -27,12 +27,15 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
         if len(user_id) == 0: return list()
         sql = "SELECT " + select + " FROM users WHERE user_id IN (" + ','.join(map(str, user_id)) + ")"
     elif user_id == 0:
-        sql = "SELECT " + select + " FROM users LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
+        sql = "SELECT " + select + " FROM users"
 
     if userlevel >= 0 or isinstance(userlevel, set):
-        sql += (' WHERE ' if user_id == 0 else ' AND ') + (
-        'userlevel={}'.format(userlevel) if isinstance(userlevel, int) else 'userlevel IN ({})'.format(
-            ','.join(map(str, userlevel))))
+        sql += (' WHERE ' if user_id == 0 else ' AND ') + \
+               ("LOCATE('|{}|', userlevel)".format(userlevel) if isinstance(userlevel, int) else ' AND '.join(
+                   map(lambda x: "LOCATE('|{}|', userlevel)".format(x), userlevel)))
+
+    if user_id == 0:
+        sql += " LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
 
     dbconnection.execute(sql, orderedfields)
 

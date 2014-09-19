@@ -111,9 +111,14 @@
                 <div class="form-group">
                   <label for="game_add_count" class="col-sm-2 control-label">Ответственный</label>
                   <div class="col-sm-10">
-                    <select name="responsible" class="form-control">
-                      <option value="id" >Имя Фамилия</option>
-                    </select>
+                      <select name="responsible_user_id" class="form-control">
+                      <option value="{{userinfo["user_id"]}}" selected>Я сам{{'а' if userinfo["usersex"]=='female' else ''}}</option>
+                        % for user in responsibles:
+                          % if user['user_id']!=userinfo["user_id"]:
+                            <option value="{{user['user_id']}}">{{user['first_name']}} {{user['last_name']}}</option>
+                          % end
+                        % end
+                      </select>
                   </div>
                 </div>
                 <div class="form-group">

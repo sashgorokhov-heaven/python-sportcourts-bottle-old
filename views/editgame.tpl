@@ -149,13 +149,13 @@
                   <div class="form-group">
                     <label for="inputCity" class="col-sm-4 control-label text-left">Ответственный</label>
                     <div class="col-sm-8">
-                      <select name="responsible" class="form-control">
-                        % for n, user in enumerate(game['subscribed']['users'], 1):
-                          % if user['user_id']!=game['created_by']['user_id']:
-                          <option value="{{user['user_id']}}" {{'selected' if game['responsible_user']['user_id']==user['user_id'] else ''}}>{{user['first_name']}} {{user['last_name']}}</option>
+                      <select name="responsible_user_id" class="form-control">
+                        % for user in responsibles:
+                          % if user['user_id']!=userinfo["user_id"]:
+                            <option value="{{user['user_id']}}" {{'selected' if game['responsible_user']['user_id']==user['user_id'] else ''}}>{{user['first_name']}} {{user['last_name']}}</option>
                           % end
+                          <option value="{{userinfo["user_id"]}}" selected>Я сам{{'а' if userinfo["usersex"]=='female' else ''}}</option>
                         % end
-                        <option value="{{game['created_by']['user_id']}}" {{'selected' if game['responsible_user']['user_id']==game['created_by']['user_id'] else ''}}>{{game['created_by']['first_name']+' '+game['created_by']['last_name']}}</option>
                       </select>
                       <span id="valid"></span>
                     </div>
