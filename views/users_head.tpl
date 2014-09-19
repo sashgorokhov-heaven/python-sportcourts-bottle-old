@@ -17,6 +17,7 @@
         },
         success: function (responseData, textStatus) {
           alert(responseData+textStatus);
+          $('#addfriend-'+user_id).html(' ');
         },
         error: function (response, status, errorThrown) {
           alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
@@ -37,6 +38,7 @@
         },
         success: function (responseData, textStatus) {
           alert(responseData+textStatus);
+          $('#removefriend-'+user_id).html(' ');
         },
         error: function (response, status, errorThrown) {
           alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);

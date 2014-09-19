@@ -13,7 +13,7 @@
   </div>
   <div class="col-md-4 text-right">
     % if loggedin and user['user_id'] not in {friend['user_id'] for friend in myfriends} and user['user_id']!=userinfo['user_id'] or myfriend:
-    <a class="friendsbutton" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}} ">
+    <a class="friendsbutton" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
       <p>{{'+ добавить в друзья' if not myfriend else '- удалить'}}</p>
     </a>
     % end
