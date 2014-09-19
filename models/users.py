@@ -4,6 +4,11 @@ from modules import dbutils
 from modules.utils import beautifuldate, beautifultime
 from models import cities, autodb, splitstrlist, settings
 
+ADMIN = 0
+ORGANIZER = 1
+RESPONSIBLE = 2
+COMMON = 3
+JUDGE = 4
 
 @autodb
 def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20),
@@ -24,8 +29,10 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
     elif user_id == 0:
         sql = "SELECT " + select + " FROM users LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
 
-    if userlevel >= 0:
-        sql += (' WHERE ' if user_id == 0 else ' AND ') + 'userlevel={}'.format(userlevel)
+    if userlevel >= 0 or isinstance(userlevel, set):
+        sql += (' WHERE ' if user_id == 0 else ' AND ') + (
+        'userlevel={}'.format(userlevel) if isinstance(userlevel, int) else 'userlevel IN ({})'.format(
+            ','.join(map(str, userlevel))))
 
     dbconnection.execute(sql, orderedfields)
 
@@ -60,6 +67,9 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
         if detalized and 'city_id' in user:
             user['city'] = cities.get(user['city_id'], dbconnection=dbconnection)
             user.pop('city_id')
+
+        if 'userlevel' in user:
+            user['userlevel'] = set(map(int, user['userlevel'].split('|')[1:-1]))
 
         if 'friends' in user:
             friends = list(map(int, user['friends'].split('|')[1:-1]))

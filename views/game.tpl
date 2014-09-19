@@ -147,7 +147,7 @@
                         <!-- Put this div tag to the place, where the Like block will be -->
                         <div id="vk_like_{{game["game_id"]}}"></div>
                             <script type="text/javascript">
-                                VK.Widgets.Like("vk_like_{{game["game_id"]}}", {type: "mini", height: 18});
+                                VK.Widgets.Like("vk_like_{{game["game_id"]}}", {type: "mini", height: 18, pageUrl: "http://sportcourts.ru/games?game_id={{game["game_id"]}}"});
                             </script>
                         </div>
                       </div>
