@@ -34,7 +34,7 @@
             % if loggedin:
             <li>
               <a href="#panel-friends" data-toggle="tab">
-                Мои друзья <span class="badge notify">{{len(myfriends)}}</span>
+                Мои друзья <span class="badge friendscount">{{len(myfriends)}}</span>
               </a>
             </li>
             % end
@@ -44,8 +44,8 @@
               <br>
               <div class="user_cards_all" id='all'>
               % for user in allusers:
-                  % include("user_row", user=user, myfriends=myfriends)
-                  <hr>
+                % include("user_row", user=user, myfriends=myfriends)
+                <hr>
               % end
               </div>
             </div>
@@ -55,8 +55,8 @@
                 <br>
                 <div class="user_cards_friends" id='friends'>
                 % for user in myfriends:
-                    % include("user_row", user=user, myfriend=True)
-                    <hr>
+                  % include("user_row", user=user, myfriend=True)
+                  <hr>
                 % end
                 </div>
               </div>
