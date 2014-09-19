@@ -87,6 +87,8 @@ class Games(pages.Page):
     def get_game_id(self):
         with modules.dbutils.dbopen() as db:
             game_id = int(bottle.request.query.get('game_id'))
+            if not game_id:
+                raise bottle.HTTPError(404)
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
             game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
                                        beautifultime(game['datetime']),
