@@ -87,7 +87,7 @@ class Games(pages.Page):
             if len(game) == 0:
                 raise bottle.HTTPError(404)
             if pages.auth_dispatcher.getuserid() != game['created_by']['user_id'] and \
-                    pages.auth_dispatcher.getuserid() != game['responsible_user']['user_id'] and \
+                            pages.auth_dispatcher.getuserid() != game['responsible_user']['user_id'] and \
                     not pages.auth_dispatcher.admin():
                 return pages.templates.permission_denied()
             _sport_types = sport_types.get(0, dbconnection=db)
@@ -169,7 +169,7 @@ class Games(pages.Page):
                 return page
             else:
                 data = {"stop": page_n >= total_pages, "games": list()}
-                page = pages.PageBuilder("game", sports=sports, bysport=sport_type)
+                page = pages.PageBuilder("game", tab_name="all")
                 for game in allgames:
                     page.add_param("game", game)
                     game_tpl = page.template()

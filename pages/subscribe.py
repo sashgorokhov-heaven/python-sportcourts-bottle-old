@@ -1,7 +1,9 @@
 import bottle
+from modules.utils import beautifuldate, beautifultime, beautifulday
 
 import pages
-from models import games, notifications
+from models import games, notifications, sport_types
+from modules import dbutils
 
 
 class Subscribe(pages.Page):
@@ -13,7 +15,7 @@ class Subscribe(pages.Page):
         if not pages.auth_dispatcher.loggedin():
             raise bottle.HTTPError(404)
         game_id = int(bottle.request.forms.get('game_id'))
-        user_id = int(pages.auth_dispatcher.getuserid())
+        user_id = pages.auth_dispatcher.getuserid()
         unsubscribe = 'unsubscribe' in bottle.request.forms
 
         try:
@@ -23,6 +25,24 @@ class Subscribe(pages.Page):
                 games.subscribe(user_id, game_id)
         except ValueError:
             pass
+
+        if not bottle.request.is_ajax:
+            return ''
+
+        tab_name = bottle.request.forms.get("tab_name")
+        # sport_type = int(bottle.request.forms.get("tab_name"))
+
+        with dbutils.dbopen() as db:
+            game = games.get_by_id(game_id, detalized=True, dbconnection=db)
+            if pages.auth_dispatcher.getuserid() in {user['user_id'] for user in game['subscribed']['users']}:
+                game['is_subscribed'] = True
+            else:
+                game['is_subscribed'] = False
+            game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
+                                       beautifultime(game['datetime']),
+                                       beautifulday(game['datetime']))
+            return pages.PageBuilder("game", tab_name=tab_name, game=game)
+
 
     def get(self):
         """
