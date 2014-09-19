@@ -53,7 +53,7 @@ def send_report(e:Exception):
     lines.append("Referer: " + bottle.request.get_header("Referer", "None"))
     lines.append('')
     lines.append("Подробности об ошибке:")
-    lines.append(e.__class__.__name__ + (': ' + ','.join(e.args) if len(e.args) > 0 else ''))
+    lines.append(e.__class__.__name__ + (': ' + ','.join(map(str, e.args)) if len(e.args) > 0 else ''))
     lines.append(extract_traceback(e))
     lines = '\n'.join(lines)
     sendmail(lines, config['admin_email'], "Ошибка")
