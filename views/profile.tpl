@@ -39,7 +39,7 @@
           </ul>
           <br>
           <br> -->
-          % if int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or user['settings'].show_phone()=='all' or 0<user['userlevel']<=2:
+          % if int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or user['settings'].show_phone()=='all' or len(user['userlevel'].intersection({0,1}))>0:
           Телефон: {{user['phone']}}
           % end
           <br>

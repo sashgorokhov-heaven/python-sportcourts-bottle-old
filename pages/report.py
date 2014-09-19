@@ -9,7 +9,7 @@ class Report(pages.Page):
     def get(self):
         if 'game_id' not in bottle.request.query:
             raise bottle.HTTPError(404)
-        if not pages.auth_dispatcher.loggedin() or not pages.auth_dispatcher.responsible():
+        if not pages.auth_dispatcher.organizer():
             return pages.templates.permission_denied()
         game_id = int(bottle.request.query.get('game_id'))
         game = games.get_by_id(game_id, detalized=True)

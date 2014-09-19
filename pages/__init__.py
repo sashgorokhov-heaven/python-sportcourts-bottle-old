@@ -132,6 +132,7 @@ class _AuthDispatcher:
         userinfo['admin'] = self.admin()
         userinfo['usersettings'] = self.getusersettings()
         userinfo['organizer'] = self.organizer()
+        userinfo['judge'] = self.judge()
         userinfo['responsible'] = self.responsible()
         userinfo['common'] = self.common()
         page_builder.add_param('userinfo', userinfo)
@@ -171,8 +172,8 @@ class _AuthDispatcher:
     def getusersex(self) -> str:
         return bottle.request.get_cookie('usersex', 'male', modules.config['secret'])
 
-    def getuserlevel(self) -> int:
-        return int(bottle.request.get_cookie('userlevel', 0, modules.config['secret']))
+    def getuserlevel(self) -> set:
+        return set(map(int, bottle.request.get_cookie('userlevel', '|3|', modules.config['secret']).split('|')[1:-1]))
 
     def updatesettings(self, sett:models.settings.SettingsClass=None, dbconnection:modules.dbutils.DBConnection=None):
         if not sett:
@@ -190,16 +191,19 @@ class _AuthDispatcher:
         return bool(self.getuserid())
 
     def admin(self) -> bool:
-        return self.loggedin() and self.getuserlevel() == 0
+        return self.loggedin() and 0 in self.getuserlevel()
 
     def organizer(self) -> bool:
-        return self.loggedin() and (self.getuserlevel() == 1 or self.admin())
+        return self.loggedin() and (1 in self.getuserlevel() or self.admin())
 
     def responsible(self) -> bool:
-        return self.loggedin() and (self.getuserlevel() == 2 or self.organizer() or self.admin())
+        return self.loggedin() and 2 in self.getuserlevel()
 
     def common(self) -> bool:
-        return self.loggedin() and (self.getuserlevel() == 3 or self.responsible() or self.organizer() or self.admin())
+        return self.loggedin() and (3 in self.getuserlevel() or self.responsible() or self.organizer() or self.admin())
+
+    def judge(self) -> bool:
+        return self.loggedin() and 4 in self.getuserlevel()
 
 
 class PageBuilder:

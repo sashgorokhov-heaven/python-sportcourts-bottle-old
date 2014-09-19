@@ -4,6 +4,11 @@ from modules import dbutils
 from modules.utils import beautifuldate, beautifultime
 from models import cities, autodb, splitstrlist, settings
 
+ADMIN = 0
+ORGANIZER = 1
+RESPONSIBLE = 2
+COMMON = 3
+JUDGE = 4
 
 @autodb
 def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20),
@@ -22,10 +27,15 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
         if len(user_id) == 0: return list()
         sql = "SELECT " + select + " FROM users WHERE user_id IN (" + ','.join(map(str, user_id)) + ")"
     elif user_id == 0:
-        sql = "SELECT " + select + " FROM users LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
+        sql = "SELECT " + select + " FROM users"
 
-    if userlevel >= 0:
-        sql += (' WHERE ' if user_id == 0 else ' AND ') + 'userlevel={}'.format(userlevel)
+    if userlevel >= 0 or isinstance(userlevel, set):
+        sql += (' WHERE ' if user_id == 0 else ' AND ') + \
+               ("LOCATE('|{}|', userlevel)".format(userlevel) if isinstance(userlevel, int) else ' AND '.join(
+                   map(lambda x: "LOCATE('|{}|', userlevel)".format(x), userlevel)))
+
+    if user_id == 0:
+        sql += " LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
 
     dbconnection.execute(sql, orderedfields)
 
@@ -60,6 +70,9 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
         if detalized and 'city_id' in user:
             user['city'] = cities.get(user['city_id'], dbconnection=dbconnection)
             user.pop('city_id')
+
+        if 'userlevel' in user:
+            user['userlevel'] = set(map(int, user['userlevel'].split('|')[1:-1]))
 
         if 'friends' in user:
             friends = list(map(int, user['friends'].split('|')[1:-1]))

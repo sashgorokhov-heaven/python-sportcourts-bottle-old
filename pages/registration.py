@@ -59,6 +59,7 @@ class Registration(pages.Page):
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
 
         if params['bdate'] == '0000-00-00':
+            # TODO: проверить формат
             with modules.dbutils.dbopen() as db:
                 cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
             return pages.PageBuilder('registration', error='Ошибка',

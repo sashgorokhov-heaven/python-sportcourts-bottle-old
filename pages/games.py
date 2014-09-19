@@ -4,7 +4,7 @@ import pages
 import modules
 from modules.utils import beautifuldate, beautifulday, beautifultime
 import modules.dbutils
-from models import sport_types, game_types, cities, courts, games, notifications
+from models import sport_types, game_types, cities, courts, games, notifications, users
 
 
 GAMES_PER_PAGE = 4
@@ -19,7 +19,6 @@ class Games(pages.Page):
             params.pop('date')
             params.pop('time')
             params['created_by'] = pages.auth_dispatcher.getuserid()
-            params['responsible_user_id'] = params['created_by']
             intersection = games.intersection(params['court_id'],
                                               params['datetime'],
                                               params['duration'].encode().split(b' ')[0].decode(),
@@ -73,8 +72,9 @@ class Games(pages.Page):
             _game_types = game_types.get(0, dbconnection=db)
             _cities = cities.get(0, dbconnection=db)
             _courts = courts.get(0, fields=['court_id', 'city_id', 'title'], dbconnection=db)
+            responsibles = users.get(0, 2, fields=['user_id', 'first_name', 'last_name'], dbconnection=db)
             return pages.PageBuilder('editgame', game=game, sports=_sport_types, game_types=_game_types, cities=_cities,
-                                     courts=_courts)
+                                     courts=_courts, responsibles=responsibles)
 
     def get_add(self):
         with modules.dbutils.dbopen() as db:
@@ -82,11 +82,15 @@ class Games(pages.Page):
             _game_types = game_types.get(0, dbconnection=db)
             _cities = cities.get(0, dbconnection=db)
             _courts = courts.get(0, fields=['court_id', 'city_id', 'title'], dbconnection=db)
-            return pages.PageBuilder("addgame", sports=_sports, game_types=_game_types, cities=_cities, courts=_courts)
+            responsibles = users.get(0, 2, fields=['user_id', 'first_name', 'last_name'], dbconnection=db)
+            return pages.PageBuilder("addgame", sports=_sports, game_types=_game_types, cities=_cities, courts=_courts,
+                                     responsibles=responsibles)
 
     def get_game_id(self):
         with modules.dbutils.dbopen() as db:
             game_id = int(bottle.request.query.get('game_id'))
+            if not game_id:
+                raise bottle.HTTPError(404)
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
             game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
                                        beautifultime(game['datetime']),
@@ -163,7 +167,7 @@ class Games(pages.Page):
             else:
                 return pages.templates.permission_denied()
         if 'edit' in bottle.request.query:
-            if pages.auth_dispatcher.responsible():
+            if pages.auth_dispatcher.loggedin():
                 return self.get_edit()
             else:
                 return pages.templates.permission_denied()
