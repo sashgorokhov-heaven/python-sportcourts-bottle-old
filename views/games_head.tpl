@@ -11,7 +11,7 @@
   $(document).on('click','.gamessearch',function(){
 
     var value = $('#sporttype').val();
-    if (value == ''){
+    if (value == '0'){
       location.href='/games';
     }
     else{
