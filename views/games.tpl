@@ -111,44 +111,44 @@
 
         sporttype = $('#sporttype').val();
 
-        if (unsubscribe=='u') {
-          $.ajax({
-            url: '/subscribe',
-            data: {
-              game_id: game_id,
-              unsubscribe: 0,
-              tab_name: pane,
-              sport_type: sporttype
-            },
-            async: true,
-            success: function (responseData, textStatus) {
-              $('#gamepane-'+game_id+'-'+pane).html(responseData);
-            },
-            error: function (response, status, errorThrown) {
-              alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
-            },
-            type: "POST",
-            dataType: "text"
-          });
-        } else {
-          $.ajax({
-            url: '/subscribe',
-            data: {
-              game_id: game_id,
-              tab_name: pane,
-              sport_type: sporttype
-            },
-            async: true,
-            success: function (responseData, textStatus) {
-              $('#gamepane-'+game_id+'-'+pane).html(responseData);
-            },
-            error: function (response, status, errorThrown) {
-              alert('Все плохо' + response + status + errorThrown);
-            },
-            type: "POST",
-            dataType: "text"
-          });
-        }
+          if (unsubscribe=='u') {
+            $.ajax({
+              url: '/subscribe',
+              data: {
+                game_id: game_id,
+                unsubscribe: 0,
+                tab_name: pane,
+                sport_type: sporttype
+              },
+              async: true,
+              success: function (responseData, textStatus) {
+                $('#gamepane-'+game_id+'-'+pane).replaceWith(responseData);
+              },
+              error: function (response, status, errorThrown) {
+                alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+              },
+              type: "POST",
+              dataType: "text"
+            });
+          } else {
+            $.ajax({
+              url: '/subscribe',
+              data: {
+                game_id: game_id,
+                tab_name: pane,
+                sport_type: sporttype
+              },
+              async: true,
+              success: function (responseData, textStatus) {
+                $('#gamepane-'+game_id+'-'+pane).replaceWith(responseData);
+              },
+              error: function (response, status, errorThrown) {
+                alert('Все плохо' + response + status + errorThrown);
+              },
+              type: "POST",
+              dataType: "text"
+            });
+          }
 
       });
       </script>

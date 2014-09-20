@@ -18,7 +18,8 @@
         success: function (responseData, textStatus) {
           $('#addfriend-'+user_id).html(' ');
           var count = $(".friendscount").html();
-          count1 = count + 1;
+          count1 = parseInt(count);
+          count1 += 1;
           $(".friendscount").html(count1);
         },
         error: function (response, status, errorThrown) {
@@ -39,7 +40,6 @@
           inProgress = true;
         },
         success: function (responseData, textStatus) {
-          alert(responseData+textStatus);
           $('#removefriend-'+user_id).html(' ');
           var count = $(".friendscount").html();
           count1 = count - 1;

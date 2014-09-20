@@ -105,7 +105,6 @@
                                   % end
                                 </div>
                               </div>
-                              {{!message if defined("message") else ''}}
                             </div>
                           </div>
                           % end
