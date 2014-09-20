@@ -73,6 +73,14 @@ class Subscribe(pages.Page):
                                                                             create_link.game(game))
                 notifications.add(game['responsible_user']['user_id'], message, 1, dbconnection=db)
             self.subscribe(game_id, user_id, unsubscribe)
+            game = games.get_by_id(game_id, detalized=True, dbconnection=db)
+            if pages.auth_dispatcher.getuserid() in {user['user_id'] for user in game['subscribed']['users']}:
+                game['is_subscribed'] = True
+            else:
+                game['is_subscribed'] = False
+            game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
+                                       beautifultime(game['datetime']),
+                                       beautifulday(game['datetime']))
         return pages.PageBuilder("game", tab_name=tab_name, game=game)
 
 
