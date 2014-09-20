@@ -14,7 +14,9 @@
         <meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/>
         <meta property="og:image" content="http://cs620526.vk.me/v620526278/11a8d/FpP29juZHm4.jpg" />
         <meta property="og:description" content="Description"/> -->
-	
+
+	    <link rel="icon" type="image/vnd.microsoft.icon" href="/images/static/favicon.ico" />
+
     	<link type="text/css" rel="stylesheet" href="/view/css/main.css" />
     	<link type="text/css" rel="stylesheet" href="/view/css/jquery-ui.css" />
     	<link type="text/css" rel="stylesheet" href="/view/bootstrap/css/bootstrap.min.css" />
