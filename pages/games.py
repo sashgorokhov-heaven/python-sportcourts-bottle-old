@@ -114,6 +114,8 @@ class Games(pages.Page):
             if not game_id:
                 raise bottle.HTTPError(404)
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
+            if len(game) == 0:
+                raise bottle.HTTPError(404)
             game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
                                        beautifultime(game['datetime']),
                                        beautifulday(game['datetime']))
