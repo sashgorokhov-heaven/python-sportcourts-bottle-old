@@ -19,7 +19,10 @@ def _check_size():
 def _write_line(filename:str, line:str):
     #_check_size()
     with open(filename, 'a') as f:
-        f.write(line+'\n')
+        try:
+            f.write(line + '\n')
+        except:
+            raise UnicodeEncodeError("Error while writing to log file")
     if DEBUG:
         try:
             print(line)
