@@ -1,6 +1,6 @@
 import json
-from models import autodb, splitstrlist, cities, courts, game_types, sport_types, users
-from modules import dbutils
+from models import autodb, splitstrlist, cities, courts, game_types, sport_types, users, notifications
+from modules import dbutils, create_link
 from modules.utils import beautifuldate, beautifultime, beautifulday
 
 
@@ -50,7 +50,7 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
 
 @autodb
 def get_by_id(game_id, detalized:bool=False, fields:list=dbutils.dbfields['games'],
-              dbconnection:dbutils.DBConnection=None) -> list:
+              dbconnection:dbutils.DBConnection=None) -> dict:
     orderedfields = [i for i in dbutils.dbfields['games'] if i in set(fields)]
     select = ','.join(orderedfields)
 
@@ -90,6 +90,20 @@ def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     else:
         subscribed = ''
     dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
+    write_future_notifications(user_id, game_id, dbconnection=dbconnection)
+
+
+@autodb
+def write_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    game = get_by_id(game_id, fields=["game_id", "description", "datetime"], dbconnection=dbconnection)
+    message = 'До игры "{}" осталось 2 дня!'.format(create_link.game(game))
+    notifications.add(user_id, message, 0, game_id, 0,
+                      'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game["datetime"]),
+                      dbconnection=dbconnection)
+    message = 'Завтра состоится игра "{}"<br>Не пропустите!'.format(create_link.game(game))
+    notifications.add(user_id, message, 1, game_id, 0,
+                      'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game["datetime"]),
+                      dbconnection=dbconnection)
 
 
 @autodb
@@ -104,6 +118,15 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
     else:
         subscribed = ''
     dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
+    delete_future_notifications(user_id, game_id, dbconnection=dbconnection)
+
+
+@autodb
+def delete_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    dbconnection.execute("SELECT notification_id FROM notifications WHERE type=0 AND game_id={}".format(game_id))
+    if len(dbconnection.last()) == 0:
+        return
+    notifications.delete(list(map(lambda x: x[0], dbconnection.last())), dbconnection=dbconnection)
 
 
 @autodb
@@ -132,11 +155,6 @@ def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slic
 
 @autodb
 def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
-    game = dbconnection.execute("SELECT * FROM games WHERE game_id={}".format(game_id))
-    if len(game) > 0:
-        game = game[0]
-    else:
-        return
     dbconnection.execute("INSERT INTO deleted_games SELECT * FROM games WHERE game_id={}".format(game_id))
     dbconnection.execute("DELETE FROM games WHERE game_id={}".format(game_id))
 

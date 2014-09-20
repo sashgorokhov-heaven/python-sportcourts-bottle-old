@@ -2,23 +2,25 @@ from modules import dbutils
 from models import autodb, splitstrlist
 from modules.utils import beautifuldate, beautifultime
 
-
 @autodb
-def add(user_id:int, text:str, level:int=0, dbconnection:dbutils.DBConnection=None):
+def add(user_id:int, text:str, level:int=0, game_id:int=0, type:int=0, date_time:str=None,
+        dbconnection:dbutils.DBConnection=None):
     dbconnection.execute(
-        "INSERT INTO notifications (user_id, text, level) VALUES ({}, '{}', {})".format(
-            user_id, text, level))
+        "INSERT INTO notifications (user_id, text, level, game_id, type, datetime) VALUES ({}, '{}', {}, {}, {}, {})".format(
+            user_id, text, level, game_id, type,
+            'NOW()' if not date_time else "{}".format(date_time)))
 
 
 @autodb
 def get_count(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=None) -> int:
-    return int(dbconnection.execute("SELECT COUNT(*) FROM notifications WHERE user_id={}{}".format(
+    return int(dbconnection.execute("SELECT COUNT(*) FROM notifications WHERE datetime<NOW() AND user_id={}{}".format(
         user_id, ' AND `read`=0' if not all else ''))[0][0])
 
 
 @autodb
 def get(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT * FROM notifications WHERE user_id={}{} ORDER BY DATETIME DESC{}".format(
+    dbconnection.execute(
+        "SELECT * FROM notifications WHERE datetime<NOW() AND user_id={}{} ORDER BY DATETIME DESC{}".format(
         user_id, ' AND `read`=0' if not all else '', ' LIMIT 20' if all else ''),
                          dbutils.dbfields['notifications'])
     for i in dbconnection.last():
@@ -54,9 +56,9 @@ def delete(notification_id, dbconnection:dbutils.DBConnection=None):
 
     if isinstance(notification_id, int) and notification_id > 0:
         dbconnection.execute(
-            "DELETE FROM notifications WHERE `read`=1 AND notification_id={}".format(notification_id))
+            "DELETE FROM notifications WHERE notification_id={}".format(notification_id))
     elif isinstance(notification_id, list):
-        dbconnection.execute("DELETE FROM notifications WHERE `read`=1 AND notification_id IN (" + ','.join(
+        dbconnection.execute("DELETE FROM notifications WHERE notification_id IN (" + ','.join(
             map(str, notification_id)) + ")")
     elif notification_id < 0:
         user_id = abs(notification_id)

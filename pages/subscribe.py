@@ -7,6 +7,15 @@ from modules import dbutils
 
 
 class Subscribe(pages.Page):
+    def subscribe(self, game_id:int, user_id:int, unsubscribe:bool=True):
+        try:
+            if unsubscribe:
+                games.unsubscribe(user_id, game_id)
+            else:
+                games.subscribe(user_id, game_id)
+        except ValueError:
+            pass
+
     def post(self):
         """
         game_id
@@ -18,13 +27,7 @@ class Subscribe(pages.Page):
         user_id = pages.auth_dispatcher.getuserid()
         unsubscribe = 'unsubscribe' in bottle.request.forms
 
-        try:
-            if unsubscribe:
-                games.unsubscribe(user_id, game_id)
-            else:
-                games.subscribe(user_id, game_id)
-        except ValueError:
-            pass
+        self.subscribe(game_id, user_id, unsubscribe)
 
         if not bottle.request.is_ajax:
             return ''
@@ -44,7 +47,7 @@ class Subscribe(pages.Page):
             return pages.PageBuilder("game", tab_name=tab_name, game=game)
 
 
-    def get(self):
+    def get(self):  # для ручного отписывания
         """
         game_id
         user_id
@@ -56,13 +59,7 @@ class Subscribe(pages.Page):
         user_id = int(bottle.request.query.get('user_id'))
         unsubscribe = 'unsubscribe' in bottle.request.query
 
-        try:
-            if unsubscribe:
-                games.unsubscribe(user_id, game_id)
-            else:
-                games.subscribe(user_id, game_id)
-        except ValueError:
-            pass
+        self.subscribe(game_id, user_id, unsubscribe)
 
         notifications.add(user_id,
                           'Вы были удалены с игры "<a href="/games?game_id={}">#{} | {}</a>"'.format(
