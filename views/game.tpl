@@ -82,7 +82,7 @@
                               &nbsp;
                               <img src="/images/avatars/{{str(game['responsible_user']['user_id'])}}" class="round" width="30" >
                             </p>
-                            <p>{{game['responsible_user']['phone']}}</p>
+                            <p style="margin-top:-5px; margin-bottom:15px;">{{game['responsible_user']['phone']}}</p>
                           % end
                           <div class="progress">
                             <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">

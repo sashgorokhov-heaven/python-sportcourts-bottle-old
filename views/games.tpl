@@ -57,8 +57,8 @@
           </ul>
 
           <div class="tab-content">
-            <div class="tab-pane active games_cards_all" id="all">
-              <div class="panel panel-deafult">
+            <div class="tab-pane active" id="all">
+              <div class="panel panel-deafult games_cards_all">
                 <br>
                 % if len(games)>0:
                     % for game in games:
