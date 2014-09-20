@@ -30,7 +30,7 @@
               </div>
               <div class="col-md-9">
             % end
-                <div id="gamepane-{{game['game_id']}}">
+                <div id="gamepane-{{game['game_id']}}-{{tab_name}}">
                   <div class="panel panel-default {{'panel-success' if userinfo['user_id']==game['created_by']['user_id'] else 'panel-default'}} "><a name="{{game['game_id']}}"></a>
                     <div class="panel-heading">
                       <div class="panel_head">
@@ -105,6 +105,7 @@
                                   % end
                                 </div>
                               </div>
+                              {{!message if defined("message") else ''}}
                             </div>
                           </div>
                           % end

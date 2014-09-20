@@ -122,7 +122,7 @@
             },
             async: true,
             success: function (responseData, textStatus) {
-              $('#gamepane-'+game_id).html(responseData);
+              $('#gamepane-'+game_id+'-'+pane).html(responseData);
             },
             error: function (response, status, errorThrown) {
               alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
@@ -140,7 +140,7 @@
             },
             async: true,
             success: function (responseData, textStatus) {
-              $('#gamepane-'+game_id).html(responseData);
+              $('#gamepane-'+game_id+'-'+pane).html(responseData);
             },
             error: function (response, status, errorThrown) {
               alert('Все плохо' + response + status + errorThrown);
