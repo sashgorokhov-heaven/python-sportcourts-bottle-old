@@ -11,6 +11,21 @@ GAMES_PER_PAGE = 4
 
 
 class Games(pages.Page):
+    def check_responsible(self, user_id:int, datetime:str, duration:int, db):
+        query = """\
+          SELECT game_id FROM games WHERE responsible_user_id={user_id} AND (\
+          (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
+          (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
+          """.format(user_id=user_id, datetime=datetime, duration=duration)
+        db.execute(query)
+        if len(db.last()) != 0:
+            return pages.templates.message("{} уже занят на это время".format(
+                modules.create_link.user(
+                    users.get(
+                        int(params['responsible_user_id']),
+                        fields=['user_id', 'first_name', 'last_name'],
+                        dbconnection=db))), '')
+
     def assigned_responsible(self, game_id:int, user_id:int, db):
         if user_id == pages.auth_dispatcher.getuserid():
             return
@@ -45,6 +60,9 @@ class Games(pages.Page):
                 return pages.PageBuilder('text', message='Обнаружен конфликт',
                                          description='В это время уже идет другая <a href="/games?game_id={}">игра</a>'.format(
                                              intersection))
+            page = self.check_responsible(params['responsible_user_id'], params['datetime'],
+                                          params['duration'].split(' ')[0], db)
+            if page: return page
             game_id = games.add(dbconnection=db, **params)
             self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
             return bottle.redirect('/games?game_id={}'.format(game_id))
@@ -60,6 +78,11 @@ class Games(pages.Page):
             params.pop('game_id')
             responsible_old = games.get_by_id(game_id, fields=['responsible_user_id'], dbconnection=db)[
                 'responsible_user_id']
+
+            page = self.check_responsible(params['responsible_user_id'], params['datetime'],
+                                          params['duration'].split(' ')[0], db)
+            if page: return page
+
             if responsible_old != int(params['responsible_user_id']):
                 self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
                 self.unassigned_responsible(game_id, responsible_old, db)
