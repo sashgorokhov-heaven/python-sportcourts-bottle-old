@@ -8,6 +8,17 @@ import datetime, itertools
 
 
 class Subscribe(pages.Page):
+    def check_intersection(self, user_id:int, game:dict, db:dbutils.DBConnection) -> dict:
+        query = """\
+          SELECT game_id, description FROM games WHERE LOCATE('|{user_id}|', subscribed) AND (\
+          (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
+          (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
+          """.format(user_id=user_id, datetime=game['datetime'], duration=game['duration'])
+        db.execute(query, ['game_id', 'description'])
+        if len(db.last()) != 0:
+            return db.last()[0]
+        return dict()
+
     def subscribe(self, game_id:int, user_id:int, unsubscribe:bool=True):
         try:
             if unsubscribe:
@@ -28,9 +39,8 @@ class Subscribe(pages.Page):
         user_id = pages.auth_dispatcher.getuserid()
         unsubscribe = 'unsubscribe' in bottle.request.forms
 
-        self.subscribe(game_id, user_id, unsubscribe)
-
         if not bottle.request.is_ajax:
+            self.subscribe(game_id, user_id, unsubscribe)
             return ''
 
         tab_name = bottle.request.forms.get("tab_name")
@@ -47,8 +57,13 @@ class Subscribe(pages.Page):
                                        beautifulday(game['datetime']))
             pdatetime = datetime.datetime(*itertools.chain(map(int, game['datetime'].split(' ')[0].split('-')),
                                                            map(int, game['datetime'].split(' ')[1].split(':'))))
+            another_game = self.check_intersection(user_id, game, db)
+            if len(another_game) > 0 and not unsubscribe:
+                message = 'В это время вы уже записаны на игру "{}"'.format(create_link.game(another_game))
+                return pages.PageBuilder("game", tab_name=tab_name, game=game, message=message)
+
             if pdatetime - datetime.timedelta(
-                    days=1) <= datetime.datetime.now() <= pdatetime and user_id != pages.auth_dispatcher.getuserid():
+                    days=1) <= datetime.datetime.now() <= pdatetime:
                 user = users.get(user_id, fields=['user_id', 'first_name', 'last_name'], dbconnection=db)
                 if not unsubscribe:
                     message = 'На завтрашнюю игру "{}" записался {}'.format(create_link.game(game),
@@ -57,7 +72,8 @@ class Subscribe(pages.Page):
                     message = '{} отписался от завтрашней игры "{}"'.format(create_link.user(user),
                                                                             create_link.game(game))
                 notifications.add(game['responsible_user']['user_id'], message, 1, dbconnection=db)
-            return pages.PageBuilder("game", tab_name=tab_name, game=game)
+            self.subscribe(game_id, user_id, unsubscribe)
+        return pages.PageBuilder("game", tab_name=tab_name, game=game)
 
 
     def get(self):  # для ручного отписывания
