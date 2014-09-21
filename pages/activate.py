@@ -14,7 +14,7 @@ class Activate(pages.Page):
             try:
                 user_id = activation.get_userid_by_token(token, dbconnection=db)
             except ValueError:
-                return pages.PageBuilder('text', message='Пользователь уже активирован')
+                return pages.PageBuilder('text', message='Пользователь вроде бы уже активирован')
             activation.activate(user_id, dbconnection=db)
             user = users.get(user_id, fields=['email', 'passwd'], dbconnection=db)
             pages.auth_dispatcher.login(user['email'], user['passwd'])
