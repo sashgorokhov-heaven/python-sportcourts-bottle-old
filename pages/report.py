@@ -3,8 +3,8 @@ import json
 import bottle
 from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
-from modules import dbutils
-from models import games, images
+from modules import dbutils, create_link
+from models import games, images, notifications, users
 
 
 class Report(pages.Page):
@@ -32,10 +32,10 @@ class Report(pages.Page):
         if game['created_by'] != pages.auth_dispatcher.getuserid() and game[
             'responsible_user_id'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
             return pages.templates.permission_denied()
-        users = {int(user_id.split('=')[-1]): {"status": bottle.request.forms.get(user_id)} for user_id in
+        users_ = {int(user_id.split('=')[-1]): {"status": bottle.request.forms.get(user_id)} for user_id in
                  filter(lambda x: x.startswith("status"), bottle.request.forms)}
-        registered = {user_id: users[user_id] for user_id in filter(lambda x: x > 0, users)}
-        unregistered = {user_id: users[user_id] for user_id in filter(lambda x: x < 0, users)}
+        registered = {user_id: users_[user_id] for user_id in filter(lambda x: x > 0, users_)}
+        unregistered = {user_id: users_[user_id] for user_id in filter(lambda x: x < 0, users_)}
         for user_id in unregistered:
             info = {key.split('=')[0]: bottle.request.forms.get(key) for key in
                     filter(lambda x: x.endswith(str(user_id)), bottle.request.forms)}
@@ -51,6 +51,13 @@ class Report(pages.Page):
         games.update(game_id, report=jsondumped)
         if "photo" in bottle.request.files:
             images.save_report(game_id, bottle.request.files.get("photo"))
+        if pages.auth_dispatcher.getuserid() != game['created_by']['user_id']:
+            notifications.add(
+                game['created_by']['user_id'],
+                'Ответственный "{}" отправил отчет по игре ""'.format(
+                    create_link.user(
+                        users.get(pages.auth_dispatcher.getuserid(), fields=['user_id', 'first_name', 'last_name'])),
+                    create_link.game(game)))
         raise bottle.redirect('/report?game_id={}'.format(game_id))
 
     get.route = '/report'
