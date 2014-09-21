@@ -5,6 +5,7 @@ from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
 from models import games, images
 
+
 class Report(pages.Page):
     def get(self):
         if 'game_id' not in bottle.request.query:
@@ -40,7 +41,6 @@ class Report(pages.Page):
         game_id = int(bottle.request.forms.get('game_id'))
         jsondumped = json.dumps(report)
         games.update(game_id, report=jsondumped)
-        print("photo" in bottle.request.files, "photo" in bottle.request.forms)
         if "photo" in bottle.request.files:
             images.save_report(game_id, bottle.request.files.get("photo"))
         raise bottle.redirect('/report?game_id={}'.format(game_id))
