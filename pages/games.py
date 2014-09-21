@@ -95,9 +95,9 @@ class Games(pages.Page):
             raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
-        if not pages.auth_dispatcher.organizer():
+        if not pages.auth_dispatcher.organizer() and not pages.auth_dispatcher.admin() and not pages.auth_dispatcher.responsible():
             return pages.templates.permission_denied()
-        if 'submit_add' in bottle.request.forms:
+        if 'submit_add' in bottle.request.forms and not pages.auth_dispatcher.responsible():
             return self.post_submit_add()
         if 'submit_edit' in bottle.request.forms:
             return self.post_submit_edit()
@@ -201,23 +201,25 @@ class Games(pages.Page):
                     data["games"].append(game_tpl)
                 return data
 
+    def get_delete(self, game_id:int):
+        game = games.get_by_id(game_id, fields=['created_by'])
+        if game['created_by'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
+            return pages.templates.permission_denied()
+        games.delete(game_id)
+        raise bottle.redirect('/games')
 
     def get(self):
         if 'delete' in bottle.request.query:
-            if not pages.auth_dispatcher.organizer():
+            if not pages.auth_dispatcher.admin() and not pages.auth_dispatcher.organizer():
                 return pages.templates.permission_denied()
-            games.delete(int(bottle.request.query.get('delete')))
-            return bottle.redirect('/games')
+            return self.get_delete(int(bottle.request.query.get('delete')))
         if 'add' in bottle.request.query:
-            if pages.auth_dispatcher.organizer():
+            if pages.auth_dispatcher.organizer() or pages.auth_dispatcher.admin():
                 return self.get_add()
             else:
                 return pages.templates.permission_denied()
         if 'edit' in bottle.request.query:
-            if pages.auth_dispatcher.loggedin():
-                return self.get_edit()
-            else:
-                return pages.templates.permission_denied()
+            return self.get_edit()
         if 'game_id' in bottle.request.query:
             return self.get_game_id()
         if 'sport_id' in bottle.request.query:

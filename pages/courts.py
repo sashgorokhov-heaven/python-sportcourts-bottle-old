@@ -16,10 +16,11 @@ class Courts(pages.Page):
             nearest_game = games.get_recent(court_id=court_id, detalized=True, count=slice(1), dbconnection=db)
             page = pages.PageBuilder('courts', court=court)
             if len(nearest_game) > 0:
-                nearest_game[0]['parsed_datetime'] = (beautifuldate(nearest_game[0]['datetime']),
-                                                      beautifultime(nearest_game[0]['datetime']),
-                                                      beautifulday(nearest_game[0]['datetime']))
-                page.add_param('game', nearest_game[0])
+                game_ = nearest_game[0]
+                game_['parsed_datetime'] = (beautifuldate(game_['datetime']),
+                                            beautifultime(game_['datetime']),
+                                            beautifulday(game_['datetime']))
+                page.add_param('game', game_)
             return page
 
     def get_add(self):
@@ -48,17 +49,20 @@ class Courts(pages.Page):
             return self.get_court_id()
         if 'all' in bottle.request.query:
             return self.get_all()
-        if pages.auth_dispatcher.organizer():
+        if pages.auth_dispatcher.admin():
             if 'add' in bottle.request.query:
                 return self.get_add()
             if 'edit' in bottle.request.query:
                 return self.get_edit()
             raise bottle.HTTPError(404)
-        else:
+        elif 'add' in bottle.request.query or 'edit' in bottle.request.query:
             return pages.templates.permission_denied()
+        return bottle.HTTPError(404)
 
 
     def post_submit_add(self):
+        if not pages.auth_dispatcher.admin():
+            raise bottle.HTTPError(404)
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         params.pop('submit_add')
         if 'photo' in params:
@@ -79,6 +83,8 @@ class Courts(pages.Page):
         raise bottle.redirect('/courts?court_id={}'.format(court_id))
 
     def post_submit_edit(self):
+        if not pages.auth_dispatcher.admin():
+            raise bottle.HTTPError(404)
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
         params.pop('submit_edit')
         if 'photo' in params:

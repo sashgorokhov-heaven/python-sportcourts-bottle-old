@@ -2,6 +2,7 @@ import os
 import bottle
 
 import pages
+from models import games
 
 
 class Images(pages.Page):
@@ -22,9 +23,11 @@ class Images(pages.Page):
         return bottle.static_file(name, '/bsp/data/images/og/')
 
     def get_report_image(self, game_id):
-        # if pages.auth_dispatcher.responsible() or pages.auth_dispatcher.organizer():
-        return bottle.static_file(game_id + '.jpg', '/bsp/data/images/reports/')
-        #raise bottle.HTTPError(404)
+        game = games.get_by_id(game_id, fields=['created_by', 'responsible_user_id'])
+        if pages.auth_dispatcher.getuserid() == game['responsible_user_id'] or pages.auth_dispatcher.getuserid() == \
+                game['created_by'] or pages.auth_dispatcher.admin():
+            return bottle.static_file(game_id + '.jpg', '/bsp/data/images/reports/')
+        raise bottle.HTTPError(404)
 
     def get(self, what, name):
         if what == 'courts':

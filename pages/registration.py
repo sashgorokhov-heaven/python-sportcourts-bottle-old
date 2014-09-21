@@ -56,6 +56,8 @@ class Registration(pages.Page):
             return pages.PageBuilder('registration', cities=cities_list)
 
     def post(self):
+        if pages.auth_dispatcher.loggedin():
+            raise bottle.redirect('/profile')
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
 
         if params['bdate'] == '0000-00-00':

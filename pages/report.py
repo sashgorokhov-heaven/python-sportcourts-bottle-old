@@ -3,6 +3,7 @@ import json
 import bottle
 from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
+from modules import dbutils
 from models import games, images
 
 
@@ -10,18 +11,26 @@ class Report(pages.Page):
     def get(self):
         if 'game_id' not in bottle.request.query:
             raise bottle.HTTPError(404)
-        if not pages.auth_dispatcher.organizer():
-            return pages.templates.permission_denied()
         game_id = int(bottle.request.query.get('game_id'))
-        game = games.get_by_id(game_id, detalized=True)
-        game['parsed_datetime'] = (beautifuldate(game['datetime']),
-                                   beautifultime(game['datetime']),
-                                   beautifulday(game['datetime']))
-        # TODO: прошла игра или нет
-        return pages.PageBuilder("report", game=game, showreport=game['report']['reported'])
+        with dbutils.dbopen() as db:
+            game = games.get_by_id(game_id, detalized=True, dbconnection=db)
+            game['parsed_datetime'] = (beautifuldate(game['datetime']),
+                                       beautifultime(game['datetime']),
+                                       beautifulday(game['datetime']))
+            if game['created_by']['user_id'] != pages.auth_dispatcher.getuserid() and game['responsible_user'][
+                'user_id'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
+                return pages.templates.permission_denied()
+            db.execute("SELECT game_id FROM games WHERE datetime+INTERVAL duration MINUTE<=NOW() AND game_id={}".format(
+                game_id))
+            if len(db.last()) == 0:
+                return pages.templates.message("Вы не можете отправить отчет по игре", "Игра еще не закончилась")
+            return pages.PageBuilder("report", game=game, showreport=game['report']['reported'])
 
     def post(self):
-        if not pages.auth_dispatcher.organizer():
+        game_id = int(bottle.request.forms.get('game_id'))
+        game = games.get_by_id(game_id, fields=['responsible_user_id', 'created_by'])
+        if game['created_by'] != pages.auth_dispatcher.getuserid() and game[
+            'responsible_user_id'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
             return pages.templates.permission_denied()
         users = {int(user_id.split('=')[-1]): {"status": bottle.request.forms.get(user_id)} for user_id in
                  filter(lambda x: x.startswith("status"), bottle.request.forms)}
@@ -38,7 +47,6 @@ class Report(pages.Page):
             user = report['unregistered']['users'][user_id]
             user['first_name'] = base64.b64encode(user['first_name'].encode()).decode()
             user['last_name'] = base64.b64encode(user['last_name'].encode()).decode()
-        game_id = int(bottle.request.forms.get('game_id'))
         jsondumped = json.dumps(report)
         games.update(game_id, report=jsondumped)
         if "photo" in bottle.request.files:

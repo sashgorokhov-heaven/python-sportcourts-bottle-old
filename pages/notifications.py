@@ -6,10 +6,12 @@ import models.notifications
 
 
 class Notifications(pages.Page):
-    def get(self):
+    def execute(self, method:str, **kwargs):
         if not pages.auth_dispatcher.loggedin():
-            return pages.PageBuilder('text', message='Ошибка доступа',
-                                    description='Вы должны войти чтобы просматривать эту страницу')
+            return pages.templates.permission_denied().template()
+        return super().execute(method, **kwargs)
+
+    def get(self):
         user_id = pages.auth_dispatcher.getuserid()
         with modules.dbutils.dbopen() as db:
             if 'deleteall' in bottle.request.query:

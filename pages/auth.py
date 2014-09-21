@@ -35,6 +35,8 @@ class Authorize(pages.Page):
             raise bottle.redirect(bottle.request.get_header("Referer", "/games"))
 
     def post(self):
+        if pages.auth_dispatcher.loggedin():
+            raise bottle.redirect('/profile')
         email = bottle.request.forms.email
         password = bottle.request.forms.password
         try:
