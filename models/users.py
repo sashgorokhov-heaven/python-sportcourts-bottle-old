@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from modules import dbutils
 from modules.utils import beautifuldate, beautifultime
@@ -84,6 +85,9 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
         if 'settings' in user and detalized:
             user['settings'] = settings.SettingsClass(user['settings'])
 
+        if 'gameinfo' in user and detalized:
+            user['gameinfo'] = _GameInfo(user['gameinfo'])
+
     if isinstance(user_id, int) and user_id != 0:
         return users[0]
     elif isinstance(user_id, list) or user_id == 0:
@@ -123,3 +127,65 @@ def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=
     dbconnection.execute(
         "SELECT user_id FROM users WHERE user_id='{}' AND LOCATE('|{}|', friends)".format(user_id_1, user_id_2))
     return len(dbconnection.last()) != 0
+
+
+class _GameInfo:
+    def __init__(self, gameinfo:str):
+        self._gameinfo = json.loads(gameinfo)
+
+    def set(self, sport_type:str, duration:int):
+        if sport_type not in self._gameinfo['sport_types']:
+            self._gameinfo['sport_types'][sport_type] = 0
+        self._gameinfo['sport_types'][sport_type] += duration
+        self._gameinfo['sport_types']['total'] += duration
+
+    def get(self, sport_type:str, formatted:bool=False) -> int:
+        if sport_type not in self._gameinfo['sport_types']:
+            return 0 if not formatted else '0', 'минут'
+        return self._gameinfo['sport_types'][sport_type] if not formatted else self._format(
+            self._gameinfo['sport_types'][sport_type])
+
+    def total(self, formatted:bool=False) -> int:
+        return self._gameinfo['sport_types']['total'] if not formatted else self._format(
+            self._gameinfo['sport_types']['total'])
+
+    def format(self) -> str:
+        return json.dumps(self._gameinfo)
+
+    def _format(self, duration:int) -> tuple:
+        postfix = 'минут'
+        prefix = int(str(duration)[-1])
+        if prefix == 0 or 5 <= prefix <= 9:
+            postfix = 'минут'
+        elif prefix == 1:
+            postfix = 'минута'
+        elif 2 <= prefix <= 4:
+            postfix = 'минуты'
+        if duration > 60:
+            duration = round(duration / 60)
+            prefix = int(str(duration)[-1])
+            if prefix == 0 or 5 <= prefix <= 9:
+                postfix = 'часов'
+            elif prefix == 1:
+                postfix = 'час'
+            elif 2 <= prefix <= 4:
+                postfix = 'часа'
+            if duration > 24:
+                duration = round(duration / 24)
+                prefix = int(str(duration)[-1])
+                if prefix == 0 or 5 <= prefix <= 9:
+                    postfix = 'дней'
+                elif prefix == 1:
+                    postfix = 'день'
+                elif 2 <= prefix <= 4:
+                    postfix = 'дня'
+        return str(duration), postfix
+
+    def __iter__(self):
+        d = self._gameinfo['sport_types']
+        d.pop('total')
+        return d.__iter__()
+
+
+def update_gameinfo(user_id:int, gameinfo:_GameInfo, dbconnection:dbutils.DBConnection=None):
+    dbconnection.execute("UPDATE users SET gameinfo='{}' WHERE user_id={}".format(gameinfo.format(), user_id))

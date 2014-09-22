@@ -31,14 +31,16 @@
           Рост: {{user['height']}} см.<br>
           Вес: {{user['weight']}} кг.<br>
           <br>
-          <!-- <span class="label  label-info dropdown-toggle" data-toggle="dropdown">Сыграно: <span class="badge">42</span> часа</span>
-          <ul class="dropdown-menu" role="menu">
-              <li>Футбол: 3 часа</li>
-              <li>Баскетбол: 6 часов</li>
-              <li>Воллейбол: 30 часов</li>
-          </ul>
-          <br>
-          <br> -->
+          % if user['gameinfo'].total()>0:
+            <span class="label  label-info dropdown-toggle" data-toggle="dropdown">Сыграно: <span class="badge">{{user['gameinfo'].total(True)[0]}}</span> {{user['gameinfo'].total(True)[1]}}</span>
+            <ul class="dropdown-menu" role="menu">
+            % for sport_type in user['gameinfo']:
+                <li>{{sport_type}}: {{' '.join(user['gameinfo'].get(sport_type, True))}}</li>
+            % end
+            </ul>
+            <br>
+            <br>
+          % end
           % if int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or user['settings'].show_phone()=='all' or len(user['userlevel'].intersection({0,1}))>0:
           Телефон: {{user['phone']}}
           % end
