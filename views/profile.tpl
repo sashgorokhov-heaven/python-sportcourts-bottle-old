@@ -35,7 +35,7 @@
             <span class="label  label-info dropdown-toggle" data-toggle="dropdown">Сыграно: <span class="badge">{{user['gameinfo']['beautiful']['total'][0]}}</span> {{user['gameinfo']['beautiful']['total'][1]}}</span>
             <ul class="dropdown-menu" role="menu">
             % for sport_id in user['gameinfo']['sport_types']:
-                <li>{{user['gameinfo']['sport_types'][sport_id]}}: {{' '.join(user['gameinfo']['beautiful'][sport_type])}}</li>
+                <li>{{user['gameinfo']['sport_types'][sport_id]}}: {{' '.join(user['gameinfo']['beautiful'][sport_id])}}</li>
             % end
             </ul>
             <br>

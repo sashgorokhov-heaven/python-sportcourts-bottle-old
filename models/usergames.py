@@ -68,7 +68,7 @@ def get_game_stats(user_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
         info['total'] += game['duration']
         if game['sport_type']['sport_id'] not in info['sport_types']:
             info['sport_types'][game['sport_type']['sport_id']] = game['sport_type']['title']
-    for key in info['sport_types']:
-        info['beautiful'][key] = format_duration(info['sport_types'][key])
+    for key in {key for key in info if isinstance(key, int)}:
+        info['beautiful'][key] = format_duration(info[key])
     info['beautiful']['total'] = format_duration(info['total'])
     return info
