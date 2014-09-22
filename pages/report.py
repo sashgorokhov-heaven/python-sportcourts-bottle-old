@@ -4,7 +4,7 @@ import bottle
 from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
 from modules import dbutils, create_link
-from models import games, images, notifications, users
+from models import games, images, notifications, users, usergames
 
 
 class Report(pages.Page):
@@ -58,7 +58,14 @@ class Report(pages.Page):
                     create_link.user(
                         users.get(pages.auth_dispatcher.getuserid(), fields=['user_id', 'first_name', 'last_name'])),
                     create_link.game(game)))
+        self.report_users(game_id, report['registered']['users'])
         raise bottle.redirect('/report?game_id={}'.format(game_id))
+
+    def report_users(self, game_id:int, users:dict):
+        with dbutils.dbopen() as db:
+            for user_id in users:
+                usergames.set(int(user_id), game_id, int(users[user_id]['status']), dbconnection=db)
+
 
     get.route = '/report'
     post.route = get.route
