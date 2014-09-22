@@ -28,7 +28,7 @@ class Report(pages.Page):
 
     def post(self):
         game_id = int(bottle.request.forms.get('game_id'))
-        game = games.get_by_id(game_id, fields=['responsible_user_id', 'created_by'])
+        game = games.get_by_id(game_id, fields=['responsible_user_id', 'created_by', 'description'])
         if game['created_by'] != pages.auth_dispatcher.getuserid() and game[
             'responsible_user_id'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
             return pages.templates.permission_denied()
@@ -51,9 +51,9 @@ class Report(pages.Page):
         games.update(game_id, report=jsondumped)
         if "photo" in bottle.request.files:
             images.save_report(game_id, bottle.request.files.get("photo"))
-        if pages.auth_dispatcher.getuserid() != game['created_by']['user_id']:
+        if pages.auth_dispatcher.getuserid() != game['created_by']:
             notifications.add(
-                game['created_by']['user_id'],
+                game['created_by'],
                 'Ответственный "{}" отправил отчет по игре ""'.format(
                     create_link.user(
                         users.get(pages.auth_dispatcher.getuserid(), fields=['user_id', 'first_name', 'last_name'])),
