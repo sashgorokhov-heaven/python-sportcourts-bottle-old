@@ -13,6 +13,7 @@ class Profile(pages.Page):
             user = users.get(user_id, detalized=True, dbconnection=db)
             if len(user) == 0:
                 raise bottle.HTTPError(404)
+            user['gameinfo'] = users.get_game_stats(user_id, dbconnection=db)
             return pages.PageBuilder('profile', user=user)
 
     def get_edit(self):
@@ -45,6 +46,7 @@ class Profile(pages.Page):
             with modules.dbutils.dbopen() as db:
                 user_id = pages.auth_dispatcher.getuserid()
                 user = users.get(user_id, detalized=True, dbconnection=db)
+                user['gameinfo'] = users.get_game_stats(user_id, dbconnection=db)
                 activated = activation.activated(user_id, dbconnection=db)
                 return pages.PageBuilder('profile', user=user, activated=activated)
         return pages.templates.permission_denied("Ошибка доступа",

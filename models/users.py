@@ -1,9 +1,8 @@
 import datetime
-import json
 
 from modules import dbutils
 from modules.utils import beautifuldate, beautifultime
-from models import cities, autodb, splitstrlist, settings
+from models import cities, autodb, splitstrlist, settings, usergames
 
 ADMIN = 0
 ORGANIZER = 1
@@ -125,3 +124,52 @@ def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=
     dbconnection.execute(
         "SELECT user_id FROM users WHERE user_id='{}' AND LOCATE('|{}|', friends)".format(user_id_1, user_id_2))
     return len(dbconnection.last()) != 0
+
+
+def format_duration(duration:int) -> tuple:
+    postfix = 'минут'
+    prefix = int(str(duration)[-1])
+    if prefix == 0 or 5 <= prefix <= 9:
+        postfix = 'минут'
+    elif prefix == 1:
+        postfix = 'минута'
+    elif 2 <= prefix <= 4:
+        postfix = 'минуты'
+    if duration > 60:
+        duration = round(duration / 60)
+        prefix = int(str(duration)[-1])
+        if prefix == 0 or 5 <= prefix <= 9:
+            postfix = 'часов'
+        elif prefix == 1:
+            postfix = 'час'
+        elif 2 <= prefix <= 4:
+            postfix = 'часа'
+        if duration > 24:
+            duration = round(duration / 24)
+            prefix = int(str(duration)[-1])
+            if prefix == 0 or 5 <= prefix <= 9:
+                postfix = 'дней'
+            elif prefix == 1:
+                postfix = 'день'
+            elif 2 <= prefix <= 4:
+                postfix = 'дня'
+    return str(duration), postfix
+
+
+@autodb
+def get_game_stats(user_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
+    games = usergames.get(user_id, status=2, detalized=True, fields=['sport_type', 'duration'],
+                          dbconnection=dbconnection)
+    info = dict()
+    info['total'] = 0
+    info['sport_types'] = dict()
+    for game in games:
+        if game['sport_type']['sport_id'] not in info:
+            info[game['sport_type']['sport_id']] = 0
+        info[game['sport_type']['sport_id']] += game['duration']
+        info['total'] += game['duration']
+        if game['sport_type']['sport_id'] not in info['sport_types']:
+            info['sport_types'][game['sport_type']['sport_id']] = game['sport_type']['title']
+    for key in info:
+        info['beautiful'][key] = format_duration(info[key])
+    return info
