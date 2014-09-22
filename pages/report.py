@@ -28,7 +28,7 @@ class Report(pages.Page):
 
     def post(self):
         game_id = int(bottle.request.forms.get('game_id'))
-        game = games.get_by_id(game_id, fields=['responsible_user_id', 'created_by', 'description'])
+        game = games.get_by_id(game_id, fields=['game_id', 'responsible_user_id', 'created_by', 'description'])
         if game['created_by'] != pages.auth_dispatcher.getuserid() and game[
             'responsible_user_id'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
             return pages.templates.permission_denied()

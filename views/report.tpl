@@ -69,14 +69,15 @@
                           % end
                           % if showreport:
                             % status = int(game['report']['registered']['users'][str(user['user_id'])]['status'])
-                            % if status==1:
-                                Оплатил
-                            % end
-                            % if status==2:
-                                Не оплатил
-                            % end
-                            % if status==3:
-                                Не пришел
+                              % if value==1:
+                                 Не оплатил
+                              % end
+                              % if value==2:
+                                  Оплатил
+                              % end
+                              % if value==0:
+                                  Не пришел
+                              % end
                             % end
                           % end
                           </td>
