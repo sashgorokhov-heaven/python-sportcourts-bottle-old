@@ -9,6 +9,7 @@
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
               <div class="row">
+              % if game['created_by']['user_id']==userinfo['user_id'] or userinfo['admin']:
                 <div class="col-md-6">
                   <input type="hidden" name="game_id" value="{{game['game_id']}}">
                   <div class="form-group">
@@ -160,6 +161,10 @@
                       <span id="valid"></span>
                     </div>
                   </div>
+               % end
+               % if game['created_by']['user_id']!=userinfo['user_id'] and not userinfo['admin']:
+               	<div class="col-md-6">
+               % end
                   % if game['subscribed']['count']>0:
                       <label class="control-label">Список участников</label>
                       <br>
