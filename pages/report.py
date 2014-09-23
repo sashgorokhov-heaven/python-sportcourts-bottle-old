@@ -14,6 +14,8 @@ class Report(pages.Page):
         game_id = int(bottle.request.query.get('game_id'))
         with dbutils.dbopen() as db:
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
+            if len(game) == 0:
+                raise bottle.HTTPError(404)
             game['parsed_datetime'] = (beautifuldate(game['datetime']),
                                        beautifultime(game['datetime']),
                                        beautifulday(game['datetime']))
