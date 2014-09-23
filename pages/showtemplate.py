@@ -9,4 +9,4 @@ class ShowTemplate(pages.Page):
             raise bottle.HTTPError(404)
         return pages.PageBuilder(name)
 
-    get.route = '/showtpl/<name:str>'
+    get.route = '/showtpl/<name>'
