@@ -4,9 +4,9 @@ import pages
 
 
 class ShowTemplate(pages.Page):
-    def get(self):
-        if 'name' not in bottle.request.query or not pages.auth_dispatcher.admin():
+    def get(self, name:str):
+        if not pages.auth_dispatcher.admin():
             raise bottle.HTTPError(404)
-        return pages.PageBuilder(bottle.request.query.get("name"))
+        return pages.PageBuilder(name)
 
-    get.route = '/showtpl'
+    get.route = '/showtpl/<name:str>'
