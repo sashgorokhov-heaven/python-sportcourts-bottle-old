@@ -2,7 +2,7 @@
   $(document).on('click', 'button', function() {
     n_id = $(this).attr("id");
     $.ajax({
-      url: 'http://sportcourts.ru/notifications',
+      url: '/notifications',
       data: {
       % if not all:
         read: n_id

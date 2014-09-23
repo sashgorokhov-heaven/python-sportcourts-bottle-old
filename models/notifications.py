@@ -18,11 +18,20 @@ def get_count(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=Non
 
 
 @autodb
-def get(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute(
-        "SELECT * FROM notifications WHERE datetime<NOW() AND user_id={}{} ORDER BY DATETIME DESC{}".format(
-        user_id, ' AND `read`=0' if not all else '', ' LIMIT 20' if all else ''),
-                         dbutils.dbfields['notifications'])
+def get(user_id:int, all:bool=False, type:int=-1, dbconnection:dbutils.DBConnection=None) -> list:
+    query = "SELECT * FROM notifications WHERE datetime<NOW() AND user_id={}".format(user_id)
+    options = list()
+    if not all:
+        options.append("`read`=0")
+    if type >= 0:
+        options.append("type={}".format(type))
+    if len(options) > 0:
+        query += ' AND '
+        query += ' AND '.join(options)
+    query += ' ORDER BY DATETIME DESC'
+    if all:
+        query += ' LIMIT 40'
+    dbconnection.execute(query, dbutils.dbfields['notifications'])
     for i in dbconnection.last():
         dbutils.strdates(i)
         i['datetime'] = '{} {}'.format(beautifuldate(i['datetime']), beautifultime(i['datetime']))

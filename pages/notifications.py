@@ -18,11 +18,13 @@ class Notifications(pages.Page):
                 models.notifications.delete(-user_id, dbconnection=db)
                 raise bottle.redirect('/notifications')
             count = models.notifications.get_count(user_id, dbconnection=db)
-            if count > 0:
-                notifications = models.notifications.get(user_id, dbconnection=db)
-            else:
-                notifications = models.notifications.get(user_id, all=True, dbconnection=db)
-        return pages.PageBuilder("notifications", notifications=notifications, all=count == 0)
+            notifications = dict()
+            notifications['all'] = models.notifications.get(user_id, type=0, all=count == 0, dbconnection=db)
+            notifications['subscribed'] = models.notifications.get(user_id, type=1, all=count == 0, dbconnection=db)
+            if pages.auth_dispatcher.responsible():
+                notifications['responsible'] = models.notifications.get(user_id, type=2, all=count == 0,
+                                                                        dbconnection=db)
+            return pages.PageBuilder("notifications", notifications=notifications, all=count == 0)
 
     def post(self):
         if 'read' in bottle.request.forms:
