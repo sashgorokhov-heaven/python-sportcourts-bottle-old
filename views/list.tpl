@@ -10,7 +10,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-              <div class="col-md_6">
+              <div class="col-md-4">
                 <p class="lead">Списки для игры <a href="/games?game_id=1">#1</a></p>
                 <small>
                   <p>Ответственный: <a href="/profile?user_id=1">Харченко Виталий</a></p>
@@ -21,7 +21,7 @@
                   <p>Продолжительность: 90 минут</p>
                 </small>
               </div>
-              <div class="col-md_6">
+              <div class="col-md-8">
                 <div class="row">
                   <div class="col-md-12">
                     <br>
