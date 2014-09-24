@@ -21,6 +21,7 @@
           count1 = parseInt(count);
           count1 += 1;
           $(".friendscount").html(count1);
+          location.reload();
         },
         error: function (response, status, errorThrown) {
           alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
@@ -44,6 +45,7 @@
           var count = $(".friendscount").html();
           count1 = count - 1;
           $(".friendscount").html(count1);
+          location.reload();
         },
         error: function (response, status, errorThrown) {
           alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
