@@ -120,7 +120,7 @@
         <div class="form-group">
           <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
           <div class="col-sm-10">
-            <input id="bdate" type="date" class="form-control bdatemask" name="bdate" value="{{bdate}}"
+            <input id="bdate" class="form-control bdatemask" name="bdate" value="{{bdate}}"
             data-bv-notempty="true"
             data-bv-notempty-message="Укажите дату рождения" />
           </div>
