@@ -11,14 +11,14 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md_6">
-                <p class="lead">Списки для игры <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a></p>
+                <p class="lead">Списки для игры <a href="/games?game_id=1">#1</a></p>
                 <small>
-                  <p>Ответственный: <a href="/profile?user_id={{game['responsible_user_id']}}">{{game['responsible_user_name']}}</a></p>
-                  <p>Вид спорта: {{game['sport_type']['title']}}</p>
-                  <p>Тип игры: {{game['game_type']['title']}}</p>
-                  <p>Площадка: <a href="/courts?court_id={{game['court']['court_id']}}">{{game['court']['title']}}</a></p>
-                  <p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p>
-                  <p>Продолжительность: {{game['duration']}} минут</p>
+                  <p>Ответственный: <a href="/profile?user_id=1">Харченко Виталий</a></p>
+                  <p>Вид спорта: Баскетбол</p>
+                  <p>Тип игры: Стритбол 3х3</p>
+                  <p>Площадка: <a href="/courts?court_id=1">ФОК Факел</a></p>
+                  <p>21 сентября 2014</p>
+                  <p>Продолжительность: 90 минут</p>
                 </small>
               </div>
               <div class="col-md_6">
@@ -38,17 +38,14 @@
                           <td>Статус</td>
                           <td>Подпись</td>
                         </tr>
-                        % last_n = 0
-                        % for n, user in enumerate(game['subscribed']['users'], 1):
-                          <tr class="user">
-                            <td>{{n}}</td>
-                            <td><a href="/profile?user_id={{user['user_id']}}">{{user['first_name']}}</a></td>
-                            <td><a href="/profile?user_id={{user['user_id']}}">{{user['last_name']}}</a></td>
-                            <td>{{user['phone']}}</td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                        % end
+                        <tr class="user">
+                          <td>1</td>
+                          <td><a href="/profile?user_id=1">Виталий</a></td>
+                          <td><a href="/profile?user_id=1">Харченко</a></td>
+                          <td>+7 (982) 646 94 54</td>
+                          <td></td>
+                          <td></td>
+                        </tr>
                       </table>
                     </div>
                   </div>
