@@ -79,13 +79,14 @@ class Games(pages.Page):
             responsible_old = games.get_by_id(game_id, fields=['responsible_user_id'], dbconnection=db)[
                 'responsible_user_id']
 
-            page = self.check_responsible(params['responsible_user_id'], params['datetime'],
-                                          params['duration'].split(' ')[0], db)
-            if page: return page
-
             if responsible_old != int(params['responsible_user_id']):
+                page = self.check_responsible(params['responsible_user_id'], params['datetime'],
+                                              params['duration'].split(' ')[0], db)
+                if page: return page
+
                 self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
                 self.unassigned_responsible(game_id, responsible_old, db)
+
             games.update(game_id, dbconnection=db, **params)
             game = games.get_by_id(game_id, detalized=True, fields=['game_id', 'subscribed', 'description'],
                                    dbconnection=db)
