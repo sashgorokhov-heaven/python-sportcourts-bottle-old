@@ -71,7 +71,7 @@ class Subscribe(pages.Page):
                 else:
                     message = '{} отписался от завтрашней игры "{}"'.format(create_link.user(user),
                                                                             create_link.game(game))
-                notifications.add(game['responsible_user']['user_id'], message, 1, dbconnection=db)
+                notifications.add(game['responsible_user']['user_id'], message, 1, type=2, dbconnection=db)
             self.subscribe(game_id, user_id, unsubscribe)
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
             if pages.auth_dispatcher.getuserid() in {user['user_id'] for user in game['subscribed']['users']}:

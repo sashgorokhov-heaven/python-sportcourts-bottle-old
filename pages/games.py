@@ -91,7 +91,7 @@ class Games(pages.Page):
                                    dbconnection=db)
             for user in game['subscribed']['users']:
                 notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                    modules.create_link.game(game)), 1, dbconnection=db)
+                    modules.create_link.game(game)), 1, type=1, dbconnection=db)
             raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
