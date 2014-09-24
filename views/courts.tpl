@@ -22,7 +22,7 @@
                   <td>
                     <small>{{court['address']}}</small>
                     <br>
-                    <small><a href="#YMapsID">Показать на карте</a></small>
+                    <small><a href="#YMapsID">Показать на карте <span class="glyphicon glyphicon-map-marker"></span></a></small>
                   </td>
                 </tr>
                 <tr>
