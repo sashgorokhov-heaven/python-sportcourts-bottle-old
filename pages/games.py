@@ -42,7 +42,7 @@ class Games(pages.Page):
         created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
         notification = 'Вы больше не являетесь ответсвенным за игру "{}".'
         notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
-        notifications.add(user_id, notification, 2, game_id, dbconnection=db)
+        notifications.add(user_id, notification, 2, game_id, 2, dbconnection=db)
 
     def post_submit_add(self):
         with modules.dbutils.dbopen() as db:
