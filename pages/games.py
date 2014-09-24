@@ -22,7 +22,7 @@ class Games(pages.Page):
             return pages.templates.message("{} уже занят на это время".format(
                 modules.create_link.user(
                     users.get(
-                        int(params['responsible_user_id']),
+                        user_id,
                         fields=['user_id', 'first_name', 'last_name'],
                         dbconnection=db))), '')
 
