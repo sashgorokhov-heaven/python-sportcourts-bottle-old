@@ -59,7 +59,7 @@ class Report(pages.Page):
                 'Ответственный "{}" отправил отчет по игре ""'.format(
                     create_link.user(
                         users.get(pages.auth_dispatcher.getuserid(), fields=['user_id', 'first_name', 'last_name'])),
-                    create_link.game(game)), type=2)
+                    create_link.game(game)), game_id, 2)
         self.report_users(game_id, report['registered']['users'])
         raise bottle.redirect('/report?game_id={}'.format(game_id))
 
