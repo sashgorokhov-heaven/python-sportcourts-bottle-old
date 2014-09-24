@@ -21,7 +21,7 @@ class Notifications(pages.Page):
             notifications = dict()
             notifications['all'] = models.notifications.get(user_id, type=0, all=count == 0, dbconnection=db)
             notifications['subscribed'] = models.notifications.get(user_id, type=1, all=count == 0, dbconnection=db)
-            if pages.auth_dispatcher.responsible() or pages.auth_dispatcher.organizer():
+            if pages.auth_dispatcher.responsible() or pages.auth_dispatcher.organizer() or pages.auth_dispatcher.admin():
                 notifications['responsible'] = models.notifications.get(user_id, type=2, all=count == 0,
                                                                         dbconnection=db)
             return pages.PageBuilder("notifications", notifications=notifications, all=count == 0)

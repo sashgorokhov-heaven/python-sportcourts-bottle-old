@@ -101,7 +101,7 @@ class Subscribe(pages.Page):
         notifications.add(user_id,
                           'Вы были удалены с игры "{}"'.format(
                               create_link.game(games.get_by_id(game_id, fields=['game_id', 'description']))), 1,
-                          game_id)
+                          game_id, 1)
 
         raise bottle.redirect('/games?edit={}'.format(game_id))
 
