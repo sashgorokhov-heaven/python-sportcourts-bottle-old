@@ -90,7 +90,7 @@
                 <div class="form-group">
                   <label for="game_add_long" class="col-sm-2 control-label">Длительность</label>
                   <div class="col-sm-10">
-                    <input type="text" id="game_add_long_visible" name="durationv" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                    <input type="text" id="game_add_long_visible" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                     <div id="game_add_slider2"></div>
                     <input type="hidden" id="game_add_long" name="duration" readonly>
                   </div>
@@ -98,7 +98,7 @@
                 <div class="form-group">
                   <label for="game_add_amount" class="col-sm-2 control-label">Цена</label>
                   <div class="col-sm-10">
-                    <input type="text" id="game_add_amount_visible" name="costv" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                    <input type="text" id="game_add_amount_visible" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                     <div id="game_add_slider"></div>
                     <input type="hidden" id="game_add_amount" name="cost" readonly>
                   </div>
@@ -106,12 +106,12 @@
                 <div class="form-group">
                   <label for="game_add_count" class="col-sm-2 control-label">Количество мест</label>
                   <div class="col-sm-10">
-                    <input type="text" id="game_add_count_visible" name="capacityv" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                    <input type="text" id="game_add_count_visible" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                     <div id="game_add_slider1"></div>
                     <input type="hidden" id="game_add_count" name="capacity" readonly>
                     <div class="checkbox">
                       <label>
-                        <input type="checkbox" id="unlimit" name="unlimit" value="-1" onchange="showOrHide();">Безлимитно
+                        <input type="checkbox" id="unlimit" value="-1" onchange="showOrHide();">Безлимитно
                       </label>
                     </div>
                   </div>
