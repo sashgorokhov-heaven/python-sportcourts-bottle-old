@@ -156,7 +156,9 @@
                           % end
                           % if not loggedin:
                             % if game['subscribed']['count'] == game['capacity']:
-                              <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
+                              <a href="#" data-toggle="modal" data-target="#loginModal">
+                                <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
+                              </a>
                             % end
                             % if game['subscribed']['count'] < game['capacity']:
                               % if game['can_subscribe']:
@@ -165,7 +167,12 @@
                               </a>
                               % end
                               % if not game['can_subscribe']:
-                                <button type="button" class="btn btn-danger btn-xs" disabled="disabled" data-toggle="dropdown">Заблокировано</button>
+                                <a href="#" data-toggle="modal" data-target="#loginModal">
+                                  <button id="blocked" type="button" class="btn btn-danger btn-xs" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Заблокировано</button>
+                                </a>
+                                <script type="text/javascript">
+                                  $('#blocked').tooltip();
+                                </script>
                               % end
                             % end
                           % end
