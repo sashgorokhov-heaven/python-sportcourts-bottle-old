@@ -123,7 +123,7 @@
                                 </ul>
                               % end
                             % end
-                            % if game['subscribed']['count'] < game['capacity']:
+                            % if game['subscribed']['count'] < game['capacity'] or game['capacity']<0:
                               % if game['is_subscribed']:
                                 <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}-u" data-toggle="dropdown">Я записан{{'а' if userinfo['usersex']=='female' else ''}}</button>
                                 <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}-u" role="menu">

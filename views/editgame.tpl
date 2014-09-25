@@ -122,7 +122,7 @@
                     <div class="col-sm-8">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" id="unlimit" name="unlimit" value="-1" onchange="showOrHide();" {{'checked' if game['capacity']<0 else ''}}>Безлимитно
+                          <input type="checkbox" id="unlimit" value="-1" onchange="showOrHide();" {{'checked' if game['capacity']<0 else ''}}>Безлимитно
                         </label>
                       </div>
                     </div>
