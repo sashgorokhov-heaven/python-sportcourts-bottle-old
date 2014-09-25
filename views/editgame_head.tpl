@@ -31,7 +31,7 @@
 
   $(function () {
       $("#game_add_slider1").slider({
-          value: {{game['capacity']}},
+          value: {{game['capacity'] if game['capacity']>0 else 8}},
           min: 8,
           max: 40,
           step: 1,
