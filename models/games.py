@@ -33,6 +33,8 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
 
     if 'datetime' in game:
         game['can_subscribe'] = game['datetime'] - datetime.datetime.now() >= datetime.timedelta(0, 0, 0, 0, 0, 1)
+        game['datetime_today'] = game['datetime'] - datetime.datetime.now() <= datetime.timedelta(days=1)
+        game['datetime_tommorow'] = game['datetime'] - datetime.datetime.now() <= datetime.timedelta(days=2)
         dbutils.strdates(game)
         game['parsed_datetime'] = (
             beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
