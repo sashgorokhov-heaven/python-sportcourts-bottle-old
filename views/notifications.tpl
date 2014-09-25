@@ -63,6 +63,9 @@
                             % end
                           </div>
                         % end
+                        % if len(notifications['all'])==0:
+                            <p>Уведомлений нет</p>
+                        % end
                     </div>
                     <div class="tab-pane active" id="subscribed">
                         % for notification in notifications['subscribed']:
@@ -89,6 +92,9 @@
                               </div>
                             % end
                           </div>
+                        % end
+                        % if len(notifications['subscribed'])==0:
+                            <p>Уведомлений нет</p>
                         % end
                     </div>
                     % if 'responsible' in notifications:
@@ -117,6 +123,9 @@
                               </div>
                             % end
                           </div>
+                        % end
+                        % if len(notifications['responsible'])==0:
+                            <p>Уведомлений нет</p>
                         % end
                     </div>
                     % end

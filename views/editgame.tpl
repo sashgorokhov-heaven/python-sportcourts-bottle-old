@@ -182,7 +182,7 @@
                         </table>
                       </div>
                   % end
-                  <a class="btn btn-success" role="button">Распечатать списки на игру</a>
+                  <a class="btn btn-success" role="button" href="/list/{{game['game_id']}}">Распечатать списки на игру</a>
                   <br><br>
                   <a class="btn btn-success" role="button" href="/report?game_id={{game['game_id']}}">Заполнить отчет по игре</a>
                 </div>
@@ -191,7 +191,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <!--<div class="row">
           <div class="col-md-8 col-md-offset-2">
             <h3>Для ответственного</h3>
             % if game['subscribed']['count']>0:
@@ -212,5 +212,5 @@
                 </div>
             % end
           </div>
-        </div>
+        </div> -->
       </div>

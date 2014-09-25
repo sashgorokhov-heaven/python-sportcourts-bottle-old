@@ -22,7 +22,7 @@ class Games(pages.Page):
             return pages.templates.message("{} уже занят на это время".format(
                 modules.create_link.user(
                     users.get(
-                        int(params['responsible_user_id']),
+                        user_id,
                         fields=['user_id', 'first_name', 'last_name'],
                         dbconnection=db))), '')
 
@@ -33,7 +33,7 @@ class Games(pages.Page):
         created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
         notification = 'Вас назначили ответственным на игру "{}"<br>Свяжитесь с "{}"!'
         notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
-        notifications.add(user_id, notification, 2, dbconnection=db)
+        notifications.add(user_id, notification, 2, game_id, 2, dbconnection=db)
 
     def unassigned_responsible(self, game_id:int, user_id:int, db):
         if user_id == pages.auth_dispatcher.getuserid():
@@ -42,7 +42,7 @@ class Games(pages.Page):
         created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
         notification = 'Вы больше не являетесь ответсвенным за игру "{}".'
         notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
-        notifications.add(user_id, notification, 2, dbconnection=db)
+        notifications.add(user_id, notification, 2, game_id, 2, dbconnection=db)
 
     def post_submit_add(self):
         with modules.dbutils.dbopen() as db:
@@ -79,19 +79,20 @@ class Games(pages.Page):
             responsible_old = games.get_by_id(game_id, fields=['responsible_user_id'], dbconnection=db)[
                 'responsible_user_id']
 
-            page = self.check_responsible(params['responsible_user_id'], params['datetime'],
-                                          params['duration'].split(' ')[0], db)
-            if page: return page
-
             if responsible_old != int(params['responsible_user_id']):
+                page = self.check_responsible(params['responsible_user_id'], params['datetime'],
+                                              params['duration'].split(' ')[0], db)
+                if page: return page
+
                 self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
                 self.unassigned_responsible(game_id, responsible_old, db)
+
             games.update(game_id, dbconnection=db, **params)
             game = games.get_by_id(game_id, detalized=True, fields=['game_id', 'subscribed', 'description'],
                                    dbconnection=db)
             for user in game['subscribed']['users']:
                 notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                    modules.create_link.game(game)), 1, type=1, dbconnection=db)
+                    modules.create_link.game(game)), 1, game_id, 1, dbconnection=db)
             raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
