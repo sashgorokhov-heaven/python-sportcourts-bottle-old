@@ -12,28 +12,30 @@
       % end
       <div class="tabbable" id="tabs-655216">
         <ul class="nav nav-tabs">
-          <li {{'class=disabled' if len(notifications['all'])==0 else ''}}>
+          % if len(notifications['all'])>0:
+          <li>
             <a href="#all" data-toggle="tab">Общие
-            % if len(notifications['all'])>0:
-                <span class="badge">{{len(notifications['all'])}}</span>
-            % end
+              <span class="badge">{{len(notifications['all'])}}</span>
             </a>
           </li>
-          <li {{'class=disabled' if len(notifications['subscribed'])==0 else ''}}>
+          % end
+
+          % if len(notifications['subscribed'])>0:
+          <li>
               <a href="#subscribed" data-toggle="tab">Мои игры
-              % if len(notifications['subscribed'])>0:
-                  <span class="badge">{{len(notifications['subscribed'])}}</span>
-              % end
+                <span class="badge">{{len(notifications['subscribed'])}}</span>
               </a>
           </li>
+          % end
+
           % if 'responsible' in notifications:
-          <li {{'class=disabled' if len(notifications['responsible'])==0 else ''}}>
+            % if len(notifications['responsible'])>0:
+            <li>
               <a href="#responsible" data-toggle="tab">Ответсвенность
-              % if len(notifications['responsible'])>0:
-                  <span class="badge">{{len(notifications['responsible'])}}</span>
-              % end
+                <span class="badge">{{len(notifications['responsible'])}}</span>
               </a>
-          </li>
+            </li>
+            % end
           % end
         </ul>
         <div class="tab-content">
