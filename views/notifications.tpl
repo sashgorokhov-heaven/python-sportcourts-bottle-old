@@ -13,7 +13,7 @@
       <div class="tabbable" id="tabs-655216">
         <ul class="nav nav-tabs">
           % if len(notifications['all'])>0:
-          <li>
+          <li class="active">
             <a href="#all" data-toggle="tab">Общие
               <span class="badge">{{len(notifications['all'])}}</span>
             </a>
@@ -22,9 +22,9 @@
 
           % if len(notifications['subscribed'])>0:
           <li>
-              <a href="#subscribed" data-toggle="tab">Мои игры
-                <span class="badge">{{len(notifications['subscribed'])}}</span>
-              </a>
+            <a href="#subscribed" data-toggle="tab">Мои игры
+              <span class="badge">{{len(notifications['subscribed'])}}</span>
+            </a>
           </li>
           % end
 
