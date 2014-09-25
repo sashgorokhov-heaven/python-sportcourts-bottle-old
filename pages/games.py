@@ -52,6 +52,17 @@ class Games(pages.Page):
             params.pop('date')
             params.pop('time')
             params['created_by'] = pages.auth_dispatcher.getuserid()
+
+            cost = int(params['cost'])
+            capacity = int(params['capacity'])
+            judge = 500
+            court_cost = int(courts.get(int(params['court_id']), fields=['cost'])['cost'])
+            good_cost = judge + court_cost
+            normal_cost = round(good_cost * 0.5 + good_cost)
+            if cost * capacity <= normal_cost:
+                return pages.templates.message("Указанная цена убыточна.",
+                                               "Рекомендуемая цена - {}".format(round(normal_cost / capacity)))
+
             intersection = games.intersection(params['court_id'],
                                               params['datetime'],
                                               params['duration'].encode().split(b' ')[0].decode(),
@@ -204,8 +215,8 @@ class Games(pages.Page):
 
     def get_delete(self, game_id:int):
         with modules.dbutils.dbopen() as db:
-            game = games.get_by_id(game_id, fields=['created_by', 'subscribed'], dbconnection=db)
-            if game['created_by'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
+            game = games.get_by_id(game_id, detalized=True, fields=['created_by', 'subscribed'], dbconnection=db)
+            if game['created_by']['user_id'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
                 return pages.templates.permission_denied()
             games.delete(game_id, dbconnection=db)
             for user in game['subscribed']['users']:
