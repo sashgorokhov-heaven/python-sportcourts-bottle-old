@@ -65,10 +65,6 @@
                               <p style="margin-top:-7px;">{{game['parsed_datetime'][1]}}</p>
                             </div>
                           </div>
-
-                          <!-- <p>{{game['parsed_datetime'][0]}}</p>
-                          <p>{{game['parsed_datetime'][1]}}</p>
-                          <p>{{game['parsed_datetime'][2]}}</p> -->
                         </div>
                         <div class="col-md-6">
                           <p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
@@ -157,7 +153,10 @@
                             % end
                           % end
                           % if not game['can_subscribe']:
-                           <button type="button" class="btn btn-danger btn-xs" disabled="disabled" >Заблокировано</button>
+                           <button type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
+                           <script type="text/javascript">
+                             $('#blocked').tooltip();
+                           </script>
                           % end
                           </div>
                           <br>
