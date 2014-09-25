@@ -148,7 +148,10 @@
                               % end
                             % end
                             % if not game['can_subscribe']:
-                              <button type="button" class="btn btn-danger btn-xs" disabled="disabled" data-toggle="dropdown">Заблокировано</button>
+                              <button id="blocked" type="button" class="btn btn-danger btn-xs" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Заблокировано</button>
+                              <script type="text/javascript">
+                                $('#blocked').tooltip();
+                              </script>
                             % end
                           % end
                           % if not loggedin:
