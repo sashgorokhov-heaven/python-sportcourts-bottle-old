@@ -116,55 +116,48 @@
                         </div>
                         <div class="col-md-2">
                           <div class="btn-group" style="float:right;">
-                          % if loggedin:
-                            % if game['can_subscribe']:
-                              % if game['subscribed']['count'] == game['capacity']:
-                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}-u" {{'disabled="disabled"' if not game['is_subscribed'] else ''}} data-toggle="dropdown">Места заполнены</button>
-                                % if game['is_subscribed']:
-                                  <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}-u" role="menu">
-                                    <li id="{{game['game_id']}}-{{userinfo['user_id']}}-u">
-                                      <a style="cursor:pointer;">Не пойду</a>
-                                    </li>
-                                  </ul>
-                                % end
-                              % end
-                              % if game['subscribed']['count'] < game['capacity']:
-                                % if game['is_subscribed']:
-                                  <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}-u" data-toggle="dropdown">Я записан{{'а' if userinfo['usersex']=='female' else ''}}</button>
-                                  <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}-u" role="menu">
-                                    <li id="{{game['game_id']}}-{{userinfo['user_id']}}-u">
-                                      <a style="cursor:pointer;">Не пойду</a>
-                                    </li>
-                                  </ul>
-                                % end
-                                % if not game['is_subscribed']:
-                                  <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}" data-toggle="dropdown">Идет набор</button>
-                                  <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}" role="menu">
-                                    <li id="{{game['game_id']}}-{{userinfo['user_id']}}">
-                                      <a style="cursor:pointer;">Пойду</a>
-                                    </li>
-                                  </ul>
-                                % end
+                          % if loggedin and game['can_subscribe']:
+                            % if game['subscribed']['count'] == game['capacity']:
+                                <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}-u" {{'disabled="disabled"' if not game['is_subscribed'] else ''}} data-toggle="dropdown">Места заполнены</button>
+                              % if game['is_subscribed']:
+                                <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}-u" role="menu">
+                                  <li id="{{game['game_id']}}-{{userinfo['user_id']}}-u">
+                                    <a style="cursor:pointer;">Не пойду</a>
+                                  </li>
+                                </ul>
                               % end
                             % end
-                            % if not game['can_subscribe']:
-                              <button type="button" class="btn btn-danger btn-xs" disabled="disabled" data-toggle="dropdown">Заблокировано</button>
+                            % if game['subscribed']['count'] < game['capacity']:
+                              % if game['is_subscribed']:
+                                <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}-u" data-toggle="dropdown">Я записан{{'а' if userinfo['usersex']=='female' else ''}}</button>
+                                <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}-u" role="menu">
+                                  <li id="{{game['game_id']}}-{{userinfo['user_id']}}-u">
+                                    <a style="cursor:pointer;">Не пойду</a>
+                                  </li>
+                                </ul>
+                              % end
+                              % if not game['is_subscribed']:
+                                <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}" data-toggle="dropdown">Идет набор</button>
+                                <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}" role="menu">
+                                  <li id="{{game['game_id']}}-{{userinfo['user_id']}}">
+                                    <a style="cursor:pointer;">Пойду</a>
+                                  </li>
+                                </ul>
+                              % end
                             % end
                           % end
-                          % if not loggedin:
+                          % if not loggedin and game['can_subscribe']:
                             % if game['subscribed']['count'] == game['capacity']:
                               <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
                             % end
                             % if game['subscribed']['count'] < game['capacity']:
-                              % if game['can_subscribe']:
                               <a href="#" data-toggle="modal" data-target="#loginModal">
                                 <button type="button" class="btn btn-primary btn-xs">Идет набор</button>
                               </a>
-                              % end
-                              % if not game['can_subscribe']:
-                                <button type="button" class="btn btn-danger btn-xs" disabled="disabled" data-toggle="dropdown">Заблокировано</button>
-                              % end
                             % end
+                          % end
+                          % if not game['can_subscribe']:
+                           <button type="button" class="btn btn-danger btn-xs" disabled="disabled" >Заблокировано</button>
                           % end
                           </div>
                           <br>
