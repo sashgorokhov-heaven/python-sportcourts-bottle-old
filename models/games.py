@@ -1,3 +1,4 @@
+import datetime
 import json
 from models import autodb, splitstrlist, cities, courts, game_types, sport_types, users, notifications
 from modules import dbutils, create_link
@@ -31,6 +32,7 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
         game['responsible_user'] = user
 
     if 'datetime' in game:
+        game['can_subscribe'] = game['datetime'] - datetime.datetime.now() >= datetime.timedelta(0, 0, 0, 0, 0, 1)
         dbutils.strdates(game)
         game['parsed_datetime'] = (
             beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
