@@ -82,7 +82,7 @@
                           % end
                           <div class="progress">
                             <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
-                                <span class="">{{str(game['subscribed']['count']}}/{{game['capacity']) if game['capacity']>0 else 'Неограниченно'}}</span>
+                                <span class="">{{str(game['subscribed']['count'])+'/'+str(game['capacity']) if game['capacity']>0 else 'Неограниченно'}}</span>
                             </div>
                           </div>
                           % if game['subscribed']['count'] > 0:
