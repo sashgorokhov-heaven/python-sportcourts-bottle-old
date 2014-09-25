@@ -1,16 +1,15 @@
 <script type="text/javascript">
   $(function () {
       $("#court_add_slider").slider({
-          range: true,
-          values: [ {{court['cost']}}, {{court['cost']}} ],
+          value: {{court['cost']}},
           min: 0,
           max: 10000,
           step: 50,
           slide: function (event, ui) {
-              $("#court_add_amount").val("от " + ui.values[0] + " до " + ui.values[1] + " руб. в час");
+              $("#court_add_amount").val(ui.value);
           }
       });
-      $("#court_add_amount").val("от " + $("#court_add_slider").slider("values", 0) + " до " + $("#court_add_slider").slider("values", 1) + " руб. в час");
+      $("#court_add_amount").val($("#court_add_slider").slider("value"));
   });
 
   $(function () {

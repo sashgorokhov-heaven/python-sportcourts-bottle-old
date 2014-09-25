@@ -99,22 +99,32 @@
                   <div class="form-group">
                     <label for="game_add_long" class="col-sm-4 control-label">Длительность</label>
                     <div class="col-sm-8">
-                      <input type="text" id="game_add_long" name="duration" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                      <input type="text" id="game_add_long_visible" name="duration" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                       <div id="game_add_slider2"></div>
+                      <input type="hidden" id="game_add_long" name="capacity" readonly>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="game_add_amount" class="col-sm-4 control-label">Цена</label>
                     <div class="col-sm-8">
-                      <input type="text" id="game_add_amount" name="cost" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                      <input type="text" id="game_add_amount_visible" name="cost" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                       <div id="game_add_slider"></div>
+                      <input type="hidden" id="game_add_amount" name="capacity" readonly>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="game_add_count" class="col-sm-4 control-label">Количество мест</label>
                     <div class="col-sm-8">
-                      <input type="text" id="game_add_count" name="capacity" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
+                      <input type="text" id="game_add_count_visible" name="capacity" readonly style="border:0; color:rgb(60,132,193); font-weight:bold; background-color: rgba(0,0,0,0);">
                       <div id="game_add_slider1"></div>
+                      <input type="hidden" id="game_add_count" name="capacity" readonly>
+                    </div>
+                    <div class="col-sm-8">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" id="unlimit" name="unlimit" value="-1" onchange="showOrHide();">Безлимитно
+                        </label>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group">
@@ -139,9 +149,6 @@
                             </div>
                           </div>
                         </div>
-                        <script type="text/javascript">
-                          $('#deleteGameModal').modal(options)
-                        </script>
                       % end
                     </div>
                   </div>
