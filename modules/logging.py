@@ -48,6 +48,10 @@ def access_log(write:bool=True):
     user_id = pages.auth_dispatcher.getuserid()
     if user_id:
         line += ' uid=[{}]'.format(user_id)
+    referer = bottle.request.get_header('Referer')
+    if referer and not referer.startswith('http://sportcourts.ru') and not referer.startswith(
+            'http://www.sportcourts.ru'):
+        line += ' ref=[{}]'.format(referer)
     time = str(datetime.datetime.now())
     format = '[{}] {} '.format(time, line)
     if write:
