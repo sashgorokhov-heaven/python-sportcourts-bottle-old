@@ -32,11 +32,9 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
         game['responsible_user'] = user
 
     if 'datetime' in game:
-        game['can_subscribe'] = game['datetime'] - datetime.datetime.now() >= datetime.timedelta(0, 0, 0, 0, 0, 1)
-        game['datetime_today'] = game['datetime'] - datetime.datetime.now() <= datetime.timedelta(days=1)
-        game['datetime_tommorow'] = datetime.timedelta(days=1) <= game[
-                                                                      'datetime'] - datetime.datetime.now() <= datetime.timedelta(
-            days=2)
+        game['can_subscribe'] = game['datetime'] - datetime.datetime.now() >= datetime.timedelta(days=1)
+        game['datetime_today'] = game['datetime'].date() == datetime.date.today()
+        game['datetime_tommorow'] = game['datetime'].date() == datetime.date.today() + datetime.timedelta(days=1)
         dbutils.strdates(game)
         game['parsed_datetime'] = (
             beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
