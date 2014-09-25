@@ -42,8 +42,8 @@
                       % for n, user in enumerate(game['subscribed']['users'], 1):
                         <tr class="user">
                           <td>{{n}}</td>
-                          <td><a href="/profile?user_id={{user['user_id']}}">{{user['first_name']}}</a></td>
-                          <td><a href="/profile?user_id={{user['user_id']}}">{{user['last_name']}}</a></td>
+                          <td><a href="/profile?user_id={{user['user_id']}}" target="_blank">{{user['first_name']}}</a></td>
+                          <td><a href="/profile?user_id={{user['user_id']}}" target="_blank">{{user['last_name']}}</a></td>
                           <td>{{user['phone']}}</td>
                           <td></td>
                           <td></td>
