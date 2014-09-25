@@ -63,6 +63,12 @@
                               <p style="margin-top:-4px; font-size: 180%;">{{game['parsed_datetime'][0][0]}}</p>
                               <small><p style="margin-top:-11px;">{{game['parsed_datetime'][2]}}</p></small>
                               <p style="margin-top:-7px;">{{game['parsed_datetime'][1]}}</p>
+                              % if game['datetime_tommorow']:
+                                <p><span class="label label-info">Завтра</span></p>
+                              % end
+                              % if game['datetime_today']:
+                                <p><span class="label label-info">Сегодня</span></p>
+                              % end
                             </div>
                           </div>
                         </div>
