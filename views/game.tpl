@@ -148,7 +148,7 @@
                               % end
                             % end
                             % if not game['can_subscribe']:
-                              <button id="blocked" type="button" class="btn btn-danger btn-xs" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
+                              <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
                               <script type="text/javascript">
                                 $('#blocked').tooltip();
                               </script>
@@ -168,7 +168,7 @@
                               % end
                               % if not game['can_subscribe']:
                                 <a href="#" data-toggle="modal" data-target="#loginModal">
-                                  <button id="blocked" type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
+                                  <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
                                 </a>
                                 <script type="text/javascript">
                                   $('#blocked').tooltip();
