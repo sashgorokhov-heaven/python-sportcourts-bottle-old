@@ -203,10 +203,13 @@ class Games(pages.Page):
                 return data
 
     def get_delete(self, game_id:int):
-        game = games.get_by_id(game_id, fields=['created_by'])
-        if game['created_by'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
-            return pages.templates.permission_denied()
-        games.delete(game_id)
+        with modules.dbutils.dbopen() as db:
+            game = games.get_by_id(game_id, fields=['created_by', 'subscribed'], dbconnection=db)
+            if game['created_by'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
+                return pages.templates.permission_denied()
+            games.delete(game_id, dbconnection=db)
+            for user in game['subscribed']['users']:
+                games.delete_future_notifications(user['user_id'], game_id, dbconnection=db)
         raise bottle.redirect('/games')
 
     def get(self):

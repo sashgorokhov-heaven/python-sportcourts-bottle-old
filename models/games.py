@@ -102,14 +102,16 @@ def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
 @autodb
 def write_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     game = get_by_id(game_id, fields=["game_id", "description", "datetime"], dbconnection=dbconnection)
-    message = 'До игры "{}" осталось 2 дня!'.format(create_link.game(game))
-    notifications.add(user_id, message, 0, game_id, 1,
-                      'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game["datetime"]),
-                      dbconnection=dbconnection)
-    message = 'Завтра состоится игра "{}"<br>Не пропустите!'.format(create_link.game(game))
-    notifications.add(user_id, message, 1, game_id, 1,
-                      'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game["datetime"]),
-                      dbconnection=dbconnection)
+    if not game['datetime_tommorow'] and not game['datetime_today']:
+        message = 'До игры "{}" осталось 2 дня!'.format(create_link.game(game))
+        notifications.add(user_id, message, 0, game_id, 1,
+                          'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game["datetime"]),
+                          dbconnection=dbconnection)
+    if not game['datetime_today']:
+        message = 'Завтра состоится игра "{}"<br>Не пропустите!'.format(create_link.game(game))
+        notifications.add(user_id, message, 1, game_id, 1,
+                          'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game["datetime"]),
+                          dbconnection=dbconnection)
 
 
 @autodb
