@@ -126,3 +126,8 @@
 .panel_head{
     height: 21px;
 }
+
+.header_avatar {
+    margin-top: -5px;
+    margin-bottom: -5px;
+}

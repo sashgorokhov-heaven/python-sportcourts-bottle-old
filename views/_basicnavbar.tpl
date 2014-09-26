@@ -13,18 +13,19 @@
                 <ul class="nav navbar-nav">
                     <li><a class="topmenu" href="/games">Игры</a></li>
                     <li><a class="topmenu" href="/users">Игроки</a></li>
+                    <li><a class="topmenu" href="/courts?all"><span class="glyphicon glyphicon-globe"></span> Карта</a></li>
                     <li><a class="topmenu" href="/about">О нас</a></li>
                     % if loggedin:
                         <li>
                           <a class="topmenu" href="/profile">
-                            <!-- <img src="/avatars/{{userinfo['user_id']}}" class="round" width="30">
-                            &nbsp; -->
+                            <img src="/images/avatars/{{userinfo['user_id']}}" class="round header_avatar" width="30">
+                            &nbsp;
                             Мой профиль
                           </a>
                         </li>
                         <li>
                             <a class="topmenu" href="/notifications">
-                                <span class="glyphicon glyphicon-envelope"></span>
+                                <span class="glyphicon glyphicon-bell"></span>
                                 % if userinfo['notifycount']>0:
                                 <span class="badge notify">{{userinfo['notifycount']}}
                                 % end

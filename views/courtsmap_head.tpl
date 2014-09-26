@@ -3,6 +3,8 @@
 <style>
 a.title.active{
 	text-decoration: underline;
+    font-size: 110%;
+    font-weight: bold;
 }
 </style>
 
