@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="/view/jasny/css/jasny-bootstrap.css">
+<script src="/view/jasny/js/jasny-bootstrap.js"></script>
+<script src="http://api-maps.yandex.ru/1.1/index.xml?key=ADtA-FMBAAAAO_95dwIAb8cxoJ0XVsmlrrEljkqDE8QIFgsAAAAAAAAAAADwojBjdahSnZySk0zChxiVovWqNw==" type="text/javascript"></script>
+
 <script type="text/javascript">
   $(function () {
       $("#court_add_slider").slider({
