@@ -58,7 +58,7 @@ class Games(pages.Page):
             judge = 500
             court_cost = int(courts.get(int(params['court_id']), fields=['cost'])['cost'])
             good_cost = judge + court_cost
-            normal_cost = round(good_cost * 0.5 + good_cost)
+            normal_cost = round(good_cost * 0.3 + good_cost)
             if cost * capacity <= normal_cost:
                 return pages.templates.message("Указанная цена убыточна.",
                                                "Рекомендуемая цена - {}".format(round(normal_cost / capacity)))
