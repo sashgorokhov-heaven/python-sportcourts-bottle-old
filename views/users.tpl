@@ -47,6 +47,7 @@
                 % include("user_row", user=user, myfriends=myfriends)
                 <hr>
               % end
+                <div id="more"><button type="button" class="btn btn-default btn-sm btn-block">Загрузить еще</button></div>
               </div>
             </div>
             % if loggedin:
