@@ -109,7 +109,8 @@ class Games(pages.Page):
     def post(self):
         if not pages.auth_dispatcher.organizer() and not pages.auth_dispatcher.admin() and not pages.auth_dispatcher.responsible():
             return pages.templates.permission_denied()
-        if 'submit_add' in bottle.request.forms and not pages.auth_dispatcher.responsible():
+        if 'submit_add' in bottle.request.forms and (
+            pages.auth_dispatcher.organizer() or pages.auth_dispatcher.admin()):
             return self.post_submit_add()
         if 'submit_edit' in bottle.request.forms:
             return self.post_submit_edit()
