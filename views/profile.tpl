@@ -58,5 +58,147 @@
           % if int(user['user_id'])==int(userinfo['user_id']) and not activated:
             <p>Вы не активировали свой профиль!</p>
           % end
+
+          <br>
+          <br>
+
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    Игры, в которых я участвовал.
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                          <tr class="active">
+                            <td>№ игры</td>
+                            <td>Название</td>
+                            <td>Вид спорта</td>
+                            <td>Площадка</td>
+                            <td>Время на площадке</td>
+                          </tr>
+                          <tr>
+                            <td>52</td>
+                            <td>Тухлая игра</td>
+                            <td>Баскетбол</td>
+                            <td>ФОК Факел</td>
+                            <td>120 мин.</td>
+                          </tr>
+                          <tr>
+                            <td>52</td>
+                            <td>Тухлая игра</td>
+                            <td>Баскетбол</td>
+                            <td>ФОК Факел</td>
+                            <td>120 мин.</td>
+                          </tr>
+                          <tr>
+                            <td>52</td>
+                            <td>Тухлая игра</td>
+                            <td>Баскетбол</td>
+                            <td>ФОК Факел</td>
+                            <td>120 мин.</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    Игры, на которых я был ответственным.
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                          <tr class="warning">
+                            <td>№ игры</td>
+                            <td>Название</td>
+                            <td>Вид спорта</td>
+                            <td>Площадка</td>
+                            <td>Статус отчета</td>
+                          </tr>
+                          <tr>
+                            <td>52</td>
+                            <td>Тухлая игра</td>
+                            <td>Баскетбол</td>
+                            <td>ФОК Факел</td>
+                            <td>Отправлен</td>
+                          </tr>
+                          <tr class="info">
+                            <td>52</td>
+                            <td>Тухлая игра</td>
+                            <td>Баскетбол</td>
+                            <td>ФОК Факел</td>
+                            <td>Ожидается</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-danger">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                    Игры моего направления
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                          <tr class="danger">
+                            <td>№ игры</td>
+                            <td>Название</td>
+                            <td>Вид спорта</td>
+                            <td>Площадка</td>
+                            <td>Статус отчета</td>
+                            <td>Передача денег</td>
+                          </tr>
+                          <tr>
+                            <td>52</td>
+                            <td>Тухлая игра</td>
+                            <td>Баскетбол</td>
+                            <td>ФОК Факел</td>
+                            <td>Отправлен</td>
+                            <td>Состоялась</td>
+                          </tr>
+                          <tr>
+                            <td>52</td>
+                            <td>Тухлая игра</td>
+                            <td>Баскетбол</td>
+                            <td>ФОК Факел</td>
+                            <td>Ожидается</td>
+                            <td>Ожидается</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
