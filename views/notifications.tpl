@@ -34,7 +34,7 @@
         </li>
         % if 'responsible' in notifications:
         <li>
-            <a href="#responsible" data-toggle="tab">Ответсвенность
+            <a href="#responsible" data-toggle="tab">Ответственность
             % if len(notifications['responsible'])>0:
                 <span class="badge notify_responsible">{{len(notifications['responsible'])}}</span>
             % end
