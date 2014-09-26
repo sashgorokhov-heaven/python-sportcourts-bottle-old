@@ -66,10 +66,10 @@ class Subscribe(pages.Page):
                     days=1) <= datetime.datetime.now() <= pdatetime:
                 user = users.get(user_id, fields=['user_id', 'first_name', 'last_name'], dbconnection=db)
                 if not unsubscribe:
-                    message = 'На завтрашнюю игру "{}" записался {}'.format(create_link.game(game),
+                    message = 'На игру "{}" записался {}'.format(create_link.game(game),
                                                                             create_link.user(user))
                 else:
-                    message = '{} отписался от завтрашней игры "{}"'.format(create_link.user(user),
+                    message = '{} отписался от игры "{}"'.format(create_link.user(user),
                                                                             create_link.game(game))
                 notifications.add(game['responsible_user']['user_id'], message, 1, game_id, 2, dbconnection=db)
             self.subscribe(game_id, user_id, unsubscribe)
