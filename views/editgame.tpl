@@ -126,11 +126,6 @@
                         </label>
                       </div>
                     </div>
-                    % if game['capacity'] < 0:
-                    <script>
-                      $("#game_add_slider1").slider( "disable" );
-                    </script>
-                    % end
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
