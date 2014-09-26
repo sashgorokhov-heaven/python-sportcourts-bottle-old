@@ -21,14 +21,14 @@
         <li  class="active">
           <a href="#all" data-toggle="tab">Общие
           % if len(notifications['all'])>0:
-              <span class="badge">{{len(notifications['all'])}}</span>
+              <span class="badge notify_all">{{len(notifications['all'])}}</span>
           % end
           </a>
         </li>
         <li>
             <a href="#subscribed" data-toggle="tab">Мои игры
             % if len(notifications['subscribed'])>0:
-                <span class="badge">{{len(notifications['subscribed'])}}</span>
+                <span class="badge notify_subscribed">{{len(notifications['subscribed'])}}</span>
             % end
             </a>
         </li>
@@ -36,7 +36,7 @@
         <li>
             <a href="#responsible" data-toggle="tab">Ответсвенность
             % if len(notifications['responsible'])>0:
-                <span class="badge">{{len(notifications['responsible'])}}</span>
+                <span class="badge notify_responsible">{{len(notifications['responsible'])}}</span>
             % end
             </a>
         </li>
