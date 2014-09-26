@@ -72,7 +72,9 @@
                     </ul> -->
                 % end
                 % if len(games)==0:
-                  <strong>Игор нет<strong>
+                  <div class="alert alert-info fade in">
+                    <p class="lead">Игр не найдено</p>
+                  </div>
                 % end
               </div>
             </div>
