@@ -1,3 +1,5 @@
+<script src="/view/js/jquery.chained.js"></script>
+
 <script type="text/javascript">
   $(function () {
       $("#game_add_slider2").slider({
