@@ -126,6 +126,11 @@
                         </label>
                       </div>
                     </div>
+                    % if game['capacity'] < 0:
+                    <script>
+                      $("#game_add_slider1").slider( "disable" );
+                    </script>
+                    % end
                   </div>
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
@@ -180,8 +185,16 @@
                           % for n, user in enumerate(game['subscribed']['users'], 1):
                           <tr class="success">
                             <td>{{n}}</td>
-                            <td>{{user['first_name']}}</td>
-                            <td>{{user['last_name']}}</td>
+                            <td>
+                              <a href="/profile?user_id={{user['user_id']}}" target="_blank">
+                                {{user['first_name']}}
+                              </a>
+                            </td>
+                            <td>
+                              <a href="/profile?user_id={{user['user_id']}}" target="_blank">
+                                {{user['last_name']}}
+                              </a>
+                            </td>
                             <td>{{user['phone']}}</td>
                             <td><a href="/subscribe?user_id={{user['user_id']}}&unsubscribe&game_id={{game['game_id']}}"><span class="glyphicon glyphicon-remove"></span></a></td>
                           </tr>
