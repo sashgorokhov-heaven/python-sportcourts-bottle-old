@@ -42,6 +42,10 @@
       });
       $("#game_add_count_visible").val($("#game_add_slider1").slider("value"));
       $("#game_add_count").val($("#game_add_slider1").slider("value"));
+      % if game['capacity'] < 0:
+        $("#game_add_count_visible").val("");
+        $("#game_add_slider1").slider( "disable" );
+      % end
   });
 
 
@@ -49,7 +53,7 @@
     if($("#unlimit").is(":checked")){ 
       $("#game_add_count").val("-1");
       $("#game_add_slider1").slider( "disable" );
-      $("#game_add_count_visible").val("");;
+      $("#game_add_count_visible").val("");
     }else{ 
       $("#game_add_slider1").slider( "enable" );
       $("#game_add_count_visible").val($("#game_add_slider1").slider("value"));
