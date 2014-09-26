@@ -1,5 +1,4 @@
 import socket, pickle, struct, modules.utils
-from modules.utils import print
 
 _struct_format = '!I'
 _struct_len = struct.calcsize(_struct_format)
