@@ -159,7 +159,7 @@
                             % end
                           % end
                           % if not game['can_subscribe']:
-                           <button type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
+                           <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
                            <script type="text/javascript">
                              $('#blocked').tooltip();
                            </script>
