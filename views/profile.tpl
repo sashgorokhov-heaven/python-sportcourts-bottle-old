@@ -16,6 +16,8 @@
               </ul>
           </div>
           % end
+          <br>
+          <br>
         </div>
         <div class="col-md-9">
           <strong>{{user['first_name']+' '+user['last_name']}}</strong>
