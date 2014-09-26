@@ -34,7 +34,8 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
     if 'datetime' in game:
         game['can_subscribe'] = (game['datetime'] - datetime.datetime.now() >= datetime.timedelta(hours=1)) and game[
                                                                                                                     'datetime'] > datetime.datetime.now()
-        game['passed'] = game['datetime'] + datetime.timedelta(minutes=game['duration']) < datetime.datetime.now()
+        game['passed'] = (game['datetime'] + datetime.timedelta(
+            minutes=game['duration']) < datetime.datetime.now()) if 'duration' in game else False
         game['datetime_now'] = game['datetime'] <= datetime.datetime.now() <= game['datetime'] + datetime.timedelta(
             minutes=game['duration'])
         game['datetime_soon'] = game['datetime'] > datetime.datetime.now() and datetime.timedelta(seconds=1) <= game[
