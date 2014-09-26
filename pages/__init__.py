@@ -10,7 +10,7 @@ import modules.logging
 import modules.dbutils
 import models.notifications
 import models.settings
-from models import mailing
+
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
@@ -59,13 +59,14 @@ class _Executor:
     def execute(self, **kwargs):
         with self._lock:
             try:
-                modules.logging.access_log()
-                return self._page.execute(bottle.request.method, **kwargs)
+                response = self._page.execute(bottle.request.method, **kwargs)
+                modules.logging.access()
+                return response
             except (bottle.HTTPError, bottle.HTTPResponse) as e:
+                modules.logging.access()
                 raise e
             except Exception as e:
-                modules.logging.error_log(e)
-                mailing.send_report(e)
+                modules.logging.error(e)
                 if modules.config['debug']:
                     return templates.message(e.__class__.__name__,
                                              modules.extract_traceback(e, '<br>').replace('\n', '<br>')).template()
