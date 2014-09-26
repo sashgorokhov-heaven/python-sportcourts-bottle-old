@@ -48,7 +48,6 @@ def auth_code(code:str, redirec_page:str) -> (str, int, str):
 
 def convert_date(vkdate:str) -> str:
     vkdate = vkdate.split('.')
-    vkdate.reverse()
+    vkdate[0] = vkdate[0] if len(vkdate[0]) == 2 else '0' + vkdate[0]
     vkdate[1] = vkdate[1] if len(vkdate[1]) == 2 else '0' + vkdate[1]
-    vkdate[2] = vkdate[2] if len(vkdate[2]) == 2 else '0' + vkdate[2]
-    return '-'.join(vkdate)
+    return '.'.join(vkdate)

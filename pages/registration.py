@@ -73,6 +73,10 @@ class Registration(pages.Page):
         params.pop('confirm_passwd')
         params['phone'] = params['phone'] if params['phone'] else 'Не указан'
 
+        params['bdate'] = params['bdate'].split('.')
+        params['bdate'].reverse()
+        params['bdate'] = '-'.join(params['bdate'])
+
         city_title = params['city']
         params.pop('city')
 
