@@ -42,6 +42,8 @@ def _error_data(error:Exception) -> dict():
 
 
 def access():
+    if bottle.request.fullpath.startswith('/view') or bottle.request.fullpath.startswith('/images'):
+        return
     data = _access_data()
     _send(data)
 
