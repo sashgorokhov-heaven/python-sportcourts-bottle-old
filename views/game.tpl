@@ -159,10 +159,18 @@
                             % end
                           % end
                           % if not game['can_subscribe']:
-                           <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
-                           <script type="text/javascript">
-                             $('#blocked').tooltip();
-                           </script>
+                            % if game['datetime_soon']:
+                                <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
+                                <script type="text/javascript">
+                                  $('#blocked').tooltip();
+                                </script>
+                            % end
+                            % if game['datetime_now']:
+                                <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра идет</button>
+                            % end
+                            % if game['passed']:
+                                <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра прошла</button>
+                            % end
                           % end
                           </div>
                           <br>
