@@ -32,14 +32,10 @@
     	<script src="/view/bootstrap/js/bootstrap.min.js"></script>
     	<script src="/view/js/current_href.js"></script>
     	<script src="/view/js/rotator.js"></script>
-        <!--<script src="/view/js/amount_slider.js"></script>-->
     	<script type="text/javascript" src="/view/bootstrap/bootstrap_validator/js/bootstrapValidator.js"></script>
     	<script type="text/javascript" src="/view/bootstrap/bootstrap_validator/language/ru_RU.js"></script>
         <script src="/view/js/bootstrap_validator.js"></script>
-        <script src="/view/js/bootstrap_typeahead.js"></script>
+        <!--<script src="/view/js/bootstrap_typeahead.js"></script>-->
         <script src="/view/js/jquery.chained.js"></script>
-        <!-- <script src="/view/js/googlemaps.js"></script> -->
-    	<!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAHoLAwhKxJ_cIQc2LSGDNprOQbRvWHvcs&sensor=false"></script> -->
         <script src="http://api-maps.yandex.ru/1.1/index.xml?key=ADtA-FMBAAAAO_95dwIAb8cxoJ0XVsmlrrEljkqDE8QIFgsAAAAAAAAAAADwojBjdahSnZySk0zChxiVovWqNw==" type="text/javascript"></script>
-        <!-- <script src="/view/js/yandexmaps.js"></script> -->
     	<script src="/view/jasny/js/jasny-bootstrap.js"></script>
