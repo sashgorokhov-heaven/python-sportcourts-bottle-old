@@ -214,19 +214,11 @@ def update(game_id:int, dbconnection:dbutils.DBConnection=None, **kwargs):
 @autodb
 def get_user_games(user_id:int, detalized:bool=False, fields:list=dbutils.dbfields['games'],
                    dbconnection:dbutils.DBConnection=None):
-    orderedfields = [i for i in dbutils.dbfields['games'] if i in set(fields)]
-    select = ','.join(orderedfields)
-
-    dbconnection.execute("SELECT " + select + " FROM games WHERE LOCATE('|{}|', subscribed)".format(user_id),
-                         orderedfields)
-
-    if len(dbconnection.last()) == 0:
-        return list()
-
-    for game in dbconnection.last():
-        detalize_game(game, detalized=detalized, dbconnection=dbconnection)
-
-    return dbconnection.last()
+    dbconnection.execute("SELECT game_id FROM games WHERE LOCATE('|{}|', subscribed)".format(user_id))
+    if len(dbconnection.last()) == 0: return list()
+    id_list = list(map(lambda x: x[0], dbconnection.last()))
+    return get_by_id(id_list, fields=fields,
+                     detalized=detalized, dbconnection=dbconnection)
 
 
 @autodb
@@ -235,3 +227,21 @@ def get_report(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
     if len(dbconnection.last()) == 0:
         raise KeyError("Game id not found: {}".format(game_id))
     return json.loads(dbconnection.last()[0][0])
+
+
+@autodb
+def get_responsible_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT game_id FROM games WHERE responsible_user_id={}".format(user_id))
+    if len(dbconnection.last()) == 0: return list()
+    id_list = list(map(lambda x: x[0], dbconnection.last()))
+    return get_by_id(id_list, fields=['game_id', 'description', 'sport_type', 'court_id', 'report'],
+                     detalized=True, dbconnection=dbconnection)
+
+
+@autodb
+def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list():
+    dbconnection.execute("SELECT game_id FROM games WHERE created_by={}".format(user_id))
+    if len(dbconnection.last()) == 0: return list()
+    id_list = list(map(lambda x: x[0], dbconnection.last()))
+    return get_by_id(id_list, fields=['game_id', 'description', 'sport_type', 'court_id', 'report'],
+                     detalized=True, dbconnection=dbconnection)

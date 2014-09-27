@@ -3,7 +3,7 @@ import bottle
 import pages
 import modules
 import modules.dbutils
-from models import users, cities, activation, images, usergames
+from models import users, cities, activation, images, usergames, games
 
 
 class Profile(pages.Page):
@@ -48,7 +48,14 @@ class Profile(pages.Page):
                 user = users.get(user_id, detalized=True, dbconnection=db)
                 user['gameinfo'] = usergames.get_game_stats(user_id, dbconnection=db)
                 activated = activation.activated(user_id, dbconnection=db)
-                return pages.PageBuilder('profile', user=user, activated=activated)
+                page = pages.PageBuilder('profile', user=user, activated=activated)
+                user_games = games.get_user_games(user_id, detalized=True,
+                                                  fields=['game_id', 'description', 'sport_type', 'court_id',
+                                                          'duration'], dbconnection=db)
+                page.add_param('user_games', user_games)
+                page.add_param('responsible_games', games.get_responsible_games(user_id, dbconnection=db))
+                page.add_param('organizer_games', games.get_organizer_games(user_id, dbconnection=db))
+                return page
         return pages.templates.permission_denied("Ошибка доступа",
                                                  "Зарегестрируйтесь, чтобы иметь свой профиль, с блекджеком и аватаркой.")
 

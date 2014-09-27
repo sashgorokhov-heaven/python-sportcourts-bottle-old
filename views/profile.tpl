@@ -64,143 +64,128 @@
           <br>
           <br>
 
-          <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    Игры, в которых я участвовал.
-                  </a>
-                </h4>
-              </div>
-              <div id="collapseOne" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="table-responsive">
-                        <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
-                          <tr class="active">
-                            <td>№ игры</td>
-                            <td>Название</td>
-                            <td>Вид спорта</td>
-                            <td>Площадка</td>
-                            <td>Время на площадке</td>
-                          </tr>
-                          <tr>
-                            <td>52</td>
-                            <td>Тухлая игра</td>
-                            <td>Баскетбол</td>
-                            <td>ФОК Факел</td>
-                            <td>120 мин.</td>
-                          </tr>
-                          <tr>
-                            <td>52</td>
-                            <td>Тухлая игра</td>
-                            <td>Баскетбол</td>
-                            <td>ФОК Факел</td>
-                            <td>120 мин.</td>
-                          </tr>
-                          <tr>
-                            <td>52</td>
-                            <td>Тухлая игра</td>
-                            <td>Баскетбол</td>
-                            <td>ФОК Факел</td>
-                            <td>120 мин.</td>
-                          </tr>
-                        </table>
+          % if int(user['user_id'])==int(userinfo['user_id']):
+            <div class="panel-group" id="accordion">
+              % if len(user_games)>0:
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        Игры, в которых я участвовал.
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                              <tr class="active">
+                                <td>№ игры</td>
+                                <td>Название</td>
+                                <td>Вид спорта</td>
+                                <td>Площадка</td>
+                                <td>Время на площадке</td>
+                              </tr>
+                              % for game in user_games:
+                                <tr>
+                                  <td><a href="/games?game_id={{game['game_id']}}">{{game['game_id']}}</a></td>
+                                  <td>{{game['description']}}</td>
+                                  <td>{{game['sport_type']['title']}}</td>
+                                  <td>{{game['court']['title']}}</td>
+                                  <td>{{game['duration']}} мин.</td>
+                                </tr>
+                              % end
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="panel panel-warning">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                    Игры, на которых я был ответственным.
-                  </a>
-                </h4>
-              </div>
-              <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="table-responsive">
-                        <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
-                          <tr class="warning">
-                            <td>№ игры</td>
-                            <td>Название</td>
-                            <td>Вид спорта</td>
-                            <td>Площадка</td>
-                            <td>Статус отчета</td>
-                          </tr>
-                          <tr>
-                            <td>52</td>
-                            <td>Тухлая игра</td>
-                            <td>Баскетбол</td>
-                            <td>ФОК Факел</td>
-                            <td>Отправлен</td>
-                          </tr>
-                          <tr class="info">
-                            <td>52</td>
-                            <td>Тухлая игра</td>
-                            <td>Баскетбол</td>
-                            <td>ФОК Факел</td>
-                            <td>Ожидается</td>
-                          </tr>
-                        </table>
+              % end
+              % if len(responsible_games)>0:
+                <div class="panel panel-warning">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        Игры, на которых я был ответственным.
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                              <tr class="warning">
+                                <td>№ игры</td>
+                                <td>Название</td>
+                                <td>Вид спорта</td>
+                                <td>Площадка</td>
+                                <td>Статус отчета</td>
+                              </tr>
+                              % for game in responsible_games:
+                                <tr {{'class=active' if not game['report']['reported'] else ''}}>
+                                  <td><a href="/games?game_id={{game['game_id']}}">{{game['game_id']}}</a></td>
+                                  <td>{{game['description']}}</td>
+                                  <td>{{game['sport_type']['title']}}</td>
+                                  <td>{{game['court']['title']}}</td>
+                                  <td>{{'Отправлен' if game['report']['reported'] else 'Ожидается'}}</td>
+                                </tr>
+                              % end
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="panel panel-danger">
-              <div class="panel-heading">
-                <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                    Игры моего направления
-                  </a>
-                </h4>
-              </div>
-              <div id="collapseThree" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="table-responsive">
-                        <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
-                          <tr class="danger">
-                            <td>№ игры</td>
-                            <td>Название</td>
-                            <td>Вид спорта</td>
-                            <td>Площадка</td>
-                            <td>Статус отчета</td>
-                            <td>Передача денег</td>
-                          </tr>
-                          <tr>
-                            <td>52</td>
-                            <td>Тухлая игра</td>
-                            <td>Баскетбол</td>
-                            <td>ФОК Факел</td>
-                            <td>Отправлен</td>
-                            <td>Состоялась</td>
-                          </tr>
-                          <tr>
-                            <td>52</td>
-                            <td>Тухлая игра</td>
-                            <td>Баскетбол</td>
-                            <td>ФОК Факел</td>
-                            <td>Ожидается</td>
-                            <td>Ожидается</td>
-                          </tr>
-                        </table>
+              % end
+              % if len(organizer_games)>0:
+                <div class="panel panel-danger">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                        Игры моего направления
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                              <tr class="danger">
+                                <td>№ игры</td>
+                                <td>Название</td>
+                                <td>Вид спорта</td>
+                                <td>Площадка</td>
+                                <td>Статус отчета</td>
+                                <td>Передача денег</td>
+                              </tr>
+                              % for game in organizer_games:
+                                <tr {{'class=active' if not game['report']['reported'] else ''}}>
+                                  <td><a href="/games?game_id={{game['game_id']}}">{{game['game_id']}}</a></td>
+                                  <td>{{game['description']}}</td>
+                                  <td>{{game['sport_type']['title']}}</td>
+                                  <td>{{game['court']['title']}}</td>
+                                  <td>{{'Отправлен' if game['report']['reported'] else 'Ожидается'}}</td>
+                                  <td> --- </td>
+                                </tr>
+                              % end
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              % end
             </div>
-          </div>
+          % end
         </div>
       </div>
