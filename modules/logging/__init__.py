@@ -6,13 +6,25 @@ def _send_(data:dict):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(0.2)
     addr = (modules.config['log_server']['ip'], int(modules.config['log_server']['port']))
-    sock.connect(addr)
-    session = speaker.Session(sock, addr)
-    session.send(modules.config['log_server']['passwd'])
-    if session.recieve()['status'] == 1:
-        return session.close()
-    session.send({'data': data})
-    session.close()
+    try:
+        sock.connect(addr)
+        session = speaker.Session(sock, addr)
+        try:
+            session.send(modules.config['log_server']['passwd'])
+            if session.recieve()['status'] == 1:
+                return session.close()
+            session.send({'data': data})
+        except:
+            pass
+        finally:
+            session.close()
+    except:
+        pass
+    finally:
+        try:
+            sock.close()
+        except:
+            pass
 
 
 def _send(data:dict):
