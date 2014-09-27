@@ -56,7 +56,7 @@ class Report(pages.Page):
         if pages.auth_dispatcher.getuserid() != game['created_by']:
             notifications.add(
                 game['created_by'],
-                'Ответственный "{}" отправил отчет по игре ""'.format(
+                'Ответственный "{}" отправил отчет по игре "{}"'.format(
                     create_link.user(
                         users.get(pages.auth_dispatcher.getuserid(), fields=['user_id', 'first_name', 'last_name'])),
                     create_link.game(game)), game_id, 2)
