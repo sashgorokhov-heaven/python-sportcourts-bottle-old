@@ -41,6 +41,19 @@
             &nbsp;
             <small>Последний раз заходил{{'a' if user['sex']=='female' else ''}}: {{user['lasttime']}}</small><br>
           % end
+          % if len({0,1,2}.intersection(user['userlevel']))>0:
+            <br>
+            % if 0 in user['userlevel']:
+                <span class="label label-default">Админ</span>&nbsp;
+            % end
+            % if 1 in user['userlevel']:
+                <span class="label label-primary">Организатор</span>&nbsp;
+            % end
+            % if 2 in user['userlevel']:
+                <span class="label label-info">Ответственный</span>
+            % end
+            <br>
+          % end
           <br>
           {{user['parsed_bdate']+', '+user['city']['title']}}<br>
           <br>
