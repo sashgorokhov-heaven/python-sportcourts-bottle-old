@@ -196,7 +196,7 @@ class _AuthDispatcher:
         return self.loggedin() and 0 in self.getuserlevel()
 
     def organizer(self) -> bool:
-        return self.loggedin() and (1 in self.getuserlevel() or self.admin())
+        return self.loggedin() and 1 in self.getuserlevel()
 
     def responsible(self) -> bool:
         return self.loggedin() and 2 in self.getuserlevel()
