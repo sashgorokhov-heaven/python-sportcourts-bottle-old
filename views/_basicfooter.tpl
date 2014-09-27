@@ -9,7 +9,15 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6">
-              <p class="text-muted">Sportcourts. 2014 &nbsp&nbsp&nbsp&nbsp <a class="topmenu" href="/about">О нас</a></p>
+              <p class="text-muted">
+                Sportcourts. 2014
+                &nbsp&nbsp&nbsp&nbsp
+                <a class="topmenu" href="/about">О нас</a>
+                &nbsp&nbsp&nbsp&nbsp
+                Powered by <img src="http://nichol.as/wp-content/uploads/2010/03/uwsgi.png" height=15 style="margin-bottom: 4px;">
+                &nbsp
+                <img src="http://bottlepy.org/docs/dev/_static/logo_nav.png" height=15 style="margin-bottom: 4px;">
+              </p>
             </div>
           </div>
         </div>
