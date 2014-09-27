@@ -94,7 +94,7 @@
               </div>
               % end
               % if game['capacity'] < 0:
-              <p>Заявок: {{game['subscribed']['count']}}</p>
+              <p><span class="glyphicon glyphicon-user"></span> Заявок: {{game['subscribed']['count']}}</p>
               % end
               % if game['subscribed']['count'] > 0:
               % if loggedin:
