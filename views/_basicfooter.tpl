@@ -9,10 +9,7 @@
         <div class="container">
           <div class="row">
             <div class="col-md-6">
-              <p class="text-muted" style="margin-top: 20px;">Sportcourts. 2014</p>
-            </div>
-            <div class="col-md-6">
-              <!-- <p class="text-muted pull-right" style="margin-top: 20px;"><a class="topmenu" href="/about">О нас</a></p> -->
+              <p class="text-muted">Sportcourts. 2014 &nbsp&nbsp&nbsp&nbsp <a class="topmenu" href="/about">О нас</a></p>
             </div>
           </div>
         </div>
