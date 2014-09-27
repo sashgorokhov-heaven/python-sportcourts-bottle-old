@@ -169,7 +169,7 @@
                     <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра идет</button>
                 % end
                 % if game['passed']:
-                    <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра прошла</button>
+                    <button id="blocked" type="button" class="btn btn-success btn-xs" disabled>Игра прошла</button>
                 % end
               % end
               </div>
