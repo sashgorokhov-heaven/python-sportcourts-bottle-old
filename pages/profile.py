@@ -50,7 +50,8 @@ class Profile(pages.Page):
                 activated = activation.activated(user_id, dbconnection=db)
                 page = pages.PageBuilder('profile', user=user, activated=activated)
                 user_games = games.get_user_games(user_id, detalized=True,
-                                                  fields=['game_id', 'description', 'sport_type', 'court_id',
+                                                  fields=['game_id', 'datetime', 'description', 'sport_type',
+                                                          'court_id',
                                                           'duration'], dbconnection=db)
                 page.add_param('user_games', user_games)
                 page.add_param('responsible_games', games.get_responsible_games(user_id, dbconnection=db))

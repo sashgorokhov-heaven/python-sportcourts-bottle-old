@@ -1,5 +1,6 @@
 import datetime
 import json
+
 from models import autodb, splitstrlist, cities, courts, game_types, sport_types, users, notifications
 from modules import dbutils, create_link
 from modules.utils import beautifuldate, beautifultime, beautifulday
@@ -32,17 +33,22 @@ def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnec
         game['responsible_user'] = user
 
     if 'datetime' in game:
-        game['can_subscribe'] = (game['datetime'] - datetime.datetime.now() >= datetime.timedelta(hours=1)) and game[
-                                                                                                                    'datetime'] > datetime.datetime.now()
-        game['passed'] = (game['datetime'] + datetime.timedelta(
-            minutes=game['duration']) < datetime.datetime.now()) if 'duration' in game else False
-        game['datetime_now'] = game['datetime'] <= datetime.datetime.now() <= game['datetime'] + datetime.timedelta(
-            minutes=game['duration'])
-        game['datetime_soon'] = game['datetime'] > datetime.datetime.now() and datetime.timedelta(seconds=1) <= game[
-                                                                                                                    'datetime'] - datetime.datetime.now() <= datetime.timedelta(
-            hours=1)
-        game['datetime_today'] = game['datetime'].date() == datetime.date.today()
-        game['datetime_tommorow'] = game['datetime'].date() == datetime.date.today() + datetime.timedelta(days=1)
+        if detalized:
+            game['can_subscribe'] = (game['datetime'] - datetime.datetime.now() >= datetime.timedelta(hours=1)) and \
+                                    game[
+                                        'datetime'] > datetime.datetime.now()
+            if 'duration' in game:
+                game['passed'] = (game['datetime'] + datetime.timedelta(
+                    minutes=game['duration']) < datetime.datetime.now())
+                game['datetime_now'] = game['datetime'] <= datetime.datetime.now() <= game[
+                                                                                          'datetime'] + datetime.timedelta(
+                    minutes=game['duration'])
+                game['datetime_soon'] = game['datetime'] > datetime.datetime.now() and datetime.timedelta(seconds=1) <= \
+                                                                                       game[
+                                                                                           'datetime'] - datetime.datetime.now() <= datetime.timedelta(
+                    hours=1)
+            game['datetime_today'] = game['datetime'].date() == datetime.date.today()
+            game['datetime_tommorow'] = game['datetime'].date() == datetime.date.today() + datetime.timedelta(days=1)
         dbutils.strdates(game)
         game['parsed_datetime'] = (
             beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
@@ -234,7 +240,7 @@ def get_responsible_games(user_id:int, dbconnection:dbutils.DBConnection=None) -
     dbconnection.execute("SELECT game_id FROM games WHERE responsible_user_id={}".format(user_id))
     if len(dbconnection.last()) == 0: return list()
     id_list = list(map(lambda x: x[0], dbconnection.last()))
-    return get_by_id(id_list, fields=['game_id', 'description', 'sport_type', 'court_id', 'report'],
+    return get_by_id(id_list, fields=['game_id', 'datetime', 'description', 'sport_type', 'court_id', 'report'],
                      detalized=True, dbconnection=dbconnection)
 
 
@@ -243,5 +249,5 @@ def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> 
     dbconnection.execute("SELECT game_id FROM games WHERE created_by={}".format(user_id))
     if len(dbconnection.last()) == 0: return list()
     id_list = list(map(lambda x: x[0], dbconnection.last()))
-    return get_by_id(id_list, fields=['game_id', 'description', 'sport_type', 'court_id', 'report'],
+    return get_by_id(id_list, fields=['game_id', 'datetime', 'description', 'sport_type', 'court_id', 'report'],
                      detalized=True, dbconnection=dbconnection)

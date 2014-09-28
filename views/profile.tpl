@@ -105,7 +105,7 @@
                               % for game in user_games:
                                 <tr>
                                   <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
-                                  <td>дата</td>
+                                  <td>{{game['parsed_datetime'][0]}}</td>
                                   <td>{{game['description']}}</td>
                                   <td>{{game['sport_type']['title']}}</td>
                                   <td>{{game['court']['title']}}</td>
@@ -146,7 +146,7 @@
                               % for game in responsible_games:
                                 <tr {{'class=active' if not game['report']['reported'] else ''}}>
                                   <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
-                                  <td>Дата</td>
+                                  <td>{{game['parsed_datetime'][0]}}</td>
                                   <td>{{game['description']}}</td>
                                   <td>{{game['sport_type']['title']}}</td>
                                   <td>{{game['court']['title']}}</td>
@@ -188,7 +188,7 @@
                               % for game in organizer_games:
                                 <tr {{'class=active' if not game['report']['reported'] else ''}}>
                                   <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
-                                  <td>Дата</td>
+                                  <td>{{game['parsed_datetime'][0]}}</td>
                                   <td>{{game['description']}}</td>
                                   <td>{{game['sport_type']['title']}}</td>
                                   <td>{{game['court']['title']}}</td>
