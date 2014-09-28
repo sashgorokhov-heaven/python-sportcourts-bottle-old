@@ -96,6 +96,7 @@
                             <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
                               <tr class="active">
                                 <td>№ игры</td>
+                                <td>Дата</td>
                                 <td>Название</td>
                                 <td>Вид спорта</td>
                                 <td>Площадка</td>
@@ -104,6 +105,7 @@
                               % for game in user_games:
                                 <tr>
                                   <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
+                                  <td>дата</td>
                                   <td>{{game['description']}}</td>
                                   <td>{{game['sport_type']['title']}}</td>
                                   <td>{{game['court']['title']}}</td>
