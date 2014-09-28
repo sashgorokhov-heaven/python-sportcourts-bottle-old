@@ -10,10 +10,10 @@ import uwsgi
 def _writedb(ip:str, path:str, httpmethod:str='GET', referer:str='None', user_id:int=0, message:str=None,
              error:str=None, error_description:str=None, traceback:str=None):
     try:
-        with dbutils.dbopen(host=modules.config['logsdb']['dbhost'],
-                            user=modules.config['logsdb']['dbuser'],
-                            passwd=modules.config['logsdb']['dbpasswwd'],
-                            db=modules.config['logsdb']['dbname'],
+        with dbutils.dbopen(host=modules.config['logdb']['dbhost'],
+                            user=modules.config['logdb']['dbuser'],
+                            passwd=modules.config['logdb']['dbpasswd'],
+                            db=modules.config['logdb']['dbname'],
                             charset='utf8') as db:
             db.execute(
                 'INSERT INTO access (ip, path, httpmethod, referer, user_id, message, error, error_description, traceback) VALUES ("{}", "{}", "{}", "{}", {}, {}, {}, {}, {})'.format(
@@ -22,7 +22,8 @@ def _writedb(ip:str, path:str, httpmethod:str='GET', referer:str='None', user_id
                     '"{}"'.format(error) if error else 'NULL',
                     '"{}"'.format(error_description) if error_description else 'NULL',
                     '"{}"'.format(base64.b64encode(traceback).decode()) if traceback else 'NULL'))
-    except:
+    except Exception as e:
+        print(e)
         return uwsgi.SPOOL_RETRY
     return uwsgi.SPOOL_OK
 
