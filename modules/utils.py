@@ -1,5 +1,6 @@
 import datetime
-import threading
+import threading, pickle
+import uwsgi
 
 from modules import dbutils
 
@@ -51,3 +52,18 @@ def threaded(func):
         return thread
 
     return wrapper
+
+
+def spooler(func):
+    def wrapper(data:dict):
+        pickleddata = pickle.loads(data[b'data'])
+        args, kwargs = pickleddata
+        return func(*args, **kwargs)
+
+    def spool(*args, **kwargs):
+        pickleddata = pickle.dumps((args, kwargs))
+        uwsgi.spool({b'data': pickleddata})
+
+    setattr(func, 'spool', spool)
+    uwsgi.spooler = wrapper
+    return func
