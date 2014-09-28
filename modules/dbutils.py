@@ -6,13 +6,16 @@ import modules
 
 
 class DBConnection:
-    def __init__(self):
-        self._db = pymysql.connect(host=modules.config['api']['db']['dbhost'],
-                                   user=modules.config['api']['db']['dbuser'],
-                                   passwd=modules.config['api']['db']['dbpasswd'],
-                                   db=modules.config['api']['db']['dbname'],
-                                   charset='utf8'
-        )
+    def __init__(self, **kwargs):
+        if len(kwargs) == 0:
+            self._db = pymysql.connect(host=modules.config['api']['db']['dbhost'],
+                                       user=modules.config['api']['db']['dbuser'],
+                                       passwd=modules.config['api']['db']['dbpasswd'],
+                                       db=modules.config['api']['db']['dbname'],
+                                       charset='utf8'
+            )
+        else:
+            self._db = pymysql.connect(**kwargs)
         self._cursor = self._db.cursor()
         self._last = None
 
@@ -41,8 +44,8 @@ class DBConnection:
 
 
 class dbopen:
-    def __enter__(self):
-        self._db = DBConnection()
+    def __enter__(self, **kwargs):
+        self._db = DBConnection(**kwargs)
         return self._db
 
     def __exit__(self, exc_type, exc_val, exc_tb):
