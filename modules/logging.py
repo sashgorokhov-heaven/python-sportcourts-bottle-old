@@ -5,16 +5,19 @@ from modules import dbutils, utils
 import pages
 import uwsgi
 
+_dbparams = {
+    'host': modules.config['logdb']['dbhost'],
+    'user': modules.config['logdb']['dbuser'],
+    'passwd': modules.config['logdb']['dbpasswd'],
+    'db': modules.config['logdb']['dbname'],
+    'charset': 'utf8'
+}
 
 @utils.spooler
 def _writedb(ip:str, path:str, httpmethod:str='GET', referer:str='None', user_id:int=0, message:str=None,
              error:str=None, error_description:str=None, traceback:str=None):
     try:
-        with dbutils.dbopen(host=modules.config['logdb']['dbhost'],
-                            user=modules.config['logdb']['dbuser'],
-                            passwd=modules.config['logdb']['dbpasswd'],
-                            db=modules.config['logdb']['dbname'],
-                            charset='utf8') as db:
+        with dbutils.dbopen(**_dbparams) as db:
             db.execute(
                 'INSERT INTO access (ip, path, httpmethod, referer, user_id, message, error, error_description, traceback) VALUES ("{}", "{}", "{}", "{}", {}, {}, {}, {}, {})'.format(
                     ip, path, httpmethod, referer, user_id,
@@ -60,3 +63,11 @@ def access():
 def error(e:Exception):
     data = _error_data(e)
     _send(data)
+
+
+def message(msg:str):
+    try:
+        with dbutils.dbopen(**_dbparams) as db:
+            db.execute("INSERT INTO messages (message) VALUES ('{}')".format(msg))
+    except Exception as e:
+        error(e)
