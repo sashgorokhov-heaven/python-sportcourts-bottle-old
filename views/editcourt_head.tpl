@@ -58,6 +58,7 @@
       // Параметр value - адрес объекта для поиска
       function showAddress (value) {
           // Удаление предыдущего результата поиска
+          map.removeAllOverlays();
           map.removeOverlay(geoResult);
 
           // Запуск процесса геокодирования
