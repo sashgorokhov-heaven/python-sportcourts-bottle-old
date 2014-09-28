@@ -65,9 +65,9 @@ def error(e:Exception):
     _send(data)
 
 
-def message(msg:str):
+def message(msg):
     try:
         with dbutils.dbopen(**_dbparams) as db:
-            db.execute("INSERT INTO messages (message) VALUES ('{}')".format(msg))
+            db.execute("INSERT INTO messages (message) VALUES ('{}')".format(str(msg)))
     except Exception as e:
         error(e)
