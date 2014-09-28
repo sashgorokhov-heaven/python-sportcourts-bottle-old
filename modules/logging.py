@@ -26,6 +26,10 @@ def _writedb(ip:str, path:str, httpmethod:str='GET', referer:str='None', user_id
                     '"{}"'.format(error_description) if error_description else 'NULL',
                     '"{}"'.format(base64.b64encode(traceback.encode()).decode()) if traceback else 'NULL'))
     except Exception as e:
+        try:
+            print(e)
+        except:
+            pass
         return uwsgi.SPOOL_RETRY
     return uwsgi.SPOOL_OK
 
