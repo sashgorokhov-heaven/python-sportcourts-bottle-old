@@ -137,6 +137,7 @@
                             <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
                               <tr class="warning">
                                 <td>№ игры</td>
+                                <td>Дата</td>
                                 <td>Название</td>
                                 <td>Вид спорта</td>
                                 <td>Площадка</td>
@@ -145,6 +146,7 @@
                               % for game in responsible_games:
                                 <tr {{'class=active' if not game['report']['reported'] else ''}}>
                                   <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
+                                  <td>Дата</td>
                                   <td>{{game['description']}}</td>
                                   <td>{{game['sport_type']['title']}}</td>
                                   <td>{{game['court']['title']}}</td>
@@ -176,6 +178,7 @@
                             <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
                               <tr class="danger">
                                 <td>№ игры</td>
+                                <td>Дата</td>
                                 <td>Название</td>
                                 <td>Вид спорта</td>
                                 <td>Площадка</td>
@@ -185,6 +188,7 @@
                               % for game in organizer_games:
                                 <tr {{'class=active' if not game['report']['reported'] else ''}}>
                                   <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
+                                  <td>Дата</td>
                                   <td>{{game['description']}}</td>
                                   <td>{{game['sport_type']['title']}}</td>
                                   <td>{{game['court']['title']}}</td>
