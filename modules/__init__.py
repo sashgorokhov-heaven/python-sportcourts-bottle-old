@@ -45,7 +45,7 @@ def generate_token():
                       random.randint(30, 40)))
 
 
-config['secret'] = _generate_secret()
+config['secret'] = config['debug_secret'] if config['debug'] else _generate_secret()
 
 
 class create_link:
