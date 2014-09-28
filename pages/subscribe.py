@@ -90,11 +90,13 @@ class Subscribe(pages.Page):
         user_id
         [unsubscribe]
         """
-        if not pages.auth_dispatcher.organizer():
-            raise bottle.HTTPError(404)
         game_id = int(bottle.request.query.get('game_id'))
         user_id = int(bottle.request.query.get('user_id'))
         unsubscribe = 'unsubscribe' in bottle.request.query
+
+        if games.get_by_id(game_id, fields=['responsible_user_id'])[
+            'responsible_user_id'] != user_id and not pages.auth_dispatcher.admin() and not pages.auth_dispatcher.organizer():
+            raise bottle.HTTPError(404)
 
         self.subscribe(game_id, user_id, unsubscribe)
 

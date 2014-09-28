@@ -51,7 +51,7 @@
             % if loggedin and len([game for game in games if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}])>0:
             <li><a href="#my" data-toggle="tab">Мои игры</a></li>
             % end
-            % if userinfo['organizer']:
+            % if userinfo['organizer'] or userinfo['admin']:
             <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
             % end
           </ul>
@@ -64,12 +64,6 @@
                     % for game in games:
                         % include("game", game=game, tab_name="all")
                     % end
-                    <!--<ul class="pager">
-                      <li class="previous disabled"><a href="#">&larr; Раньше</a></li>
-                      % if defined("nextpage") and nextpage:
-                        <li class="next"><a href="/games?page={{nextpage}}{{'&sport_id='+str(bysport) if bysport else ''}}">Позже &rarr;</a></li>
-                      % end
-                    </ul> -->
                 % end
                 % if len(games)==0:
                   <div class="alert alert-info fade in">
