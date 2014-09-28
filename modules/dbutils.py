@@ -44,8 +44,11 @@ class DBConnection:
 
 
 class dbopen:
-    def __enter__(self, **kwargs):
-        self._db = DBConnection(**kwargs)
+    def __init__(self, **kwargs):
+        self._kwargs = kwargs
+
+    def __enter__(self):
+        self._db = DBConnection(**self._kwargs)
         return self._db
 
     def __exit__(self, exc_type, exc_val, exc_tb):
