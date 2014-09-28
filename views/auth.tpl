@@ -50,7 +50,7 @@
                           <button type="submit" class="btn btn-default">Войти</button> &nbsp; или &nbsp; <a href="/registration">Зарегистрироваться</a>
                           <br>
                           <br>
-                          <a href="">Восстановить пароль</a>
+                          <a href="/recover">Восстановить пароль</a>
                       </div>
                   </div>
               </form>
