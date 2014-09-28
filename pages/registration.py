@@ -1,4 +1,5 @@
 import datetime
+import json
 
 import bottle
 import modules
@@ -6,7 +7,7 @@ import modules.dbutils
 import pages
 from modules import vk
 from models import images, cities, settings, notifications, mailing, activation, users
-
+import modules.logging
 
 class Registration(pages.Page):
     def get_code(self, cities_list):
@@ -29,7 +30,6 @@ class Registration(pages.Page):
         data['city'] = user['city']['title'] if 'city' in user else None
         data['first_name'] = user['first_name']
         data['last_name'] = user['last_name']
-        data['phone'] = user['mobile_phone'] if 'mobile_phone' in user else None
         data['sex'] = 'male' if user['sex'] == 2 else ('female' if user['sex'] == 1 else None)
         data['email'] = email if email else None
         try:  # dirty hack
@@ -95,6 +95,15 @@ class Registration(pages.Page):
                 params.pop('email')
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Пользователь с таким email уже зарегестрирован',
+                                         cities=cities, **params)
+            if datetime.date(*list(map(int, params['bdate'].split('-')))) > datetime.date.today():
+                return pages.PageBuilder('registration', error='Ошибка',
+                                         error_description='Ты из будущего?',
+                                         cities=cities, **params)
+            if datetime.date.today() - datetime.date(*list(map(int, params['bdate'].split('-')))) < datetime.timedelta(
+                    days=2555):
+                return pages.PageBuilder('registration', error='Ошибка',
+                                         error_description='Такой маленький, а уже пользуешься интернетом?',
                                          cities=cities, **params)
             params['settings'] = settings.default().format()
             sql = 'INSERT INTO users ({dbkeylist}) VALUES ({dbvaluelist})'
