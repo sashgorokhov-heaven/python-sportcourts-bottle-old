@@ -120,8 +120,7 @@ class _PageController:
                 if page_class and page_class.__name__ not in self._executors:
                     self.add_page(page_class)
             except Exception as e:
-                # modules.logging.error_log(e, 'Import error of <{}>'.format(module_name))
-                pass
+                modules.logging.error(e)
 
 
 class _AuthDispatcher:
