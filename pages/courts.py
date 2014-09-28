@@ -93,7 +93,7 @@ class Courts(pages.Page):
         params.pop('sport_type')
         params['phone'] = params['phone'] if params['phone'] else 'Не указан'
         sql = 'UPDATE courts SET {} WHERE court_id={}'.format(
-            ', '.join(['{}="{}"'.format(i, params[i]) for i in params]),
+            ', '.join(["{}='{}'".format(i, params[i]) for i in params]),
             params['court_id'])
         with dbutils.dbopen() as db:
             db.execute(sql)
