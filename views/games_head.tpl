@@ -14,7 +14,9 @@
     if (value == '0'){
       location.href='/games';
     }
-    else{
+    if (value == '-1'){
+      location.href='/games?old';
+    } else{
       location.href='/games?sport_id='+value;
     }
 

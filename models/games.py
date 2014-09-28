@@ -113,7 +113,7 @@ def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
 
 @autodb
 def write_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
-    game = get_by_id(game_id, fields=["game_id", "description", "datetime"], dbconnection=dbconnection)
+    game = get_by_id(game_id, detalized=True, fields=["game_id", "description", "datetime"], dbconnection=dbconnection)
     if not game['datetime_tommorow'] and not game['datetime_today']:
         message = 'До игры "{}" осталось 2 дня!'.format(create_link.game(game))
         notifications.add(user_id, message, 0, game_id, 1,

@@ -224,6 +224,9 @@ class Games(pages.Page):
                 games.delete_future_notifications(user['user_id'], game_id, dbconnection=db)
         raise bottle.redirect('/games')
 
+    def get_old(self):
+        pass
+
     def get(self):
         if 'delete' in bottle.request.query:
             if not pages.auth_dispatcher.admin() and not pages.auth_dispatcher.organizer():
@@ -245,6 +248,8 @@ class Games(pages.Page):
                 return self.get_page(1, int(bottle.request.query.get('sport_id')))
         if 'page' in bottle.request.query and 'sport_id' not in bottle.request.query:
             return self.get_page(int(bottle.request.query.get('page')))
+        if 'old' in bottle.request.query:
+            return self.get_old()
         return self.get_page(1)
 
     get.route = '/games'
