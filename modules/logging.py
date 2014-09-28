@@ -72,6 +72,6 @@ def error(e:Exception):
 def message(msg):
     try:
         with dbutils.dbopen(**_dbparams) as db:
-            db.execute("INSERT INTO messages (message) VALUES ('{}')".format(str(msg)))
+            db.execute("INSERT INTO logsdb.messages (message) VALUES ('{}')".format(str(msg)))
     except Exception as e:
         error(e)
