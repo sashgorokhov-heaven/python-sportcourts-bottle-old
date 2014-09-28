@@ -2,6 +2,7 @@ from modules import dbutils
 from models import autodb, splitstrlist
 from modules.utils import beautifuldate, beautifultime
 
+
 @autodb
 def add(user_id:int, text:str, level:int=0, game_id:int=0, type:int=0, date_time:str=None,
         dbconnection:dbutils.DBConnection=None):

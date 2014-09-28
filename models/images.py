@@ -45,6 +45,7 @@ def delete_avatar(user_id:int):
     if os.path.exists(fullname):
         os.remove(fullname)
 
+
 def save_court_photo(court_id:int, bottlefile):
     filename = str(court_id) + '.jpg'
     dirname = '/bsp/data/images/courts/'

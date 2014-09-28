@@ -1,9 +1,12 @@
 import smtplib
+from email.mime import text
+
 import bottle
+
 from models import autodb, settings, users
 from modules import config, dbutils, extract_traceback
-from email.mime import text
 import modules.logging
+
 
 def sendmail(message:str, to:str, subject:str='Уведомление'):
     try:
