@@ -2,7 +2,7 @@ import datetime
 
 from modules import dbutils
 from modules.utils import beautifuldate, beautifultime
-from models import cities, autodb, splitstrlist, settings
+from models import cities, autodb, splitstrlist, settings, games
 
 ADMIN = 0
 ORGANIZER = 1
@@ -124,3 +124,9 @@ def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=
     dbconnection.execute(
         "SELECT user_id FROM users WHERE user_id='{}' AND LOCATE('|{}|', friends)".format(user_id_1, user_id_2))
     return len(dbconnection.last()) != 0
+
+
+@autodb
+def delete(user_id:int, dbconnection:dbutils.DBConnection=None):
+    game_ids = games.get_user_games(user_id, fields=['game_id'], dbconnection=dbconnection)
+    raise NotImplementedError
