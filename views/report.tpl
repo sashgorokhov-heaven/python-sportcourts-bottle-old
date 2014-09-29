@@ -63,8 +63,8 @@
                           % if not showreport:
                             <select class="form-control input-sm user_status" name="status={{user['user_id']}}">
                               <option value="0">Не пришел</option>
-                              <option value="2">Оплатил</option>
                               <option value="1">Не оплатил</option>
+                              <option value="2">Оплатил</option>
                             </select>
                           % end
                           % if showreport:

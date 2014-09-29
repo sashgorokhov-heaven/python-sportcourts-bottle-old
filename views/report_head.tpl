@@ -45,10 +45,10 @@
           });
 
           for(var i=0; i<values.length; i++) {
-            if (values[i] == 1){
+            if (values[i] == 2){
               summ += Price;
             }
-            if (values[i] == 2){
+            if (values[i] == 1){
               summ += Price;
               summ1 += Price;
             }
