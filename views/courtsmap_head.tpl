@@ -1,3 +1,10 @@
+<meta property="og:title" content="Спортивные площадки в Екатеринбурге" />
+<meta property="og:site_name" content="SportCourts.ru" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/courts?all}}>
+<meta property="og:image" content="/images/og/games.jpg" />
+<meta property="og:description" content="Актуальная база спортивных площадок нашего города. Здесь мы играем."/>
+
 <script src="http://api-maps.yandex.ru/1.1/index.xml?key=ADtA-FMBAAAAO_95dwIAb8cxoJ0XVsmlrrEljkqDE8QIFgsAAAAAAAAAAADwojBjdahSnZySk0zChxiVovWqNw==" type="text/javascript"></script>
 
 <style>

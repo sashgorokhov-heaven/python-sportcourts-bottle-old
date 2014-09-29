@@ -3,5 +3,8 @@
         <meta property="og:type" content="website" />
         <meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/games?game_id={{game['game_id']}}>
         <meta property="og:image" content="/images/og/games.jpg" />
+        <meta property="og:description" content="Рекомендую посетить игру {{game['parsed_datetime'][2]+', '+game['parsed_datetime'][1]}} 
+
+        {{game['game_type']['title']}}"/>
         <!-- перелопатить --!>
         <meta property="og:description" content="{{game['parsed_datetime'][0][1]+' '+game['parsed_datetime'][0][0]+', '+game['parsed_datetime'][2]+', '+game['parsed_datetime'][1]}}{{'\n'+game['game_type']['title']+'\n'+str(game['cost'])+' рублей за '+str(game['duration'])+' мин'}}"/>

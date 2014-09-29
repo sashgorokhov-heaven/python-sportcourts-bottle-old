@@ -1,3 +1,10 @@
+<meta property="og:title" content="Наши люди" />
+<meta property="og:site_name" content="SportCourts.ru" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/users>
+<meta property="og:image" content="/images/og/games.jpg" />
+<meta property="og:description" content="Здесь вы можете найти своих друзей и всех, кто нас посещает."/>
+
 <script>
   $(document).on('click','.friendsbutton',function(){
     arr = $(this).attr("id").split('-');
