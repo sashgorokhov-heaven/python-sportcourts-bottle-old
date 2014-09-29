@@ -10,7 +10,7 @@
           <div class="row">
             <div class="col-md-6">
               <p class="text-muted">
-                Sportcourts. 2014
+                &copy; Sportcourts 2014
                 &nbsp&nbsp&nbsp&nbsp
                 <a class="topmenu" href="/about">О нас</a>
               </p>
