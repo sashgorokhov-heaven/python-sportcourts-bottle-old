@@ -2,7 +2,7 @@
 <meta property="og:site_name" content="SportCourts.ru" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/courts?all}}>
-<meta property="og:image" content="/images/og/games.jpg" />
+<meta property="og:image" content="http://cdn2.img22.ria.ru/images/39169/16/391691688.jpg" />
 <meta property="og:description" content="Актуальная база спортивных площадок нашего города. Здесь мы играем."/>
 
 <script src="http://api-maps.yandex.ru/1.1/index.xml?key=ADtA-FMBAAAAO_95dwIAb8cxoJ0XVsmlrrEljkqDE8QIFgsAAAAAAAAAAADwojBjdahSnZySk0zChxiVovWqNw==" type="text/javascript"></script>
