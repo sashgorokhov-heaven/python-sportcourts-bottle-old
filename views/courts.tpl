@@ -29,17 +29,11 @@
                   <td><small><strong>Время работы:</strong></small></td>
                   <td><small>{{court['worktime']}}</small></td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td><small><strong>Аренда:</strong></small></td>
                   <td><small>
-                    % if court['cost'] != 0:
-                        от {{court['cost']}} руб./час
-                    % end
-                    % if court['cost'] == 0:
-                        Бесплатная
-                    % end
                   </small></td>
-                </tr>
+                </tr> -->
                 % if defined("game"):
                 <tr>
                   <td colspan="2">
