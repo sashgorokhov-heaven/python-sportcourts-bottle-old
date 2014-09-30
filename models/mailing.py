@@ -1,11 +1,41 @@
 import smtplib
 from email.mime import text
+from email.mime import multipart
 
 import bottle
 
 from models import autodb, settings, users
 from modules import config, dbutils, extract_traceback
 import modules.logging
+
+
+def sendhtml(html:str, to:str, plain:str='Простой текст', subject:str='Уведомление'):
+    me = config['email']['login']
+    you = to
+
+    server = "smtp.gmail.com"
+    port = 25
+    user_name = config['email']['login']
+    user_passwd = config['email']['password']
+
+    msg = multipart.MIMEMultipart('alternative')
+    msg['Subject'] = "Link"
+    msg['From'] = me
+    msg['To'] = you
+
+    part1 = text.MIMEText(plain, 'plain')
+    part2 = text.MIMEText(html, 'html')
+
+    msg.attach(part1)
+    msg.attach(part2)
+
+    s = smtplib.SMTP(server, port)
+    s.ehlo()
+    s.starttls()
+    s.ehlo()
+    s.login(user_name, user_passwd)
+    s.sendmail(me, you, msg.as_string())
+    s.quit()
 
 
 def sendmail(message:str, to:str, subject:str='Уведомление'):
