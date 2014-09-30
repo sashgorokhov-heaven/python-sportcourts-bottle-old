@@ -28,7 +28,7 @@
                                 <tbody>
                                   <tr>
                                     <td valign="top" style="padding-right:0px;padding-left:0px;padding-top:0;padding-bottom:0">
-                                      <div style="width:603px;min-height:101px;text-align:center;background:url('https://ci5.googleusercontent.com/proxy/8gaHTc9t9Pc_acvWRwYSiijg6Sww0NcoLvTyMh9IqAkH6WQJW2ifp08pmxlVtj4K84MMEdsuWX2zJReKQMjy07pq-BIPnmKDrCo=s0-d-e1-ft#https://smartprogress.do/images/mail/main-header.jpg')">
+                                      <div style="width:600px;min-height:101px;text-align:center;background:url('https://ci5.googleusercontent.com/proxy/8gaHTc9t9Pc_acvWRwYSiijg6Sww0NcoLvTyMh9IqAkH6WQJW2ifp08pmxlVtj4K84MMEdsuWX2zJReKQMjy07pq-BIPnmKDrCo=s0-d-e1-ft#https://smartprogress.do/images/mail/main-header.jpg')">
                                         <br>
                                         <h1><a href="http://sportcourts.ru/" target="_blank" style="color:#fff;font-weight:bold;text-decoration:none;">
                                           SportCourts
