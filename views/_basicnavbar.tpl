@@ -17,7 +17,7 @@
                     % if loggedin:
                         <li>
                           <a class="topmenu" href="/profile">
-                            <img src="/images/avatars/{{userinfo['user_id']}}" class="round header_avatar" width="30">
+                            <img src="/images/avatars/{{userinfo['user_id']}}" class="round header_avatar" style="max-height:30px;" width="30">
                             &nbsp;
                             Мой профиль
                           </a>
