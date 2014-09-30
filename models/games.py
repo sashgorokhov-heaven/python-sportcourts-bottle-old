@@ -220,7 +220,9 @@ def update(game_id:int, dbconnection:dbutils.DBConnection=None, **kwargs):
 @autodb
 def get_user_games(user_id:int, detalized:bool=False, fields:list=dbutils.dbfields['games'],
                    dbconnection:dbutils.DBConnection=None):
-    dbconnection.execute("SELECT game_id FROM games WHERE LOCATE('|{}|', subscribed)".format(user_id))
+    dbconnection.execute(
+        "SELECT game_id FROM games WHERE LOCATE('|{}|', subscribed) AND datetime+INTERVAL duration MINUTE<NOW()".format(
+            user_id))
     if len(dbconnection.last()) == 0: return list()
     id_list = list(map(lambda x: x[0], dbconnection.last()))
     return get_by_id(id_list, fields=fields,
