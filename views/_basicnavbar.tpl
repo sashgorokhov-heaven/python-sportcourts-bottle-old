@@ -1,4 +1,4 @@
-        % import random
+
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -18,6 +18,7 @@
                     % if loggedin:
                         <li>
                           <a class="topmenu" href="/profile">
+                            % import random
                             <img src="/images/avatars/{{userinfo['user_id']}}" class="round header_avatar" style="max-height:30px;" width="30" ord="{{random.randint(1, 999)}}">
                             &nbsp;
                             Мой профиль
