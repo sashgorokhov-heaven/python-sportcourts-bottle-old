@@ -64,7 +64,7 @@
                                     <td valign="top" style="padding-top:9px;padding-right:18px;padding-bottom:9px;padding-left:18px;color:#606060;font-family:Helvetica;font-size:15px;line-height:150%;text-align:left">
                                       <h1 style="margin:0;padding:0;color:#606060;display:block;font-family:Helvetica;font-size:40px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:-1px;text-align:left">
                                         <br>
-                                        Привет, Виталий!
+                                        Привет, {{first_name}}!
                                       </h1>
                                       <h3 style="margin:0;padding:0;color:#606060;display:block;font-family:Helvetica;font-size:18px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:-.5px;text-align:left">
                                         <br>
@@ -87,7 +87,7 @@
                                 <tbody>
                                   <tr>
                                     <td align="center" valign="middle" style="font-family:Arial;font-size:16px;padding:16px">
-                                      <a title="Подтвердить" href="" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word" target="_blank">Подтвердить</a>
+                                      <a title="Подтвердить" href="http://sportcourts.ru/activate?token={{token}}" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word" target="_blank">Подтвердить</a>
                                     </td>
                                   </tr>
                                 </tbody>
@@ -172,7 +172,7 @@
                                         <span style="text-align:center">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</span>
                                         <a href="http://sportcourts.ru" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">sportcourts.ru</a>
                                         <span style="text-align:center">&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;</span>
-                                        <a href="" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">Отписаться от рассылки</a>
+                                        <a href="http://sportcourts.ru/settings" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">Отписаться от рассылки</a>
                                       </div>
                                     </td>
                                   </tr>

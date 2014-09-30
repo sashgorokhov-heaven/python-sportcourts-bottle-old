@@ -141,6 +141,7 @@ class Registration(pages.Page):
                 'SELECT user_id, vkuserid, first_name, last_name FROM users WHERE email="{}"'.format(params['email']))
             user_id = db.last()[0][0]
             vkuserid = db.last()[0][1]
+            first_name = db.last()[0][2]
             username = db.last()[0][2] + ' ' + db.last()[0][3]
             # pages.auth_dispatcher.login(params['email'], params['passwd'])
             if 'avatar' in bottle.request.files:
@@ -148,12 +149,11 @@ class Registration(pages.Page):
             elif vkparams and 'vkphoto' in vkparams:
                 images.save_avatar_from_url(user_id, vkparams['vkphoto'])
             token = activation.create(user_id, dbconnection=db)
-            mailing.send_to_user(user_id,
-                                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
-                                     token),
-                                 'Активация профиля',
-                                 True,
-                                 dbconnection=db)
+            mailing.sendhtml(
+                pages.PageBuilder('mail1', first_name=first_name, token=token).template(),
+                params['email'],
+                'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(token),
+                'Активация профиля')
             notifications.add(user_id, "Проверьте свою почту чтобы активировать профиль!", 1, dbconnection=db)
             if vkuserid:
                 friends = vk.exec(None, "friends.get", user_id=vkuserid)['items']
