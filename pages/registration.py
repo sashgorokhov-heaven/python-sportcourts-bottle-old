@@ -60,7 +60,7 @@ class Registration(pages.Page):
             raise bottle.redirect('/profile')
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
 
-        if params['bdate'] == '0000-00-00':
+        if params['bdate'] == '00.00.0000':
             # TODO: проверить формат
             with modules.dbutils.dbopen() as db:
                 cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
@@ -93,15 +93,24 @@ class Registration(pages.Page):
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
             if len(db.last()) > 0:
                 params.pop('email')
+                params['bdate'] = params['bdate'].split('-')
+                params['bdate'].reverse()
+                params['bdate'] = '.'.join(params['bdate'])
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Пользователь с таким email уже зарегестрирован',
                                          cities=cities, **params)
             if datetime.date(*list(map(int, params['bdate'].split('-')))) > datetime.date.today():
+                params['bdate'] = params['bdate'].split('-')
+                params['bdate'].reverse()
+                params['bdate'] = '.'.join(params['bdate'])
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Ты из будущего?',
                                          cities=cities, **params)
             if datetime.date.today() - datetime.date(*list(map(int, params['bdate'].split('-')))) < datetime.timedelta(
                     days=2555):
+                params['bdate'] = params['bdate'].split('-')
+                params['bdate'].reverse()
+                params['bdate'] = '.'.join(params['bdate'])
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Такой маленький, а уже пользуешься интернетом?',
                                          cities=cities, **params)
