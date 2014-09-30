@@ -1,4 +1,4 @@
-import os
+import os, urllib.request
 
 from PIL import Image
 
@@ -30,6 +30,23 @@ def save_avatar(user_id:int, bottlefile):
     fullname = os.path.join(dirname, filename)
     _save_image(fullname, bottlefile, True)
 
+
+def save_avatar_from_url(user_id:int, url:str):
+    fullname = os.path.join('/bsp/data/images/avatars', str(user_id) + '.jpg')
+    if os.path.exists(fullname):
+        os.remove(fullname)
+    urllib.request.urlretrieve(url, fullname)
+    im = Image.open(fullname)
+    width, height = im.size
+    if width > height:
+        ratio = AVATARSIZE[0] / width
+    else:
+        ratio = AVATARSIZE[1] / height
+    new_width = round(ratio * width)
+    new_height = round(ratio * height)
+    im = im.resize((new_width, new_height))
+    im.save(fullname)
+    im.close()
 
 def have_avatar(user_id:int):
     filename = str(user_id) + '.jpg'
