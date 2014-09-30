@@ -226,30 +226,35 @@
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
             <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-            <!-- Button trigger modal -->
-            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-              Пользовательское соглашение
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
-                  </div>
-                  <div class="modal-body">
-                    % include("user_agreement")
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <small>
+              <p class="lead text-muted" style="font-size:100%;">
+                Регистрируясь, вы принимаете условия
+                <br>
+                <a class="btn btn-primary btn-link" data-toggle="modal" data-target="#myModal" style="margin:0; font-size:100%;">пользовательского соглашения</a>
+              </p>
+            </small>
           </div>
         </div>
        </form>
      </div>
    </div>
  </div> 
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+         <h4 class="modal-title">Пользовательское соглашение</h4>
+       </div>
+       <div class="modal-body">
+         % include("user_agreement")
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+       </div>
+     </div>
+   </div>
+ </div>
