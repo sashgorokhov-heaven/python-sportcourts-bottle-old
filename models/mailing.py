@@ -24,7 +24,9 @@ def sendhtml(html:str, to:str, plain:str='Простой текст', subject:st
     msg['To'] = you
 
     part1 = text.MIMEText(plain, 'plain')
+    part1['Subject'] = subject
     part2 = text.MIMEText(html, 'html')
+    part2['Subject'] = subject
 
     msg.attach(part1)
     msg.attach(part2)
