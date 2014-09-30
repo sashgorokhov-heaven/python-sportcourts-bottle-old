@@ -27,20 +27,20 @@
                           <h3 style="margin:10px 0 1px;line-height:20px">
                             <a href="http://sportcourts.ru/profile?user_id=1" style="text-decoration:none;color:#1bb8d7" target="_blank">Виталий Харченко</a>
                             <br>
-                            Вы приглашены на игру №15
+                            записался на игру №15
                             <br> 
                             «<a href="http://sportcourts.ru/games?game_id=1" style="color:#26292c" target="_blank">Первая игра сезона</a>»
                           </h3>
-                          <h4>
-                            Баскетбол - Баскетбол 5х5
-                          </h4>
                           <div style="color:#737373;font-size:12px;margin-top:7px">
-                            04 октября, суббота, 17:00
+                            01 октября 2014
                           </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <img src="https://ci4.googleusercontent.com/proxy/hGKP5Hh67QyzC-ZBdV6sIddI_T69RGLmPKZdeHpmeapA2G3UKFVJzx0TeJhQRa6Sc75pwZL799yBGXn5EP3ke3xBvoFlq4ApXseaqck=s0-d-e1-ft#https://smartprogress.do/images/mail/pm-message-top.jpg" width="550" height="18" alt="" class="CToWUd"><div style="padding:7px 0 10px;border-bottom:1px solid #dddfe4;color:#26292c;font-size:12px;line-height:19px">
+                  <p>Крутая игра, хочу сходить итд итп</p>
                 </div>
                 <div style="margin:19px 0">
                   <a style="margin:10px 0;text-decoration:none;font:14px 'Trebuchet MS',Arial,Helvetica;display:inline-block;text-align:center;border-radius:6px;padding:13px 25px;color:#ffffff;border:1px solid #143d89;background:#2c72bd;background:-webkit-gradient(linear,left top,left bottom,from(#399fed),to(#2c72bd));background:-moz-linear-gradient(-90deg,#399fed,#2c72bd)" href="http://sportcourts.ru/games?game_id=1" target="_blank">Подробнее..</a>
