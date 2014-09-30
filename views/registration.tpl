@@ -35,10 +35,6 @@
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
 
-        % if defined("vkuserid"):
-        	<input type="hidden" name="vkuserid" value="{{vkuserid}}">
-        % end
-
         <div class="form-group">
           <label for="sex" class="col-sm-2 control-label">Фото</label>
           <div class="col-sm-10">

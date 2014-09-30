@@ -1,5 +1,6 @@
 import datetime
 import json
+import pickle
 
 import bottle
 import modules
@@ -22,6 +23,7 @@ class Registration(pages.Page):
 
         data = dict()
         data['vkuserid'] = user_id
+        pickledata = {'vkuserid': user_id}
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT email FROM users WHERE vkuserid={}".format(data['vkuserid']))
             if len(db.last()) > 0:
@@ -41,7 +43,11 @@ class Registration(pages.Page):
                 data['city_id'] = city['city_id']
                 break
 
-        data['vkphoto'] = user['photo_max']
+        if user['photo_max'].find('camera') == -1:
+            pickledata['vkphoto'] = user['photo_max']
+            data['vkphoto'] = user['photo_max']
+
+        bottle.response.set_cookie('vkinfo', pickle.dumps(pickledata), modules.config['secret'])
 
         data = {i: data[i] for i in data if data[i]}
         return pages.PageBuilder('registration', cities=cities_list, **data)
@@ -89,7 +95,12 @@ class Registration(pages.Page):
             if len(db.last()) > 0:
                 params['city_id'] = db.last()[0][0]
             else:
-                params['city_id'] = 1
+                params['bdate'] = params['bdate'].split('-')
+                params['bdate'].reverse()
+                params['bdate'] = '.'.join(params['bdate'])
+                return pages.PageBuilder('registration', error='Ошибка',
+                                         error_description='Мы не работаем в городе {}'.format(city_title),
+                                         cities=cities, **params)
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
             if len(db.last()) > 0:
                 params.pop('email')
@@ -115,6 +126,11 @@ class Registration(pages.Page):
                                          error_description='Такой маленький, а уже пользуешься интернетом?',
                                          cities=cities, **params)
             params['settings'] = settings.default().format()
+            vkparams = bottle.request.get_cookie('vkinfo', '', modules.config['secret'])
+            if vkparams:
+                vkparams = pickle.loads(vkparams)
+                params['vkuserid'] = vkparams['vkuserid']
+
             sql = 'INSERT INTO users ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
             sql = sql.format(
@@ -129,6 +145,8 @@ class Registration(pages.Page):
             # pages.auth_dispatcher.login(params['email'], params['passwd'])
             if 'avatar' in bottle.request.files:
                 images.save_avatar(user_id, bottle.request.files.get('avatar'))
+            elif vkparams and 'vkphoto' in vkparams:
+                images.save_avatar_from_url(user_id, vkparams['vkphoto'])
             token = activation.create(user_id, dbconnection=db)
             mailing.send_to_user(user_id,
                                  'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(
