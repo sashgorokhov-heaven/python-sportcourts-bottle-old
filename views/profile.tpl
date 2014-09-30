@@ -1,7 +1,8 @@
 % rebase("_basicpage", title=user['first_name']+' '+user['last_name'])
+% import random
       <div class="row profile">
         <div class="col-md-3">
-          <img src="/images/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300" ord="10000">
+          <img src="/images/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300" ord="{{random.randint(1, 999)}}">
           <br>
           <br>
           % if user['gameinfo']['total']>0:

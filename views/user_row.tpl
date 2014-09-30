@@ -1,8 +1,9 @@
 % setdefault("myfriend", False)
+% import random
 <div class="row">
   <div class="col-md-2">
     <a href="/profile?user_id={{user['user_id']}}" target="_blank">
-      <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120">
+      <img src="/images/avatars/{{user['user_id']}}" class="img-thumbnail profile-avatar" alt="User {{user['user_id']}} avatar" width="120" ord="{{random.randint(1, 999)}}">
     </a>
   </div>
   <div class="col-md-6">
