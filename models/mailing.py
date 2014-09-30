@@ -19,14 +19,12 @@ def sendhtml(html:str, to:str, plain:str='Простой текст', subject:st
     user_passwd = config['email']['password']
 
     msg = multipart.MIMEMultipart('alternative')
-    msg['Subject'] = "Link"
+    msg['Subject'] = subject
     msg['From'] = me
     msg['To'] = you
 
     part1 = text.MIMEText(plain, 'plain')
-    part1['Subject'] = subject
     part2 = text.MIMEText(html, 'html')
-    part2['Subject'] = subject
 
     msg.attach(part1)
     msg.attach(part2)
