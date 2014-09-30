@@ -40,7 +40,7 @@ class Games(pages.Page):
             return
         game = games.get_by_id(game_id, fields=['game_id', 'description', 'created_by'], dbconnection=db)
         created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
-        notification = 'Вы больше не являетесь ответсвенным за игру "{}".'
+        notification = 'Вы больше не являетесь ответственным за игру "{}".'
         notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
         notifications.add(user_id, notification, 2, game_id, 2, dbconnection=db)
 
