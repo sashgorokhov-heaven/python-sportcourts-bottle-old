@@ -58,6 +58,15 @@ class _Executor:
     # @route(self._page.post.route)
     def execute(self, **kwargs):
         with self._lock:
+            serveraddr = 'http://{}'.format(modules.config['server']['ip'])
+            if bottle.request.method.lower() == 'post' and not bottle.request.get_header('Referer',
+                                                                                         serveraddr).startswith(
+                    serveraddr):
+                try:
+                    raise ValueError('POST request from other domain')
+                except Exception as e:
+                    modules.logging.error(e)
+                raise bottle.HTTPError(404)
             try:
                 response = self._page.execute(bottle.request.method, **kwargs)
                 modules.logging.access()
