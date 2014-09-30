@@ -104,6 +104,9 @@ class Games(pages.Page):
             for user in game['subscribed']['users']:
                 notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
                     modules.create_link.game(game)), 1, game_id, 1, dbconnection=db)
+            if responsible_old == int(params['responsible_user_id']):
+                notifications.add(responsible_old, 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
+                    modules.create_link.game(game)), 1, game_id, 2, dbconnection=db)
             raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):
