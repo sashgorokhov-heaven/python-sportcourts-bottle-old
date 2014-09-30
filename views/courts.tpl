@@ -1,4 +1,4 @@
-% rebase("_basicpage", title="Спортивные площадки")
+% rebase("_basicpage", title="{{court['title']}}")
       <div class="profile">
         <!-- <div class="row">
           <div class="col-md-12">
