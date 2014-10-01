@@ -4,16 +4,16 @@
         <div class="col-md-3">
           % import random
           <img src="/images/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300" ord="{{random.randint(1, 999)}}">
-          <br>
-          <br>
           % if user['user_id']!=userinfo['user_id']:
-            <a class="friendsbutton btn btn-default" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
+            <br>
+            <br>
+            <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
               {{'+ добавить в друзья' if not myfriend else '- убрать из друзей'}}
             </a>
           % end
-          <br>
-          <br>
           % if user['gameinfo']['total']>0:
+          <br>
+          <br>
           <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-top:-7px;"><span class="glyphicon glyphicon-stats"></span> Всего сыграно: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}</button>
               <ul class="dropdown-menu" role="menu">
