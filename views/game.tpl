@@ -187,6 +187,20 @@
       </div>
     % if standalone:
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="page-header" style="margin-top:0">
+          <h3>Комментарии</h3>
+        </div>
+
+        <!-- Put this div tag to the place, where the Comments block will be -->
+        <div id="vk_comments"></div>
+        <script type="text/javascript">
+        VK.Widgets.Comments("vk_comments", {limit: 5, attach: "*", autoPublish: "0"});
+        </script>
+
+      </div>
+    </div>
   </div>
   % end
 
