@@ -1,14 +1,32 @@
 import bottle
 import pages
 from modules import dbutils
-from models import notifications, mailing
+from models import notifications, mailing, activation, users
 
 
 class Recover(pages.Page):
     def get(self):
         if pages.auth_dispatcher.loggedin():
+            if 'mail' not in bottle.request.query:
+                return self.sendmail()
             raise bottle.redirect('/profile')
         return pages.PageBuilder('recover')
+
+    def sendmail(self):
+        with dbutils.dbopen() as db:
+            try:
+                token = activation.get_user_token(pages.auth_dispatcher.getuserid(), dbconnection=db)
+            except ValueError:
+                return pages.templates.message('Ошибка', 'Вы уже активировали свой профиль')
+            user = users.get(pages.auth_dispatcher.getuserid(), fields=['first_name', 'email'])
+            mailing.sendhtml(
+                pages.PageBuilder('mail1', first_name=user['first_name'], token=token).template(),
+                user['email'],
+                'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(token),
+                'Повторная активация профиля')
+        return pages.PageBuilder('text', message='Проверьте почту',
+                                 description='Вам было отправлено письмо с инструкцией по активации профиля')
+
 
     def post(self):
         if pages.auth_dispatcher.loggedin() or 'email' not in bottle.request.forms:

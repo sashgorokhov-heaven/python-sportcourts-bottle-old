@@ -28,3 +28,11 @@ def create(user_id:int, dbconnection:dbutils.DBConnection=None) -> str:
     token = modules.generate_token()
     dbconnection.execute("INSERT INTO activation (user_id, token) VALUES ({}, '{}')".format(user_id, token))
     return token
+
+
+@autodb
+def get_user_token(user_id:int, dbconnection:dbutils.DBConnection=None) -> str:
+    dbconnection.execute("SELECT token FROM activation WHERE user_id={}".format(user_id))
+    if len(dbconnection.last()) == 0:
+        raise ValueError("User activated or not exist")
+    return dbconnection.last()[0][0]
