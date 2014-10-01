@@ -62,7 +62,7 @@
                     data-bv-notempty-message="Укажите площадку">
                       <option value="">--</option>
                       % for court in courts:
-                        <option value="{{court['court_id']}}" class="{{court['city_id']}}">{{court['title']}}</option>
+                        <option value="{{court['court_id']}}" class="{{court['city_id']}} {{', '.join([sport['id'] for sport in court['sport_types']])}}">{{court['title']}}</option>
                       % end
                     </select>
                     <small><a href="/courts?add">Создать новую...</a></small>
