@@ -196,7 +196,7 @@
         <!-- Put this div tag to the place, where the Comments block will be -->
         <div id="vk_comments"></div>
         <script type="text/javascript">
-        VK.Widgets.Comments("vk_comments", {limit: 5, attach: "*", autoPublish: "0"});
+        VK.Widgets.Comments("vk_comments", {limit: 5, attach: "*", autoPublish: "0", pageUrl: window.location.toString()});
         </script>
 
       </div>
