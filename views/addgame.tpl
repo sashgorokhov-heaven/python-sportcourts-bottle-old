@@ -15,13 +15,26 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label for="inputCity" class="col-sm-2 control-label">Город</label>
+                  <div class="col-sm-10">
+                    <select id="city" name="city_id" class="form-control"
+                    data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите город">
+                    % for city in cities:
+                      <option value="{{city['city_id']}}">{{city['title']}}</option>
+                    % end
+                    </select>
+                    <span id="valid"></span>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Вид спорта</label>
                   <div class="col-sm-10">
                     <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                     data-bv-notempty-message="Укажите вид спорта">
                       <option value="">--</option>
                       % for sport_type in sports:
-                          <option value="s{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
+                          <option value="{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
                       % end
                     </select>
                   </div>
@@ -33,26 +46,9 @@
                     data-bv-notempty-message="Укажите тип игры">
                       <option value="">--</option>
                       % for type in game_types:
-                        <option value="{{type['type_id']}}" class="s{{type['sport_type']}}">{{type['title']}}</option>
+                        <option value="{{type['type_id']}}" class="{{type['sport_type']}}">{{type['title']}}</option>
                       % end
                     </select>
-                  </div>
-                </div>
-                <script>
-                  $("#gametype").chained("#sporttype");
-                </script>
-                <div class="form-group">
-                  <label for="inputCity" class="col-sm-2 control-label">Город</label>
-                  <div class="col-sm-10">
-                    <select id="city" name="city_id" class="form-control"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите город">
-                    % for city in cities:
-                      <option value="{{city['city_id']}}" class="{{city['city_id']}}">{{city['title']}}</option>
-                    % end
-                      <option value="2" class="2">Gthvm</option>
-                    </select>
-                    <span id="valid"></span>
                   </div>
                 </div>
                 <div class="form-group">
@@ -64,16 +60,19 @@
                       <option value="">--</option>
                       % for court in courts:
                         <option value="{{court['court_id']}}"
-                                class="{{' '.join(map(lambda x: 'c'+str(court['city']['city_id'])+'\\s'+str(x),[sport['sport_id'] for sport in court['sport_types']]))}}">
-                        {{court['title']}}
+                                class="{{' '.join(map(lambda x: str(court['city']['city_id'])+'\\'+str(x),[sport['sport_id'] for sport in court['sport_types']]))}}">
+                          {{court['title']}}
                         </option>
-                        % end
+                      % end
                     </select>
                     <small><a href="/courts?add">Создать новую...</a></small>
                   </div>
                 </div>
                 <script>
-                  $("#court").chained("#sporttype, #city");
+                  $("#court").chained("#city, #sporttype");
+                </script>
+                <script>
+                  $("#gametype").chained("#sporttype");
                 </script>
                 <div class="form-group">
                   <label for="inputBirght" class="col-sm-2 control-label">Дата</label>
