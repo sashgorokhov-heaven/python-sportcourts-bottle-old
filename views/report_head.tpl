@@ -13,7 +13,7 @@
           var current = oldUsers+startFromNew+1;
 
           $("#userstable").append(
-            "<tr class='newuser_" + (startFromNew+1) + "'><td>" + current + "</td><td><input type='text' class='form-control input-sm' name='first_name=-" + (startFromNew+1) + "' data-bv-notempty></td><td><input type='text' class='form-control input-sm' name='last_name=-" + (startFromNew+1) + "'></td><td><input id='phone' class='form-control input-sm phonemask' type='text' name='phone=-" + (startFromNew+1) + "'></td><td><select name='status=-" + (startFromNew+1) + "' class='form-control input-sm user_status'><option value='3'>Не пришел</option><option value='1'>Оплатил</option><option value='2'>Не оплатил</option></select></td><td align='center' valign='middle'><a class='removeuser'><span class='glyphicon glyphicon-remove'></span></a></td></tr>"
+            "<tr class='newuser_" + (startFromNew+1) + "'><td>" + current + "</td><td><input type='text' class='form-control input-sm' name='first_name=-" + (startFromNew+1) + "' data-bv-notempty></td><td><input type='text' class='form-control input-sm' name='last_name=-" + (startFromNew+1) + "'></td><td><input id='phone' class='form-control input-sm phonemask' type='text' name='phone=-" + (startFromNew+1) + "'></td><td><select name='status=-" + (startFromNew+1) + "' class='form-control input-sm user_status'><option value='0'>Не пришел</option><option value='1'>Не оплатил</option><option value='2'>Оплатил</option></select></td><td align='center' valign='middle'><a class='removeuser'><span class='glyphicon glyphicon-remove'></span></a></td></tr>"
           );
 
           $('.phonemask').inputmask({
