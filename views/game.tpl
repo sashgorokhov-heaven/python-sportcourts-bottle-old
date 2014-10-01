@@ -49,7 +49,7 @@
                   {{game['created_by']['first_name']+' '+game['created_by']['last_name']}}
                 </a>
                 &nbsp;
-                <img src="/images/avatars/{{str(game['created_by']['user_id'])}}" class="round" width="30" ord="{{random.randint(1, 999)}}">
+                <img src="/images/avatars/{{str(game['created_by']['user_id'])}}" class="round" width="30" height="30" ord="{{random.randint(1, 999)}}">
                 % end
               </p>
             </div>
