@@ -21,7 +21,7 @@
                     data-bv-notempty-message="Укажите вид спорта">
                       <option value="">--</option>
                       % for sport_type in sports:
-                          <option value="{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
+                          <option value="s{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
                       % end
                     </select>
                   </div>
@@ -33,7 +33,7 @@
                     data-bv-notempty-message="Укажите тип игры">
                       <option value="">--</option>
                       % for type in game_types:
-                        <option value="{{type['type_id']}}" class="{{type['sport_type']}}">{{type['title']}}</option>
+                        <option value="{{type['type_id']}}" class="s{{type['sport_type']}}">{{type['title']}}</option>
                       % end
                     </select>
                   </div>
@@ -48,8 +48,9 @@
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите город">
                     % for city in cities:
-                      <option value="{{city['city_id']}}">{{city['title']}}</option>
+                      <option value="{{city['city_id']}}" class="{{city['city_id']}}">{{city['title']}}</option>
                     % end
+                      <option value="2" class="2">Gthvm</option>
                     </select>
                     <span id="valid"></span>
                   </div>
@@ -72,7 +73,7 @@
                   </div>
                 </div>
                 <script>
-                  $("#court").chained("#city");
+                  $("#court").chained("#sporttype, #city");
                 </script>
                 <div class="form-group">
                   <label for="inputBirght" class="col-sm-2 control-label">Дата</label>
