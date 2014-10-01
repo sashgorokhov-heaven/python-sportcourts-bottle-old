@@ -63,8 +63,8 @@
                       <option value="">--</option>
                       % for court in courts:
                         <option value="{{court['court_id']}}"
-                                class="{{'c'+str(court['city']['city_id'])}} {{' '.join(map(lambda x: '/s'+str(x),[sport['sport_id'] for sport in court['sport_types']]))}}">
-                            {{court['title']}}
+                                class="{{' '.join(map(lambda x: 'c'+str(court['city']['city_id'])+'\\s'+str(x),[sport['sport_id'] for sport in court['sport_types']]))}}">
+                        {{court['title']}}
                         </option>
                         % end
                     </select>
