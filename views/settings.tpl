@@ -32,7 +32,24 @@
                   </label>
                 </div>
                 <hr>
-                <a data-toggle="modal" data-target="#deleteUserModal" class="btn btn-link">Удалить профиль</button>
+                <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-link">Удалить профиль</button>
+                <div class="modal fade" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Вы действительно хотите удалить профиль?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <a class="btn btn-danger" href="">Удалить</a>
+                        <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <hr>
@@ -45,22 +62,3 @@
           </form>
         </div>
       </div>
-
-
-<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
-      </div>
-      <div class="modal-body">
-        <p>Вы действительно хотите удалить профиль?</p>
-      </div>
-      <div class="modal-footer">
-        <a class="btn btn-danger" href="">Удалить</a>
-        <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
-      </div>
-    </div>
-  </div>
-</div>
