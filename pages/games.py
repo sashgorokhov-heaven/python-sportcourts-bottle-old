@@ -142,7 +142,8 @@ class Games(pages.Page):
             _sports = sport_types.get(0, dbconnection=db)
             _game_types = game_types.get(0, dbconnection=db)
             _cities = cities.get(0, dbconnection=db)
-            _courts = courts.get(0, fields=['court_id', 'city_id', 'title'], dbconnection=db)
+            _courts = courts.get(0, detalized=True, fields=['court_id', 'city_id', 'title', 'sport_types'],
+                                 dbconnection=db)
             responsibles = users.get(0, 2, fields=['user_id', 'first_name', 'last_name'], dbconnection=db)
             return pages.PageBuilder("addgame", sports=_sports, game_types=_game_types, cities=_cities, courts=_courts,
                                      responsibles=responsibles)
