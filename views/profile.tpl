@@ -1,13 +1,16 @@
 % rebase("_basicpage", title=user['first_name']+' '+user['last_name'])
+% setdefault('myfriend', False)
       <div class="row profile">
         <div class="col-md-3">
           % import random
           <img src="/images/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300" ord="{{random.randint(1, 999)}}">
           <br>
           <br>
-          <a class="friendsbutton" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
-            <p>{{'+ добавить в друзья' if not myfriend else '- удалить'}}</p>
-          </a>
+          % if user['user_id']!=userinfo['user_id']:
+            <a class="friendsbutton" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
+              <p>{{'+ добавить в друзья' if not myfriend else '- удалить'}}</p>
+            </a>
+          % end
           <br>
           <br>
           % if user['gameinfo']['total']>0:

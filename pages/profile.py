@@ -14,7 +14,9 @@ class Profile(pages.Page):
             if len(user) == 0:
                 raise bottle.HTTPError(404)
             user['gameinfo'] = usergames.get_game_stats(user_id, dbconnection=db)
-            return pages.PageBuilder('profile', user=user)
+            return pages.PageBuilder('profile', user=user,
+                                     myfrien=users.are_friends(user_id, pages.auth_dispatcher.getuserid(),
+                                                               dbconnection=db))
 
     def get_edit(self):
         with modules.dbutils.dbopen() as db:
