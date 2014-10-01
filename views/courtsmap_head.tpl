@@ -36,7 +36,7 @@ a.title.active{
         % groups = []
         % group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
         % courts_list = courts
-        % court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} <br> {address}", "<a href=\'http://sportcourts.ru/courts?court_id={court_id}\' target=\'_blank\'>Подробнее</a>")'
+        % court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} <br> {address}", "<a href=\'/courts?court_id={court_id}\' target=\'_blank\'>Подробнее</a>")'
         % court_strings = [court_string.format(geopoint=court['geopoint'], title='\\"'.join(court['title'].split('"')), address=','.join(court['address'].split(',')[-3:]), court_id=court['court_id']) for court in courts_list]
         % groups.append(group_string.format(title='Все', courts=','.join(court_strings), color=colors[-1]))
         % for n, sport_type_title in enumerate(sport_types):
