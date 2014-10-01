@@ -33,7 +33,7 @@ class Registration(pages.Page):
         data['first_name'] = user['first_name']
         data['last_name'] = user['last_name']
         data['sex'] = 'male' if user['sex'] == 2 else ('female' if user['sex'] == 1 else None)
-        data['email'] = email if email else None
+        data['email'] = email if email and len(email.strip()) > 0 else None
         try:  # dirty hack
             data['bdate'] = vk.convert_date(user['bdate']) if 'bdate' in user else None
         except:
