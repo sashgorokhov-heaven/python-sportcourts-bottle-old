@@ -16,6 +16,7 @@ a.title.active{
 </style>
 
 <script type="text/javascript">
+
     // Создание обработчика для события window.onLoad
     YMaps.jQuery(function () {
         // Создание экземпляра карты и его привязка к созданному контейнеру
@@ -30,7 +31,7 @@ a.title.active{
         map.addControl(new YMaps.TypeControl());
         map.addControl(new YMaps.Zoom());
 
-        % colors = ['redPoint', 'greenPoint', 'bluePoint', 'yellowPoint', 'orangePoint', 'darkbluePoint', 'greyPoint', 'nightPoint']
+        % colors = ['redPoint', 'greenPoint', 'bluePoint', 'yellowPoint', 'orangePoint', 'darkbluePoint', 'greyPoint', 'whitePoint', 'lightbluePoint']
         % sport_types = {sport_type['title']:sport_type for court in courts for sport_type in court['sport_types']}
         % groups = []
         % group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
@@ -55,6 +56,9 @@ a.title.active{
         for (var i = 0; i < groups.length; i++) {
             addMenuItem(groups[i], map, YMaps.jQuery("#menu"));
         }
+
+        map.addOverlay(groups[0]);
+
     })
 
     // Добавление одного пункта в список
@@ -106,4 +110,9 @@ a.title.active{
 
         return placemark
     }
+
+    window.onload = function() {
+        $('#menu').find(':first-child').find(':first-child').addClass('active');
+    }
+    
 </script>
