@@ -7,8 +7,8 @@
           <br>
           <br>
           % if user['user_id']!=userinfo['user_id']:
-            <a class="friendsbutton" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
-              <p>{{'+ добавить в друзья' if not myfriend else '- удалить'}}</p>
+            <a class="friendsbutton btn btn-default" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
+              {{'+ добавить в друзья' if not myfriend else '- убрать из друзей'}}
             </a>
           % end
           <br>

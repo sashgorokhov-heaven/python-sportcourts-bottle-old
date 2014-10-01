@@ -23,11 +23,6 @@
           inProgress = true;
         },
         success: function (responseData, textStatus) {
-          $('#addfriend-'+user_id).html(' ');
-          var count = $(".friendscount").html();
-          count1 = parseInt(count);
-          count1 += 1;
-          $(".friendscount").html(count1);
           location.reload();
         },
         error: function (response, status, errorThrown) {
@@ -48,10 +43,6 @@
           inProgress = true;
         },
         success: function (responseData, textStatus) {
-          $('#removefriend-'+user_id).html(' ');
-          var count = $(".friendscount").html();
-          count1 = count - 1;
-          $(".friendscount").html(count1);
           location.reload();
         },
         error: function (response, status, errorThrown) {
