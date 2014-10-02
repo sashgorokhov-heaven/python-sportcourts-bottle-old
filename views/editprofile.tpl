@@ -1,5 +1,5 @@
 % rebase("_basicpage", title="Изменение профиля")
-% import random
+
       <div class="row profile">
         <div class="col-md-12">
           <form id="profileForm" method="post" class="form-horizontal" action="/profile"
@@ -13,7 +13,7 @@
                     <div class="fileinput fileinput-{{'exists' if haveavatar else 'new'}}" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
                       % if haveavatar:
-                          <img src="/images/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150" ord="{{random.randint(1, 999)}}">
+                          <img src="/images/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150" >
                       % end
                       </div>
                         <div>

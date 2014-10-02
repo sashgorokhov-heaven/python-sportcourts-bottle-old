@@ -5,6 +5,16 @@ import pages
 from models import games
 
 
+def no_cache(func):
+    def wrapper(*args, **kwargs):
+        resp = func(*args, **kwargs)
+        resp.set_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        resp.set_header('Pragma', 'no-cache')
+        resp.set_header('Expires', 0)
+        return resp
+    return wrapper
+
+
 class Images(pages.Page):
     def get_court_image(self, name):
         return bottle.static_file("{}.jpg".format(name), '/bsp/data/images/courts/')
@@ -12,6 +22,7 @@ class Images(pages.Page):
     def get_static_image(self, name):
         return bottle.static_file(name, '/bsp/data/images/static/')
 
+    @no_cache
     def get_avatar_image(self, name):
         filename = str(name)
         dirname = '/bsp/data/images/avatars'

@@ -18,8 +18,8 @@
                     % if loggedin:
                         <li>
                           <a class="topmenu" href="/profile">
-                            % import random
-                            <img src="/images/avatars/{{userinfo['user_id']}}?sq" class="img-circle header_avatar" width="30" height="30" ord="{{random.randint(1, 999)}}">
+
+                            <img src="/images/avatars/{{userinfo['user_id']}}?sq" class="img-circle header_avatar" width="30" height="30" >
                             &nbsp;
                             Мой профиль
                           </a>
