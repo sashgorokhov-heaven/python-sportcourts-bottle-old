@@ -32,7 +32,7 @@
                 </div>
               </div>
               <div class="item" style="background-color:black; max-height:450px;">
-                <img src="/images/courts/10" alt="..." style="width:100%; opacity:0.5;">
+                <img src="https://pp.vk.me/c625829/v625829744/17f8/yxWs5iYf8UY.jpg" alt="..." style="width:100%; opacity:0.5;">
                 <div class="carousel-caption">
                 </div>
               </div>
@@ -64,15 +64,15 @@
 
       <div class="container">
         <div class="row marketing">
-          <div class="col-lg-4 text-center">
+          <div class="col-md-4 text-center">
             <p>Увлекаешься спортом? Ищешь друзей для совместных занятий или соперников для твоей команды? Хочешь быть в курсе спортивных событий твоего города?</p>
           </div>
 
-          <div class="col-lg-4 text-center">
+          <div class="col-md-4 text-center">
             <p>Выбери из сотен спортивных событий совего города. Найди подходящую площадку и время. Общайся с участниками и приглашай друзей.</p>
           </div>
 
-          <div class="col-lg-4 text-center">
+          <div class="col-md-4 text-center">
             <p>Занимайся спортом. Делись своими достижениями с друзьями. Находи новые площадки и узнавай о том, что происходит вокруг.</p>
           </div>
         </div>
