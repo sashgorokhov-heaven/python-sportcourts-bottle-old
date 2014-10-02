@@ -49,7 +49,7 @@
                   {{game['created_by']['first_name']+' '+game['created_by']['last_name']}}
                 </a>
                 &nbsp;
-                <img src="/images/avatars/{{str(game['created_by']['user_id'])}}" class="round" width="30" height="30" ord="{{random.randint(1, 999)}}">
+                <img src="/images/avatars/{{str(game['created_by']['user_id'])}}?sq" class="round" width="30" height="30" ord="{{random.randint(1, 999)}}">
                 % end
               </p>
             </div>
@@ -83,7 +83,7 @@
                     {{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}
                   </a>
                   &nbsp;
-                  <img src="/images/avatars/{{str(game['responsible_user']['user_id'])}}" class="round" width="30" ord="{{random.randint(1, 999)}}">
+                  <img src="/images/avatars/{{str(game['responsible_user']['user_id'])}}?sq" class="round" width="30" ord="{{random.randint(1, 999)}}">
                 </p>
                 <p style="margin-top:-5px; margin-bottom:15px;">{{game['responsible_user']['phone']}}</p>
               % end
