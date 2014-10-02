@@ -99,7 +99,7 @@ class Games(pages.Page):
                 self.unassigned_responsible(game_id, responsible_old, db)
 
             games.update(game_id, dbconnection=db, **params)
-            game = games.get_by_id(game_id, detalized=True, fields=['game_id', 'subscribed', 'description'],
+            game = games.get_by_id(game_id, detalized=True, fields=['game_id', 'subscribed', 'description', 'datetime', 'duration'],
                                    dbconnection=db)
             if not game['passed']:
                 for user in game['subscribed']['users']:
