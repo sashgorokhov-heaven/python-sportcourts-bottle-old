@@ -6,6 +6,7 @@ import os
 import threading
 import sys
 import modules
+from modules import iplib
 import modules.logging
 import modules.dbutils
 import models.notifications
@@ -66,6 +67,8 @@ class _Executor:
                     raise ValueError('POST request from other domain')
                 except Exception as e:
                     modules.logging.error(e)
+                raise bottle.HTTPError(404)
+            if not iplib.skip(bottle.request.remote_addr, bottle.request.fullpath):
                 raise bottle.HTTPError(404)
             try:
                 response = self._page.execute(bottle.request.method, **kwargs)
