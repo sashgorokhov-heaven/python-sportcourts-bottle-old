@@ -14,9 +14,13 @@ class Images(pages.Page):
 
     def get_avatar_image(self, name):
         filename = str(name)
-        fullaname = '/bsp/data/images/avatars/{}.jpg'.format(filename)
+        dirname = '/bsp/data/images/avatars'
+        fullaname = os.path.join(dirname, filename+'.jpg')
         if not os.path.exists(fullaname):
             filename = 'blank'
+            return bottle.static_file('{}.jpg'.format(filename), '/bsp/data/images/avatars/')
+        if 'sq' in bottle.request.query:
+            filename = filename+'_sq'
         return bottle.static_file('{}.jpg'.format(filename), '/bsp/data/images/avatars/')
 
     def get_og_image(self, name):

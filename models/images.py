@@ -6,47 +6,52 @@ from PIL import Image
 AVATARSIZE = (300, 300)
 
 
-def _save_image(fullname:str, bottlefile, avatar:bool=False):
+def _save_image(fullname:str, bottlefile):
     if os.path.exists(fullname):
         os.remove(fullname)
     bottlefile.save(fullname)
-    im = Image.open(fullname)
-    width, height = im.size
-    if avatar:
-        if width > height:
-            ratio = AVATARSIZE[0] / width
-        else:
-            ratio = AVATARSIZE[1] / height
-        new_width = round(ratio * width)
-        new_height = round(ratio * height)
-        im = im.resize((new_width, new_height))
-    im.save(fullname)
-    im.close()
 
-
-def save_avatar(user_id:int, bottlefile):
+def _save_avatar(user_id:int):
     filename = str(user_id) + '.jpg'
     dirname = '/bsp/data/images/avatars'
     fullname = os.path.join(dirname, filename)
-    _save_image(fullname, bottlefile, True)
 
-
-def save_avatar_from_url(user_id:int, url:str):
-    fullname = os.path.join('/bsp/data/images/avatars', str(user_id) + '.jpg')
-    if os.path.exists(fullname):
-        os.remove(fullname)
-    urllib.request.urlretrieve(url, fullname)
-    im = Image.open(fullname)
-    width, height = im.size
+    original = Image.open(fullname)
+    width, height = original.size
     if width > height:
         ratio = AVATARSIZE[0] / width
     else:
         ratio = AVATARSIZE[1] / height
     new_width = round(ratio * width)
     new_height = round(ratio * height)
-    im = im.resize((new_width, new_height))
-    im.save(fullname)
-    im.close()
+    resized = original.resize((new_width, new_height))
+    resized.save(fullname)
+
+    if new_height>new_width:
+        new_height = new_width
+    if new_width>new_height:
+        new_width = new_height
+    cropped = resized.crop((0,0,new_width, new_height))
+    cropped.save(os.path.join('/bsp/data/images/avatars', str(user_id) + '_sq.jpg'))
+
+    original.close()
+    resized.close()
+    cropped.close()
+
+def save_avatar(user_id:int, bottlefile):
+    filename = str(user_id) + '.jpg'
+    dirname = '/bsp/data/images/avatars'
+    fullname = os.path.join(dirname, filename)
+    delete_avatar(user_id)
+    bottlefile.save(fullname)
+    _save_avatar(user_id)
+
+
+def save_avatar_from_url(user_id:int, url:str):
+    fullname = os.path.join('/bsp/data/images/avatars', str(user_id) + '.jpg')
+    delete_avatar(user_id)
+    urllib.request.urlretrieve(url, fullname)
+    _save_avatar(user_id)
 
 def have_avatar(user_id:int):
     filename = str(user_id) + '.jpg'
@@ -59,6 +64,9 @@ def delete_avatar(user_id:int):
     filename = str(user_id) + '.jpg'
     dirname = '/bsp/data/images/avatars'
     fullname = os.path.join(dirname, filename)
+    if os.path.exists(fullname):
+        os.remove(fullname)
+    fullname = os.path.join(dirname, str(user_id)+'_sq.jpg')
     if os.path.exists(fullname):
         os.remove(fullname)
 
