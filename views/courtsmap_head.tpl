@@ -31,22 +31,6 @@ a.title.active{
         map.addControl(new YMaps.TypeControl());
         map.addControl(new YMaps.Zoom());
 
-        % colors = ['redPoint', 'greenPoint', 'bluePoint', 'yellowPoint', 'orangePoint', 'darkbluePoint', 'greyPoint', 'whitePoint', 'lightbluePoint']
-        % sport_types = {sport_type['title']:sport_type for court in courts for sport_type in court['sport_types']}
-        % groups = []
-        % group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
-        % courts_list = courts
-        % court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} <br> {address}", "<a href=\'/courts?court_id={court_id}\' target=\'_blank\'>Подробнее</a>")'
-        % court_strings = [court_string.format(geopoint=court['geopoint'], title='\\"'.join(court['title'].split('"')), address=','.join(court['address'].split(',')[-3:]), court_id=court['court_id']) for court in courts_list]
-        % groups.append(group_string.format(title='Все', courts=','.join(court_strings), color=colors[-1]))
-        % for n, sport_type_title in enumerate(sport_types):
-          % sport_type = sport_types[sport_type_title]
-          % group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
-          % courts_list = [court for court in courts if sport_type['title'] in {sport_type['title'] for sport_type in court['sport_types']} ]
-          % court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} <br> {address}", "<a href=\'http://sportcourts.ru/courts?court_id={court_id}\' target=\'_blank\'>Подробнее</a>")'
-          % court_strings = [court_string.format(geopoint=court['geopoint'], title='\\"'.join(court['title'].split('"')), address=','.join(court['address'].split(',')[-3:]), court_id=court['court_id']) for court in courts_list]
-          % groups.append(group_string.format(title=sport_type['title'], courts=','.join(court_strings), color=colors[n]))
-        % end
         // Группы объектов
         var groups = [
             {{!','.join(groups)}}
