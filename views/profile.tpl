@@ -8,7 +8,7 @@
             <br>
             <br>
             <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
-              {{'+ добавить в друзья' if not myfriend else '- убрать из друзей'}}
+              {{'добавить в друзья' if not myfriend else 'убрать из друзей'}}
             </a>
           % end
           % if user['gameinfo']['total']>0:
