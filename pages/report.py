@@ -1,4 +1,5 @@
 import base64
+import datetime
 import json
 import bottle
 from modules.utils import beautifuldate, beautifultime, beautifulday
@@ -22,9 +23,7 @@ class Report(pages.Page):
             if game['created_by']['user_id'] != pages.auth_dispatcher.getuserid() and game['responsible_user'][
                 'user_id'] != pages.auth_dispatcher.getuserid() and not pages.auth_dispatcher.admin():
                 return pages.templates.permission_denied()
-            db.execute("SELECT game_id FROM games WHERE datetime+INTERVAL duration MINUTE<=NOW() AND game_id={}".format(
-                game_id))
-            if len(db.last()) == 0:
+            if datetime.datetime.now()<game['datetime_pure']+datetime.timedelta(minutes=game['duration']):
                 return pages.templates.message("Вы не можете отправить отчет по игре", "Игра еще не закончилась")
             return pages.PageBuilder("report", game=game, showreport=game['report']['reported'])
 
