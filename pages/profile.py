@@ -59,8 +59,9 @@ class Profile(pages.Page):
                 page.add_param('responsible_games', games.get_responsible_games(user_id, dbconnection=db))
                 page.add_param('organizer_games', games.get_organizer_games(user_id, dbconnection=db))
                 return page
-        return pages.templates.permission_denied("Ошибка доступа",
-                                                 "Зарегестрируйтесь, чтобы иметь свой профиль, с блекджеком и аватаркой.")
+        return pages.templates.permission_denied(
+            '<p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегестрируйтесь</a></p>',
+            'Чтобы иметь свой профиль, с блекджеком и аватаркой.')
 
     def post(self):
         if not pages.auth_dispatcher.loggedin():
