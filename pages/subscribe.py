@@ -55,15 +55,13 @@ class Subscribe(pages.Page):
             game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
                                        beautifultime(game['datetime']),
                                        beautifulday(game['datetime']))
-            pdatetime = datetime.datetime(*itertools.chain(map(int, game['datetime'].split(' ')[0].split('-')),
-                                                           map(int, game['datetime'].split(' ')[1].split(':'))))
+            pdatetime = game['datetime_pure']
             another_game = self.check_intersection(user_id, game, db)
             if len(another_game) > 0 and not unsubscribe:
                 message = 'В это время вы уже записаны на игру "{}"'.format(create_link.game(another_game))
                 return pages.PageBuilder("game", tab_name=tab_name, game=game, message=message)
 
-            if pdatetime - datetime.timedelta(
-                    days=1) <= datetime.datetime.now() <= pdatetime:
+            if datetime.datetime(*(pdatetime.date() - datetime.timedelta(hours=24)).timetuple()[:3]) <= datetime.datetime.now() <= pdatetime:
                 user = users.get(user_id, fields=['user_id', 'first_name', 'last_name'], dbconnection=db)
                 if not unsubscribe:
                     message = 'На игру "{}" записался {}'.format(create_link.game(game),
