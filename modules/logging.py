@@ -30,7 +30,8 @@ def _writedb(ip:str, path:str, httpmethod:str='GET', referer:str='None', user_id
             print(e)
         except:
             pass
-        return uwsgi.SPOOL_RETRY
+        return uwsgi.SPOOL_OK
+        #return uwsgi.SPOOL_RETRY TODO
     return uwsgi.SPOOL_OK
 
 
