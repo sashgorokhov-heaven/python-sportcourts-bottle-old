@@ -54,16 +54,23 @@ def threaded(func):
     return wrapper
 
 
-def spooler(func):
-    def wrapper(data:dict):
-        pickleddata = pickle.loads(data[b'data'])
-        args, kwargs = pickleddata
-        return func(*args, **kwargs)
+_spoolers = dict() # func key -> func
 
-    def spool(*args, **kwargs):
-        pickleddata = pickle.dumps((args, kwargs))
-        uwsgi.spool({b'data': pickleddata})
 
-    setattr(func, 'spool', spool)
-    uwsgi.spooler = wrapper
-    return func
+def _spool_dispatcher(data:dict):
+    spool_key = data[b'key'].decode()
+    pickleddata = pickle.loads(data[b'data'])
+    args, kwargs = pickleddata
+    return _spoolers[spool_key](*args, **kwargs)
+
+
+def spooler(spool_key:str):
+    def wraper(func):
+        def spool(*args, **kwargs):
+            pickleddata = pickle.dumps((args, kwargs))
+            uwsgi.spool({b'data': pickleddata, b'key':spool_key.encode()})
+        _spoolers[spool_key] = func
+        uwsgi.spooler = _spool_dispatcher
+        setattr(func, 'spool', spool)
+        return func
+    return wraper

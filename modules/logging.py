@@ -13,7 +13,7 @@ _dbparams = {
     'charset': 'utf8'
 }
 
-@utils.spooler
+@utils.spooler('logs')
 def _writedb(ip:str, path:str, httpmethod:str='GET', referer:str='None', user_id:int=0, message:str=None,
              error:str=None, error_description:str=None, traceback:str=None):
     try:
