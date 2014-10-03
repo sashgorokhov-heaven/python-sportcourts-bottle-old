@@ -197,9 +197,9 @@
                         </table>
                       </div>
                   % end
-                  <a class="btn btn-success" role="button" href="/list/{{game['game_id']}}">Распечатать списки на игру</a>
+                  <a class="btn btn-success" role="button" href="/list/{{game['game_id']}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
                   <br><br>
-                  <a class="btn btn-success" role="button" href="/report?game_id={{game['game_id']}}">Заполнить отчет по игре</a>
+                  <a class="btn btn-success" role="button" href="/report?game_id={{game['game_id']}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;Заполнить отчет по игре</a>
                 </div>
               </div>
             </form>

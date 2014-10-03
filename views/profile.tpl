@@ -12,14 +12,15 @@
           % end
           % if user['gameinfo']['total']>0:
           <br>
-          <div class="panel-group" id="accordion">
+          <br>
+          <div class="panel-group" id="accordion1">
             <div class="panel panel-default">
               <div class="panel-heading" style="padding: 6px 15px 6px 15px; background: none; text-align: center;">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                  <a data-toggle="collapse" data-parent="#accordion1" href="#collapseTime">
                     <span class="glyphicon glyphicon-stats"></span> В игре: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}
                   </a>
               </div>
-              <div id="collapseOne" class="panel-collapse collapse">
+              <div id="collapseTime" class="panel-collapse collapse">
                 <div class="panel-body" style="padding:10px 0 0 10px;">
                   % for sport_id in user['gameinfo']['sport_types']:
                     <p>
