@@ -11,20 +11,26 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-3">
-                <p class="lead">Игра <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a></p>
-                <small>
-                  <p>Ответственный: {{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}</p>
-                  <p>Вид спорта: {{game['sport_type']['title']}}</p>
-                  <p>Тип игры: {{game['game_type']['title']}}</p>
-                  <p>Площадка: {{game['court']['title']}}</p>
-                  <p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p>
-                  <p>Продолжительность: {{game['duration']}} минут</p>
-                  <p>Цена: {{game['cost']}}</p>
-                  <br>
-                  <br>
-                  <p>______________________</p>
-                  <p>Подпись ответственного</p>
-                </small>
+                <div class="row">
+                  <div class="col-md-12 col-sm-6 col-xs-6">
+                    <p class="lead">Игра <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a></p>
+                    <small>
+                      <p>Ответственный: {{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}</p>
+                      <p>Вид спорта: {{game['sport_type']['title']}}</p>
+                      <p>Тип игры: {{game['game_type']['title']}}</p>
+                      <p>Площадка: {{game['court']['title']}}</p>
+                    </div>
+                    <div class="col-md-12 col-sm-6 col-xs-6">
+                      <p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p>
+                      <p>Продолжительность: {{game['duration']}} минут</p>
+                      <p>Цена: {{game['cost']}}</p>
+                      <br>
+                      <br>
+                      <p>______________________</p>
+                      <p>Подпись ответственного</p>
+                    </small>
+                  </div>
+                </div>
               </div>
               <div class="col-md-9">
                 <div class="row">
@@ -33,7 +39,7 @@
                   </div>
                   <div class="col-md-12">
                     <div class="table-responsive">
-                      <table class="table table-hover table-bordered" id="userstable" style="font-size:90%">
+                      <table class="table table-hover table-bordered table-condensed" id="userstable" style="font-size:90%">
                         <tr class="success">
                           <td>№</td>
                           <td>Имя</td>
