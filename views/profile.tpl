@@ -12,16 +12,23 @@
           % end
           % if user['gameinfo']['total']>0:
           <br>
-          <br>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Всего сыграно: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}</button>
-              <ul class="dropdown-menu" role="menu">
-              % for sport_id in user['gameinfo']['sport_types']:
-                <li>
-                  <a href="">{{user['gameinfo']['sport_types'][sport_id]}}: {{' '.join(user['gameinfo']['beautiful'][sport_id])}}</a>
-                </li>
-              % end
-              </ul>
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading" style="padding: 6px 15px 6px 15px; background: none; text-align: center;">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <span class="glyphicon glyphicon-stats"></span> В игре: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}
+                  </a>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body" style="padding:10px 0 0 10px;">
+                  % for sport_id in user['gameinfo']['sport_types']:
+                    <p>
+                      {{user['gameinfo']['sport_types'][sport_id]}}: {{' '.join(user['gameinfo']['beautiful'][sport_id])}}
+                    </p>
+                  % end
+                </div>
+              </div>
+            </div>
           </div>
           % end
           <br>
