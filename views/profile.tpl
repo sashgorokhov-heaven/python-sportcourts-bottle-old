@@ -14,7 +14,7 @@
           <br>
           <br>
           <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-top:-7px;"><span class="glyphicon glyphicon-stats"></span> Всего сыграно: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-stats"></span> Всего сыграно: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}</button>
               <ul class="dropdown-menu" role="menu">
               % for sport_id in user['gameinfo']['sport_types']:
                 <li>
@@ -29,6 +29,24 @@
         </div>
         <div class="col-md-9">
           <strong>{{user['first_name']+' '+user['last_name']}}</strong>
+          &nbsp;
+          % if len({0,1,2}.intersection(user['userlevel']))>0:
+            % if 0 in user['userlevel']:
+                <span id="badge1" class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" data-placement="bottom" title="Администратор"></span>
+                <script>$('#badge1').tooltip();</script>
+                &nbsp;
+            % end
+            % if 1 in user['userlevel']:
+                <span id="badge2" class="glyphicon glyphicon-star" data-toggle="tooltip" data-placement="bottom" title="Организатор"></span>
+                <script>$('#badge2').tooltip();</script>
+                &nbsp;
+            % end
+            % if 2 in user['userlevel']:
+                <span id="badge3" class="glyphicon glyphicon-star-empty" data-toggle="tooltip" data-placement="bottom" title="Ответственный"></span>
+                <script>$('#badge3').tooltip();</script>
+                &nbsp;
+            % end
+          % end
           % if int(user['user_id'])==int(userinfo['user_id']):
             &nbsp;
             &nbsp;
@@ -48,19 +66,6 @@
             &nbsp;
             &nbsp;
             <small>Последний раз заходил{{'a' if user['sex']=='female' else ''}}: {{user['lasttime']}}</small><br>
-          % end
-          % if len({0,1,2}.intersection(user['userlevel']))>0:
-            <br>
-            % if 0 in user['userlevel']:
-                <span class="label label-default">Админ</span>&nbsp;
-            % end
-            % if 1 in user['userlevel']:
-                <span class="label label-primary">Организатор</span>&nbsp;
-            % end
-            % if 2 in user['userlevel']:
-                <span class="label label-info">Ответственный</span>
-            % end
-            <br>
           % end
           <br>
           {{user['parsed_bdate']+', '+user['city']['title']}}<br>
