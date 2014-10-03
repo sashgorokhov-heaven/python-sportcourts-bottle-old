@@ -3,15 +3,14 @@
       <div class="row profile">
         <div class="col-md-3">
           <img src="/images/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300">
+          <br>
           % if loggedin and user['user_id']!=userinfo['user_id']:
-            <br>
-            <br>
+          <br>
             <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
               {{'добавить в друзья' if not myfriend else 'убрать из друзей'}}
             </a>
           % end
           % if user['gameinfo']['total']>0:
-          <br>
           <br>
           <div class="panel-group" id="accordion1">
             <div class="panel panel-default">
