@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="/view/jasny/css/jasny-bootstrap.css">
 <script src="/view/jasny/js/jasny-bootstrap.js"></script>
 
+<link rel="stylesheet" href="/view/js/chosen/chosen.css">
+<script src="/view/js/chosen/chosen.jquery.js"></script>
+
 <script type="text/javascript">
     $('.fileinput').fileinput()
 </script>

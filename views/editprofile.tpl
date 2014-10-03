@@ -26,8 +26,7 @@
                     </div>
                   </div>
                 </div>
-                <!--
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Пол</label>
                   <div class="col-sm-10">
                     <label class="checkbox-inline" style="margin-left:-17px;">
@@ -67,7 +66,6 @@
                     <span id="valid"></span>
                   </div>
                 </div>
-                --!>
                 <div class="form-group">
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
@@ -75,7 +73,6 @@
                     <span id="valid"></span>
                   </div>
                 </div>
-                <!--
                 <div class="form-group">
                   <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
                   <div class="col-sm-10">
@@ -83,8 +80,7 @@
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите дату рождения" />
                   </div>
-                </div>
-                --!>
+                </div> -->
                 <div class="form-group">
                   <label for="height" class="col-sm-2 control-label">Рост</label>
                   <div class="col-sm-2">
@@ -130,6 +126,32 @@
                   <div class="col-sm-10">
                     <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value="{{user['phone']}}" data-bv-notempty="true" data-bv-notempty-message="Укажите телефон"></input>
                     <span id="valid"></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="" class="col-sm-2 control-label">Амплуа</label>
+                  <div class="col-sm-10">
+                    <select data-placeholder="Выберите любимые амплуа"  multiple="" class=" form-control chosen-select" tabindex="-1">
+                      <option value=""></option>
+                      <optgroup label="Баскетбол">
+                        <option value="1_1">Баскетбол: Центровой</option>
+                        <option value="1_2">Баскетбол: Форвард</option>
+                        <option value="1_3">Баскетбол: Атакующий защитник</option>
+                        <option value="1_4">Баскетбол: Разыгрывающий</option>
+                      </optgroup>
+                      <optgroup label="Футбол">
+                        <option value="2_1">Футбол: Нападающий</option>
+                        <option value="2_2">Футбол: Форвард</option>
+                        <option value="2_3">Футбол: Атакующий защитник</option>
+                        <option value="2_4">Футбол: Разыгрывающий</option>
+                      </optgroup>
+                    </select>
+                    <script>
+                      $(".chosen-select").chosen({
+                        disable_search: true,
+                        max_selected_options: 5
+                      });
+                    </script>
                   </div>
                 </div>
                 <br>
