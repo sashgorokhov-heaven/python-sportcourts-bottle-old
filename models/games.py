@@ -118,14 +118,10 @@ def write_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DB
     game = get_by_id(game_id, detalized=True, fields=["game_id", "description", "datetime"], dbconnection=dbconnection)
     if not game['datetime_tommorow'] and not game['datetime_today']:
         message = 'До игры "{}" осталось 2 дня!'.format(create_link.game(game))
-        notifications.add(user_id, message, 0, game_id, 1,
-                          'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game["datetime"]),
-                          dbconnection=dbconnection)
+        notifications.add(user_id, message, 0, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game["datetime"]))
     if not game['datetime_today']:
         message = 'Завтра состоится игра "{}"<br>Не пропустите!'.format(create_link.game(game))
-        notifications.add(user_id, message, 1, game_id, 1,
-                          'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game["datetime"]),
-                          dbconnection=dbconnection)
+        notifications.add(user_id, message, 1, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game["datetime"]))
 
 
 @autodb
@@ -149,7 +145,7 @@ def delete_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.D
         "SELECT notification_id FROM notifications WHERE type=1 AND game_id={} AND DATETIME>NOW()".format(game_id))
     if len(dbconnection.last()) == 0:
         return
-    notifications.delete(list(map(lambda x: x[0], dbconnection.last())), dbconnection=dbconnection)
+    notifications.delete(list(map(lambda x: x[0], dbconnection.last())))
 
 
 @autodb

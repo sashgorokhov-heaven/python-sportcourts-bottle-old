@@ -45,7 +45,7 @@ class Recover(pages.Page):
                 'Восстановление пароля',
                 override=True,
                 dbconnection=db)
-            notifications.add(user_id, 'Вы недавно восстанавливливали пароль', 1, dbconnection=db)
+            notifications.add(user_id, 'Вы недавно восстанавливливали пароль', 1)
             return pages.PageBuilder('text', message='Проверьте email',
                                      description='Вам было отправлено письмо с дальнейшими инструкциями.')
 

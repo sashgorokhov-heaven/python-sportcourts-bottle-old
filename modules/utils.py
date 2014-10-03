@@ -61,7 +61,10 @@ def _spool_dispatcher(data:dict):
     spool_key = data[b'key'].decode()
     pickleddata = pickle.loads(data[b'data'])
     args, kwargs = pickleddata
-    return _spoolers[spool_key](*args, **kwargs)
+    retval = _spoolers[spool_key](*args, **kwargs)
+    if not retval:
+        return uwsgi.SPOOL_OK
+    return retval
 
 
 def spooler(spool_key:str):
@@ -74,3 +77,8 @@ def spooler(spool_key:str):
         setattr(func, 'spool', spool)
         return func
     return wraper
+
+def as_spooler(func):
+    def wrapper(*args, **kwargs):
+        func.spool(*args, **kwargs)
+    return wrapper

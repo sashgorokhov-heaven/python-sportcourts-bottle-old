@@ -154,7 +154,7 @@ class Registration(pages.Page):
                 params['email'],
                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(token),
                 'Активация профиля')
-            notifications.add(user_id, "Проверьте свою почту чтобы активировать профиль!", 1, dbconnection=db)
+            notifications.add(user_id, "Проверьте свою почту чтобы активировать профиль!", 1)
             if vkuserid:
                 friends = vk.exec(None, "friends.get", user_id=vkuserid)['items']
                 if len(friends) > 0:

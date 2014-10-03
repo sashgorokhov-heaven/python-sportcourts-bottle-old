@@ -33,7 +33,7 @@ class Games(pages.Page):
         created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
         notification = 'Вас назначили ответственным на игру "{}"<br>Свяжитесь с "{}"!'
         notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
-        notifications.add(user_id, notification, 2, game_id, 2, dbconnection=db)
+        notifications.add(user_id, notification, 2, game_id, 2)
 
     def unassigned_responsible(self, game_id:int, user_id:int, db):
         if user_id == pages.auth_dispatcher.getuserid():
@@ -42,7 +42,7 @@ class Games(pages.Page):
         created_by = users.get(game['created_by'], fields=['user_id', 'first_name', 'last_name'])
         notification = 'Вы больше не являетесь ответственным за игру "{}".'
         notification = notification.format(modules.create_link.game(game), modules.create_link.user(created_by))
-        notifications.add(user_id, notification, 2, game_id, 2, dbconnection=db)
+        notifications.add(user_id, notification, 2, game_id, 2)
 
     def post_submit_add(self):
         with modules.dbutils.dbopen() as db:
@@ -104,10 +104,10 @@ class Games(pages.Page):
             if not game['passed']:
                 for user in game['subscribed']['users']:
                     notifications.add(user['user_id'], 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                        modules.create_link.game(game)), 1, game_id, 1, dbconnection=db)
+                        modules.create_link.game(game)), 1, game_id, 1)
                 if responsible_old == int(params['responsible_user_id']):
                     notifications.add(responsible_old, 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                        modules.create_link.game(game)), 1, game_id, 2, dbconnection=db)
+                        modules.create_link.game(game)), 1, game_id, 2)
             raise bottle.redirect('/games?game_id={}'.format(game_id))
 
     def post(self):

@@ -69,7 +69,7 @@ class Subscribe(pages.Page):
                 else:
                     message = '{} отписался от игры "{}"'.format(create_link.user(user),
                                                                             create_link.game(game))
-                notifications.add(game['responsible_user']['user_id'], message, 1, game_id, 2, dbconnection=db)
+                notifications.add(game['responsible_user']['user_id'], message, 1, game_id, 2)
             self.subscribe(game_id, user_id, unsubscribe)
             game = games.get_by_id(game_id, detalized=True, dbconnection=db)
             if pages.auth_dispatcher.getuserid() in {user['user_id'] for user in game['subscribed']['users']}:
@@ -98,10 +98,8 @@ class Subscribe(pages.Page):
 
         self.subscribe(game_id, user_id, unsubscribe)
 
-        notifications.add(user_id,
-                          'Вы были удалены с игры "{}"'.format(
-                              create_link.game(games.get_by_id(game_id, fields=['game_id', 'description']))), 1,
-                          game_id, 1)
+        notifications.add(user_id, 'Вы были удалены с игры "{}"'.format(
+            create_link.game(games.get_by_id(game_id, fields=['game_id', 'description']))), 1, game_id, 1)
 
         raise bottle.redirect('/games?edit={}'.format(game_id))
 

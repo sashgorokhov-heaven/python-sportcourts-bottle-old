@@ -18,7 +18,7 @@ class Activate(pages.Page):
             activation.activate(user_id, dbconnection=db)
             user = users.get(user_id, fields=['email', 'passwd'], dbconnection=db)
             pages.auth_dispatcher.login(user['email'], user['passwd'])
-            notifications.add(user_id, "Ваш профиль успешно активирован!", dbconnection=db)
+            notifications.add(user_id, "Ваш профиль успешно активирован!")
             raise bottle.redirect('/profile')
 
     get.route = '/activate'
