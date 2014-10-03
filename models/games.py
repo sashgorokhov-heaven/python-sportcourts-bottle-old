@@ -153,20 +153,20 @@ def delete_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.D
 
 
 @autodb
-def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slice(0, 20), detalized:bool=False,
+def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slice(0, 20), detalized:bool=False, old:bool=False,
                fields:list=dbutils.dbfields['games'], dbconnection:dbutils.DBConnection=None) -> list:
     orderedfields = [i for i in dbutils.dbfields['games'] if i in set(fields)]
     select = ','.join(orderedfields)
 
-    sql = "SELECT " + select + " FROM games WHERE {} ORDER BY datetime ASC LIMIT {}, {}"
+    sql = "SELECT " + select + " FROM games WHERE {} ORDER BY datetime {} LIMIT {}, {}"
     where = list()
     where.append("city_id={}".format(city_id))
-    where.append("datetime + INTERVAL duration MINUTE>NOW()")
+    where.append("datetime+INTERVAL duration MINUTE {} NOW()".format('>' if not old else '<'))
     if court_id:
         where.append("court_id={}".format(court_id))
     if sport_type:
         where.append("sport_type={}".format(sport_type))
-    sql = sql.format(' AND '.join(where), count.start if count.start else 0, count.stop)
+    sql = sql.format(' AND '.join(where), 'ASC' if not old else 'DESC', count.start if count.start else 0, count.stop)
 
     games = dbconnection.execute(sql, orderedfields)
 

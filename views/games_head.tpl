@@ -16,7 +16,8 @@
     }
     if (value == '-1'){
       location.href='/games?old';
-    } else{
+    }
+    if (value != '0' && value != '-1') {
       location.href='/games?sport_id='+value;
     }
 

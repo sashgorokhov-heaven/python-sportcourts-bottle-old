@@ -1,5 +1,6 @@
 % rebase("_basicpage", title="Игры")
 % setdefault("bysport", 0)
+% setdefault("old", False)
       <!-- <div class="jumbotron">
         <h1>Таблица игр</h1>
         <p>Здесь вы можете присоединиться к любой игре, в которой еще есть места.</p>
@@ -18,7 +19,7 @@
                 <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
                 data-bv-notempty-message="Укажите вид спорта">
                   <option value="0">Все</option>
-                  <option value="-1">Прошедшие игры</option>
+                  <option value="-1" {{'selected' if old else ''}}>Прошедшие игры</option>
                   % for sport_type in sports:
                       <option value="{{sport_type['sport_id']}}" {{'selected' if bysport==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
                   % end

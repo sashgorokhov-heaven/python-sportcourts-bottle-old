@@ -229,8 +229,77 @@ class Games(pages.Page):
                 games.delete_future_notifications(user['user_id'], game_id, dbconnection=db)
         raise bottle.redirect('/games')
 
-    def get_old(self):
-        pass
+    def _get_games(self, *args):
+        ptype = args[0]
+        sport_type = 0
+        page_n = 1
+
+        if ptype=='all' or ptype=='old':
+            page_n = args[1]
+        elif ptype=='sport':
+            sport_type = args[1]
+            page_n = args[2]
+
+        with modules.dbutils.dbopen() as db:
+            count = len(games.get_recent(sport_type=sport_type,
+                                         count=slice(0, 99999),
+                                         detalized=False,
+                                         old=ptype=='old',
+                                         fields=['game_id'],
+                                         dbconnection=db)) # TODO: REWORK
+
+            total_pages = count // GAMES_PER_PAGE + (1 if 0 <= count <= GAMES_PER_PAGE else 0)
+            if page_n > total_pages:
+                if not bottle.request.is_ajax:
+                    raise bottle.HTTPError(404)
+                else:
+                    return {"stop": True, "games": list()}
+
+            sports = sport_types.get(0, dbconnection=db)
+
+            if not count:
+                if not bottle.request.is_ajax:
+                    return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type)
+                else:
+                    return {"stop": True, "games": list()}
+
+            allgames = games.get_recent(sport_type=sport_type, old=ptype=='old',
+                                        count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), detalized=True,
+                                        dbconnection=db)
+
+            for game in allgames:
+                if pages.auth_dispatcher.loggedin() \
+                        and pages.auth_dispatcher.getuserid() in {user['user_id'] for user in
+                                                                  game['subscribed']['users']}:
+                    game['is_subscribed'] = True
+                else:
+                    game['is_subscribed'] = False
+                game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
+                                           beautifultime(game['datetime']),
+                                           beautifulday(game['datetime']))
+
+            if not bottle.request.is_ajax:
+                page = pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type, old=ptype=='old')
+                if page_n < total_pages:
+                    page.add_param("nextpage", page_n + 1)
+                return page
+            else:
+                data = {"stop": page_n >= total_pages, "games": list()}
+                page = pages.PageBuilder("game", tab_name="all")
+                for game in allgames:
+                    page.add_param("game", game)
+                    game_tpl = page.template()
+                    data["games"].append(game_tpl)
+                return data
+
+    def get_all(self, page_n:int=1):
+        return self._get_games('all', page_n)
+
+    def get_by_sport(self, sport_id:int, page_n:int=1):
+        return self._get_games('sport', sport_id, page_n)
+
+    def get_old(self, page_n:int=1):
+        return self._get_games('old', page_n)
 
     def get(self):
         if 'delete' in bottle.request.query:
@@ -246,16 +315,13 @@ class Games(pages.Page):
             return self.get_edit()
         if 'game_id' in bottle.request.query:
             return self.get_game_id()
+
         if 'sport_id' in bottle.request.query:
-            if 'page' in bottle.request.query:
-                return self.get_page(int(bottle.request.query.get('page')), int(bottle.request.query.get('sport_id')))
-            else:
-                return self.get_page(1, int(bottle.request.query.get('sport_id')))
-        if 'page' in bottle.request.query and 'sport_id' not in bottle.request.query:
-            return self.get_page(int(bottle.request.query.get('page')))
+            return self.get_by_sport(int(bottle.request.query.get('sport_id')),
+                                     int(bottle.request.query.get('page')) if 'page' in bottle.request.query else 1)
         if 'old' in bottle.request.query:
-            return self.get_old()
-        return self.get_page(1)
+            return self.get_old(int(bottle.request.query.get('page')) if 'page' in bottle.request.query else 1)
+        return self.get_all(int(bottle.request.query.get('page')) if 'page' in bottle.request.query else 1)
 
     get.route = '/games'
     post.route = get.route
