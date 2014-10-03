@@ -2,7 +2,7 @@
 % setdefault('myfriend', False)
       <div class="row profile">
         <div class="col-md-3">
-          <img src="/images/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300">
+          <img src="/images/avatars/{{str(user['user_id'])}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
           <br>
           % if loggedin and user['user_id']!=userinfo['user_id']:
           <br>
