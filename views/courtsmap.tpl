@@ -9,7 +9,7 @@
           <div class="col-md-3">
             <div class="panel panel-default">
               <div class="panel-body">
-                <p class="lead">Площадки<small><a href="">Игры</a></small></p>
+                <p class="lead">Площадки</p>
                 <ul id="menu" style="list-style-type:none; padding-left:0;"></ul>
               </div>
             </div>

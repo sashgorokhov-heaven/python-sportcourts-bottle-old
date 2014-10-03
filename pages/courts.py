@@ -49,7 +49,7 @@ class Courts(pages.Page):
             sport_types = {sport_type['title']:sport_type for court in courts_list for sport_type in court['sport_types']}
             group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
             court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} <br> {address}", "<a href=\'/courts?court_id={court_id}\' target=\'_blank\'>Подробнее</a>")'
-            games_string = '<br>Ближайшие игры:<br>'
+            games_string = '<br><br>Ближайшие игры:'
             game_string = '<br>{n}. <a href=\'/games?game_id={game_id}\' target=\'_blank\'>{datetime} | {sport_type} - {game_type}</a>'
             def create_group(courts:list, color_n:int, name:str) -> str:
                 court_strings = []
