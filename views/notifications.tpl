@@ -19,14 +19,14 @@
       </br>
       <ul class="nav nav-tabs">
         <li  class="active">
-          <a href="#all" data-toggle="tab">{{'<b>Общие</b>' if len(notifications['all'])>len(notifications['subscribed']) and len(notifications['all'])>len(notifications['responsible']) else 'Общие'}}
+          <a href="#all" data-toggle="tab">{{!'<b>Общие</b>' if len(notifications['all'])>len(notifications['subscribed']) and len(notifications['all'])>len(notifications['responsible']) else 'Общие'}}
           % if len(notifications['all'])>0:
               <span class="badge notify_all">{{len(notifications['all'])}}</span>
           % end
           </a>
         </li>
         <li>
-            <a href="#subscribed" data-toggle="tab">{{'<b>Мои игры</b>' if len(notifications['subscribed'])>len(notifications['all']) and len(notifications['subscribed'])>len(notifications['responsible']) else 'Мои игры'}}
+            <a href="#subscribed" data-toggle="tab">{{!'<b>Мои игры</b>' if len(notifications['subscribed'])>len(notifications['all']) and len(notifications['subscribed'])>len(notifications['responsible']) else 'Мои игры'}}
             % if len(notifications['subscribed'])>0:
                 <span class="badge notify_subscribed">{{len(notifications['subscribed'])}}</span>
             % end
@@ -34,7 +34,7 @@
         </li>
         % if 'responsible' in notifications:
         <li>
-            <a href="#responsible" data-toggle="tab">{{'<b>Ответственность</b>' if len(notifications['responsible'])>len(notifications['all']) and len(notifications['responsible'])>len(notifications['subscribed']) else 'Ответственность'}}
+            <a href="#responsible" data-toggle="tab">{{!'<b>Ответственность</b>' if len(notifications['responsible'])>len(notifications['all']) and len(notifications['responsible'])>len(notifications['subscribed']) else 'Ответственность'}}
             % if len(notifications['responsible'])>0:
                 <span class="badge notify_responsible">{{len(notifications['responsible'])}}</span>
             % end
