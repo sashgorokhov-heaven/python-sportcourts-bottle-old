@@ -7,6 +7,8 @@
               <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
               <li data-target="#carousel-example-generic" data-slide-to="1"></li>
               <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="4"></li>
             </ol>
             <div class="text-center" style="position:absolute; top:15%; left:25%; z-index:100; width:50%; color: rgb(255, 255, 255); text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;">
               <h1>SportCourts</h1>
@@ -22,17 +24,27 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" style="overflow:hidden">
               <div class="item active" style="background-color:black; max-height:450px;">
-                <img src="/images/courts/1" alt="..." style="width:100%; opacity:0.5;">
+                <img src="https://pp.vk.me/c620918/v620918493/11636/b5Nb4HPu7g0.jpg" style="width:100%; opacity:0.5;">
                 <div class="carousel-caption">
                 </div>
               </div>
               <div class="item" style="background-color:black; max-height:450px;">
-                <img src="/images/courts/10" alt="..." style="width:100%; opacity:0.5;">
+                <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg" alt="..." style="width:100%; opacity:0.5;">
                 <div class="carousel-caption">
                 </div>
               </div>
               <div class="item" style="background-color:black; max-height:450px;">
                 <img src="https://pp.vk.me/c625829/v625829744/17f8/yxWs5iYf8UY.jpg" alt="..." style="width:100%; opacity:0.5;">
+                <div class="carousel-caption">
+                </div>
+              </div>
+              <div class="item" style="background-color:black; max-height:450px;">
+                <img src="https://pp.vk.me/c620918/v620918493/11775/SvCsj0Bu6qY.jpg" style="width:100%; opacity:0.5;">
+                <div class="carousel-caption">
+                </div>
+              </div>
+              <div class="item" style="background-color:black; max-height:450px;">
+                <img src="https://pp.vk.me/c620918/v620918493/116f4/hA1KaeFeLXU.jpg" style="width:100%; opacity:0.5;">
                 <div class="carousel-caption">
                 </div>
               </div>
