@@ -1,8 +1,9 @@
-from modules import dbutils
+from modules import dbutils, utils
 from models import autodb, splitstrlist
 from modules.utils import beautifuldate, beautifultime
 
 
+@utils.spooler('notifications_add')
 @autodb
 def add(user_id:int, text:str, level:int=0, game_id:int=0, type:int=0, date_time:str=None,
         dbconnection:dbutils.DBConnection=None):
@@ -39,6 +40,7 @@ def get(user_id:int, all:bool=False, type:int=-1, dbconnection:dbutils.DBConnect
     return dbconnection.last()
 
 
+@utils.spooler('notifications_read')
 @autodb
 def read(notification_id, dbconnection:dbutils.DBConnection=None):
     if isinstance(notification_id, str) and len(notification_id.split(',')) > 0:
@@ -57,6 +59,7 @@ def read(notification_id, dbconnection:dbutils.DBConnection=None):
         dbconnection.execute("UPDATE notifications SET `read`=1 WHERE `read`=0 AND user_id={}".format(user_id))
 
 
+@utils.spooler('notifications_delete')
 @autodb
 def delete(notification_id, dbconnection:dbutils.DBConnection=None):
     if isinstance(notification_id, str) and len(notification_id.split(',')) > 0:
