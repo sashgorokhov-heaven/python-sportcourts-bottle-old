@@ -11,7 +11,7 @@
           </div>
           <div class="col-md-4">
             <p class="lead">{{court['title']}}
-              % if userinfo['organizer']:
+              % if userinfo['organizer'] or userinfo['admin']:
               <small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/courts?edit={{court['court_id']}}">Ред.</a></small>
               % end
             </p>
