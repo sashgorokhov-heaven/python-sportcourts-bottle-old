@@ -31,10 +31,11 @@ a.title.active{
         map.addControl(new YMaps.TypeControl());
         map.addControl(new YMaps.Zoom());
 
-        // Группы объектов
-        var groups = [
-            {{!','.join(groups)}}
-        ];
+        // Группы объектов - json словари
+        // ключи - Название вида спорта (так же "Все")
+        // значения - массивы (списки) площадок или игр соответсвенно.
+        var court_groups = {{!court_groups}};
+        var game_groups = {{!game_groups}};
 
         // Создание списка групп
         for (var i = 0; i < groups.length; i++) {

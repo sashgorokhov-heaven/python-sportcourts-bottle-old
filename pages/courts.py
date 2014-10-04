@@ -1,10 +1,11 @@
+import json
 import bottle
 from modules.utils import beautifuldate, beautifultime, beautifulday
 
 import pages
+import modules
 from modules import dbutils
 from models import courts, games, sport_types, cities, images
-
 
 class Courts(pages.Page):
     def get_court_id(self):
@@ -38,45 +39,27 @@ class Courts(pages.Page):
             return pages.PageBuilder('editcourt', sport_types=_sport_types, cities=_cities, court=court)
 
     def get_all(self):
-
         with dbutils.dbopen() as db:
             city = cities.get(1, dbconnection=db)
             courts_list = courts.get(0, city_id=city['city_id'], detalized=True, dbconnection=db,
                                      fields=['court_id', 'title', 'address', 'geopoint', 'sport_types'])
             _games = games.get_recent(detalized=True, dbconnection=db)
-            court_games = {court['court_id']:list(filter(lambda x: x['court']['court_id']==court['court_id'], _games))  for court in courts_list}
-            colors = ['redPoint', 'greenPoint', 'bluePoint', 'yellowPoint', 'orangePoint', 'darkbluePoint', 'greyPoint', 'whitePoint', 'lightbluePoint']
-            sport_types = {sport_type['title']:sport_type for court in courts_list for sport_type in court['sport_types']}
-            group_string = 'createGroup("{title}", [{courts}], "default#{color}")'
-            court_string = 'createPlacemark(new YMaps.GeoPoint({geopoint}), "{title} <br> {address}", "<a href=\'/courts?court_id={court_id}\' target=\'_blank\'>Подробнее...</a>")'
-            games_string = '<br><br>Ближайшие игры:'
-            game_string = '<br>{n}. <a href=\'/games?game_id={game_id}\' target=\'_blank\'>{datetime} | {sport_type} - {game_type}</a>'
-            def create_group(courts:list, color_n:int, name:str) -> str:
-                court_strings = []
-                for court in courts:
-                    court_string_f = court_string.format(geopoint=court['geopoint'],
-                                                         title='\\"'.join(court['title'].split('"')),
-                                                         address=','.join(court['address'].split(',')[-3:]),
-                                                         court_id=court['court_id'])
-                    if len(court_games[court['court_id']])>0:
-                        court_string_f = court_string_f[:-2] + games_string
-                        for n, game in enumerate(court_games[court['court_id']], 1):
-                            court_string_f += game_string.format(
-                                datetime=' '.join([game['parsed_datetime'][0], game['parsed_datetime'][1]]),
-                                sport_type=game['sport_type']['title'],
-                                game_type=game['game_type']['title'],
-                                game_id=game['game_id'],
-                                n=n)
-                        court_string_f += '")'
-                    court_strings.append(court_string_f)
-                return group_string.format(title=name, courts=','.join(court_strings), color=colors[color_n])
-            groups = [create_group(courts_list, -1, 'Все')]
-            for n, sport_type_title in enumerate(sport_types):
-                sport_type = sport_types[sport_type_title]
-                court_list = [court for court in courts_list if sport_type['title'] in {sport_type['title'] for sport_type in court['sport_types']} ]
-                groups.append(create_group(court_list, n, sport_type_title))
+            court_sport_types = {sport_type['title']:sport_type for court in courts_list for sport_type in court['sport_types']}
 
-            return pages.PageBuilder('courtsmap', groups=groups, city=city)
+            court_groups = {sport_type_title:[court for court in courts_list if court_sport_types[sport_type_title] in court['sport_types']] for sport_type_title in court_sport_types}
+            court_groups['Все'] = courts_list
+
+            for game in _games:
+                dbutils.strdates(game)
+
+            game_sport_types = {game['sport_type']['title']:game['sport_type'] for game in _games}
+
+            game_groups = {sport_type_title:[game for game in _games if game['sport_type']['title']==sport_type_title] for sport_type_title in game_sport_types}
+            game_groups['Все'] = _games
+
+            game_groups, court_groups = list(map(json.dumps, (game_groups, court_groups)))
+
+            return pages.PageBuilder('courtsmap', court_groups=court_groups, game_groups=game_groups, city=city)
 
     def get(self):
         if 'court_id' in bottle.request.query:
