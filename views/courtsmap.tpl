@@ -12,7 +12,15 @@
                 <div class="panel panel-default">
                   <div class="panel-body">
                     <p class="lead">Площадки</p>
-                    <ul id="menu" style="list-style-type:none; padding-left:0;"></ul>
+                    <ul id="menu_courts" style="list-style-type:none; padding-left:0;"></ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-sm-6 col-xs-6">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <p class="lead">Игры</p>
+                    <ul id="menu_games" style="list-style-type:none; padding-left:0;"></ul>
                   </div>
                 </div>
               </div>
