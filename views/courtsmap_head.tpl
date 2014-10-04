@@ -19,6 +19,7 @@ a.title.active{
 
     // Создание обработчика для события window.onLoad
     YMaps.jQuery(function () {
+
         // Создание экземпляра карты и его привязка к созданному контейнеру
         var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
 
@@ -76,6 +77,7 @@ a.title.active{
             )
     };
 
+
     // Создание группы
     function createGroup (title, objects, style) {
         var group = new YMaps.GeoObjectCollection(style);
@@ -87,11 +89,14 @@ a.title.active{
     };
 
     // Создание метки
-    function createPlacemark (point, name, description) {
+    function createPlacemark (point, name, description, style) {
+
         var placemark = new YMaps.Placemark(point);
 
         placemark.name = name;
         placemark.description = description;
+
+        placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
 
         return placemark
     }
