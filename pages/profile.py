@@ -81,12 +81,11 @@ class Profile(pages.Page):
             params['ampluas'] = ''
 
         if 'avatar' in params:
+            if isinstance(params['avatar'], str):
+                images.delete_avatar(pages.auth_dispatcher.getuserid())
             params.pop('avatar')
-
-        if 'avatar' in bottle.request.files:
+        elif 'avatar' in bottle.request.files:
             images.save_avatar(pages.auth_dispatcher.getuserid(), bottle.request.files.get('avatar'))
-        else:
-            images.delete_avatar(pages.auth_dispatcher.getuserid())
 
         with modules.dbutils.dbopen() as db:
             db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))
