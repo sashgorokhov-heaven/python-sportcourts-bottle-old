@@ -10,10 +10,10 @@
                 <div class="form-group">
                   <label for="sex" class="col-sm-2 control-label">Фото</label>
                   <div class="col-sm-10">
-                    <div class="fileinput fileinput-{{'exists' if haveavatar else 'new'}}" data-provides="fileinput">
+                    <div class="fileinput fileinput-{{!'exists' if haveavatar else 'new'}}" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
                       % if haveavatar:
-                          <img src="/images/avatars/{{str(user['user_id'])}}" alt="User avatar" width="150" >
+                          <img src="/images/avatars/{{str(user['user_id'])}}" alt="avatar" width="150" >
                       % end
                       </div>
                         <div>
@@ -88,7 +88,7 @@
                       % for sport_type_title in ampluas:
                         <optgroup label="{{sport_type_title}}">
                         % for amplua in ampluas[sport_type_title]:
-                            <option value="{{amplua['amplua_id']}}">{{sport_type_title}}: {{amplua['title']}}</option>
+                            <option value="{{amplua['amplua_id']}}" {{!'selected' if amplua['amplua_id'] in {amplua['amplua_id'] for amplua in user['ampluas']} else ''}}>{{sport_type_title}}: {{amplua['title']}}</option>
                         % end
                       % end
                     </select>
