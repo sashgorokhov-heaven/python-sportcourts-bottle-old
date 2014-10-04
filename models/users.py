@@ -2,7 +2,7 @@ import datetime
 
 from modules import dbutils
 from modules.utils import beautifuldate, beautifultime
-from models import cities, autodb, splitstrlist, settings  # , games
+from models import cities, autodb, splitstrlist, settings, ampluas
 
 ADMIN = 0
 ORGANIZER = 1
@@ -81,6 +81,9 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
             if detalized:
                 user['friends']['users'] = get(user['friends']['users'], fields=['user_id', 'first_name', 'last_name'],
                                                dbconnection=dbconnection)
+
+        if 'ampluas' in user:
+            user['ampluas'] = ampluas.parse(user['ampluas'], detalized, dbconnection=dbconnection)
 
         if 'settings' in user and detalized:
             user['settings'] = settings.SettingsClass(user['settings'])

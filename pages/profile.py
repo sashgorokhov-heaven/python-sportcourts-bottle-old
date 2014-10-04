@@ -3,7 +3,7 @@ import bottle
 import pages
 import modules
 import modules.dbutils
-from models import users, cities, activation, images, usergames, games
+from models import users, cities, activation, images, usergames, games, ampluas
 
 
 class Profile(pages.Page):
@@ -22,7 +22,9 @@ class Profile(pages.Page):
         with modules.dbutils.dbopen() as db:
             _cities = cities.get(0, dbconnection=db)
             user = users.get(pages.auth_dispatcher.getuserid(), detalized=True, dbconnection=db)
-            return pages.PageBuilder('editprofile', user=user, cities=_cities,
+            _ampluas = ampluas.get(0, dbconnection=db)
+            _ampluas = {sport_type_title: list(filter(lambda x: x['sport']['title']==sport_type_title, _ampluas)) for sport_type_title in {i['sport']['title'] for i in _ampluas}}
+            return pages.PageBuilder('editprofile', user=user, cities=_cities, ampluas = _ampluas,
                                      haveavatar=images.have_avatar(pages.auth_dispatcher.getuserid()))
 
     def get(self):
@@ -70,6 +72,13 @@ class Profile(pages.Page):
 
         city_title = params['city']
         params.pop('city')
+
+        if 'ampluas[]' in params:
+            params.pop('ampluas[]')
+            params['ampluas'] = bottle.request.forms.getall('ampluas[]')
+            params['ampluas'] = '|'+'|'.join(params['ampluas'])+'|'
+        else:
+            params['ampluas'] = ''
 
         if 'avatar' in params:
             params.pop('avatar')

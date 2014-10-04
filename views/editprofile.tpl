@@ -85,18 +85,12 @@
                   <div class="col-sm-10">
                     <select data-placeholder="Выберите любимые амплуа"  multiple="multiple" class="form-control chosen-select chosen-select-1" tabindex="-1" name="ampluas[]">
                       <option value=""></option>
-                      <optgroup label="Баскетбол">
-                        <option value="1_1">Баскетбол: Центровой</option>
-                        <option value="1_2">Баскетбол: Форвард</option>
-                        <option value="1_3">Баскетбол: Атакующий защитник</option>
-                        <option value="1_4">Баскетбол: Разыгрывающий</option>
-                      </optgroup>
-                      <optgroup label="Футбол">
-                        <option value="2_1">Футбол: Нападающий</option>
-                        <option value="2_2">Футбол: Форвард</option>
-                        <option value="2_3">Футбол: Атакующий защитник</option>
-                        <option value="2_4">Футбол: Разыгрывающий</option>
-                      </optgroup>
+                      % for sport_type_title in ampluas:
+                        <optgroup label="{{sport_type_title}}">
+                        % for amplua in ampluas[sport_type_title]:
+                            <option value="{{amplua['amplua_id']}}">{{sport_type_title}}: {{amplua['title']}}</option>
+                        % end
+                      % end
                     </select>
                     <script>
                       $(".chosen-select").chosen({
