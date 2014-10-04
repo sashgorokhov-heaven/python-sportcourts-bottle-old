@@ -12,38 +12,43 @@
       </div>
       <div class="row">
         <div class="col-md-3">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <p class="lead">Наши игры <!-- <a href="/courts?all"><small>на карте</small></a> --></p>
-              <div class="form-group">
-                <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
-                data-bv-notempty-message="Укажите вид спорта">
-                  <option value="0">Все</option>
-                  <option value="-1" {{'selected' if old else ''}}>Прошедшие игры</option>
-                  % for sport_type in sports:
-                      <option value="{{sport_type['sport_id']}}" {{'selected' if bysport==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
-                  % end
-                </select>
-              </div>
-              <!-- <div class="form-group">
-                <select id="city" name="city_id" class="form-control">
-                  <option value="0">Город</option>
-                  <option value="1">Екатеринбург</option>
-                </select>
-              </div> -->
-              <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block gamessearch">Найти</button>
+          <div class="row">
+            <div class="col-md-12 col-sm-6 col-xs-6">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <p class="lead">Наши игры <!-- <a href="/courts?all"><small>на карте</small></a> --></p>
+                  <div class="form-group">
+                    <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите вид спорта">
+                      <option value="0">Все</option>
+                      <option value="-1" {{'selected' if old else ''}}>Прошедшие игры</option>
+                      % for sport_type in sports:
+                          <option value="{{sport_type['sport_id']}}" {{'selected' if bysport==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
+                      % end
+                    </select>
+                  </div>
+                  <!-- <div class="form-group">
+                    <select id="city" name="city_id" class="form-control">
+                      <option value="0">Город</option>
+                      <option value="1">Екатеринбург</option>
+                    </select>
+                  </div> -->
+                  <div class="form-group">
+                    <button type="button" class="btn btn-primary btn-block gamessearch">Найти</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <p class="lead">Поделиться</p>
-              <script type="text/javascript" src="//yandex.st/share/share.js"
-              charset="utf-8"></script>
-              <div class="yashare-auto-init" data-yashareL10n="ru"
-               data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,gplus" data-yashareTheme="counter"></div>
+            <div class="col-md-12 col-sm-6 col-xs-6">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <p class="lead">Поделиться</p>
+                  <script type="text/javascript" src="//yandex.st/share/share.js"
+                  charset="utf-8"></script>
+                  <div class="yashare-auto-init" data-yashareL10n="ru"
+                   data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

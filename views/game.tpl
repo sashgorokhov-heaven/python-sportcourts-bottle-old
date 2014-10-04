@@ -58,7 +58,7 @@
         <div class="panel-body" style="padding-bottom:0px;">
           <div class="row">
             <div class="col-md-2">
-              <div class="panel panel-warning">
+              <div class="panel panel-warning" style="max-width:150px; margin: 0 auto 15px auto;">
                 <div class="panel-heading" style="padding:4px; text-align:center;"><small>{{game['parsed_datetime'][0][1]}}</small></div>
                 <div class="panel-body" style="padding:4px; padding-bottom:0; text-align:center;">
                   <p style="margin-top:-4px; font-size: 180%;">{{game['parsed_datetime'][0][0]}}</p>

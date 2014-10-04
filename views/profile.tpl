@@ -2,26 +2,33 @@
 % setdefault('myfriend', False)
       <div class="row profile">
         <div class="col-md-3">
-          <img src="/images/avatars/{{str(user['user_id'])}}" class="img-thumbnail profile-avatar" alt="User avatar" width="300">
+          <img src="/images/avatars/{{str(user['user_id'])}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
+          <br>
           % if loggedin and user['user_id']!=userinfo['user_id']:
-            <br>
-            <br>
+          <br>
             <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
               {{'добавить в друзья' if not myfriend else 'убрать из друзей'}}
             </a>
           % end
           % if user['gameinfo']['total']>0:
           <br>
-          <br>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-top:-7px;"><span class="glyphicon glyphicon-stats"></span> Всего сыграно: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}</button>
-              <ul class="dropdown-menu" role="menu">
-              % for sport_id in user['gameinfo']['sport_types']:
-                <li>
-                  <a href="">{{user['gameinfo']['sport_types'][sport_id]}}: {{' '.join(user['gameinfo']['beautiful'][sport_id])}}</a>
-                </li>
-              % end
-              </ul>
+          <div class="panel-group" id="accordion1">
+            <div class="panel panel-default">
+              <div class="panel-heading" style="padding: 6px 15px 6px 15px; background: none; text-align: center;">
+                  <a data-toggle="collapse" data-parent="#accordion1" href="#collapseTime">
+                    <span class="glyphicon glyphicon-stats"></span> В игре: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}
+                  </a>
+              </div>
+              <div id="collapseTime" class="panel-collapse collapse">
+                <div class="panel-body" style="padding:10px 0 0 10px;">
+                  % for sport_id in user['gameinfo']['sport_types']:
+                    <p>
+                      {{user['gameinfo']['sport_types'][sport_id]}}: {{' '.join(user['gameinfo']['beautiful'][sport_id])}}
+                    </p>
+                  % end
+                </div>
+              </div>
+            </div>
           </div>
           % end
           <br>
@@ -29,6 +36,24 @@
         </div>
         <div class="col-md-9">
           <strong>{{user['first_name']+' '+user['last_name']}}</strong>
+          &nbsp;
+          % if len({0,1,2}.intersection(user['userlevel']))>0:
+            % if 0 in user['userlevel']:
+                <span id="badge1" class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" data-placement="bottom" title="Администратор"></span>
+                <script>$('#badge1').tooltip();</script>
+                &nbsp;
+            % end
+            % if 1 in user['userlevel']:
+                <span id="badge2" class="glyphicon glyphicon-star" data-toggle="tooltip" data-placement="bottom" title="Организатор"></span>
+                <script>$('#badge2').tooltip();</script>
+                &nbsp;
+            % end
+            % if 2 in user['userlevel']:
+                <span id="badge3" class="glyphicon glyphicon-star-empty" data-toggle="tooltip" data-placement="bottom" title="Ответственный"></span>
+                <script>$('#badge3').tooltip();</script>
+                &nbsp;
+            % end
+          % end
           % if int(user['user_id'])==int(userinfo['user_id']):
             &nbsp;
             &nbsp;
@@ -48,19 +73,6 @@
             &nbsp;
             &nbsp;
             <small>Последний раз заходил{{'a' if user['sex']=='female' else ''}}: {{user['lasttime']}}</small><br>
-          % end
-          % if len({0,1,2}.intersection(user['userlevel']))>0:
-            <br>
-            % if 0 in user['userlevel']:
-                <span class="label label-default">Админ</span>&nbsp;
-            % end
-            % if 1 in user['userlevel']:
-                <span class="label label-primary">Организатор</span>&nbsp;
-            % end
-            % if 2 in user['userlevel']:
-                <span class="label label-info">Ответственный</span>
-            % end
-            <br>
           % end
           <br>
           {{user['parsed_bdate']+', '+user['city']['title']}}<br>
