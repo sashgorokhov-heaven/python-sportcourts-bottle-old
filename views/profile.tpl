@@ -84,6 +84,11 @@
           Телефон: {{user['phone']}}
           % end
           <br>
+          % if len(user['ampluas'])>0:
+            <br>
+            {{!'<br>'.join(['{}: {}'.format(amplua['sport']['title'], amplua['title']) for amplua in user['ampluas']])}}
+            <br>
+          % end
           <br>
           % if user['vkuserid']:
             <a href="http://vk.com/id{{user['vkuserid']}}" target="_blank">
