@@ -75,7 +75,9 @@
           <div class="col-sm-10">
             <input type="text" class="form-control" name="last_name" placeholder="" value="{{last_name}}"
             data-bv-notempty="true"
-            data-bv-notempty-message="Поле фамилии не может быть пустым" />
+            data-bv-notempty-message="Поле фамилии не может быть пустым"
+            pattern="^[a-zA-Zа-яА-Я]+$"
+            data-bv-regexp-message="Имя может содержать только буквы русского или английского алфавита"/>
             <span id="valid"></span>
           </div>
         </div>
@@ -84,7 +86,9 @@
           <div class="col-sm-10">
             <input type="text" class="form-control" name="first_name" placeholder="" value="{{first_name}}"
             data-bv-notempty="true"
-            data-bv-notempty-message="Поле имени не может быть пустым" />
+            data-bv-notempty-message="Поле имени не может быть пустым"
+            pattern="^[a-zA-Zа-яА-Я]+$"
+            data-bv-regexp-message="Имя может содержать только буквы русского или английского алфавита"/>
             <span id="valid"></span>
           </div>
         </div>
