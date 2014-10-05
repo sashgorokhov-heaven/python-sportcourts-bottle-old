@@ -85,16 +85,22 @@ a.title.active{
     };
 
     // Создание метки
+<<<<<<< HEAD
+    function createPlacemark (point, name, description, isgames) {
+=======
     function createPlacemark (point, name, description, style, have_games) { // have_games - добавил.
+>>>>>>> FETCH_HEAD
 
         var placemark = new YMaps.Placemark(point);
 
         placemark.name = name;
         placemark.description = description;
 
-        placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
+        if (isgames == true){
+            placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
 
-        return placemark
+            return placemark
+        }
     }
 
     window.onload = function() {
