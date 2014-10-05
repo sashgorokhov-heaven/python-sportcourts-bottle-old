@@ -35,8 +35,7 @@ a.title.active{
         // Группы объектов - json словари
         // ключи - Название вида спорта (так же "Все")
         // значения - массивы (списки) площадок или игр соответсвенно.
-        var court_groups = {{!court_groups}};
-        var game_groups = {{!game_groups}};
+        var court_groups = {{!groups}};
 
         // Создание списка групп
         for (var i = 0; i < groups.length; i++) {
@@ -89,16 +88,18 @@ a.title.active{
     };
 
     // Создание метки
-    function createPlacemark (point, name, description, style) {
+    function createPlacemark (point, name, description, isgames) {
 
         var placemark = new YMaps.Placemark(point);
 
         placemark.name = name;
         placemark.description = description;
 
-        placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
+        if (isgames == true){
+            placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
 
-        return placemark
+            return placemark
+        }
     }
 
     window.onload = function() {
