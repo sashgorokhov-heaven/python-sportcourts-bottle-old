@@ -27,7 +27,7 @@ class Users(pages.Page):
                 if total_pages > 1:
                     paging['next'] = 2
             allusers = users.get(0, count=slice(*modules.pager(page_n, count=USERS_PER_PAGE)), detalized=True)
-            page = pages.PageBuilder('users', allusers=allusers, paging=paging)
+            page = pages.PageBuilder('users', allusers=allusers, paging=paging, count=count)
             if pages.auth_dispatcher.loggedin():
                 friends = users.get(
                     users.get(pages.auth_dispatcher.getuserid(), fields=['friends'])['friends']['users'],

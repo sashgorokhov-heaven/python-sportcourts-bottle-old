@@ -29,7 +29,7 @@
         <div class="tabbable" id="tabs-612446">
           <ul class="nav nav-tabs">
             <li class="active">
-              <a href="#panel-all" data-toggle="tab">Все пользователи</a>
+              <a href="#panel-all" data-toggle="tab">Все пользователи <span class="badge">{{count}}</span></a>
             </li>
             % if loggedin:
             <li>
