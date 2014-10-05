@@ -80,7 +80,7 @@
           Рост: {{user['height']}} см.<br>
           Вес: {{user['weight']}} кг.<br>
           <br>
-          % if int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or user['settings'].show_phone()=='all' or len(user['userlevel'].intersection({0,1}))>0:
+          % if loggedin and ( int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or user['settings'].show_phone()=='all' or len(user['userlevel'].intersection({0,1}))>0):
           Телефон: {{user['phone']}}
           % end
           <br>
