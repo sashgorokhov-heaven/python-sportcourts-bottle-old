@@ -90,7 +90,7 @@
             <br>
           % end
           <br>
-          % if user['vkuserid']:
+          % if user['vkuserid'] and loggedin:
             <a href="http://vk.com/id{{user['vkuserid']}}" target="_blank">
               <img src="/images/static/vk.png" width="32"/>
             </a>
