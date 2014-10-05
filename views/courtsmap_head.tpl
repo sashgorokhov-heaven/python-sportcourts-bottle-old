@@ -85,11 +85,7 @@ a.title.active{
     };
 
     // Создание метки
-<<<<<<< HEAD
-    function createPlacemark (point, name, description, isgames) {
-=======
     function createPlacemark (point, name, description, style, have_games) { // have_games - добавил.
->>>>>>> FETCH_HEAD
 
         var placemark = new YMaps.Placemark(point);
 
