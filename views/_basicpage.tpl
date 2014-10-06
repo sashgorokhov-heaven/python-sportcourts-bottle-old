@@ -6,7 +6,7 @@
 	    % include(header_name)
 	% end
   	</head>
-  	<body onload="initialize_map()">
+  	<body>
     	% include("_basicnavbar", loggedin=loggedin, userinfo=userinfo)
     	<div class="container theme-showcase">
 			<section id="content">
