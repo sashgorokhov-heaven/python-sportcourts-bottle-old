@@ -114,6 +114,6 @@ function init () {
 
 };
 
-    init();
+init();
 
 </script>
