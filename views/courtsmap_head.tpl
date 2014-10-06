@@ -85,22 +85,34 @@ a.title.active{
     };
 
     // Создание метки
-    function createPlacemark (point, name, description, style, have_games) { // have_games - добавил.
+    function createPlacemark (point, name, description, have_games) { // have_games - добавил.
 
         var placemark = new YMaps.Placemark(point);
 
         placemark.name = name;
         placemark.description = description;
 
-        if (isgames == true){
-            placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
+        var have = have_games;
 
-            return placemark
+        placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
+
+        // если отмечен чекбокс, то отдельные ячейки уводим на полюс
+        if ($('#hide').prop("checked")){
+            if (have!=true) 
+            {
+                placemark.setGeoPoint(new YMaps.GeoPoint(0,-90));
+            }
         }
+
+        return placemark
     }
 
     window.onload = function() {
         $('#menu').find(':first-child').find(':first-child').addClass('active');
     }
+
+    $(document).on('click','#hide',function(){
+      alert('fgdrg');
+    });
     
 </script>
