@@ -21,7 +21,7 @@ a.title.active{
 
 function init () {
 
-    $("ul").html('');
+    $("#menu").html('');
     // Создание обработчика для события window.onLoad
     YMaps.jQuery(function () {
 
