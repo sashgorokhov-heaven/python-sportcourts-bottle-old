@@ -75,13 +75,6 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
         if 'userlevel' in user:
             user['userlevel'] = set(map(int, user['userlevel'].split('|')[1:-1]))
 
-        if 'friends' in user:
-            friends = list(map(int, user['friends'].split('|')[1:-1]))
-            user['friends'] = {'count': len(friends), 'users': friends}
-            if detalized:
-                user['friends']['users'] = get(user['friends']['users'], fields=['user_id', 'first_name', 'last_name'],
-                                               dbconnection=dbconnection)
-
         if 'ampluas' in user:
             user['ampluas'] = ampluas.parse(user['ampluas'], detalized, dbconnection=dbconnection)
 
@@ -96,40 +89,26 @@ def get(user_id, userlevel:int=-1, detalized:bool=False, count:slice=slice(0, 20
 
 @autodb
 def add_friend(user_id:int, friend_id:int, dbconnection:dbutils.DBConnection=None):
-    friends = dbconnection.execute("SELECT friends FROM users WHERE user_id='{}'".format(user_id))[0][0]
-    friends = list(map(int, friends.split('|')[1:-1]))
-    if friend_id in set(friends):
+    if are_friends(user_id, friend_id, dbconnection=dbconnection):
         raise ValueError("User <{}> already have friend <{}>".format(user_id, friend_id))
-    friends.append(friend_id)
-    if len(friends) > 0:
-        friends = '|' + '|'.join(map(str, friends)) + '|'
-    else:
-        friends = ''
-    dbconnection.execute("UPDATE users SET friends='{}' WHERE user_id={}".format(friends, user_id))
+    dbconnection.execute("INSERT INTO friends (user_id1, user_id2) VALUES ({},{})".format(user_id, friend_id))
 
 
 @autodb
 def remove_friend(user_id:int, friend_id:int, dbconnection:dbutils.DBConnection=None):
-    friends = dbconnection.execute("SELECT friends FROM users WHERE user_id='{}'".format(user_id))[0][0]
-    friends = list(map(int, friends.split('|')[1:-1]))
-    if friend_id not in set(friends):
+    if not are_friends(user_id, friend_id, dbconnection=dbconnection):
         raise ValueError("User <{}> do not have friend <{}>".format(user_id, friend_id))
-    friends.remove(friend_id)
-    if len(friends) > 0:
-        friends = '|' + '|'.join(map(str, friends)) + '|'
-    else:
-        friends = ''
-    dbconnection.execute("UPDATE users SET friends='{}' WHERE user_id={}".format(friends, user_id))
+    dbconnection.execute("DELETE FROM friends WHERE user_id1={} AND user_id2={}".format(user_id, friend_id))
 
 
 @autodb
-def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=None):
-    dbconnection.execute(
-        "SELECT user_id FROM users WHERE user_id='{}' AND LOCATE('|{}|', friends)".format(user_id_1, user_id_2))
+def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=None) -> bool:
+    dbconnection.execute("SELECT * FROM friends WHERE user_id1={} AND user_id2={}".format(user_id_1, user_id_2))
     return len(dbconnection.last()) != 0
 
 
-    # @autodb
-    #def delete(user_id:int, dbconnection:dbutils.DBConnection=None):
-    #    game_ids = games.get_user_games(user_id, fields=['game_id'], dbconnection=dbconnection)
-    #    raise NotImplementedError
+@autodb
+def get_friends(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    friends = dbconnection.execute("SELECT user_id2 FROM friends WHERE user_id1={}".format(user_id))
+    if len(friends)==0: return list()
+    return get(list(map(lambda x: x[0], friends)), count=slice(0, len(friends)), detalized=True, dbconnection=dbconnection)
