@@ -133,7 +133,7 @@
 
     $(window).scroll(function() {
 
-      if($(window).scrollTop() + $(window).height() >= $(document).height() - 40 && !inProgress) {
+      if($(window).scrollTop() + $(window).height() >= $(document).height() - 300 && !inProgress) {
 
         if($('#panel-all').hasClass('active') == true)
         {
