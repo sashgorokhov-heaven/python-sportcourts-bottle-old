@@ -114,8 +114,6 @@ function init () {
 
 };
 
-    window.onload = function() {
-        init();
-    };
+    init();
 
 </script>
