@@ -42,9 +42,7 @@ class Users(pages.Page):
                 allusers = users.get(0, count=slice(startfrom, USERS_PER_PAGE), detalized=True)
                 page = pages.PageBuilder('user_row')
                 if pages.auth_dispatcher.loggedin():
-                    friends = users.get(
-                        users.get(pages.auth_dispatcher.getuserid(), fields=['friends'])['friends']['users'],
-                        detalized=True)
+                    friends = users.get_friends(pages.auth_dispatcher.getuserid())
                     page.add_param('myfriends', friends)
                 for user in allusers:
                     page.add_param('user', user)
