@@ -17,6 +17,11 @@ a.title.active{
 
 <script type="text/javascript">
 
+
+
+function init () {
+
+    $("ul").html('');
     // Создание обработчика для события window.onLoad
     YMaps.jQuery(function () {
 
@@ -41,6 +46,7 @@ a.title.active{
         }
 
         map.addOverlay(groups[0]);
+        $('#menu').find(':first-child').find(':first-child').addClass('active');
 
     })
 
@@ -103,16 +109,13 @@ a.title.active{
                 placemark.setGeoPoint(new YMaps.GeoPoint(0,-90));
             }
         }
-
         return placemark
     }
 
-    window.onload = function() {
-        $('#menu').find(':first-child').find(':first-child').addClass('active');
-    }
+};
 
-    $(document).on('click','#hide',function(){
-      alert('fgdrg');
-    });
-    
+    window.onload = function() {
+        init();
+    };
+
 </script>

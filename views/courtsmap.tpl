@@ -13,7 +13,7 @@
                   <div class="panel-body">
                     <p class="lead">Площадки</p>
                     <ul id="menu" style="list-style-type:none; padding-left:0;"></ul>
-                    <input type="checkbox" id="hide" name="hide" value="1" checked> скрыть без игр
+                    <input type="checkbox" id="hide" name="hide" value="1" onclick="YMaps.load(init)"> <small>только с играми</small>
                   </div>
                 </div>
               </div>
