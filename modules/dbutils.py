@@ -16,6 +16,7 @@ class DBConnection:
             )
         else:
             self._db = pymysql.connect(**kwargs)
+        self._closed = False
         self._cursor = self._db.cursor()
         self._last = None
 
@@ -38,7 +39,12 @@ class DBConnection:
     def last(self) -> list:
         return self._last
 
+    @property
+    def closed(self) -> bool:
+        return self._closed
+
     def close(self):
+        self._closed = True
         self._cursor.close()
         self._db.close()
 
