@@ -86,7 +86,7 @@
           <br>
           % if len(user['ampluas'])>0:
             <br>
-            {{!'<br>'.join(['{}: {}'.format(amplua['sport']['title'], amplua['title']) for amplua in user['ampluas']])}}
+            {{!'<br>'.join(['{}: {}'.format(amplua['sport_type']['title'], amplua['title']) for amplua in user['ampluas']])}}
             <br>
           % end
           <br>

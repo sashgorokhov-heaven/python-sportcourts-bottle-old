@@ -23,7 +23,7 @@ class Profile(pages.Page):
             _cities = cities.get(0, dbconnection=db)
             user = users.get(pages.auth_dispatcher.getuserid(), detalized=True, dbconnection=db)
             _ampluas = ampluas.get(0, dbconnection=db)
-            _ampluas = {sport_type_title: list(filter(lambda x: x['sport']['title']==sport_type_title, _ampluas)) for sport_type_title in {i['sport']['title'] for i in _ampluas}}
+            _ampluas = {sport_type_title: list(filter(lambda x: x['sport_type']['title']==sport_type_title, _ampluas)) for sport_type_title in {i['sport_type']['title'] for i in _ampluas}}
             return pages.PageBuilder('editprofile', user=user, cities=_cities, ampluas = _ampluas,
                                      haveavatar=images.have_avatar(pages.auth_dispatcher.getuserid()))
 

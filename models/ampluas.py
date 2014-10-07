@@ -24,8 +24,7 @@ def get(amplua_id, dbconnection:dbutils.DBConnection=None):
     _sport_types = {sport_type['sport_id']:sport_type for sport_type in sport_types.get(list(map(lambda x: x['sport_type'], ampluas)), dbconnection=dbconnection)}
 
     for amplua in ampluas:
-        amplua['sport'] = _sport_types[amplua['sport_type']]
-        amplua.pop('sport_type')
+        amplua['sport_type'] = _sport_types[amplua['sport_type']]
 
     if isinstance(amplua_id, int) and amplua_id != 0:
         return ampluas[0]
