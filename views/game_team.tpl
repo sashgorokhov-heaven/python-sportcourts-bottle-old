@@ -88,14 +88,14 @@
                       <table class="table table-condensed table-hover">
                         <tbody>
                           <tr>
-                            <td>
+                            <td valign="center">
                               <p>1</p>
                             </td>
-                            <td>
+                            <td valign="center">
                               <p>
-                                <img src="/images/avatars/1?sq" class="img-circle header_avatar" width="30" height="30" >
+                                <img src="/images/avatars/1?sq" class="img-circle header_avatar" width="40" height="40" >
                             </td>
-                            <td>
+                            <td valign="center">
                               <p>
                                 <a target="_blank" href="/profile?user_id=10">Марат Одинаев</a></p>
                             </td>
