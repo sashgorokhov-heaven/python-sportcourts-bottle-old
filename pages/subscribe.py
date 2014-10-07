@@ -4,15 +4,15 @@ from modules.utils import beautifuldate, beautifultime, beautifulday
 import pages
 from models import games, notifications, users
 from modules import dbutils, create_link
-import datetime
+import datetime, itertools
 
 
 class Subscribe(pages.Page):
     def check_intersection(self, user_id:int, game:dict, db:dbutils.DBConnection) -> dict:
         query = """\
           SELECT game_id, description FROM games WHERE LOCATE('|{user_id}|', subscribed) AND (\
-          (DATETIME BETWEEN '{datetime}' AND '{datetime}' + (INTERVAL {duration} MINUTE - INTERVAL 20 MINUTE)) OR \
-          (DATETIME + (INTERVAL {duration} MINUTE - INTERVAL 20 MINUTE) BETWEEN '{datetime}' AND '{datetime}' + (INTERVAL {duration} MINUTE - INTERVAL 20 MINUTE)));\
+          (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
+          (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
           """.format(user_id=user_id, datetime=game['datetime'], duration=game['duration'])
         db.execute(query, ['game_id', 'description'])
         if len(db.last()) != 0:
