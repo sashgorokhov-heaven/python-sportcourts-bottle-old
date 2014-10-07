@@ -31,7 +31,7 @@
 
     $(window).scroll(function() {
 
-      if($(window).scrollTop() + $(window).height() >= $(document).height() - 1 && !inProgress && !stop && $('#all').hasClass('active')) {
+      if($(window).scrollTop() + $(window).height() >= $(document).height() - 200 && !inProgress && !stop && $('#all').hasClass('active')) {
 
         $.ajax({
           url: '/games',
