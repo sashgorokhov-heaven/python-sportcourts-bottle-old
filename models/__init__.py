@@ -6,7 +6,7 @@ from modules.dbutils import DBConnection
 def autodb(func):
     def wrapper(*args, **kwargs):
         mydb = False
-        if 'dbconnection' not in kwargs or ('dbconnection' in kwargs and not kwargs['dbconnection']):
+        if 'dbconnection' not in kwargs or ('dbconnection' in kwargs and (not kwargs['dbconnection'] or (kwargs['dbconnection'] and kwargs['dbconnection'].closed))):
             mydb = True
             kwargs['dbconnection'] = DBConnection()
         try:
