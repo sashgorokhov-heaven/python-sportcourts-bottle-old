@@ -12,7 +12,7 @@
           % end
           % if user['gameinfo']['total']>0:
           <br>
-          <div class="panel-group" id="accordion1">
+          <div class="panel-group" id="accordion1" style="max-width:300px;">
             <div class="panel panel-default">
               <div class="panel-heading" style="padding: 6px 15px 6px 15px; background: none; text-align: center;">
                   <a data-toggle="collapse" data-parent="#accordion1" href="#collapseTime">

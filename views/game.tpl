@@ -121,6 +121,31 @@
             <div class="col-md-2">
               <p>{{'FREE' if game['cost'] == 0 else str(game['cost'])+' RUB'}}</p>
               <p>{{game['duration']}} минут</p>
+              <div class="modal fade" id="GameMsg{{game['game_id']}}Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Предупреждение</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>Вы не смогли записаться на игру, так как получили бан от администраторов. Скорее всего вы:</p>
+                      <ul>
+                        <li>пропустили игру без предупреждения</li>
+                        <li>нарушали правила сервиса</li>
+                      </ul>
+                      <p>Чтобы снять бан, свяжитесь с администраторами сервиса.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a class="btn btn-success" href="/profile?user_id=1">Связаться</a>
+                      <button type="button" data-dismiss="modal" class="btn btn-primary">Закрыть</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <script>
+                $('#GameMsg{{game['game_id']}}Modal').modal('show');
+              </script>
             </div>
             <div class="col-md-2">
               <div class="btn-group" style="float:right;">
