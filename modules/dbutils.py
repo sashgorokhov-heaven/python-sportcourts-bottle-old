@@ -44,9 +44,10 @@ class DBConnection:
         return self._closed
 
     def close(self):
-        self._closed = True
-        self._cursor.close()
-        self._db.close()
+        if not self._closed:
+            self._closed = True
+            self._cursor.close()
+            self._db.close()
 
 
 class dbopen:
