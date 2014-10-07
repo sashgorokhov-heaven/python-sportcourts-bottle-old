@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                   <div class="panel-heading">
@@ -83,46 +83,62 @@
                     </h4>
                   </div>
                   <div id="collapseOne" class="panel-collapse collapse in">
-                    <div class="panel-body">
+                    <div class="panel-body" style="padding:0px;">
                       <!-- Table -->
-                      <table class="table table-condensed table-hover">
+                      <table class="table table-condensed table-hover" style="margin-bottom:0px;">
                         <tbody>
                           <tr>
-                            <td>
-                              <p>1</p>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                              <p style="padding-left:10px;">1</p>
                             </td>
-                            <td>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
                               <p>
                                 <img src="/images/avatars/1?sq" class="img-circle header_avatar" width="30" height="30" >
+                                &nbsp;
                                 <a target="_blank" href="/profile?user_id=10">Марат Одинаев</a></p>
                             </td>
                           </tr>
                           <tr>
-                            <td>
-                              <p>2</p>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                              <p style="padding-left:10px;">2</p>
                             </td>
-                            <td>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
                               <p>
                                 <img src="/images/avatars/1?sq" class="img-circle header_avatar" width="30" height="30" >
+                                &nbsp;
                                 <a target="_blank" href="/profile?user_id=10">Марат Одинаев</a></p>
                             </td>
                           </tr>
                           <tr>
-                            <td>
-                              <p>3</p>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                              <p style="padding-left:10px;">3</p>
                             </td>
-                            <td>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
                               <p>
                                 <img src="/images/avatars/1?sq" class="img-circle header_avatar" width="30" height="30" >
+                                &nbsp;
                                 <a target="_blank" href="/profile?user_id=10">Марат Одинаев</a></p>
                             </td>
                           </tr>
                           <tr>
-                            <td>
-                              <p>4</p>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                              <p style="padding-left:10px;">4</p>
                             </td>
-                            <td>
-                              <p><a class="btn btn-xs btn-success">Занять место</a></p>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                              <p>
+                                <img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >
+                                &nbsp;
+                                <a class="btn btn-xs btn-success">Занять место</a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                              <p style="padding-left:10px;">5</p>
+                            </td>
+                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                              <p>
+                                <img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >
+                                &nbsp;
                             </td>
                           </tr>
                         </tbody>
