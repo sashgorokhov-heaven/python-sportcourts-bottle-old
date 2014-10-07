@@ -70,7 +70,7 @@ class Courts(pages.Page):
                         court_string_f += '")'
                     court_string_f = court_string_f[:-1]
                     court_string_f += ','+('false', 'true')[len(court_games[court['court_id']])>0]
-                    court_string_f += ', "{}"'.format(json.dumps({game['sport_type']['type_id']:game['sport_type']['title'] for game in court_games[court['court_id']]}))
+                    court_string_f += ', "{}"'.format(json.dumps({game['sport_type']['sport_id']:game['sport_type']['title'] for game in court_games[court['court_id']]}))
                     court_string_f += ')'
                     court_strings.append(court_string_f)
                 return group_string.format(title=name, courts=','.join(court_strings), color=colors[color_n])
