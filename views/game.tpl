@@ -144,7 +144,7 @@
                 </div>
               </div>
               <script>
-                $('#GameMsg{{game['game_id']}}Modal').modal('show');
+                // $('#GameMsg{{game['game_id']}}Modal').modal('show');
               </script>
             </div>
             <div class="col-md-2">
