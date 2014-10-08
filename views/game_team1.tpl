@@ -59,6 +59,7 @@
             <div class="col-md-2">
               <p>150 RUB</p>
               <p>120 минут</p>
+              <h6>B</h6>
             </div>
             <div class="col-md-2">
               <div class="btn-group" style="float:right;">
@@ -77,73 +78,101 @@
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        Команда 1
+                      <a id="name-1-1" class="name">
+                        1. Уральские молнии &nbsp;<span id="editname-1-1" class="editname glyphicon glyphicon-pencil"></span>
                       </a>
+                      <input id="nameinput-1-1" class="nameinput form-control input-sm hidden" type="text" class="form-control" name="middle_name" value="Уральские молнии" placeholder=""/>
                     </h4>
                   </div>
-                  <div id="collapseOne" class="panel-collapse collapse in">
-                    <div class="panel-body" style="padding:0px;">
-                      <!-- Table -->
-                      <table class="table table-condensed table-hover" style="margin-bottom:0px;">
-                        <tbody>
-                          <tr>
-                            <td valign="middle" width="35" style="padding-bottom:0px; padding-top:10px;">
-                              <p style="padding-left:10px;">1</p>
-                            </td>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p>
-                                <img src="/images/avatars/1?sq" class="img-circle header_avatar" width="30" height="30" >
-                                &nbsp;
-                                <a target="_blank" href="/profile?user_id=1">Виталий Харченко</a></p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p style="padding-left:10px;">2</p>
-                            </td>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p>
-                                <img src="/images/avatars/2?sq" class="img-circle header_avatar" width="30" height="30" >
-                                &nbsp;
-                                <a target="_blank" href="/profile?user_id=2">Елена Титенко</a></p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p style="padding-left:10px;">3</p>
-                            </td>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p>
-                                <img src="/images/avatars/3?sq" class="img-circle header_avatar" width="30" height="30" >
-                                &nbsp;
-                                <a target="_blank" href="/profile?user_id=3">Александр Горохов</a></p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p style="padding-left:10px;">4</p>
-                            </td>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p>
-                                <img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >
-                                &nbsp;
-                                <a class="btn btn-xs btn-success">Занять место</a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p style="padding-left:10px;">5</p>
-                            </td>
-                            <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                              <p>
-                                <img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >
-                                &nbsp;
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                  <div class="panel-body" style="padding:0px;">
+                    <!-- Table -->
+                    <table class="table table-condensed table-hover" style="margin-bottom:0px;">
+                      <tbody>
+                        <tr id="player-1-1-1" class="player-1-1">
+                          <td valign="middle" width="35" style="padding-bottom:0px; padding-top:10px;">
+                            <p style="padding-left:10px;" class="number-1-1-1">1</p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p>
+                              <img src="/images/avatars/1?sq" class="img-circle header_avatar" width="30" height="30" >
+                              &nbsp;
+                              <a target="_blank" href="/profile?user_id=1">Виталий Харченко</a></p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <a id="removeplayer-1-1-1" class="removeplayer">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
+                        </tr>
+                        <tr id="player-1-1-2" class="player-1-1">
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p style="padding-left:10px;" class="number-1-1-2">2</p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p>
+                              <img src="/images/avatars/2?sq" class="img-circle header_avatar" width="30" height="30" >
+                              &nbsp;
+                              <a target="_blank" href="/profile?user_id=2">Елена Титенко</a></p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <a id="removeplayer-1-1-2" class="removeplayer">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
+                        </tr>
+                        <tr id="player-1-1-3" class="player-1-1">
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p style="padding-left:10px;" class="number-1-1-3">3</p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p>
+                              <img src="/images/avatars/3?sq" class="img-circle header_avatar" width="30" height="30" >
+                              &nbsp;
+                              <a target="_blank" href="/profile?user_id=3">Александр Горохов</a></p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <a href="">
+                              <a id="removeplayer-1-1-3" class="removeplayer">
+                                <span class="glyphicon glyphicon-remove"></span>
+                              </a>
+                            </a>
+                          </td>
+                        </tr>
+                        <tr id="player-1-1-4" class="player-1-1">
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p style="padding-left:10px;" class="number-1-1-4">4</p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p>
+                              <img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >
+                              &nbsp;
+                              <a class="btn btn-xs btn-success">Занять место</a>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <a href="">
+                              <a id="removeplayer-1-1-4" class="removeplayer">
+                                <span class="glyphicon glyphicon-remove"></span>
+                              </a>
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p style="padding-left:10px;">5</p>
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <p>
+                              <img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >
+                              &nbsp;
+                          </td>
+                          <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
+                            <a href="">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -157,12 +186,6 @@
                     <br>
                     <br>
                     <a class="btn btn-link addteam" onclick="init();"><span class="glyphicon glyphicon-plus" style="font-size:500%;"></span></a>
-                    <script>
-                      function init () 
-                      {
-                        $('<div class="col-md-6"><div class="panel-group" id="accordion"><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Команда 1</a></h4></div> <div id="collapseOne" class="panel-collapse collapse in"><div class="panel-body" style="padding:0px;"><!-- Table --><table class="table table-condensed table-hover" style="margin-bottom:0px;"><tbody><tr><td valign="middle" width="35" style="padding-bottom:0px; padding-top:10px;"><p style="padding-left:10px;">1</p></td><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p><img src="/images/avatars/1?sq" class="img-circle header_avatar" width="30" height="30" ><a target="_blank" href="/profile?user_id=1">  Виталий Харченко</a></p></td></tr><tr><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p style="padding-left:10px;">2</p></td><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p><img src="/images/avatars/2?sq" class="img-circle header_avatar" width="30" height="30" >  <a target="_blank" href="/profile?user_id=2">Елена Титенко</a></p></td></tr><tr><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p style="padding-left:10px;">3</p></td><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p><img src="/images/avatars/3?sq" class="img-circle header_avatar" width="30" height="30" >  <a target="_blank" href="/profile?user_id=3">Александр Горохов</a></p></td></tr><tr><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p style="padding-left:10px;">4</p></td><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p><img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >  <a class="btn btn-xs btn-success">Занять место</a></td></tr><tr><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p style="padding-left:10px;">5</p></td><td valign="middle" style="padding-bottom:0px; padding-top:10px;"><p><img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >  </td></tr></tbody></table></div></div></div></div></div>').insertBefore(".addteam-panel");
-                      };
-                    </script>
                     <br>
                     <br>
                     <br>
