@@ -175,7 +175,7 @@
                                   <td>{{game['description']}}</td>
                                   <td>{{game['sport_type']['title']}}</td>
                                   <td>{{game['court']['title']}}</td>
-                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game['game_id']) if game['report']['reported'] else 'Ожидается'}}</td>
+                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game['game_id']) if game['report']['reported'] else '<a href="/report?game_id={}">Ожидается</a>'.format(game['game_id'])}}</td>
                                 </tr>
                               % end
                             </table>
