@@ -3,7 +3,7 @@
 <script type="text/javascript">
   $(function () {
       $("#game_add_slider2").slider({
-          value: {{game['duration']}},
+          value: {{game.duration()}},
           min: 30,
           max: 600,
           step: 10,
@@ -18,7 +18,7 @@
 
   $(function () {
       $("#game_add_slider").slider({
-          value: {{game['cost']}},
+          value: {{game.cost()}},
           min: 0,
           max: 400,
           step: 5,
@@ -33,7 +33,7 @@
 
   $(function () {
       $("#game_add_slider1").slider({
-          value: {{game['capacity'] if game['capacity']>0 else 8}},
+          value: {{game.capacity() if game.capacity()>0 else 8}},
           min: 8,
           max: 40,
           step: 1,
@@ -44,7 +44,7 @@
       });
       $("#game_add_count_visible").val($("#game_add_slider1").slider("value"));
       $("#game_add_count").val($("#game_add_slider1").slider("value"));
-      % if game['capacity'] < 0:
+      % if game.capacity() < 0:
         $("#game_add_count_visible").val("");
         $("#game_add_slider1").slider( "disable" );
       % end

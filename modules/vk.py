@@ -1,13 +1,11 @@
 import json
 import urllib.request
 import urllib.parse
-
 import bottle
-
 import modules
 
 
-def exec(token:str, method:str, **kwargs) -> dict:
+def exec(token, method:str, **kwargs) -> dict:
     params = list()
     for key in kwargs:
         if len(str(kwargs[key])) != 0:

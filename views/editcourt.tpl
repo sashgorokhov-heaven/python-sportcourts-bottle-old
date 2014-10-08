@@ -8,11 +8,11 @@
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok" enctype="multipart/form-data"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-                <input type="hidden" name="court_id" value="{{court['court_id']}}">
+                <input type="hidden" name="court_id" value="{{court.court_id()}}">
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Название площадки</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="title" placeholder="" value="{{court['title']}}"
+                    <input type="text" class="form-control" name="title" placeholder="" value="{{court.title()}}"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите название площадки" />
                     <span id="valid"></span>
@@ -23,10 +23,10 @@
                   <div class="col-sm-10">
                   % for sport_type in sport_types:
                     <label class="checkbox-inline">
-                      <input type="checkbox" name="sport_type" value="{{sport_type['sport_id']}}"
+                      <input type="checkbox" name="sport_type" value="{{sport_type.sport_id()}}"
                       data-bv-message="Пожалуйста, выберите хотябы один вид спорта"
-                      {{'checked' if sport_type['sport_id'] in {i['sport_id'] for i in court['sport_types']} else ''}}
-                      data-bv-notempty="true"> {{sport_type['title']}}
+                      {{'checked' if sport_type.sport_id() in set(court.sport_types()) else ''}}
+                      data-bv-notempty="true"> {{sport_type.title()}}
                     </label>
                   % end
                   </div>
@@ -36,11 +36,11 @@
                   <div class="col-sm-10">
                     <select id="city" name="city_id" class="form-control"
                     data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите город" <!-- Было бы прикольно onchange="showAddress(this.value);" --> >
-                    <option value="{{court['city']['city_id']}}">{{court['city']['title']}}</option>
+                    data-bv-notempty-message="Укажите город">
+                    <option value="{{court.city_id()}}">{{court.city_id(True).title()}}</option>
                     % for city in cities:
-                        % if court['city']['city_id']!=city['city_id']:
-                            <option value="{{city['city_id']}}">{{city['title']}}</option>
+                        % if court.city_id()!=city.city_id():
+                            <option value="{{city.city_id()}}">{{city.title()}}</option>
                         % end
                     % end
                     </select>
@@ -50,7 +50,7 @@
                 <div class="form-group">
                   <label for="inputCity" class="col-sm-2 control-label">Адрес</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="address" value="court['address']"
+                    <input type="text" class="form-control" name="address" value="court.address()"
                       data-bv-message="Пожалуйста, введите адрес"
                       data-bv-notempty="true"
                       onchange="showAddress(this.value);return false;"
@@ -67,7 +67,7 @@
                     </script>
                     <div class="fileinput fileinput-exists" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
-                        <img src="/images/courts/{{court['court_id']}}" alt="Изображение площадки" width="150">
+                        <img src="/images/courts/{{court.court_id()}}" alt="Изображение площадки" width="150">
                       </div>
                         <div>
                           <span class="btn btn-default btn-file">
@@ -96,7 +96,7 @@
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Время работы</label>
                   <div class="col-sm-10">
-                    <input type="text" value="{{court['worktime']}}" class="form-control" name="worktime" placeholder="С 9:00 до 18:30"
+                    <input type="text" value="{{court.worktime()}}" class="form-control" name="worktime" placeholder="С 9:00 до 18:30"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Напишите время работы" />
                     <span id="valid"></span>
@@ -105,7 +105,7 @@
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Тип площадки</label>
                   <div class="col-sm-10">
-                    <input type="text"  value="{{court['type']}}" class="form-control" name="type" placeholder="Крытая/откртырая"
+                    <input type="text"  value="{{court.type()}}" class="form-control" name="type" placeholder="Крытая/откртырая"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Напишите тип площадки" />
                     <span id="valid"></span>
@@ -114,7 +114,7 @@
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Покрытие</label>
                   <div class="col-sm-10">
-                    <input type="text" value="{{court['cover']}}" class="form-control" name="cover" placeholder="Асфальт"
+                    <input type="text" value="{{court.cover()}}" class="form-control" name="cover" placeholder="Асфальт"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите покрытие площадки" />
                     <span id="valid"></span>
@@ -123,7 +123,7 @@
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Инфраструктура</label>
                   <div class="col-sm-10">
-                    <input type="text"  value="{{court['infrastructure']}}" class="form-control" name="infrastructure" placeholder="Минибар, телевизор, душ"
+                    <input type="text"  value="{{court.infrastructure()}}" class="form-control" name="infrastructure" placeholder="Минибар, телевизор, душ"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Ну хоть что нибудь" />
                     <span id="valid"></span>
@@ -132,14 +132,14 @@
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Телефон</label>
                   <div class="col-sm-10">
-                    <input type="text" value="{{court['phone']}}" class="form-control" name="phone" placeholder="355-455"/>
+                    <input type="text" value="{{court.phone()}}" class="form-control" name="phone" placeholder="355-455"/>
                     <span id="valid"></span>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="court_add_count" class="col-sm-2 control-label">Описание</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" name="description" rows="3">{{court['description']}}</textarea>
+                    <textarea class="form-control" name="description" rows="3">{{court.description()}}</textarea>
                   </div>
                 </div>
                 <div class="form-group">

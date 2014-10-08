@@ -1,7 +1,7 @@
 % setdefault("standalone", False)
 
 % if standalone:
-%   rebase("_basicpage", title=game['description'])
+%   rebase("_basicpage", title=game.description())
 % end
 
 % setdefault("tab_name", "none")
@@ -31,25 +31,25 @@
   </div>
   <div class="col-md-9">
 % end
-    <div id="gamepane-{{game['game_id']}}-{{tab_name}}">
-      <div class="panel panel-default {{'panel-success' if userinfo['user_id']==game['created_by']['user_id'] else 'panel-default'}} "><a name="{{game['game_id']}}"></a>
+    <div id="gamepane-{{game.game_id()}}-{{tab_name}}">
+      <div class="panel panel-default {{'panel-success' if current_user.user_id()==game.created_by() else 'panel-default'}} "><a name="{{game.game_id()}}"></a>
         <div class="panel-heading">
           <div class="panel_head">
             <div style="float:left; max-width:45%;">
-              <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}} | {{game['description']}}</a>
+              <a href="/games?game_id={{game.game_id()}}">#{{game.game_id()}} | {{game.description()}}</a>
             </div>
             <div class="organizer" style="float:right; max-width:45%;">
               <p class="text-right">
-                % if userinfo['user_id']==game['created_by']['user_id'] or userinfo['user_id']==game['responsible_user']['user_id'] or userinfo['admin']:
-                <a href="/games?edit={{game['game_id']}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                % if current_user.user_id()==game.created_by() or current_user.user_id()==game.responsible_user_id() or current_user.userlevel.admin():
+                <a href="/games?edit={{game.game_id()}}"><span class="glyphicon glyphicon-pencil"></span></a>
                 % end
-                % if userinfo['user_id']!=game['created_by']['user_id']:
+                % if current_user.user_id()!=game.created_by():
                 &nbsp;&nbsp;
-                <a href="/profile?user_id={{game['created_by']['user_id']}}" target="_blank">
-                  {{game['created_by']['first_name']+' '+game['created_by']['last_name']}}
+                <a href="/profile?user_id={{game.created_by()}}" target="_blank">
+                  {{game.created_by(True).name}}
                 </a>
                 &nbsp;
-                <img src="/images/avatars/{{str(game['created_by']['user_id'])}}?sq" class="round" width="30" height="30" >
+                <img src="/images/avatars/{{game.created_by()}}?sq" class="round" width="30" height="30" >
                 % end
               </p>
             </div>
@@ -59,57 +59,57 @@
           <div class="row">
             <div class="col-md-2">
               <div class="panel panel-warning" style="max-width:150px; margin: 0 auto 15px auto;">
-                <div class="panel-heading" style="padding:4px; text-align:center;"><small>{{game['parsed_datetime'][0][1]}}</small></div>
+                <div class="panel-heading" style="padding:4px; text-align:center;"><small>{{game.datetime.beautiful.month()}}</small></div>
                 <div class="panel-body" style="padding:4px; padding-bottom:0; text-align:center;">
-                  <p style="margin-top:-4px; font-size: 180%;">{{game['parsed_datetime'][0][0]}}</p>
-                  <small><p style="margin-top:-11px;">{{game['parsed_datetime'][2]}}</p></small>
-                  <p style="margin-top:-7px;">{{game['parsed_datetime'][1]}}</p>
-                  % if game['datetime_tommorow']:
+                  <p style="margin-top:-4px; font-size: 180%;">{{game.datetime.beautiful.day()}}</p>
+                  <small><p style="margin-top:-11px;">{{game.datetime.beautiful.day_name()}}</p></small>
+                  <p style="margin-top:-7px;">{{game.datetime.beautiful.time()}}</p>
+                  % if game.datetime.tommorow:
                     <p><span class="label label-info">Завтра</span></p>
                   % end
-                  % if game['datetime_today']:
+                  % if game.datetime.today:
                     <p><span class="label label-info">Сегодня</span></p>
                   % end
                 </div>
               </div>
             </div>
             <div class="col-md-6">
-              <p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p>
-              <p><a href="/courts?court_id={{game['court']['court_id']}}" target="_blank">{{game['court']['title']}}</a></p>
+              <p>{{game.sport_type(True).title()}} - {{game.game_type(True).title()}}</p>
+              <p><a href="/courts?court_id={{game.court_id()}}" target="_blank">{{game.court_id(True).title()}}</a></p>
               % if standalone:
                 <p>
                   Ответственный:
-                  <a href="/profile?user_id={{game['responsible_user']['user_id']}}" target="_blank">
-                    {{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}
+                  <a href="/profile?user_id={{game.responsible_user_id()}}" target="_blank">
+                    {{game.responsible_user_id(True).name}}
                   </a>
                   &nbsp;
-                  <img src="/images/avatars/{{str(game['responsible_user']['user_id'])}}?sq" class="round" width="30" >
+                  <img src="/images/avatars/{{str(game.responsible_user_id())}}?sq" class="round" width="30" >
                 </p>
-                <p style="margin-top:-5px; margin-bottom:15px;">{{game['responsible_user']['phone']}}</p>
+                <p style="margin-top:-5px; margin-bottom:15px;">{{game.responsible_user_id(True).phone()}}</p>
               % end
-              % if game['capacity']>0:
+              % if game.capacity()>0:
               <div class="progress">
-                <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
-                    <span class="">{{str(game['subscribed']['count'])+'/'+str(game['capacity'])}}</span>
+                <div class="progress-bar{{' progress-bar-success' if len(game.subscribed()) == game.capacity() else ''}}" role="progressbar" style="width:{{round((len(game.subscribed())/game.capacity())*100)}}%">
+                    <span class="">{{str(len(game.subscribed()))+'/'+str(game.capacity())}}</span>
                 </div>
               </div>
               % end
-              % if game['capacity'] < 0:
-              <p><span class="glyphicon glyphicon-user"></span> Заявок: {{game['subscribed']['count']}}</p>
+              % if game.capacity() < 0:
+              <p><span class="glyphicon glyphicon-user"></span> Заявок: {{len(game.subscribed())}}</p>
               % end
-              % if game['subscribed']['count'] > 0:
+              % if len(game.subscribed()) > 0:
               % if loggedin:
               <div class="panel-group" id="accordion" style="margin-bottom:15px;">
                 <div class="panel panel-default">
                   <div class="panel-heading" style="text-align: center">
                     <h5 class="panel-title" style="font-size:1em;">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{game['game_id']}}-{{tab_name}}">Список участников <span class="caret"></span>
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{game.game_id()}}-{{tab_name}}">Список участников <span class="caret"></span>
                     </h5>
                   </div>
-                  <div id="collapse-{{game['game_id']}}-{{tab_name}}" class="panel-collapse collapse">
+                  <div id="collapse-{{game.game_id()}}-{{tab_name}}" class="panel-collapse collapse">
                     <div class="panel-body" style="padding-bottom:5px;">
-                      % for n, user in enumerate(game['subscribed']['users'], 1):
-                      <p><a target="_blank" href="/profile?user_id={{user['user_id']}}">{{'{}. {} {}'.format(n, user['first_name'], user['last_name'])}}</a></p>
+                      % for n, user in enumerate(game.subscribed(True), 1):
+                      <p><a target="_blank" href="/profile?user_id={{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
                       % end
                     </div>
                   </div>
@@ -119,9 +119,9 @@
               % end
             </div>
             <div class="col-md-2">
-              <p>{{'FREE' if game['cost'] == 0 else str(game['cost'])+' RUB'}}</p>
-              <p>{{game['duration']}} минут</p>
-              <div class="modal fade" id="GameMsg{{game['game_id']}}Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <p>{{'FREE' if game.cost() == 0 else str(game.cost())+' RUB'}}</p>
+              <p>{{game.duration()}} минут</p>
+              <div class="modal fade" id="GameMsg{{game.game_id()}}Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -144,62 +144,62 @@
                 </div>
               </div>
               <script>
-                // $('#GameMsg{{game['game_id']}}Modal').modal('show');
+                // $('#GameMsg{{game.game_id()}}Modal').modal('show');
               </script>
             </div>
             <div class="col-md-2">
               <div class="btn-group" style="float:right;">
-              % if loggedin and game['can_subscribe']:
-                % if game['subscribed']['count'] == game['capacity']:
-                    <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}-u" {{'disabled="disabled"' if not game['is_subscribed'] else ''}} data-toggle="dropdown">Места заполнены</button>
-                  % if game['is_subscribed']:
-                    <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}-u" role="menu">
-                      <li id="{{game['game_id']}}-{{userinfo['user_id']}}-u">
+              % if loggedin and game.can_subscribe():
+                % if len(game.subscribed()) == game.capacity():
+                    <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" {{'disabled="disabled"' if not game.is_subscribed() else ''}} data-toggle="dropdown">Места заполнены</button>
+                  % if game.is_subscribed():
+                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
+                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
                         <a style="cursor:pointer;">Не пойду</a>
                       </li>
                     </ul>
                   % end
                 % end
-                % if game['subscribed']['count'] < game['capacity'] or game['capacity']<0:
-                  % if game['is_subscribed']:
-                    <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}-u" data-toggle="dropdown">Я записан{{'а' if userinfo['usersex']=='female' else ''}}</button>
-                    <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}-u" role="menu">
-                      <li id="{{game['game_id']}}-{{userinfo['user_id']}}-u">
+                % if len(game.subscribed()) < game.capacity() or game.capacity()<0:
+                  % if game.is_subscribed():
+                    <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" data-toggle="dropdown">Я записан{{'а' if current_user.sex()=='female' else ''}}</button>
+                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
+                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
                         <a style="cursor:pointer;">Не пойду</a>
                       </li>
                     </ul>
                   % end
-                  % if not game['is_subscribed']:
-                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game['game_id']}}-{{userinfo['user_id']}}" data-toggle="dropdown">Идет набор</button>
-                    <ul class="dropdown-menu ul-{{game['game_id']}}-{{userinfo['user_id']}}" role="menu">
-                      <li id="{{game['game_id']}}-{{userinfo['user_id']}}">
+                  % if not game.is_subscribed():
+                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}" data-toggle="dropdown">Идет набор</button>
+                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}" role="menu">
+                      <li id="{{game.game_id()}}-{{current_user.user_id()}}">
                         <a style="cursor:pointer;">Пойду</a>
                       </li>
                     </ul>
                   % end
                 % end
               % end
-              % if not loggedin and game['can_subscribe']:
-                % if game['subscribed']['count'] == game['capacity']:
+              % if not loggedin and game.can_subscribe():
+                % if len(game.subscribed()) == game.capacity():
                   <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
                 % end
-                % if game['subscribed']['count'] < game['capacity']:
+                % if len(game.subscribed()) < game.capacity():
                   <a href="#" data-toggle="modal" data-target="#loginModal">
                     <button type="button" class="btn btn-primary btn-xs">Идет набор</button>
                   </a>
                 % end
               % end
-              % if not game['can_subscribe']:
-                % if game['datetime_soon']:
+              % if not game.can_subscribe():
+                % if game.datetime.soon:
                     <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
                     <script type="text/javascript">
                       $('#blocked').tooltip();
                     </script>
                 % end
-                % if game['datetime_now']:
+                % if game.datetime.now:
                     <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра идет</button>
                 % end
-                % if game['passed']:
+                % if game.datetime.passed:
                     <button id="blocked" type="button" class="btn btn-success btn-xs" disabled>Игра прошла</button>
                 % end
               % end

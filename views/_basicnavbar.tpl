@@ -19,7 +19,7 @@
                         <li>
                           <a class="topmenu" href="/profile">
 
-                            <img src="/images/avatars/{{userinfo['user_id']}}?sq" class="img-circle header_avatar" width="30" height="30" >
+                            <img src="/images/avatars/{{current_user.user_id()}}?sq" class="img-circle header_avatar" width="30" height="30" >
                             &nbsp;
                             Мой профиль
                           </a>
@@ -27,15 +27,15 @@
                         <li>
                             <a class="topmenu" href="/notifications">
                                 <span class="glyphicon glyphicon-bell"></span>
-                                % if userinfo['notifycount']>0:
-                                <span class="badge notify">{{userinfo['notifycount']}}
+                                % if notifycount>0:
+                                    <span class="badge notify">{{notifycount}}
                                 % end
                             </span>
                             </a>
                         </li>
                         <li><a class="topmenu" href="/logout">Выход</a></li>
-                        % end
-                        % if not loggedin:
+                    % end
+                    % if not loggedin:
                         <li><a class="topmenu" href="#" data-toggle="modal" data-target="#loginModal">Вход</a></li>
                     % end
                 </ul>

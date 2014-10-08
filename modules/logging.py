@@ -1,9 +1,13 @@
 import base64
+
 import bottle
+
+import dbutils
 import modules
-from modules import dbutils, utils
+from modules import utils
 import pages
 import uwsgi
+
 
 _dbparams = {
     'host': modules.config['logdb']['dbhost'],
@@ -46,7 +50,7 @@ def _access_data() -> dict:
     data['ip'] = bottle.request.remote_addr
     data['httpmethod'] = bottle.request.method
     data['path'] = bottle.request.fullpath + ('?' + bottle.request.query_string if bottle.request.query_string else '')
-    data['user_id'] = pages.auth_dispatcher.getuserid()
+    data['user_id'] = pages.auth.current().user_id()
     data['referer'] = bottle.request.get_header('Referer')
     return data
 
@@ -70,11 +74,3 @@ def access():
 def error(e:Exception):
     data = _error_data(e)
     _send(data)
-
-
-def message(msg):
-    try:
-        with dbutils.dbopen(**_dbparams) as db:
-            db.execute("INSERT INTO logsdb.messages (message) VALUES ('{}')".format(str(msg)))
-    except Exception as e:
-        error(e)

@@ -1,25 +1,27 @@
-import bottle
-from modules.utils import beautifuldate, beautifultime, beautifulday
+import datetime
 
+import bottle
+
+from objects import Game
+import dbutils
 import pages
-from models import games, notifications, users
-from modules import dbutils, create_link
-import datetime, itertools
+from models import games, notifications
+from modules import create_link
 
 
 class Subscribe(pages.Page):
-    def check_intersection(self, user_id:int, game:dict, db:dbutils.DBConnection) -> dict:
+    def check_intersection(self, user_id:int, game:Game, db:dbutils.DBConnection) -> dict: # TODO
         query = """\
-          SELECT game_id, description FROM games WHERE LOCATE('|{user_id}|', subscribed) AND (\
+          SELECT * FROM games WHERE (\
           (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
           (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
-          """.format(user_id=user_id, datetime=game['datetime'], duration=game['duration'])
-        db.execute(query, ['game_id', 'description'])
-        if len(db.last()) != 0:
-            return db.last()[0]
+          """.format(user_id=user_id, datetime=game.datetime, duration=game.duration())
+        db.execute(query, dbutils.dbfields['games'])
+        if len(db.last())>0:
+            return Game(db.last()[0], db)
         return dict()
 
-    def subscribe(self, game_id:int, user_id:int, unsubscribe:bool=True):
+    def subscribe(self, game_id:int, user_id:int, unsubscribe:bool):
         try:
             if unsubscribe:
                 games.unsubscribe(user_id, game_id)
@@ -33,10 +35,10 @@ class Subscribe(pages.Page):
         game_id
         [unsubscribe]
         """
-        if not pages.auth_dispatcher.loggedin():
+        if not pages.auth.loggedin():
             raise bottle.HTTPError(404)
         game_id = int(bottle.request.forms.get('game_id'))
-        user_id = pages.auth_dispatcher.getuserid()
+        user_id = pages.auth.current().user_id()
         unsubscribe = 'unsubscribe' in bottle.request.forms
 
         if not bottle.request.is_ajax:
@@ -47,39 +49,24 @@ class Subscribe(pages.Page):
         # sport_type = int(bottle.request.forms.get("tab_name"))
 
         with dbutils.dbopen() as db:
-            game = games.get_by_id(game_id, detalized=True, dbconnection=db)
-            if pages.auth_dispatcher.getuserid() in {user['user_id'] for user in game['subscribed']['users']}:
-                game['is_subscribed'] = True
-            else:
-                game['is_subscribed'] = False
-            game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
-                                       beautifultime(game['datetime']),
-                                       beautifulday(game['datetime']))
-            pdatetime = game['datetime_pure']
-            another_game = self.check_intersection(user_id, game, db)
-            if len(another_game) > 0 and not unsubscribe:
-                message = 'В это время вы уже записаны на игру "{}"'.format(create_link.game(another_game))
-                return pages.PageBuilder("game", tab_name=tab_name, game=game, message=message)
+            game = games.get_by_id(game_id, dbconnection=db)
+            #another_game = self.check_intersection(user_id, game, db)
+            #if len(another_game) > 0 and not unsubscribe:
+            #    assert isinstance(another_game, Game)
+            #    message = 'В это время вы уже записаны на игру "{}"'.format(create_link.game(another_game))
+            #    return pages.PageBuilder("game", tab_name=tab_name, game=game, message=message)
 
-            if datetime.datetime(*(pdatetime.date() - datetime.timedelta(hours=24)).timetuple()[:3]) <= datetime.datetime.now() <= pdatetime:
-                user = users.get(user_id, fields=['user_id', 'first_name', 'last_name'], dbconnection=db)
+            if datetime.datetime(*(game.datetime.date() - datetime.timedelta(hours=24)).timetuple()[:3]) <= datetime.datetime.now() <= game.datetime():
                 if not unsubscribe:
                     message = 'На игру "{}" записался {}'.format(create_link.game(game),
-                                                                            create_link.user(user))
+                                                                            create_link.user(pages.auth.current()))
                 else:
-                    message = '{} отписался от игры "{}"'.format(create_link.user(user),
+                    message = '{} отписался от игры "{}"'.format(create_link.user(pages.auth.current()),
                                                                             create_link.game(game))
-                notifications.add(game['responsible_user']['user_id'], message, 1, game_id, 2)
+                notifications.add(game.responsible_user_id(), message, 1, game_id, 2)
             self.subscribe(game_id, user_id, unsubscribe)
-            game = games.get_by_id(game_id, detalized=True, dbconnection=db)
-            if pages.auth_dispatcher.getuserid() in {user['user_id'] for user in game['subscribed']['users']}:
-                game['is_subscribed'] = True
-            else:
-                game['is_subscribed'] = False
-            game['parsed_datetime'] = (beautifuldate(game['datetime'], True),
-                                       beautifultime(game['datetime']),
-                                       beautifulday(game['datetime']))
-        return pages.PageBuilder("game", tab_name=tab_name, game=game)
+            game = games.get_by_id(game_id, dbconnection=db)
+            return pages.PageBuilder("game", tab_name=tab_name, game=game)
 
 
     def get(self):  # для ручного отписывания
@@ -92,14 +79,14 @@ class Subscribe(pages.Page):
         user_id = int(bottle.request.query.get('user_id'))
         unsubscribe = 'unsubscribe' in bottle.request.query
 
-        if games.get_by_id(game_id, fields=['responsible_user_id'])[
-            'responsible_user_id'] != user_id and not pages.auth_dispatcher.admin() and not pages.auth_dispatcher.organizer():
+        game = games.get_by_id(game_id)
+
+        if game.responsible_user_id() != user_id and not pages.auth.current().userlevel.admin() and not pages.auth.current().userlevel.organizer():
             raise bottle.HTTPError(404)
 
         self.subscribe(game_id, user_id, unsubscribe)
 
-        notifications.add(user_id, 'Вы были удалены с игры "{}"'.format(
-            create_link.game(games.get_by_id(game_id, fields=['game_id', 'description']))), 1, game_id, 1)
+        notifications.add(user_id, 'Вы были удалены с игры "{}"'.format(create_link.game(game)), 1, game_id, 1)
 
         raise bottle.redirect('/games?edit={}'.format(game_id))
 

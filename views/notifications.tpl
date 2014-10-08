@@ -46,25 +46,25 @@
         <div class="tab-pane active" id="all">
             % for notification in notifications['all']:
               <div class="bs-example" style="margin-top:20px;">
-                % if notification['level']==0:
+                % if notification.level()==0:
                   <div class="alert alert-info fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Информационное уведомление | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Информационное уведомление | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
-                % if notification['level']==1:
+                % if notification.level()==1:
                   <div class="alert alert-warning fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Предупреждение | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Предупреждение | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
-                % if notification['level']==2:
+                % if notification.level()==2:
                   <div class="alert alert-danger fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Внимание | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Внимание | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
               </div>
@@ -80,25 +80,25 @@
         <div class="tab-pane" id="subscribed">
             % for notification in notifications['subscribed']:
               <div class="bs-example" style="margin-top:20px;">
-                % if notification['level']==0:
+                % if notification.level()==0:
                   <div class="alert alert-info fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Информационное уведомление | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Информационное уведомление | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
-                % if notification['level']==1:
+                % if notification.level()==1:
                   <div class="alert alert-warning fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Предупреждение | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Предупреждение | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
-                % if notification['level']==2:
+                % if notification.level()==2:
                   <div class="alert alert-danger fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Внимание | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Внимание | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
               </div>
@@ -115,25 +115,25 @@
         <div class="tab-pane" id="responsible">
             % for notification in notifications['responsible']:
               <div class="bs-example" style="margin-top:20px;">
-                % if notification['level']==0:
+                % if notification.level()==0:
                   <div class="alert alert-info fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Информационное уведомление | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Информационное уведомление | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
-                % if notification['level']==1:
+                % if notification.level()==1:
                   <div class="alert alert-warning fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Предупреждение | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Предупреждение | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
-                % if notification['level']==2:
+                % if notification.level()==2:
                   <div class="alert alert-danger fade in">
-                    <button type="button" id="{{notification['notification_id']}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                    <small><p>Внимание | {{notification['datetime']}}</p></small>
-                    <p class="lead">{{!notification['text']}}</p>
+                    <button type="button" id="{{notification.notification_id()}}" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <small><p>Внимание | {{notification.datetime.beautiful}}</p></small>
+                    <p class="lead">{{!notification.text()}}</p>
                   </div>
                 % end
               </div>

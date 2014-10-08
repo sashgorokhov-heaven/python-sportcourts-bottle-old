@@ -13,17 +13,17 @@
               <div class="col-md-3">
                 <div class="row">
                   <div class="col-md-12 col-sm-6 col-xs-6">
-                    <p class="lead">Игра <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a></p>
+                    <p class="lead">Игра <a href="/games?game_id={{game.game_id()}}">#{{game.game_id()}}</a></p>
                     <small>
-                      <p>Ответственный: {{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}</p>
-                      <p>Вид спорта: {{game['sport_type']['title']}}</p>
-                      <p>Тип игры: {{game['game_type']['title']}}</p>
-                      <p>Площадка: {{game['court']['title']}}</p>
+                      <p>Ответственный: {{game.responsible_user_id(True).name}}</p>
+                      <p>Вид спорта: {{game.sport_type(True).title()}}</p>
+                      <p>Тип игры: {{game.game_type(True).title()}}</p>
+                      <p>Площадка: {{game.court_id(True).title()}}</p>
                     </div>
                     <div class="col-md-12 col-sm-6 col-xs-6">
-                      <p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p>
-                      <p>Продолжительность: {{game['duration']}} минут</p>
-                      <p>Цена: {{game['cost']}}</p>
+                      <p>{{game.datetime.beautiful}}</p>
+                      <p>Продолжительность: {{game.duration()}} минут</p>
+                      <p>Цена: {{game.cost()}}</p>
                       <br>
                       <br>
                       <p>______________________</p>
@@ -48,18 +48,18 @@
                           <td>Статус</td>
                           <td>Подпись</td>
                         </tr>
-                      % for n, user in enumerate(game['subscribed']['users'], 1):
+                      % for n, user in enumerate(game.subscribed(True), 1):
                         <tr class="user">
                           <td>{{n}}</td>
-                          <td>{{user['first_name']}}</td>
-                          <td>{{user['last_name']}}</td>
-                          <td>{{user['phone']}}</td>
+                          <td>{{user.name.first()}}</td>
+                          <td>{{user.name.last()}}</td>
+                          <td>{{user.phone()}}</td>
                           <td></td>
                           <td></td>
                         </tr>
                       % end
-                      % if game['subscribed']['count'] < game['capacity']:
-                        % for n in range(game['subscribed']['count']+1, game['capacity']+1):
+                      % if len(game.subscribed()) < game.capacity():
+                        % for n in range(len(game.subscribed())+1, game.capacity()+1):
                           <tr class="user">
                             <td>{{n}}</td>
                             <td></td>

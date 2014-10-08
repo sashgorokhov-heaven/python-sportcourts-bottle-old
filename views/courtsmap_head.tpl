@@ -29,7 +29,7 @@ function init () {
         var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
 
         // Установка для карты ее центра и масштаба
-        map.setCenter(new YMaps.GeoPoint({{city['geopoint']}}), 12);
+        map.setCenter(new YMaps.GeoPoint({{city.geopoint()}}), 12);
 
         // Добавление элементов управления
         map.enableScrollZoom();
@@ -91,7 +91,7 @@ function init () {
     };
 
     // Создание метки
-    function createPlacemark (point, name, description, have_games, games_type) { // have_games - добавил.
+    function createPlacemark (point, name, description, have_games) {
 
         var placemark = new YMaps.Placemark(point);
 
@@ -99,9 +99,9 @@ function init () {
         placemark.description = description;
 
         var have = have_games;
-        var types = games_type;
+        //var types = games_type;
 
-        placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + types "</strong><br>" + placemark.description + "</div>");
+        placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
 
         // если отмечен чекбокс, то отдельные ячейки уводим на полюс
         if ($('#hide').prop("checked")){

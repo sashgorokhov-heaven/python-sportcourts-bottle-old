@@ -1,6 +1,7 @@
-from modules import dbutils, utils
+import dbutils
+from objects import Notification
+from modules import utils
 from models import autodb, splitstrlist
-from modules.utils import beautifuldate, beautifultime
 
 
 @utils.as_spooler
@@ -34,10 +35,12 @@ def get(user_id:int, all:bool=False, type:int=-1, dbconnection:dbutils.DBConnect
     if all:
         query += ' LIMIT 40'
     dbconnection.execute(query, dbutils.dbfields['notifications'])
-    for i in dbconnection.last():
-        dbutils.strdates(i)
-        i['datetime'] = '{} {}'.format(beautifuldate(i['datetime']), beautifultime(i['datetime']))
-    return dbconnection.last()
+    if len(dbconnection.last())==0: return list()
+
+    notifications = dbconnection.last()
+    notifications = list(map(lambda x: Notification(x, dbconnection=dbconnection), notifications))
+
+    return notifications
 
 
 @utils.as_spooler
@@ -48,6 +51,8 @@ def read(notification_id):
             notification_id = splitstrlist(notification_id)
             if len(notification_id) == 1:
                 notification_id = notification_id[0]
+
+        if isinstance(notification_id, list) and len(notification_id)==0: return
 
         if isinstance(notification_id, int) and notification_id > 0:
             db.execute(
@@ -68,6 +73,8 @@ def delete(notification_id):
             notification_id = splitstrlist(notification_id)
             if len(notification_id) == 1:
                 notification_id = notification_id[0]
+
+        if isinstance(notification_id, list) and len(notification_id)==0: return
 
         if isinstance(notification_id, int) and notification_id > 0:
             db.execute(

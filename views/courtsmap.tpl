@@ -2,7 +2,7 @@
       <div class="profile">
         <!-- <div class="row">
           <div class="col-md-12">
-            <p class="lead">court['title']</p>
+            <p class="lead">court.title()</p>
           </div>
         </div> -->
         <div class="row">

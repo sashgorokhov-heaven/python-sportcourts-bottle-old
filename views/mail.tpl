@@ -5,7 +5,7 @@
       <td bgcolor="#ffffff">
         <div style="width:630px;min-height:101px;text-align:center;background:url('https://ci5.googleusercontent.com/proxy/8gaHTc9t9Pc_acvWRwYSiijg6Sww0NcoLvTyMh9IqAkH6WQJW2ifp08pmxlVtj4K84MMEdsuWX2zJReKQMjy07pq-BIPnmKDrCo=s0-d-e1-ft#https://smartprogress.do/images/mail/main-header.jpg')">
           <br>
-          <h1><a href="http://sportcourts.ru/" target="_blank" style="color:#fff;font-weight:bold;text-decoration:none;">
+          <h1><a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}" target="_blank" style="color:#fff;font-weight:bold;text-decoration:none;">
             SportCourts
           </a></h1>
         </div>
@@ -20,16 +20,16 @@
                       <tr>
                         <td width="72" valign="top">
                           <a href="" target="_blank">
-                            <img src="http://sportcourts.ru/images/avatars/1" style="border-radius:100px;margin-top:12px" class="CToWUd" width="60">
+                            <img src="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/images/avatars/1" style="border-radius:100px;margin-top:12px" class="CToWUd" width="60">
                           </a>
                         </td>
                         <td>
                           <h3 style="margin:10px 0 1px;line-height:20px">
-                            <a href="http://sportcourts.ru/profile?user_id=1" style="text-decoration:none;color:#1bb8d7" target="_blank">Виталий Харченко</a>
+                            <a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/profile?user_id=1" style="text-decoration:none;color:#1bb8d7" target="_blank">Виталий Харченко</a>
                             <br>
                             Вы приглашены на игру №15
                             <br> 
-                            «<a href="http://sportcourts.ru/games?game_id=1" style="color:#26292c" target="_blank">Первая игра сезона</a>»
+                            «<a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/games?game_id=1" style="color:#26292c" target="_blank">Первая игра сезона</a>»
                           </h3>
                           <h4>
                             Баскетбол - Баскетбол 5х5

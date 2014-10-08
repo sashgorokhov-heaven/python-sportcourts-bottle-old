@@ -7,8 +7,7 @@ import time
 
 import bottle
 
-
-TEST = False
+TEST = True
 
 if not TEST:
     config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
@@ -50,16 +49,13 @@ config['secret'] = config['debug_secret'] if config['debug'] else _generate_secr
 
 class create_link:
     @staticmethod
-    def game(game:dict) -> str:
-        link = "<a href=\"/games?game_id={}\">#{} | {}</a>".format(game['game_id'], game['game_id'],
-                                                                   game['description'])
+    def game(game) -> str:
+        link = "<a href=\"/games?game_id={}\">#{} | {}</a>".format(game.game_id(), game.game_id(), game.description())
         return link
 
-
     @staticmethod
-    def user(user:dict) -> str:
-        link = "<a href=\"/profile?user_id={}\">{} {}</a>".format(user['user_id'], user['first_name'],
-                                                                  user['last_name'])
+    def user(user) -> str:
+        link = "<a href=\"/profile?user_id={}\">{}</a>".format(user.user_id(), user.name)
         return link
 
 

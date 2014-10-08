@@ -11,22 +11,22 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-12">
-                <p class="lead">Отчет по игре <a href="/games?game_id={{game['game_id']}}">#{{game['game_id']}}</a> {{'[ОТПРАВЛЕН]' if showreport else ''}}</p>
+                <p class="lead">Отчет по игре <a href="/games?game_id={{game.game_id()}}">#{{game.game_id()}}</a> {{'[ОТПРАВЛЕН]' if showreport else ''}}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
                 <small>
-                  <p>Ответственный: <a href="/profile?user_id={{game['responsible_user']['user_id']}}">{{game['responsible_user']['first_name']+' '+game['responsible_user']['last_name']}}</a></p>
-                  <p>Вид спорта: {{game['sport_type']['title']}}</p>
-                  <p>Тип игры: {{game['game_type']['title']}}</p>
+                  <p>Ответственный: <a href="/profile?user_id={{game.responsible_user_id()}}">{{game.responsible_user_id(True).name}}</a></p>
+                  <p>Вид спорта: {{game.sport_type(True).title()}}</p>
+                  <p>Тип игры: {{game.game_type(True).title()}}</p>
                 </small>
               </div>
               <div class="col-md-4">
                 <small>
-                  <p>Площадка: <a href="/courts?court_id={{game['court']['court_id']}}">{{game['court']['title']}}</a></p>
-                  <p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p>
-                  <p>Продолжительность: {{game['duration']}} минут</p>
+                  <p>Площадка: <a href="/courts?court_id={{game.court_id()}}">{{game.court_id(True).title()}}</a></p>
+                  <p>{{game.datetime.beautiful}}</p>
+                  <p>Продолжительность: {{game.duration()}} минут</p>
                 </small>
               </div>
               <div class="col-md-4"></div>
@@ -36,7 +36,7 @@
               data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
               data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
               data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-              <input type="hidden" name="game_id" value="{{game['game_id']}}">
+              <input type="hidden" name="game_id" value="{{game.game_id()}}">
               <div class="row">
                 <div class="col-md-12">
                   <br>
@@ -53,22 +53,22 @@
                         <td colspan="2">Статус</td>
                       </tr>
                       % last_n = 0
-                      % for n, user in enumerate(game['subscribed']['users'], 1):
+                      % for n, user in enumerate(game.subscribed(True), 1):
                         <tr class="user">
                           <td>{{n}}</td>
-                          <td><a href="/profile?user_id={{user['user_id']}}">{{user['first_name']}}</a></td>
-                          <td><a href="/profile?user_id={{user['user_id']}}">{{user['last_name']}}</a></td>
-                          <td>{{user['phone']}}</td>
+                          <td><a href="/profile?user_id={{user.user_id()}}">{{user.name.first()}}</a></td>
+                          <td><a href="/profile?user_id={{user.user_id()}}">{{user.name.last()}}</a></td>
+                          <td>{{user.phone()}}</td>
                           <td colspan="2">
                           % if not showreport:
-                            <select class="form-control input-sm user_status" name="status={{user['user_id']}}">
+                            <select class="form-control input-sm user_status" name="status={{user.user_id()}}">
                               <option value="0">Не пришел</option>
                               <option value="1">Не оплатил</option>
                               <option value="2">Оплатил</option>
                             </select>
                           % end
                           % if showreport:
-                            % status = int(game['report']['registered']['users'][str(user['user_id'])]['status'])
+                            % status = int(game.report['registered']['users'][str(user.user_id())]['status'])
                             % if status==1:
                                Не оплатил
                             % end
@@ -85,14 +85,14 @@
                       % end
                       % if showreport:
                         % import base64
-                        % for n, user_id in enumerate(game['report']['unregistered']['users'], last_n+1):
-                          % user = game['report']['unregistered']['users'][user_id]
-                          % user['first_name'] = base64.b64decode(user['first_name'].encode()).decode()
-                          % user['last_name'] = base64.b64decode(user['last_name'].encode()).decode()
+                        % for n, user_id in enumerate(game.report['unregistered']['users'], last_n+1):
+                          % user = game.report['unregistered']['users'][user_id]
+                          % first_name = base64.b64decode(user['first_name'].encode()).decode()
+                          % last_name = base64.b64decode(user['last_name'].encode()).decode()
                           <tr class="user">
                             <td>{{n}}</td>
-                            <td>{{user['first_name']}}</td>
-                            <td>{{user['last_name']}}</td>
+                            <td>{{first_name}}</td>
+                            <td>{{last_name}}</td>
                             <td>{{user['phone']}}</td>
                             <td colspan="2">
                                 % value = int(user['status'])
@@ -143,7 +143,7 @@
                 </div>
               % end
               % if showreport:
-                  <img src="/images/reports/{{game['game_id']}}" class="img-thumbnail" alt="Game report">
+                  <img src="/images/reports/{{game.game_id()}}" class="img-thumbnail" alt="Game report">
               % end
             </form>
           </div>

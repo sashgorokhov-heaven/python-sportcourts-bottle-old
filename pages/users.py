@@ -1,5 +1,6 @@
 import bottle
-from modules import dbutils
+
+import dbutils
 import modules
 import pages
 from models import users
@@ -26,11 +27,12 @@ class Users(pages.Page):
             else:
                 if total_pages > 1:
                     paging['next'] = 2
-            allusers = users.get(0, count=slice(*modules.pager(page_n, count=USERS_PER_PAGE)), detalized=True)
+            allusers = users.get(0, count=slice(*modules.pager(page_n, count=USERS_PER_PAGE)))
             page = pages.PageBuilder('users', allusers=allusers, paging=paging, count=count)
-            if pages.auth_dispatcher.loggedin():
-                friends = users.get_friends(pages.auth_dispatcher.getuserid(), dbconnection=db)
-                page.add_param('myfriends', friends)
+            if pages.auth.loggedin():
+                if len(pages.auth.current().friends())>0:
+                    friends = pages.auth.current().friends(True)
+                    page.add_param('myfriends', friends)
             return page
 
     def post(self):
@@ -39,16 +41,18 @@ class Users(pages.Page):
             startfrom = int(bottle.request.forms.get("startfrom"))
             data = list()
             if section == 'all':
-                allusers = users.get(0, count=slice(startfrom, USERS_PER_PAGE), detalized=True)
-                page = pages.PageBuilder('user_row')
-                if pages.auth_dispatcher.loggedin():
-                    friends = users.get_friends(pages.auth_dispatcher.getuserid())
-                    page.add_param('myfriends', friends)
-                for user in allusers:
-                    page.add_param('user', user)
-                    user_tpl = page.template()
-                    data.append(user_tpl)
-                return bottle.json_dumps(data)
+                with dbutils.dbopen() as db:
+                    allusers = users.get(0, count=slice(startfrom, USERS_PER_PAGE), dbconnection=db)
+                    page = pages.PageBuilder('user_row')
+                    if pages.auth.loggedin():
+                        if len(pages.auth.current().friends())>0:
+                            friends = pages.auth.current().friends(True)
+                            page.add_param('myfriends', friends)
+                    for user in allusers:
+                        page.add_param('user', user)
+                        user_tpl = page.template()
+                        data.append(user_tpl)
+                    return bottle.json_dumps(data)
             return ''
 
     get.route = '/users'

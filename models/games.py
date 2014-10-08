@@ -1,96 +1,28 @@
-import datetime
-import json
-
-from models import autodb, splitstrlist, cities, courts, game_types, sport_types, users, notifications
-from modules import dbutils, create_link
-from modules.utils import beautifuldate, beautifultime, beautifulday
+import dbutils
+from models import autodb, splitstrlist, notifications
+from objects import Game
+from modules import create_link
 
 
 @autodb
-def detalize_game(game:dict, detalized:bool=False, dbconnection:dbutils.DBConnection=None):
-    if 'city_id' in game and detalized:
-        game['city'] = cities.get(game['city_id'], dbconnection=dbconnection)
-        game.pop('city_id')
-
-    if 'court_id' in game and detalized:
-        game['court'] = courts.get(game['court_id'], dbconnection=dbconnection)
-        game.pop('court_id')
-
-    if 'game_type' in game and detalized:
-        game['game_type'] = game_types.get(game['game_type'], dbconnection=dbconnection)
-
-    if 'sport_type' in game and detalized:
-        game['sport_type'] = sport_types.get(game['sport_type'], dbconnection=dbconnection)
-
-    if 'created_by' in game and detalized:
-        user = users.get(int(game['created_by']), fields=['user_id', 'first_name', 'last_name', 'phone'],
-                         dbconnection=dbconnection)
-        game['created_by'] = user
-
-    if 'responsible_user_id' in game and detalized:
-        user = users.get(int(game['responsible_user_id']), fields=['user_id', 'first_name', 'last_name', 'phone'],
-                         dbconnection=dbconnection)
-        game['responsible_user'] = user
-
-    if 'datetime' in game:
-        game['datetime_pure'] = [game['datetime']]
-        if detalized:
-            game['can_subscribe'] = (game['datetime'] - datetime.datetime.now() >= datetime.timedelta(hours=1)) and \
-                                    game[
-                                        'datetime'] > datetime.datetime.now()
-            if 'duration' in game:
-                game['passed'] = (game['datetime'] + datetime.timedelta(
-                    minutes=game['duration']) < datetime.datetime.now())
-                game['datetime_now'] = game['datetime'] <= datetime.datetime.now() <= game[
-                                                                                          'datetime'] + datetime.timedelta(
-                    minutes=game['duration'])
-                game['datetime_soon'] = game['datetime'] > datetime.datetime.now() and datetime.timedelta(seconds=1) <= \
-                                                                                       game[
-                                                                                           'datetime'] - datetime.datetime.now() <= datetime.timedelta(
-                    hours=1)
-            game['datetime_today'] = game['datetime'].date() == datetime.date.today()
-            game['datetime_tommorow'] = game['datetime'].date() == datetime.date.today() + datetime.timedelta(days=1)
-        dbutils.strdates(game)
-        game['datetime_pure'] = game['datetime_pure'][0]
-        game['parsed_datetime'] = (
-            beautifuldate(game['datetime']), beautifultime(game['datetime']), beautifulday(game['datetime']))
-
-    if 'report' in game and detalized:
-        game['report'] = json.loads(game['report'])
-
-    if 'subscribed' in game and detalized:
-        subscribed = game['subscribed'].split('|')[1:-1]
-        if len(subscribed) > 0:
-            _users = users.get(subscribed, fields=['user_id', 'first_name', 'last_name', 'phone'],
-                               dbconnection=dbconnection)
-            game['subscribed'] = {'count': len(_users), 'users': _users}
-        else:
-            game['subscribed'] = {'count': 0, 'users': list()}
-
-
-@autodb
-def get_by_id(game_id, detalized:bool=False, fields:list=dbutils.dbfields['games'],
-              dbconnection:dbutils.DBConnection=None) -> dict:
-    orderedfields = [i for i in dbutils.dbfields['games'] if i in set(fields)]
-    select = ','.join(orderedfields)
-
+def get_by_id(game_id, dbconnection:dbutils.DBConnection=None) -> Game:
     if isinstance(game_id, str) and len(game_id.split(',')) > 0:
         game_id = splitstrlist(game_id)
         if len(game_id) == 1:
             game_id = game_id[0]
 
-    if isinstance(game_id, int):
-        dbconnection.execute("SELECT " + select + " FROM games WHERE game_id={}".format(game_id), orderedfields)
-    elif isinstance(game_id, list):
-        dbconnection.execute("SELECT " + select + " FROM games WHERE game_id IN (" + ','.join(map(str, game_id)) + ")",
-                             orderedfields)
+    if isinstance(game_id, list) and len(game_id)==0: return list()
 
-    if len(dbconnection.last()) == 0:
-        return list()
+    if isinstance(game_id, int):
+        dbconnection.execute("SELECT * FROM games WHERE game_id={}".format(game_id), dbutils.dbfields['games'])
+    elif isinstance(game_id, list):
+        dbconnection.execute("SELECT * FROM games WHERE game_id IN (" + ','.join(map(str, game_id)) + ")",
+                             dbutils.dbfields['games'])
+
+    if len(dbconnection.last()) == 0: return list()
 
     games = dbconnection.last()
-    for game in games:
-        detalize_game(game, detalized=detalized, dbconnection=dbconnection)
+    games = list(map(lambda x: Game(x, dbconnection=dbconnection), games))
 
     if isinstance(game_id, int):
         return games[0]
@@ -100,42 +32,44 @@ def get_by_id(game_id, detalized:bool=False, fields:list=dbutils.dbfields['games
 
 @autodb
 def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
-    subscribed = dbconnection.execute("SELECT subscribed FROM games WHERE game_id='{}'".format(game_id))[0][0]
-    subscribed = list(map(int, subscribed.split('|')[1:-1]))
-    if user_id in set(subscribed):
-        raise ValueError("User <{}> already subscibed".format(user_id))
-    subscribed.append(user_id)
-    if len(subscribed) > 0:
-        subscribed = '|' + '|'.join(map(str, subscribed)) + '|'
+    dbconnection.execute("SELECT status FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
+    if len(dbconnection.last())==0:
+        dbconnection.execute("INSERT INTO usergames (user_id, game_id, status) VALUES ({}, {}, {})".format(user_id, game_id, -1))
     else:
-        subscribed = ''
-    dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
+        status = dbconnection.last()[0][0]
+        if status==-1:
+            raise ValueError("User <{}> already subscibed".format(user_id))
+        elif status==-2:
+            dbconnection.execute("UPDATE usergames SET status=-1 WHERE user_id={} AND game_id={}".format(user_id, game_id))
+        else:
+            raise ValueError('Unknown {}:{} status'.format(user_id, game_id))
     write_future_notifications(user_id, game_id, dbconnection=dbconnection)
 
 
 @autodb
 def write_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
-    game = get_by_id(game_id, detalized=True, fields=["game_id", "description", "datetime"], dbconnection=dbconnection)
-    if not game['datetime_tommorow'] and not game['datetime_today']:
+    game = get_by_id(game_id, dbconnection=dbconnection)
+    if not game.datetime.tommorow and not game.datetime.today:
         message = 'До игры "{}" осталось 2 дня!'.format(create_link.game(game))
-        notifications.add(user_id, message, 0, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game["datetime"]))
-    if not game['datetime_today']:
+        notifications.add(user_id, message, 0, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game.datetime))
+    if not game.datetime.today:
         message = 'Завтра состоится игра "{}"<br>Не пропустите!'.format(create_link.game(game))
-        notifications.add(user_id, message, 1, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game["datetime"]))
+        notifications.add(user_id, message, 1, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game.datetime))
 
 
 @autodb
 def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
-    subscribed = dbconnection.execute("SELECT subscribed FROM games WHERE game_id='{}'".format(game_id))[0][0]
-    subscribed = list(map(int, subscribed.split('|')[1:-1]))
-    if user_id not in set(subscribed):
+    dbconnection.execute("SELECT status FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
+    if len(dbconnection.last())==0:
         raise ValueError("User <{}> not subscibed".format(user_id))
-    subscribed.remove(user_id)
-    if len(subscribed) > 0:
-        subscribed = '|' + '|'.join(map(str, subscribed)) + '|'
     else:
-        subscribed = ''
-    dbconnection.execute("UPDATE games SET subscribed='{}' WHERE game_id={}".format(subscribed, game_id))
+        status = dbconnection.last()[0][0]
+        if status==-1:
+            dbconnection.execute("UPDATE usergames SET status=-2 WHERE user_id={} AND game_id={}".format(user_id, game_id))
+        elif status==-2:
+            raise ValueError("User <{}> not subscibed".format(user_id))
+        else:
+            raise ValueError('Unknown {}:{} status'.format(user_id, game_id))
     delete_future_notifications(user_id, game_id, dbconnection=dbconnection)
 
 
@@ -149,12 +83,9 @@ def delete_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.D
 
 
 @autodb
-def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slice(0, 20), detalized:bool=False, old:bool=False,
-               fields:list=dbutils.dbfields['games'], dbconnection:dbutils.DBConnection=None) -> list:
-    orderedfields = [i for i in dbutils.dbfields['games'] if i in set(fields)]
-    select = ','.join(orderedfields)
-
-    sql = "SELECT " + select + " FROM games WHERE {} ORDER BY datetime {} LIMIT {}, {}"
+def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slice(0, 20), old:bool=False,
+               dbconnection:dbutils.DBConnection=None) -> list:
+    sql = "SELECT * FROM games WHERE {} ORDER BY datetime {} LIMIT {}, {}"
     where = list()
     where.append("city_id={}".format(city_id))
     where.append("datetime+INTERVAL duration MINUTE {} NOW()".format('>' if not old else '<'))
@@ -164,10 +95,8 @@ def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slic
         where.append("sport_type={}".format(sport_type))
     sql = sql.format(' AND '.join(where), 'ASC' if not old else 'DESC', count.start if count.start else 0, count.stop)
 
-    games = dbconnection.execute(sql, orderedfields)
-
-    for game in games:
-        detalize_game(game, detalized=detalized, dbconnection=dbconnection)
+    games = dbconnection.execute(sql, dbutils.dbfields['games'])
+    games = list(map(lambda x: Game(x, dbconnection=dbconnection), games))
 
     return games
 
@@ -176,6 +105,8 @@ def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slic
 def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("INSERT INTO deleted_games SELECT * FROM games WHERE game_id={}".format(game_id))
     dbconnection.execute("DELETE FROM games WHERE game_id={}".format(game_id))
+    dbconnection.execute("DELETE FROM usergames WHERE game_id={}".format(game_id))
+    dbconnection.execute("DELETE FROM notifications WHERE game_id={}".format(game_id))
 
 
 @autodb
@@ -197,7 +128,6 @@ def intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.
 @autodb
 def add(dbconnection:dbutils.DBConnection=None, **kwargs) -> int:
     sql = 'INSERT INTO games ({dbkeylist}) VALUES ({dbvaluelist})'
-    kwargs['report'] = '{"reported":false}'
     keylist = list(kwargs.keys())
     sql = sql.format(
         dbkeylist=', '.join(keylist),
@@ -216,38 +146,30 @@ def update(game_id:int, dbconnection:dbutils.DBConnection=None, **kwargs):
 
 
 @autodb
-def get_user_games(user_id:int, detalized:bool=False, fields:list=dbutils.dbfields['games'],
-                   dbconnection:dbutils.DBConnection=None):
-    dbconnection.execute(
-        "SELECT game_id FROM games WHERE LOCATE('|{}|', subscribed) AND datetime+INTERVAL duration MINUTE<NOW()".format(
-            user_id))
-    if len(dbconnection.last()) == 0: return list()
-    id_list = list(map(lambda x: x[0], dbconnection.last()))
-    return get_by_id(id_list, fields=fields,
-                     detalized=detalized, dbconnection=dbconnection)
+def get_user_played_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT game_id FROM usergames WHERE user_id={} AND status>0".format(user_id))
+    return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 
 @autodb
-def get_report(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
-    dbconnection.execute("SELECT report FROM games WHERE game_id={}".format(game_id))
-    if len(dbconnection.last()) == 0:
-        raise KeyError("Game id not found: {}".format(game_id))
-    return json.loads(dbconnection.last()[0][0])
+def get_subscribed_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT game_id FROM usergames WHERE user_id={} AND status=-1".format(game_id))
+    return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
+
+
+@autodb
+def get_subscribed_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT user_id FROM usergames WHERE game_id={} AND status>=-1".format(game_id))
+    return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 
 @autodb
 def get_responsible_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
     dbconnection.execute("SELECT game_id FROM games WHERE responsible_user_id={}".format(user_id))
-    if len(dbconnection.last()) == 0: return list()
-    id_list = list(map(lambda x: x[0], dbconnection.last()))
-    return get_by_id(id_list, fields=['game_id', 'datetime', 'description', 'sport_type', 'court_id', 'report'],
-                     detalized=True, dbconnection=dbconnection)
+    return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 
 @autodb
 def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list():
     dbconnection.execute("SELECT game_id FROM games WHERE created_by={}".format(user_id))
-    if len(dbconnection.last()) == 0: return list()
-    id_list = list(map(lambda x: x[0], dbconnection.last()))
-    return get_by_id(id_list, fields=['game_id', 'datetime', 'description', 'sport_type', 'court_id', 'report'],
-                     detalized=True, dbconnection=dbconnection)
+    return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()

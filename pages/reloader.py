@@ -4,7 +4,7 @@ import uwsgidecorators
 
 class Reloader(pages.Page):
     def get(self, page_name:str):
-        if pages.auth_dispatcher.admin():
+        if pages.auth.current().userlevel.admin():
             if page_name == 'all':
                 uwsgi.reload()
                 raise bottle.redirect(bottle.request.get_header("Referer", "/"))

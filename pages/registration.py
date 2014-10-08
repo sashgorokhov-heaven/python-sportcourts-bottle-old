@@ -1,14 +1,13 @@
 import datetime
-import json
 import pickle
 
 import bottle
-import modules
-import modules.dbutils
+
+import dbutils
 import pages
 from modules import vk
-from models import images, cities, settings, notifications, mailing, activation, users
-import modules.logging
+from models import images, cities, notifications, mailing, activation, users
+
 
 class Registration(pages.Page):
     def get_code(self, cities_list):
@@ -24,7 +23,7 @@ class Registration(pages.Page):
         data = dict()
         data['vkuserid'] = user_id
         pickledata = {'vkuserid': user_id}
-        with modules.dbutils.dbopen() as db:
+        with dbutils.dbopen() as db:
             db.execute("SELECT email FROM users WHERE vkuserid={}".format(data['vkuserid']))
             if len(db.last()) > 0:
                 return pages.PageBuilder('auth', error='Вы уже зарегестрированы в системе',
@@ -43,17 +42,17 @@ class Registration(pages.Page):
                 data['city_id'] = city['city_id']
                 break
 
-        if user['photo_max'].find('camera') == -1:
+        if 'camera' not in user['photo_max']:
             pickledata['vkphoto'] = user['photo_max']
             data['vkphoto'] = user['photo_max']
 
-        bottle.response.set_cookie('vkinfo', pickle.dumps(pickledata), modules.config['secret'])
+        pages.set_cookie('vkinfo', pickle.dumps(pickledata))
 
         data = {i: data[i] for i in data if data[i]}
         return pages.PageBuilder('registration', cities=cities_list, **data)
 
     def get(self):
-        if pages.auth_dispatcher.loggedin():
+        if pages.auth.loggedin():
             raise bottle.redirect('/profile')
         cities_list = cities.get(0)
         if 'code' in bottle.request.query:
@@ -62,26 +61,22 @@ class Registration(pages.Page):
             return pages.PageBuilder('registration', cities=cities_list)
 
     def post(self):
-        if pages.auth_dispatcher.loggedin():
+        if pages.auth.loggedin():
             raise bottle.redirect('/profile')
         params = {i: bottle.request.forms.get(i) for i in bottle.request.forms}
 
         if params['bdate'] == '00.00.0000':
-            # TODO: проверить формат
-            with modules.dbutils.dbopen() as db:
-                cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
+            _cities = cities.get(0)
             return pages.PageBuilder('registration', error='Ошибка',
                                      error_description='Неверно указана дата рождения',
-                                     cities=cities, **params)
+                                     cities=_cities, **params)
 
         params['regdate'] = str(datetime.date.today())
         params['lasttime'] = str(datetime.datetime.now())
         params.pop('confirm_passwd')
         params['phone'] = params['phone'] if params['phone'] else 'Не указан'
 
-        params['bdate'] = params['bdate'].split('.')
-        params['bdate'].reverse()
-        params['bdate'] = '-'.join(params['bdate'])
+
 
         city_title = params['city']
         params.pop('city')
@@ -89,44 +84,35 @@ class Registration(pages.Page):
         if 'avatar' in bottle.request.forms:
             params.pop('avatar')
 
-        with modules.dbutils.dbopen() as db:
-            cities = db.execute("SELECT city_id, title FROM cities", ['city_id', 'title'])
+        with dbutils.dbopen() as db:
+            _cities = cities.get(0)
             db.execute("SELECT city_id FROM cities WHERE title='{}'".format(city_title))
             if len(db.last()) > 0:
                 params['city_id'] = db.last()[0][0]
             else:
-                params['bdate'] = params['bdate'].split('-')
-                params['bdate'].reverse()
-                params['bdate'] = '.'.join(params['bdate'])
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Мы не работаем в городе {}'.format(city_title),
-                                         cities=cities, **params)
+                                         cities=_cities, **params)
             db.execute('SELECT user_id FROM users WHERE email="{}"'.format(params['email']))
             if len(db.last()) > 0:
                 params.pop('email')
-                params['bdate'] = params['bdate'].split('-')
-                params['bdate'].reverse()
-                params['bdate'] = '.'.join(params['bdate'])
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Пользователь с таким email уже зарегестрирован',
-                                         cities=cities, **params)
+                                         cities=_cities, **params)
             if datetime.date(*list(map(int, params['bdate'].split('-')))) > datetime.date.today():
-                params['bdate'] = params['bdate'].split('-')
-                params['bdate'].reverse()
-                params['bdate'] = '.'.join(params['bdate'])
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Ты из будущего?',
-                                         cities=cities, **params)
+                                         cities=_cities, **params)
             if datetime.date.today() - datetime.date(*list(map(int, params['bdate'].split('-')))) < datetime.timedelta(
                     days=2555):
-                params['bdate'] = params['bdate'].split('-')
-                params['bdate'].reverse()
-                params['bdate'] = '.'.join(params['bdate'])
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Такой маленький, а уже пользуешься интернетом?',
-                                         cities=cities, **params)
-            params['settings'] = settings.default().format()
-            vkparams = bottle.request.get_cookie('vkinfo', '', modules.config['secret'])
+                                         cities=_cities, **params)
+            params['bdate'] = params['bdate'].split('.')
+            params['bdate'].reverse()
+            params['bdate'] = '-'.join(params['bdate'])
+            vkparams = pages.get_cookie('vkinfo', '')
+            bottle.response.delete_cookie('vkinfo')
             if vkparams:
                 vkparams = pickle.loads(vkparams)
                 params['vkuserid'] = vkparams['vkuserid']
@@ -150,7 +136,7 @@ class Registration(pages.Page):
                 images.save_avatar_from_url(user_id, vkparams['vkphoto'])
             token = activation.create(user_id, dbconnection=db)
             mailing.sendhtml(
-                pages.PageBuilder('mail1', first_name=first_name, token=token).template(),
+                pages.PageBuilder('mail_activation', first_name=first_name, token=token).template(),
                 params['email'],
                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(token),
                 'Активация профиля')

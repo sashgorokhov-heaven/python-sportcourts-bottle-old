@@ -13,7 +13,7 @@
                     <div class="fileinput fileinput-{{!'exists' if haveavatar else 'new'}}" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 150px; height: 150px;">
                       % if haveavatar:
-                          <img src="/images/avatars/{{str(user['user_id'])}}" alt="avatar" width="150" >
+                          <img src="/images/avatars/{{user.user_id()}}" alt="avatar" width="150" >
                       % end
                       </div>
                         <div>
@@ -29,7 +29,7 @@
                 <div class="form-group">
                   <label for="height" class="col-sm-2 control-label">Рост</label>
                   <div class="col-sm-2">
-                    <input type="text" class="form-control" name="height" value="{{user['height']}}"
+                    <input type="text" class="form-control" name="height" value="{{user.height()}}"
                     min="150"
                     data-bv-greaterthan-inclusive="true"
                     data-bv-greaterthan-message="Это мало"
@@ -49,7 +49,7 @@
                 <div class="form-group">
                   <label for="weight" class="col-sm-2 control-label">Вес</label>
                   <div class="col-sm-2">
-                    <input type="text" class="form-control" name="weight" value="{{user['weight']}}"
+                    <input type="text" class="form-control" name="weight" value="{{user.weight()}}"
                     min="30"
                     data-bv-greaterthan-inclusive="true"
                     data-bv-greaterthan-message="Это мало"
@@ -69,14 +69,14 @@
                 <div class="form-group">
                   <label for="phone" class="col-sm-2 control-label">Телефон</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value="{{user['phone']}}" data-bv-notempty="true" data-bv-notempty-message="Укажите телефон"></input>
+                    <input type="text" class="form-control phonemask" name="phone" placeholder="" id="phone" value="{{user.phone()}}" data-bv-notempty="true" data-bv-notempty-message="Укажите телефон"></input>
                     <span id="valid"></span>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="city" class="col-sm-2 control-label">Город</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control typeahead" name="city" value="{{user['city']['title'] if user['city']['title'] in {i['title'] for i in cities} else 'Екатеринбург'}}" data-provide="typeahead" data-bv-notempty="true" data-bv-notempty-message="Укажите город"/>
+                    <input type="text" class="form-control typeahead" name="city" value="{{user.city_id(True).title() if user.city_id(True).title() in {i.title() for i in cities} else 'Екатеринбург'}}" data-provide="typeahead" data-bv-notempty="true" data-bv-notempty-message="Укажите город"/>
                     <span id="valid"></span>
                   </div>
                 </div>
@@ -88,7 +88,7 @@
                       % for sport_type_title in ampluas:
                         <optgroup label="{{sport_type_title}}">
                         % for amplua in ampluas[sport_type_title]:
-                            <option value="{{amplua['amplua_id']}}" {{!'selected' if amplua['amplua_id'] in {amplua['amplua_id'] for amplua in user['ampluas']} else ''}}>{{sport_type_title}}: {{amplua['title']}}</option>
+                            <option value="{{amplua.amplua_id()}}" {{!'selected' if amplua.amplua_id() in set(user.ampluas()) else ''}}>{{sport_type_title}}: {{amplua.title()}}</option>
                         % end
                       % end
                     </select>

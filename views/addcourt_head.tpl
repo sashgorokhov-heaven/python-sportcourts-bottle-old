@@ -39,7 +39,7 @@
           map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
 
           // Установка для карты ее центра и масштаба
-          map.setCenter(new YMaps.GeoPoint({{cities[0]['geopoint']}}), 10);
+          map.setCenter(new YMaps.GeoPoint({{cities[0].geopoint()}}), 10);
 
           // Добавление элементов управления
           map.addControl(new YMaps.Zoom());

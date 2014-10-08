@@ -2,9 +2,11 @@ import smtplib
 from email.mime import text
 from email.mime import multipart
 
-from models import autodb, settings, users
-from modules import config, dbutils, utils
+import dbutils
+from models import autodb, users
+from modules import config, utils
 import uwsgi
+
 
 @utils.as_spooler
 @utils.spooler('mailing_sendhtml')
@@ -73,9 +75,9 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
 
 @autodb
 def send_to_user(user_id:int, message:str, subject:str='Уведомление', override:bool=False,
-                 dbconnection:dbutils.DBConnection=None) -> bool:
-    sett = settings.get(user_id, dbconnection=dbconnection)
+                 dbconnection:dbutils.DBConnection=None):
+    sett = users.get(user_id, dbconnection=dbconnection).settings
     if not override and not sett.send_email():
-        return True
-    email = users.get(user_id, fields=['email'], dbconnection=dbconnection)['email']
+        return
+    email = users.get(user_id, dbconnection=dbconnection).email()
     sendmail(message, email, subject)

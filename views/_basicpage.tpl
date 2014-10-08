@@ -7,7 +7,7 @@
 	% end
   	</head>
   	<body>
-    	% include("_basicnavbar", loggedin=loggedin, userinfo=userinfo)
+    	% include("_basicnavbar", loggedin=loggedin, current_user=current_user)
     	<div class="container theme-showcase">
 			<section id="content">
 			    % setdefault("error_description", '')

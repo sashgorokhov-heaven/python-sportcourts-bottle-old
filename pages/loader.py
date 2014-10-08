@@ -5,7 +5,7 @@ import pages
 
 class Loader(pages.Page):
     def get(self):
-        if pages.auth_dispatcher.admin():
+        if pages.auth.current().userlevel.admin():
             pages.controller.loadpages()
             raise bottle.redirect('/')
         raise bottle.HTTPError(404)

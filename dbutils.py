@@ -1,7 +1,4 @@
-import datetime
-
 import pymysql
-
 import modules
 
 

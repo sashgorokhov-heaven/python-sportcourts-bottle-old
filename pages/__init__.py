@@ -1,16 +1,17 @@
-import datetime
-import bottle
-
+import pickle
 import importlib
 import os
 import threading
 import sys
+
+import bottle
+
+from objects import User
 import modules
 from modules import iplib
 import modules.logging
-import modules.dbutils
+import dbutils
 import models.notifications
-import models.settings
 
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
@@ -82,7 +83,7 @@ class _Executor:
                 if modules.config['debug']:
                     return templates.message(e.__class__.__name__,
                                              modules.extract_traceback(e, '<br>').replace('\n', '<br>')).template()
-                return templates.message("Возникла непредвиденная ошибка", "Сообщите нам о ней, пожалуйста.").template()
+                return templates.message("Возникла непредвиденная ошибка", "Сообщите нам об этом, пожалуйста.").template()
 
 
 class _PageController:
@@ -135,98 +136,57 @@ class _PageController:
                 modules.logging.error(e)
 
 
-class _AuthDispatcher:
-    def set_user(self, page_builder):
-        userinfo = dict()
-        userinfo['user_id'] = self.getuserid()
-        userinfo['userlevel'] = self.getuserlevel()
-        userinfo['username'] = self.getusername()
-        userinfo['usersex'] = self.getusersex()
-        userinfo['notifycount'] = models.notifications.get_count(self.getuserid())
-        userinfo['admin'] = self.admin()
-        userinfo['usersettings'] = self.getusersettings()
-        userinfo['organizer'] = self.organizer()
-        userinfo['judge'] = self.judge()
-        userinfo['responsible'] = self.responsible()
-        userinfo['common'] = self.common()
-        page_builder.add_param('userinfo', userinfo)
-        page_builder.add_param('loggedin', self.loggedin())
+def set_cookie(name:str, value):
+    return bottle.response.set_cookie(name, value, modules.config['secret'])
 
-    def login(self, email:str, password:str):
-        if self.loggedin(): return
-        with modules.dbutils.dbopen() as db:
-            user = db.execute(
-                "SELECT * FROM users WHERE email='{}' AND passwd='{}'".format(
-                    email, password), modules.dbutils.dbfields['users'])
-            if len(user) == 0:
-                raise ValueError("Invalid email or password")
-            user = user[0]
-            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user['user_id']))
-            # secretkey = base64.b16encode(bottle.request.remote_addr).decode()+modules.config['secret']
-            bottle.response.set_cookie('user_id', user['user_id'], modules.config['secret'])
-            bottle.response.set_cookie('userlevel', user['userlevel'], modules.config['secret'])
-            bottle.response.set_cookie('usersex', user['sex'], modules.config['secret'])
-            bottle.response.set_cookie('usersettings', user['settings'], modules.config['secret'])
-            bottle.response.set_cookie('username', user['first_name'] + ' ' + user['last_name'],
-                                       modules.config['secret'])
 
-    def logout(self):
-        bottle.response.delete_cookie('user_id')
-        bottle.response.delete_cookie('userlevel')
-        bottle.response.delete_cookie('username')
-        bottle.response.delete_cookie('usersettings')
-        bottle.response.delete_cookie('usersex')
+def get_cookie(name:str, default=None):
+    return bottle.request.get_cookie(name, default, modules.config['secret'])
 
-    def getuserid(self) -> int:
-        return int(bottle.request.get_cookie('user_id', 0, modules.config['secret']))
 
-    def getusername(self) -> str:
-        return bottle.request.get_cookie('username', 'Unknown Username', modules.config['secret'])
+class _MockUserLevel(set):
+    @staticmethod
+    def admin() -> bool:
+        return False
 
-    def getusersex(self) -> str:
-        return bottle.request.get_cookie('usersex', 'male', modules.config['secret'])
+    @staticmethod
+    def organizer() -> bool:
+        return False
 
-    def getuserlevel(self) -> set:
-        return set(map(int, bottle.request.get_cookie('userlevel', '|3|', modules.config['secret']).split('|')[1:-1]))
+    @staticmethod
+    def responsible() -> bool:
+        return False
 
-    def updatesettings(self, sett:models.settings.SettingsClass=None, dbconnection:modules.dbutils.DBConnection=None):
-        if not sett:
-            bottle.response.set_cookie('usersettings',
-                                       models.settings.get(self.getuserid(), dbconnection=dbconnection).format(),
-                                       modules.config['secret'])
-        else:
-            bottle.response.set_cookie('usersettings', sett.format(), modules.config['secret'])
+    @staticmethod
+    def common() -> bool:
+        return False
 
-    def getusersettings(self) -> models.settings.SettingsClass:
-        return models.settings.SettingsClass(
-            bottle.request.get_cookie('usersettings', models.settings.default().format(), modules.config['secret']))
+    @staticmethod
+    def judge() -> bool:
+        return False
 
-    def loggedin(self) -> bool:
-        return bool(self.getuserid())
+    @staticmethod
+    def resporgadmin() -> bool:
+        return False
 
-    def admin(self) -> bool:
-        return self.loggedin() and 0 in self.getuserlevel()
+    def __contains__(self, item):
+        return False
 
-    def organizer(self) -> bool:
-        return self.loggedin() and 1 in self.getuserlevel()
 
-    def responsible(self) -> bool:
-        return self.loggedin() and 2 in self.getuserlevel()
+class _MockUser:
+    def user_id(self) -> int:
+        return 0
 
-    def common(self) -> bool:
-        return self.loggedin() and (3 in self.getuserlevel() or self.responsible() or self.organizer() or self.admin())
-
-    def judge(self) -> bool:
-        return self.loggedin() and 4 in self.getuserlevel()
-
+    @property
+    def userlevel(self) -> _MockUserLevel:
+        return _MockUserLevel
 
 class PageBuilder:
     def __init__(self, template_name:str, **kwargs):
         self._template_name = template_name
         self._kwargs = kwargs
-        auth_dispatcher.set_user(self)
+        auth.set_user(self)
         self.add_param('serverinfo', modules.config['server'])
-        self.add_param('current', datetime.datetime.now())
 
     def add_param(self, name:str, value):
         self._kwargs[name] = value
@@ -236,6 +196,44 @@ class PageBuilder:
             return bottle.template(self._template_name, header_name=self._template_name + '_head.tpl', **self._kwargs)
         return bottle.template(self._template_name, **self._kwargs)
 
+class _AuthDispatcher:
+    def set_user(self, page_builder:PageBuilder):
+        page_builder.add_param('current_user', self.current())
+        page_builder.add_param('loggedin', self.loggedin())
+        if self.loggedin():
+            page_builder.add_param('notifycount', models.notifications.get_count(self.current().user_id()))
+
+
+    def login(self, email:str, password:str):
+        if self.loggedin(): return
+        with dbutils.dbopen() as db:
+            user = db.execute(
+                "SELECT * FROM users WHERE email='{}' AND passwd='{}'".format(
+                    email, password), dbutils.dbfields['users'])
+            if len(user) == 0:
+                raise ValueError("Invalid email or password")
+            user = User(user[0])
+            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user.user_id()))
+            set_cookie('user', pickle.dumps(user))
+
+    def logout(self):
+        bottle.response.delete_cookie('user')
+
+    def loggedin(self) -> bool:
+        user = get_cookie('user')
+        return not (user is None)
+
+    def current(self) -> User:
+        if not self.loggedin(): return _MockUser()
+        return pickle.loads(get_cookie('user'))
+
+    def reloaduser(self, user:User):
+        user.closedb()
+        bottle.response.delete_cookie('user')
+        set_cookie('user', pickle.dumps(user))
+
+    def __bool__(self):
+        return self.loggedin()
 
 class _CompleteTemplates:
     def permission_denied(self, text:str='Доступ ограничен',
@@ -246,14 +244,6 @@ class _CompleteTemplates:
         return PageBuilder("text", message=text, description=description)
 
 
-class SimpleResponse:
-    def __init__(self, body):
-        self._body = body
-
-    def template(self):
-        return self._body
-
-
 controller = _PageController()
-auth_dispatcher = _AuthDispatcher()
+auth = _AuthDispatcher()
 templates = _CompleteTemplates()

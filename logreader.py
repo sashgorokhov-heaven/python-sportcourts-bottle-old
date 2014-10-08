@@ -1,5 +1,8 @@
-from modules import dbutils
-import modules, time, base64
+import time
+import base64
+
+import dbutils
+import modules
 
 
 def print_row(row):

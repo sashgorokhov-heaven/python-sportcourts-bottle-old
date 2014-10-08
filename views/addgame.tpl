@@ -1,4 +1,5 @@
 % rebase("_basicpage", title="Добавить игру")
+% import datetime
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-12 registration" style="text-align:left;">
@@ -21,7 +22,7 @@
                     data-bv-notempty="true"
                     data-bv-notempty-message="Укажите город">
                     % for city in cities:
-                      <option value="{{city['city_id']}}">{{city['title']}}</option>
+                      <option value="{{city.city_id()}}">{{city.title()}}</option>
                     % end
                     </select>
                     <span id="valid"></span>
@@ -34,7 +35,7 @@
                     data-bv-notempty-message="Укажите вид спорта">
                       <option value="">--</option>
                       % for sport_type in sports:
-                          <option value="{{sport_type['sport_id']}}">{{sport_type['title']}}</option>
+                          <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
                       % end
                     </select>
                   </div>
@@ -46,7 +47,7 @@
                     data-bv-notempty-message="Укажите тип игры">
                       <option value="">--</option>
                       % for type in game_types:
-                        <option value="{{type['type_id']}}" class="{{type['sport_type']}}">{{type['title']}}</option>
+                        <option value="{{type.type_id()}}" class="{{type.sport_type()}}">{{type.title()}}</option>
                       % end
                     </select>
                   </div>
@@ -59,9 +60,9 @@
                     data-bv-notempty-message="Укажите площадку">
                       <option value="">--</option>
                       % for court in courts:
-                        <option value="{{court['court_id']}}"
-                                class="{{' '.join(map(lambda x: str(court['city']['city_id'])+'\\'+str(x),[sport['sport_id'] for sport in court['sport_types']]))}}">
-                          {{court['title']}}
+                        <option value="{{court.court_id()}}"
+                                class="{{' '.join(map(lambda x: str(court.city_id())+'\\'+str(x), court.sport_types()))}}">
+                          {{court.title()}}
                         </option>
                       % end
                     </select>
@@ -78,7 +79,7 @@
                   <label for="inputBirght" class="col-sm-2 control-label">Дата</label>
                   <div class="col-sm-10">
                     <input type="date" class="form-control" name="date"
-                    data-bv-notempty="true" value="{{str(current.date())}}"
+                    data-bv-notempty="true" value="{{str(datetime.date.today())}}"
                     data-bv-notempty-message="Укажите дату проведения" />
                   </div>
                 </div>
@@ -86,7 +87,7 @@
                   <label for="inputBirght" class="col-sm-2 control-label">Начало</label>
                   <div class="col-sm-4">
                     <input type="time" class="form-control" name="time"
-                    data-bv-notempty="true" value="{{str(current.time()).split('.')[0]}}"
+                    data-bv-notempty="true" value="{{str(datetime.datetime.now().time()).split('.')[0]}}"
                     data-bv-notempty-message="Укажите время начала" />
                   </div>
                 </div>
@@ -123,10 +124,10 @@
                   <label for="game_add_count" class="col-sm-2 control-label">Ответственный</label>
                   <div class="col-sm-10">
                       <select name="responsible_user_id" class="form-control">
-                      <option value="{{userinfo["user_id"]}}" selected>Я сам{{'а' if userinfo["usersex"]=='female' else ''}}</option>
+                      <option value="{{current_user.user_id()}}" selected>Я сам{{'а' if current_user.sex()=='female' else ''}}</option>
                         % for user in responsibles:
-                          % if user['user_id']!=userinfo["user_id"]:
-                            <option value="{{user['user_id']}}">{{user['first_name']}} {{user['last_name']}}</option>
+                          % if user.user_id()!=current_user.user_id():
+                            <option value="{{user.user_id()}}">{{user.name}}</option>
                           % end
                         % end
                       </select>

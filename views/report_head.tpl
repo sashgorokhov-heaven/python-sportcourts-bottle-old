@@ -30,7 +30,7 @@
         });
 
         var Amount = 0;
-        var Price = {{game['cost']}};
+        var Price = {{game.cost()}};
 
         // var isArray = Array.isArray || function(obj) {
         //     return toString.call(obj) == '[object Array]';

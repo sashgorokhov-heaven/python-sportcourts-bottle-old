@@ -6,9 +6,9 @@ class Ban(pages.Page):
     def get(self):
         if 'user_id' not in bottle.request.query:
             raise bottle.HTTPError(404)
-        if not pages.auth_dispatcher.admin():
+        if not pages.auth.current().userlevel.admin():
             raise pages.templates.permission_denied()
-        user = users.get(int(bottle.request.query.get('user_id')), detalized=True)
+        user = users.get(int(bottle.request.query.get('user_id')))
         return pages.PageBuilder('ban', user=user)
 
     def post(self):

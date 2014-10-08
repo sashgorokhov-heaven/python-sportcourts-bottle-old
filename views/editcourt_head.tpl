@@ -5,7 +5,7 @@
 <script type="text/javascript">
   $(function () {
       $("#court_add_slider").slider({
-          value: {{court['cost']}},
+          value: {{court.cost()}},
           min: 0,
           max: 10000,
           step: 50,
@@ -18,7 +18,7 @@
 
   $(function () {
       $("#court_add_slider1").slider({
-          value: {{court['max_players']}},
+          value: {{court.max_players()}},
           min: 8,
           max: 60,
           step: 1,
@@ -39,12 +39,12 @@
           map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
 
           // Установка для карты ее центра и масштаба
-          map.setCenter(new YMaps.GeoPoint({{court['geopoint']}}), 15);
-          document.getElementById('address').value = '{{court['address']}}';
-          document.getElementById('geopoint').value = '{{court['geopoint']}}';
+          map.setCenter(new YMaps.GeoPoint({{court.geopoint()}}), 15);
+          document.getElementById('address').value = '{{court.address()}}';
+          document.getElementById('geopoint').value = '{{court.geopoint()}}';
 
-          var placemark = new YMaps.Placemark(new YMaps.GeoPoint({{court['geopoint']}}), 5);
-          placemark.name = "{{court['title']}}";
+          var placemark = new YMaps.Placemark(new YMaps.GeoPoint({{court.geopoint()}}), 5);
+          placemark.name = "{{court.title()}}";
           placemark.description = "Данная площадка";
           map.addOverlay(placemark);
 

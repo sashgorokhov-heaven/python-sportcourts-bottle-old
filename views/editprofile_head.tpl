@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
   $('.typeahead').typeahead({
-    source: [{{!', '.join(['"{}"'.format(i['title']) for i in cities])}}],
+    source: [{{!', '.join(['"{}"'.format(i.title()) for i in cities])}}],
     items: {{len(cities)}},
     minLength: 1
   })

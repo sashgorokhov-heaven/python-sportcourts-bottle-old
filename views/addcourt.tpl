@@ -22,9 +22,9 @@
                   <div class="col-sm-10">
                   % for sport_type in sport_types:
                     <label class="checkbox-inline">
-                      <input type="checkbox" name="sport_type" value="{{sport_type['sport_id']}}" data-bv-message="Пожалуйста, выберите хотябы один вид спорта"
+                      <input type="checkbox" name="sport_type" value="{{sport_type.sport_id()}}" data-bv-message="Пожалуйста, выберите хотябы один вид спорта"
                       data-bv-notempty="true">
-                      {{sport_type['title']}}
+                      {{sport_type.title()}}
                     </label>
                   % end
                   </div>
@@ -34,9 +34,9 @@
                   <div class="col-sm-10">
                     <select id="city" name="city_id" class="form-control"
                     data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите город" <!-- Было бы прикольно onchange="showAddress(this.value);" --> >
+                    data-bv-notempty-message="Укажите город"
                     % for city in cities:
-                      <option value="{{city['city_id']}}">{{city['title']}}</option>
+                      <option value="{{city.city_id()}}">{{city.title()}}</option>
                     % end
                     </select>
                     <span id="valid"></span>

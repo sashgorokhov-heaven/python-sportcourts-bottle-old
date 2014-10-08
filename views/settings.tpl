@@ -12,7 +12,7 @@
               <label for="sex" class="col-sm-2 control-label">Уведомления</label>
               <div class="col-sm-10">
                 <label class="checkbox-inline">
-                  <input type="checkbox" name="email_notify" {{'checked' if settings.send_email() else ''}}> Отправлять важные уведомления на email
+                  <input type="checkbox" name="email_notify" {{'checked' if current_user.settings.send_mail() else ''}}> Отправлять важные уведомления на email
                 </label>
               </div>
             </div>
@@ -21,13 +21,13 @@
               <div class="col-sm-10">
                 <div class="radio">
                   <label>
-                    <input type="radio" name="phone_visible" value="phone_organizers" {{'checked' if settings.show_phone()=='organizers' else ''}}>
+                    <input type="radio" name="phone_visible" value="phone_organizers" {{'checked' if not current_user.settings.show_phone() else ''}}>
                     Мой телефон видят только администраторы
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="phone_visible" value="phone_all" {{'checked' if settings.show_phone()=='all' else ''}}>
+                    <input type="radio" name="phone_visible" value="phone_all" {{'checked' if current_user.settings.show_phone() else ''}}>
                     Мой телефон видят все пользователи
                   </label>
                 </div>

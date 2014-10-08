@@ -1,29 +1,29 @@
-% rebase("_basicpage", title=user['first_name']+' '+user['last_name'])
+% rebase("_basicpage", title=user.name)
 % setdefault('myfriend', False)
       <div class="row profile">
         <div class="col-md-3">
-          <img src="/images/avatars/{{str(user['user_id'])}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
+          <img src="/images/avatars/{{user.user_id()}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
           <br>
-          % if loggedin and user['user_id']!=userinfo['user_id']:
+          % if loggedin and user.user_id()!=current_user.user_id():
           <br>
-            <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user['user_id']}}">
+            <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user.user_id()}}">
               {{'добавить в друзья' if not myfriend else 'убрать из друзей'}}
             </a>
           % end
-          % if user['gameinfo']['total']>0:
+          % if user.gameinfo()['total']>0:
           <br>
           <div class="panel-group" id="accordion1" style="max-width:300px;">
             <div class="panel panel-default">
               <div class="panel-heading" style="padding: 6px 15px 6px 15px; background: none; text-align: center;">
                   <a data-toggle="collapse" data-parent="#accordion1" href="#collapseTime">
-                    <span class="glyphicon glyphicon-stats"></span> В игре: {{user['gameinfo']['beautiful']['total'][0]}} {{user['gameinfo']['beautiful']['total'][1]}}
+                    <span class="glyphicon glyphicon-stats"></span> В игре: {{user.gameinfo()['beautiful']['total']}}
                   </a>
               </div>
               <div id="collapseTime" class="panel-collapse collapse">
                 <div class="panel-body" style="padding:10px 0 0 10px;">
-                  % for sport_id in user['gameinfo']['sport_types']:
+                  % for sport_id in user.gameinfo()['sport_types']:
                     <p>
-                      {{user['gameinfo']['sport_types'][sport_id]}}: {{' '.join(user['gameinfo']['beautiful'][sport_id])}}
+                      {{user.gameinfo()['sport_types'][sport_id]}}: {{user.gameinfo()['beautiful'][sport_id]}}
                     </p>
                   % end
                 </div>
@@ -35,26 +35,24 @@
           <br>
         </div>
         <div class="col-md-9">
-          <strong>{{user['first_name']+' '+user['last_name']}}</strong>
+          <strong>{{user.name}}</strong>
           &nbsp;
-          % if len({0,1,2}.intersection(user['userlevel']))>0:
-            % if 0 in user['userlevel']:
+            % if user.userlevel.admin():
                 <span id="badge1" class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" data-placement="bottom" title="Администратор"></span>
                 <script>$('#badge1').tooltip();</script>
                 &nbsp;
             % end
-            % if 1 in user['userlevel']:
+            % if user.userlevel.organizer():
                 <span id="badge2" class="glyphicon glyphicon-star" data-toggle="tooltip" data-placement="bottom" title="Организатор"></span>
                 <script>$('#badge2').tooltip();</script>
                 &nbsp;
             % end
-            % if 2 in user['userlevel']:
+            % if user.userlevel.responsible():
                 <span id="badge3" class="glyphicon glyphicon-star-empty" data-toggle="tooltip" data-placement="bottom" title="Ответственный"></span>
                 <script>$('#badge3').tooltip();</script>
                 &nbsp;
             % end
-          % end
-          % if int(user['user_id'])==int(userinfo['user_id']):
+          % if user.user_id()==current_user.user_id():
             &nbsp;
             &nbsp;
             &nbsp;
@@ -69,40 +67,40 @@
             </small>
             <br>
           % end
-          % if int(user['user_id'])!=int(userinfo['user_id']):
+          % if user.user_id()!=current_user.user_id():
             &nbsp;
             &nbsp;
-            <small>Последний раз заходил{{'a' if user['sex']=='female' else ''}}: {{user['lasttime']}}</small><br>
+            <small>Последний раз заходил{{'a' if user.sex()=='female' else ''}}: {{user.lasttime}}</small><br>
           % end
           <br>
-          {{user['parsed_bdate']+', '+user['city']['title']}}<br>
+          {{str(user.bdate)+', '+user.city_id(True).title()}}<br>
           <br>
-          Рост: {{user['height']}} см.<br>
-          Вес: {{user['weight']}} кг.<br>
+          Рост: {{user.height()}} см.<br>
+          Вес: {{user.weight()}} кг.<br>
           <br>
-          % if loggedin and ( int(user['user_id'])==int(userinfo['user_id']) or userinfo['responsible'] or user['settings'].show_phone()=='all' or len(user['userlevel'].intersection({0,1}))>0):
-          Телефон: {{user['phone']}}
+          % if loggedin and (user.user_id()==current_user.user_id() or current_user.userlevel.resporgadmin() or user.settings.show_phone()):
+          Телефон: {{user.phone()}}
           % end
           <br>
-          % if len(user['ampluas'])>0:
+          % if len(user.ampluas())>0:
             <br>
-            {{!'<br>'.join(['{}: {}'.format(amplua['sport_type']['title'], amplua['title']) for amplua in user['ampluas']])}}
+            {{!'<br>'.join(['{}: {}'.format(amplua.sport_type(True).title(), amplua.title()) for amplua in user.ampluas(True)])}}
             <br>
           % end
           <br>
-          % if user['vkuserid'] and loggedin:
-            <a href="http://vk.com/id{{user['vkuserid']}}" target="_blank">
+          % if user.vkuserid() and loggedin:
+            <a href="http://vk.com/id{{user.vkuserid()}}" target="_blank">
               <img src="/images/static/vk.png" width="32"/>
             </a>
           % end
-          % if int(user['user_id'])==int(userinfo['user_id']) and not activated:
+          % if user.user_id()==current_user.user_id() and not user.activated():
             <p>Вы не активировали свой профиль!</p>
           % end
 
           <br>
           <br>
 
-          % if int(user['user_id'])==int(userinfo['user_id']):
+          % if user.user_id()==current_user.user_id() or current_user.userlevel.admin():
             <div class="panel-group" id="accordion">
               % if len(user_games)>0:
                 <div class="panel panel-default">
@@ -129,12 +127,12 @@
                               </tr>
                               % for game in user_games:
                                 <tr>
-                                  <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
-                                  <td>{{game['parsed_datetime'][0]}}</td>
-                                  <td>{{game['description']}}</td>
-                                  <td>{{game['sport_type']['title']}}</td>
-                                  <td>{{game['court']['title']}}</td>
-                                  <td>{{game['duration']}} мин.</td>
+                                  <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
+                                  <td>{{game.datetime.beautiful.day_month()}}</td>
+                                  <td>{{game.description()}}</td>
+                                  <td>{{game.sport_type(True).title()}}</td>
+                                  <td>{{game.court_id(True).title()}}</td>
+                                  <td>{{game.duration()}} мин.</td>
                                 </tr>
                               % end
                             </table>
@@ -169,13 +167,14 @@
                                 <td>Статус отчета</td>
                               </tr>
                               % for game in responsible_games:
-                                <tr {{'class=active' if not game['report']['reported'] else ''}}>
-                                  <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
-                                  <td>{{game['parsed_datetime'][0]}}</td>
-                                  <td>{{game['description']}}</td>
-                                  <td>{{game['sport_type']['title']}}</td>
-                                  <td>{{game['court']['title']}}</td>
-                                  <td>{{!'<a href="/report?game_id={}" target="_blank">Отправлен</a>'.format(game['game_id']) if game['report']['reported'] else '<a href="/list/{}" target="_blank">Ожидается</a>'.format(game['game_id'])}}</td>
+                                <tr {{'class=active' if not game.report.reported() else ''}}>
+                                <tr {{'class=active' if not game.report.reported() else ''}}>
+                                  <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
+                                  <td>{{game.datetime.beautiful.day_month()}}</td>
+                                  <td>{{game.description()}}</td>
+                                  <td>{{game.sport_type(True).title()}}</td>
+                                  <td>{{game.court_id(True).title()}}</td>
+                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game.game_id()) if game.report.reported() else 'Ожидается'}}</td>
                                 </tr>
                               % end
                             </table>
@@ -211,13 +210,13 @@
                                 <td>Передача денег</td>
                               </tr>
                               % for game in organizer_games:
-                                <tr {{'class=active' if not game['report']['reported'] else ''}}>
-                                  <td><a href="/games?game_id={{game['game_id']}}" target="_blank">{{game['game_id']}}</a></td>
-                                  <td>{{game['parsed_datetime'][0]}}</td>
-                                  <td>{{game['description']}}</td>
-                                  <td>{{game['sport_type']['title']}}</td>
-                                  <td>{{game['court']['title']}}</td>
-                                  <td>{{!'<a href="/report?game_id={}" target="_blank">Отправлен</a>'.format(game['game_id']) if game['report']['reported'] else '<a href="/list/{}" target="_blank">Ожидается</a>'.format(game['game_id'])}}</td>
+                                <tr {{'class=active' if not game.report.reported() else ''}}>
+                                  <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
+                                  <td>{{game.datetime.beautiful.day_month()}}</td>
+                                  <td>{{game.description()}}</td>
+                                  <td>{{game.sport_type(True).title()}}</td>
+                                  <td>{{game.court_id(True).title()}}</td>
+                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game.game_id()) if game.report.reported() else 'Ожидается'}}</td>
                                   <td> --- </td>
                                 </tr>
                               % end

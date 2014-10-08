@@ -1,5 +1,5 @@
+import dbutils
 from models import autodb
-from modules import dbutils
 
 
 @autodb

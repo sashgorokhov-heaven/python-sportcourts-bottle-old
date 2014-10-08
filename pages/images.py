@@ -69,9 +69,9 @@ class Images(pages.Page):
         return bottle.static_file(name, '/bsp/data/images/og/')
 
     def get_report_image(self, game_id):
-        game = games.get_by_id(game_id, fields=['created_by', 'responsible_user_id'])
-        if pages.auth_dispatcher.getuserid() == game['responsible_user_id'] or pages.auth_dispatcher.getuserid() == \
-                game['created_by'] or pages.auth_dispatcher.admin():
+        game = games.get_by_id(game_id)
+        if pages.auth.current().user_id() == game.responsible_user_id() or pages.auth.current().user_id() == \
+                game.created_by() or pages.auth.current().userlevel.admin():
             return bottle.static_file(game_id + '.jpg', '/bsp/data/images/reports/')
         raise bottle.HTTPError(404)
 

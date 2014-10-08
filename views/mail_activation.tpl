@@ -30,7 +30,7 @@
                                     <td valign="top" style="padding-right:0px;padding-left:0px;padding-top:0;padding-bottom:0">
                                       <div style="width:600px;min-height:101px;text-align:center;background:url('https://ci5.googleusercontent.com/proxy/8gaHTc9t9Pc_acvWRwYSiijg6Sww0NcoLvTyMh9IqAkH6WQJW2ifp08pmxlVtj4K84MMEdsuWX2zJReKQMjy07pq-BIPnmKDrCo=s0-d-e1-ft#https://smartprogress.do/images/mail/main-header.jpg')">
                                         <br>
-                                        <h1><a href="http://sportcourts.ru/" target="_blank" style="color:#fff;font-weight:bold;text-decoration:none;">
+                                        <h1><a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}" target="_blank" style="color:#fff;font-weight:bold;text-decoration:none;">
                                           SportCourts
                                         </a></h1>
                                       </div>
@@ -87,7 +87,7 @@
                                 <tbody>
                                   <tr>
                                     <td align="center" valign="middle" style="font-family:Arial;font-size:16px;padding:16px">
-                                      <a title="Подтвердить" href="http://sportcourts.ru/activate?token={{token}}" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word" target="_blank">Подтвердить</a>
+                                      <a title="Подтвердить" href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/activate?token={{token}}" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word" target="_blank">Подтвердить</a>
                                     </td>
                                   </tr>
                                 </tbody>
@@ -170,9 +170,9 @@
                                         <br style="text-align:center">
                                         <a href="mailto:info@moysport.ru?subject=%D0%9E%D0%B1%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B2%20%D1%82%D0%B5%D1%85%D0%BF%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D1%83%20SportCourts.ru" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">info@sportcourts.ru</a>
                                         <span style="text-align:center">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</span>
-                                        <a href="http://sportcourts.ru" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">sportcourts.ru</a>
+                                        <a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">sportcourts.ru</a>
                                         <span style="text-align:center">&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;</span>
-                                        <a href="http://sportcourts.ru/settings" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">Отписаться от рассылки</a>
+                                        <a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/settings" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">Отписаться от рассылки</a>
                                       </div>
                                     </td>
                                   </tr>

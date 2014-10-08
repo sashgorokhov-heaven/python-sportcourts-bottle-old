@@ -1,19 +1,19 @@
 import bottle
 
 import pages
-import modules.dbutils
+import dbutils
 import models.notifications
 
 
 class Notifications(pages.Page):
     def execute(self, method:str, **kwargs):
-        if not pages.auth_dispatcher.loggedin():
+        if not pages.auth.loggedin():
             return pages.templates.permission_denied().template()
         return super().execute(method, **kwargs)
 
     def get(self):
-        user_id = pages.auth_dispatcher.getuserid()
-        with modules.dbutils.dbopen() as db:
+        user_id = pages.auth.current().user_id()
+        with dbutils.dbopen() as db:
             if 'deleteall' in bottle.request.query:
                 models.notifications.delete(-user_id)
                 raise bottle.redirect('/notifications')
@@ -21,7 +21,7 @@ class Notifications(pages.Page):
             notifications = dict()
             notifications['all'] = models.notifications.get(user_id, type=0, all=count == 0, dbconnection=db)
             notifications['subscribed'] = models.notifications.get(user_id, type=1, all=count == 0, dbconnection=db)
-            if pages.auth_dispatcher.responsible() or pages.auth_dispatcher.organizer() or pages.auth_dispatcher.admin():
+            if pages.auth.current().userlevel.resporgadmin():
                 notifications['responsible'] = models.notifications.get(user_id, type=2, all=count == 0,
                                                                         dbconnection=db)
             return pages.PageBuilder("notifications", notifications=notifications, all=count == 0)
@@ -36,4 +36,4 @@ class Notifications(pages.Page):
 
 
     get.route = '/notifications'
-    post.route = '/notifications'
+    post.route = get.route

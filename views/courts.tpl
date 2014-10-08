@@ -1,18 +1,18 @@
-% rebase("_basicpage", title=court['title'])
+% rebase("_basicpage", title=court.title())
       <div class="profile">
         <!-- <div class="row">
           <div class="col-md-12">
-            <p class="lead">{{court['title']}}</p>
+            <p class="lead">{{court.title()}}</p>
           </div>
         </div> -->
         <div class="row">
           <div class="col-md-8">
-            <img src="/images/courts/{{court['court_id']}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
+            <img src="/images/courts/{{court.court_id()}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
           </div>
           <div class="col-md-4">
-            <p class="lead">{{court['title']}}
-              % if userinfo['organizer'] or userinfo['admin']:
-              <small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/courts?edit={{court['court_id']}}">Ред.</a></small>
+            <p class="lead">{{court.title()}}
+              % if loggedin and current_user.userlevel.organizer() or current_user.userlevel.admin():
+              <small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/courts?edit={{court.court_id()}}">Ред.</a></small>
               % end
             </p>
             <div class="table-responsive">
@@ -20,14 +20,14 @@
                 <tr>
                   <td><small><strong>Адрес:</strong></small></td>
                   <td>
-                    <small>{{court['address']}}</small>
+                    <small>{{court.address()}}</small>
                     <br>
                     <small><a href="#YMapsID">Показать на карте <span class="glyphicon glyphicon-map-marker"></span></a></small>
                   </td>
                 </tr>
                 <tr>
                   <td><small><strong>Время работы:</strong></small></td>
-                  <td><small>{{court['worktime']}}</small></td>
+                  <td><small>{{court.worktime()}}</small></td>
                 </tr>
                 <!-- <tr>
                   <td><small><strong>Аренда:</strong></small></td>
@@ -37,12 +37,12 @@
                 % if defined("game"):
                 <tr>
                   <td colspan="2">
-                    <p><a href="/games?game_id={{game['game_id']}}">Ближайшая игра:</a></p>
-                    <small><p>{{game['parsed_datetime'][0]}}, {{game['parsed_datetime'][2]}}, {{game['parsed_datetime'][1]}}</p></small>
-                    <small><p>{{game['sport_type']['title']}} - {{game['game_type']['title']}}</p></small>
+                    <p><a href="/games?game_id={{game.game_id()}}">Ближайшая игра:</a></p>
+                    <small><p>{{str(game.datetime.beautiful)}}</p></small>
+                    <small><p>{{game.sport_type(True).title()}} - {{game.game_type(True).title()}}</p></small>
                     <div class="progress">
-                      <div class="progress-bar{{' progress-bar-success' if game['subscribed']['count'] == game['capacity'] else ''}}" role="progressbar" style="width:{{round((game['subscribed']['count']/game['capacity'])*100)}}%">
-                          <span class="">{{game['subscribed']['count']}}/{{game['capacity']}}</span>
+                      <div class="progress-bar{{' progress-bar-success' if len(game.subscribed()) == game.capacity() else ''}}" role="progressbar" style="width:{{round((len(game.subscribed())/game.capacity())*100)}}%">
+                          <span class="">{{len(game.subscribed())}}/{{game.capacity()}}</span>
                       </div>
                     </div>
                   </td>
@@ -69,31 +69,31 @@
                       <table class="table table-hover">
                         <tr>
                           <td><small><strong>Виды спорта:</strong></small></td>
-                          <td><small>{{', '.join([sport['title'] for sport in court['sport_types']])}}</small></td>
+                          <td><small>{{', '.join([sport.title() for sport in court.sport_types(True)])}}</small></td>
                         </tr>
                         <tr>
                           <td><small><strong>Вместимость:</strong></small></td>
-                          <td><small>{{court['max_players']}}</small></td>
+                          <td><small>{{court.max_players()}}</small></td>
                         </tr>
                         <tr>
                           <td><small><strong>Тип площадки:</strong></small></td>
-                          <td><small>{{court['type']}}</small></td>
+                          <td><small>{{court.type()}}</small></td>
                         </tr>
                         <tr>
                           <td><small><strong>Покрытие:</strong></small></td>
-                          <td><small>{{court['cover']}}</small></td>
+                          <td><small>{{court.cover()}}</small></td>
                         </tr>
                         <tr>
                           <td><small><strong>Инфрастуктура:</strong></small></td>
-                          <td><small>{{court['infrastructure']}}</small></td>
+                          <td><small>{{court.infrastructure()}}</small></td>
                         </tr>
                         <tr>
                           <td><small><strong>Комментарии:</strong></small></td>
-                          <td><small>{{court['description']}}</small></td>
+                          <td><small>{{court.description()}}</small></td>
                         </tr>
                         <tr>
                           <td><small><strong>Телефон:</strong></small></td>
-                          <td><small>{{court['phone']}}</small></td>
+                          <td><small>{{court.phone()}}</small></td>
                         </tr>
                       </table>
                     </div>

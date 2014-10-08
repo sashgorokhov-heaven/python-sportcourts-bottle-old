@@ -23,7 +23,7 @@
                       <option value="0">Все</option>
                       <option value="-1" {{'selected' if old else ''}}>Прошедшие игры</option>
                       % for sport_type in sports:
-                          <option value="{{sport_type['sport_id']}}" {{'selected' if bysport==sport_type['sport_id'] else ''}}>{{sport_type['title']}}</option>
+                          <option value="{{sport_type.sport_id()}}" {{'selected' if bysport==sport_type.sport_id() else ''}}>{{sport_type.title()}}</option>
                       % end
                     </select>
                   </div>
@@ -55,10 +55,10 @@
         <div class="col-md-9">
           <ul class="nav nav-tabs">
             <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
-            % if loggedin and len([game for game in games if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}])>0:
+            % if loggedin and len([game for game in games if current_user.user_id() in set(game.subscribed())])>0:
             <li><a href="#my" data-toggle="tab">Мои игры</a></li>
             % end
-            % if userinfo['organizer'] or userinfo['admin']:
+            % if current_user.userlevel.organizer() or current_user.userlevel.admin():
             <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
             % end
           </ul>
@@ -85,7 +85,7 @@
               <div class="panel panel-deafult">
                 <br>
                 % for game in games:
-                    % if userinfo['user_id'] in {i['user_id'] for i in game['subscribed']['users']}:
+                    % if current_user.user_id() in set(game.subscribed()):
                         % include("game", game=game, tab_name="my")
                     % end
                 % end
