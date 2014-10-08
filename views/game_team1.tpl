@@ -138,7 +138,7 @@
                             </a>
                           </td>
                         </tr>
-                        <tr id="player-1-1-4" class="player-1-1">
+                        <tr id="player-1-1-4">
                           <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
                             <p style="padding-left:10px;" class="number-1-1-4">4</p>
                           </td>
@@ -146,7 +146,7 @@
                             <p>
                               <img src="/images/avatars/blank.jpg?sq" class="img-circle header_avatar" width="30" height="30" >
                               &nbsp;
-                              <a class="btn btn-xs btn-success">Занять место</a>
+                              <a id="addplayer-1-1-4" class="btn btn-xs btn-success addplayer">Занять место</a>
                           </td>
                           <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
                             <a href="">
@@ -158,7 +158,7 @@
                         </tr>
                         <tr>
                           <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
-                            <p style="padding-left:10px;">5</p>
+                            <p style="padding-left:10px;" class="number-1-1-5">5</p>
                           </td>
                           <td valign="middle" style="padding-bottom:0px; padding-top:10px;">
                             <p>
