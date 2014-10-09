@@ -181,7 +181,9 @@
               % end
               % if not loggedin and game.can_subscribe():
                 % if len(game.subscribed()) == game.capacity():
-                  <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
+                  <a href="#" data-toggle="modal" data-target="#loginModal">
+                    <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
+                  </a>
                 % end
                 % if len(game.subscribed()) < game.capacity():
                   <a href="#" data-toggle="modal" data-target="#loginModal">
