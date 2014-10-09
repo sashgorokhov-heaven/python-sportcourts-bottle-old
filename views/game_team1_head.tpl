@@ -42,7 +42,11 @@
 
     $("#nameinput-"+arr[1]+"-"+arr[2]).removeClass("hidden");
     $("#nameinput-"+arr[1]+"-"+arr[2]).addClass("show");
-    $("#nameinput-"+arr[1]+"-"+arr[2]).focus();
+
+    var poleVvoda = $("#nameinput-"+arr[1]+"-"+arr[2]);
+    val = poleVvoda.val();
+    poleVvoda.focus().val("").val(val);
+
     $("#name-"+arr[1]+"-"+arr[2]).addClass("hidden");
     $("#editname-"+arr[1]+"-"+arr[2]).addClass("hidden");
 
