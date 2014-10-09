@@ -1,8 +1,12 @@
 import dbutils
-from models import autodb
+from models import autodb, Cache
 from objects import Amplua
 
 
+_cache = Cache(600)
+
+
+@_cache
 @autodb
 def get(amplua_id, dbconnection:dbutils.DBConnection=None) -> Amplua:
     if isinstance(amplua_id, list) and len(amplua_id)==0: return list()
@@ -24,11 +28,3 @@ def get(amplua_id, dbconnection:dbutils.DBConnection=None) -> Amplua:
         return ampluas[0]
     elif isinstance(amplua_id, list) or amplua_id == 0:
         return ampluas
-
-
-#@autodb
-#def parse(ampluas_str:str, detalized:bool=False, dbconnection:dbutils.DBConnection=None):
-#    if len(ampluas_str)==0:
-#        return list() if detalized else set()
-#    ampluas = list(map(int, decode_set(ampluas_str)))
-#    return get(ampluas, dbconnection=dbconnection) if detalized else set(ampluas)

@@ -1,8 +1,12 @@
 import dbutils
-from models import autodb, splitstrlist
+from models import autodb, splitstrlist, Cache
 from objects import City
 
 
+_cache = Cache(600)
+
+
+@_cache
 @autodb
 def get(city_id, dbconnection:dbutils.DBConnection=None) -> City:
     if isinstance(city_id, str) and len(city_id.split(',')) > 0:
