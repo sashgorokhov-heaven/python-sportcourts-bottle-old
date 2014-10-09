@@ -212,9 +212,8 @@ class _AuthDispatcher:
                     email, password), dbutils.dbfields['users'])
             if len(user) == 0:
                 raise ValueError("Invalid email or password")
-            user = User(user[0])
-            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user.user_id()))
-            set_cookie('user', pickle.dumps(user))
+            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user[0]['user_id']))
+            set_cookie('user', pickle.dumps(user[0]))
 
     def logout(self):
         bottle.response.delete_cookie('user')
@@ -225,12 +224,12 @@ class _AuthDispatcher:
 
     def current(self) -> User:
         if not self.loggedin(): return _MockUser()
-        return pickle.loads(get_cookie('user'))
+        return User(pickle.loads(get_cookie('user')))
 
     def reloaduser(self, user:User):
         user.closedb()
-        bottle.response.delete_cookie('user')
-        set_cookie('user', pickle.dumps(user))
+        #bottle.response.delete_cookie('user')
+        set_cookie('user', pickle.dumps(user._user))
 
     def __bool__(self):
         return self.loggedin()
