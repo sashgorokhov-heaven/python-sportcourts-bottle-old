@@ -1,4 +1,6 @@
 % setdefault("standalone", False)
+% setdefault("conflict", 0)
+% setdefault("conflict_data", None)
 
 % if standalone:
 %   rebase("_basicpage", title=game.description())

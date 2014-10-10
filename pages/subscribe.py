@@ -12,10 +12,10 @@ from modules import create_link
 class Subscribe(pages.Page):
     def check_intersection(self, user_id:int, game:Game, db:dbutils.DBConnection) -> dict: # TODO
         query = """\
-          SELECT * FROM games WHERE (\
+          SELECT * FROM games WHERE game_id IN (SELECT game_id FROM usergames WHERE user_id={user_id} AND status=-1) AND (\
           (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
           (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
-          """.format(user_id=user_id, datetime=game.datetime, duration=game.duration())
+          """.format(user_id=user_id, datetime=game.datetime, duration=game.duration()-1)
         db.execute(query, dbutils.dbfields['games'])
         if len(db.last())>0:
             return Game(db.last()[0], db)
@@ -42,21 +42,28 @@ class Subscribe(pages.Page):
         unsubscribe = 'unsubscribe' in bottle.request.forms
 
         if not bottle.request.is_ajax:
-            self.subscribe(game_id, user_id, unsubscribe)
-            return ''
+            raise ValueError("Not ajax request")
 
         tab_name = bottle.request.forms.get("tab_name")
         # sport_type = int(bottle.request.forms.get("tab_name"))
 
         with dbutils.dbopen() as db:
             game = games.get_by_id(game_id, dbconnection=db)
-            #another_game = self.check_intersection(user_id, game, db)
-            #if len(another_game) > 0 and not unsubscribe:
-            #    assert isinstance(another_game, Game)
-            #    message = 'В это время вы уже записаны на игру "{}"'.format(create_link.game(another_game))
-            #    return pages.PageBuilder("game", tab_name=tab_name, game=game, message=message)
 
-            if datetime.datetime(*(game.datetime.date() - datetime.timedelta(hours=24)).timetuple()[:3]) <= datetime.datetime.now() <= game.datetime():
+            if not unsubscribe:
+                if pages.auth.current().banned():
+                    return pages.PageBuilder("game", tab_name=tab_name, game=game, conflict=2)
+
+                if not pages.auth.current().activated():
+                    return pages.PageBuilder("game", tab_name=tab_name, game=game, conflict=3)
+
+                another_game = self.check_intersection(user_id, game, db)
+                if len(another_game) > 0:
+                    return pages.PageBuilder("game", tab_name=tab_name, game=game, conflict=1, conflict_data=another_game)
+
+            self.subscribe(game_id, user_id, unsubscribe)
+
+            if game.datetime.tommorow or game.datetime.today:
                 if not unsubscribe:
                     message = 'На игру "{}" записался {}'.format(create_link.game(game),
                                                                             create_link.user(pages.auth.current()))
@@ -64,7 +71,6 @@ class Subscribe(pages.Page):
                     message = '{} отписался от игры "{}"'.format(create_link.user(pages.auth.current()),
                                                                             create_link.game(game))
                 notifications.add(game.responsible_user_id(), message, 1, game_id, 2)
-            self.subscribe(game_id, user_id, unsubscribe)
             game = games.get_by_id(game_id, dbconnection=db)
             return pages.PageBuilder("game", tab_name=tab_name, game=game)
 
