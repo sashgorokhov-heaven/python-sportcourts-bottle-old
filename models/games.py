@@ -110,7 +110,7 @@ def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
 
 
 @autodb
-def intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.DBConnection=None):
+def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.DBConnection=None):
     sql = """\
         SELECT game_id FROM games WHERE court_id={court_id} AND (\
         (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
