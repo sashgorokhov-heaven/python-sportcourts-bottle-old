@@ -168,13 +168,24 @@
                               </tr>
                               % for game in responsible_games:
                                 <tr {{'class=active' if not game.report.reported() else ''}}>
-                                <tr {{'class=active' if not game.report.reported() else ''}}>
                                   <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
                                   <td>{{game.datetime.beautiful.day_month()}}</td>
                                   <td>{{game.description()}}</td>
                                   <td>{{game.sport_type(True).title()}}</td>
                                   <td>{{game.court_id(True).title()}}</td>
-                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game.game_id()) if game.report.reported() else 'Ожидается'}}</td>
+                                  <td>
+                                   % if game.report.reported():
+                                        <a href="/report?game_id={{game.game_id()}}">Отправлен</a>
+                                   % end
+                                   % if not game.report.reported():
+                                        % if game.datetime.passed:
+                                            <a href="/report?game_id={{game.game_id()}}">Ожидается</a>
+                                        % end
+                                        % if not game.datetime.passed:
+                                            <a href="/list/{{game.game_id()}}">Распечатать списки</a>
+                                        % end
+                                   % end
+                                  </td>
                                 </tr>
                               % end
                             </table>
