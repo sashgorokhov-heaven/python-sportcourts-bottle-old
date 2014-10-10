@@ -78,6 +78,8 @@
             <div class="col-md-6">
               <p>{{game.sport_type(True).title()}} - {{game.game_type(True).title()}}</p>
               <p><a href="/courts?court_id={{game.court_id()}}" target="_blank">{{game.court_id(True).title()}}</a></p>
+                <p>{{conflict}}</p>
+                <p>{{conflict_data.game_id() if conflict_data else 'None'}}</p>
               % if standalone:
                 <p>
                   Ответственный:

@@ -1,8 +1,5 @@
-import datetime
-
 import bottle
 
-from objects import Game
 import dbutils
 import pages
 from models import games, notifications
@@ -10,17 +7,6 @@ from modules import create_link
 
 
 class Subscribe(pages.Page):
-    def check_intersection(self, user_id:int, game:Game, db:dbutils.DBConnection) -> dict: # TODO
-        query = """\
-          SELECT * FROM games WHERE game_id IN (SELECT game_id FROM usergames WHERE user_id={user_id} AND status=-1) AND (\
-          (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
-          (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
-          """.format(user_id=user_id, datetime=game.datetime, duration=game.duration()-1)
-        db.execute(query, dbutils.dbfields['games'])
-        if len(db.last())>0:
-            return Game(db.last()[0], db)
-        return dict()
-
     def subscribe(self, game_id:int, user_id:int, unsubscribe:bool):
         try:
             if unsubscribe:
@@ -57,8 +43,8 @@ class Subscribe(pages.Page):
                 if not pages.auth.current().activated():
                     return pages.PageBuilder("game", tab_name=tab_name, game=game, conflict=3)
 
-                another_game = self.check_intersection(user_id, game, db)
-                if len(another_game) > 0:
+                another_game = games.user_game_intersection(user_id, game, dbconnection=db)
+                if another_game:
                     return pages.PageBuilder("game", tab_name=tab_name, game=game, conflict=1, conflict_data=another_game)
 
             self.subscribe(game_id, user_id, unsubscribe)

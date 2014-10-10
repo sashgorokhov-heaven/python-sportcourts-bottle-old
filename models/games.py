@@ -112,9 +112,9 @@ def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
 @autodb
 def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.DBConnection=None):
     sql = """\
-        SELECT game_id FROM games WHERE court_id={court_id} AND (\
-        (DATETIME BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE) OR \
-        (DATETIME + INTERVAL {duration} MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL {duration} MINUTE));\
+        SELECT game_id FROM games WHERE court_id='{court_id}' AND (\
+        (datetime BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE) OR \
+        (datetime + INTERVAL duration MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE));\
         """.format(
         court_id=court_id,
         datetime=datetime,
@@ -123,6 +123,24 @@ def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnecti
     if len(dbconnection.last()) == 0:
         return 0
     return dbconnection.last()[0][0]
+
+
+def user_game_intersection(user_id:int, game:Game, dbconnection:dbutils.DBConnection=None):
+    sql = (" SELECT * FROM games WHERE game_id!='{game_id}'"
+           " AND game_id in (SELECT game_id FROM usergames WHERE user_id='{user_id}' AND (status=-1 OR status=-2))"
+           " AND ("
+           " (datetime BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE)"
+           " OR "
+           " (datetime + INTERVAL duration MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE))"
+           " AND "
+           " datetime!='{datetime}' AND datetime!=('{datetime}' + INTERVAL '{duration}' MINUTE)"
+           " AND "
+           " (datetime + INTERVAL duration MINUTE)!='{datetime}' AND (datetime + INTERVAL duration MINUTE)!=('{datetime}' + INTERVAL '{duration}' MINUTE)")
+    sql = sql.format(datetime=game.datetime, duration=game.duration(), user_id=user_id, game_id=game.game_id())
+    dbconnection.execute(sql, dbutils.dbfields['games'])
+    if len(dbconnection.last())>0:
+        return Game(dbconnection.last()[0], dbconnection=dbconnection)
+    return None
 
 
 @autodb
@@ -147,29 +165,29 @@ def update(game_id:int, dbconnection:dbutils.DBConnection=None, **kwargs):
 
 @autodb
 def get_user_played_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT game_id FROM usergames WHERE user_id={} AND status>0".format(user_id))
+    dbconnection.execute("SELECT game_id FROM usergames WHERE user_id='{}' AND status>0".format(user_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 
 @autodb
 def get_subscribed_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT game_id FROM usergames WHERE user_id={} AND status=-1".format(game_id))
+    dbconnection.execute("SELECT game_id FROM usergames WHERE user_id='{}' AND status=-1".format(user_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 
 @autodb
 def get_subscribed_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT user_id FROM usergames WHERE game_id={} AND status>=-1".format(game_id))
+    dbconnection.execute("SELECT user_id FROM usergames WHERE game_id='{}' AND status>=-1".format(game_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 
 @autodb
 def get_responsible_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT game_id FROM games WHERE responsible_user_id={}".format(user_id))
+    dbconnection.execute("SELECT game_id FROM games WHERE responsible_user_id='{}'".format(user_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 
 @autodb
 def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list():
-    dbconnection.execute("SELECT game_id FROM games WHERE created_by={}".format(user_id))
+    dbconnection.execute("SELECT game_id FROM games WHERE created_by='{}'".format(user_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
