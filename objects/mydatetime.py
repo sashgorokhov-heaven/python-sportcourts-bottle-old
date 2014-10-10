@@ -29,7 +29,7 @@ class BeautifulDatetime:
         return _months_parent[self._datetime.date().month-1] if parent else _months[self._datetime.date().month-1]
 
     def time(self) -> str: # '15:32'
-        return '{}:{}'.format(self._datetime.time().hour, self._datetime.time().minute)
+        return '{}:{}'.format(self._datetime.time().hour, '0'*(2-len(str(self._datetime.time().minute)))+str(self._datetime.time().minute))
 
     def day_month(self) -> str: # '25 Сентября'
         return self.day()+' '+self.month(True)
