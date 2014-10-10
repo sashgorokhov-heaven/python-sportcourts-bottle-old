@@ -110,22 +110,24 @@ def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
 
 
 @autodb
-def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.DBConnection=None):
-    sql = """\
-        SELECT game_id FROM games WHERE court_id='{court_id}' AND (\
-        (datetime BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE) OR \
-        (datetime + INTERVAL duration MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE));\
-        """.format(
-        court_id=court_id,
-        datetime=datetime,
-        duration=duration)
+def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.DBConnection=None) -> Game:
+    sql = (" SELECT * FROM games WHERE court_id!='{court_id}'"
+           " AND ("
+           " (datetime BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE)"
+           " OR "
+           " (datetime + INTERVAL duration MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE))"
+           " AND "
+           " datetime!='{datetime}' AND datetime!=('{datetime}' + INTERVAL '{duration}' MINUTE)"
+           " AND "
+           " (datetime + INTERVAL duration MINUTE)!='{datetime}' AND (datetime + INTERVAL duration MINUTE)!=('{datetime}' + INTERVAL '{duration}' MINUTE)")
+    sql = sql.format(court_id=court_id, datetime=datetime, duration=duration)
     dbconnection.execute(sql)
-    if len(dbconnection.last()) == 0:
-        return 0
-    return dbconnection.last()[0][0]
+    if len(dbconnection.last()) > 0:
+        return Game(dbconnection.last()[0], dbconnection=dbconnection)
+    return None
 
 
-def user_game_intersection(user_id:int, game:Game, dbconnection:dbutils.DBConnection=None):
+def user_game_intersection(user_id:int, game:Game, dbconnection:dbutils.DBConnection=None) -> Game:
     sql = (" SELECT * FROM games WHERE game_id!='{game_id}'"
            " AND game_id in (SELECT game_id FROM usergames WHERE user_id='{user_id}' AND (status=-1 OR status=-2))"
            " AND ("
