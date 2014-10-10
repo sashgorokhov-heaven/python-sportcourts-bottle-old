@@ -3,7 +3,7 @@ from models import autodb, Cache
 from objects import Amplua
 
 
-_cache = Cache(600)
+_cache = Cache(600, 'amplua_id')
 
 
 @_cache

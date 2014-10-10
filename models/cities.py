@@ -3,7 +3,7 @@ from models import autodb, splitstrlist, Cache
 from objects import City
 
 
-_cache = Cache(600)
+_cache = Cache(600, 'city_id')
 
 
 @_cache

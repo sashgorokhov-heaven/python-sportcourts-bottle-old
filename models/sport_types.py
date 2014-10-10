@@ -3,7 +3,7 @@ from models import autodb, splitstrlist, Cache
 from objects import SportType
 
 
-_cache = Cache(600)
+_cache = Cache(600, 'sport_id')
 
 
 @_cache
