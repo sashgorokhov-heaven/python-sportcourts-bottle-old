@@ -187,6 +187,7 @@ class PageBuilder:
         self._kwargs = kwargs
         auth.set_user(self)
         self.add_param('serverinfo', modules.config['server'])
+        self.add_param('tplname', template_name)
 
     def add_param(self, name:str, value):
         self._kwargs[name] = value
