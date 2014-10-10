@@ -36,9 +36,10 @@ def encode_set(setlist:list) -> str:
 
 
 class Cache:
-    def __init__(self, lifetime:int):
+    def __init__(self, lifetime:int, id_attr:str):
         self._cache = dict() # key -> (timestamp, value)
         self._lifetime = lifetime
+        self._id_attr = id_attr
 
     def __call__(self, func): # as decarator
         self._func = func
@@ -73,9 +74,9 @@ class Cache:
                     response.append(self.get(some_key))
             if len(unknown)>0:
                 retval = self._func(unknown, dbconnection=kwargs.get('dbconnection', None))
-                for sport_type in retval:
-                    self.set(sport_type.sport_id(), sport_type)
-                    response.append(sport_type)
+                for obj in retval:
+                    self.set(getattr(obj, self._id_attr)(), obj)
+                    response.append(obj)
             return response
 
         if isinstance(some_key, int):
