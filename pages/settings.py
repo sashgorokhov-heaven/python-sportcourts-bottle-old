@@ -19,10 +19,10 @@ class Settings(pages.Page):
     def post(self):
         with dbutils.dbopen() as db:
             send_email = 'email_notify' in bottle.request.forms
-            show_phone = 'all' if 'phone_all' in bottle.request.forms else 'organizers'
+            show_phone = bottle.request.forms['phone']
             db.execute("UPDATE users SET settings='{}' WHERE user_id={}".format(json.dumps({'send_mail':send_email, 'show_phone':show_phone}), pages.auth.current().user_id()))
             user = users.get(pages.auth.current().user_id(), dbconnection=db)
-            pages.auth.reloaduser(user) # TODO: FIX
+            pages.auth.reloaduser(user)
             raise bottle.redirect("/profile")
 
     get.route = '/settings'

@@ -21,13 +21,13 @@
               <div class="col-sm-10">
                 <div class="radio">
                   <label>
-                    <input type="radio" name="phone_visible" value="phone_organizers" {{'checked' if not current_user.settings.show_phone() else ''}}>
+                    <input type="radio" name="phone" value="organizers" {{'checked' if not current_user.settings.show_phone() else ''}}>
                     Мой телефон видят только администраторы
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="phone_visible" value="phone_all" {{'checked' if current_user.settings.show_phone() else ''}}>
+                    <input type="radio" name="phone" value="all" {{'checked' if current_user.settings.show_phone() else ''}}>
                     Мой телефон видят все пользователи
                   </label>
                 </div>
