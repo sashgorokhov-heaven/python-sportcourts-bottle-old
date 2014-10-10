@@ -46,7 +46,7 @@ class Games(pages.Page):
             params.pop('time')
             params['created_by'] = pages.auth.current().user_id()
 
-            intersection = games.intersection(params['court_id'],
+            intersection = games.court_game_intersection(params['court_id'],
                                               params['datetime'],
                                               params['duration'].encode().split(b' ')[0].decode(),
                                               dbconnection=db)
