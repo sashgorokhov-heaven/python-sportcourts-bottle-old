@@ -51,6 +51,17 @@ class SportType:
     def __len__(self): return 1
 
 
+class CourtType:
+    def __init__(self, court_type:dict):
+        self._court_type = court_type
+
+    def type_id(self) -> int:
+        return self._court_type['type_id']
+
+    def title(self) -> str:
+        return self._court_type['title']
+
+
 class GameType:
     def __init__(self, game_type:dict, dbconnection:dbutils.DBConnection=None):
         self._game_type = game_type
@@ -146,6 +157,16 @@ class Court:
             self._court['nearest_game'] = None
         return self._court['nearest_game']
 
+    def type(self, detalized:bool=False) -> CourtType:
+        if not detalized:
+            if isinstance(self._court['type'], CourtType):
+                return self._court['type'].type_id()
+            else:
+                return self._court['type']
+        if not isinstance(self._court['type'], CourtType):
+            self._court['type'] = court_types.get(self._court['type'], dbconnection=self._db)
+        return self._court['type']
+
     def court_id(self) -> int:
         return self._court['court_id']
 
@@ -166,9 +187,6 @@ class Court:
 
     def cost(self) -> int:
         return self._court['cost']
-
-    def type(self) -> str:
-        return self._court['type']
 
     def cover(self) -> str:
         return self._court['cover']
@@ -510,3 +528,4 @@ import models.users as users
 import models.ampluas as ampluas
 import models.usergames as usergames
 import models.ban as ban
+import models.court_types as court_types

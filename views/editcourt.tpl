@@ -105,7 +105,7 @@
                 <div class="form-group">
                   <label for="first_name" class="col-sm-2 control-label">Тип площадки</label>
                   <div class="col-sm-10">
-                    <input type="text"  value="{{court.type()}}" class="form-control" name="type" placeholder="Крытая/откртырая"
+                    <input type="text"  value="{{court.type(True).title()}}" class="form-control" name="type" placeholder="Крытая/откртырая"
                     data-bv-notempty="true"
                     data-bv-notempty-message="Напишите тип площадки" />
                     <span id="valid"></span>

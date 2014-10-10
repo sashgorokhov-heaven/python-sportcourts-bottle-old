@@ -77,7 +77,7 @@
                         </tr>
                         <tr>
                           <td><small><strong>Тип площадки:</strong></small></td>
-                          <td><small>{{court.type()}}</small></td>
+                          <td><small>{{court.type(True).title()}}</small></td>
                         </tr>
                         <tr>
                           <td><small><strong>Покрытие:</strong></small></td>

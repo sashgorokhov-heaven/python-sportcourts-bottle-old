@@ -1,10 +1,7 @@
-import json
-
 import bottle
-
 import dbutils
 import pages
-from models import courts, games, sport_types, cities, images
+from models import courts, games, sport_types, cities, images, court_types
 
 
 class Courts(pages.Page):
@@ -23,7 +20,8 @@ class Courts(pages.Page):
         with dbutils.dbopen() as db:
             _sport_types = sport_types.get(0, dbconnection=db)
             _cities = cities.get(0, dbconnection=db)
-            return pages.PageBuilder('addcourt', sport_types=_sport_types, cities=_cities)
+            _court_types = court_types.get(0, dbconnection=db)
+            return pages.PageBuilder('addcourt', sport_types=_sport_types, cities=_cities, court_types=_court_types)
 
     def get_edit(self):
         with dbutils.dbopen() as db:
@@ -31,7 +29,8 @@ class Courts(pages.Page):
             court = courts.get(court_id, dbconnection=db)
             _sport_types = sport_types.get(0, dbconnection=db)
             _cities = cities.get(0, dbconnection=db)
-            return pages.PageBuilder('editcourt', sport_types=_sport_types, cities=_cities, court=court)
+            _court_types = court_types.get(0, dbconnection=db)
+            return pages.PageBuilder('editcourt', sport_types=_sport_types, cities=_cities, court=court, court_types=_court_types)
 
     def get_all(self):
         with dbutils.dbopen() as db:
