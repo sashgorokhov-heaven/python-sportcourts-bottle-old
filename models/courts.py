@@ -1,9 +1,9 @@
 import dbutils
 from objects import Court
-from models import autodb, splitstrlist, Cache
+from models import autodb, splitstrlist, SimpleCache
 
 
-_cache = Cache(600, 'court_id')
+_cache = SimpleCache(600, 'court_id')
 
 
 @_cache

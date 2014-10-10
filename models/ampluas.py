@@ -1,9 +1,9 @@
 import dbutils
-from models import autodb, Cache
+from models import autodb, SimpleCache
 from objects import Amplua
 
 
-_cache = Cache(600, 'amplua_id')
+_cache = SimpleCache(600, 'amplua_id')
 
 
 @_cache

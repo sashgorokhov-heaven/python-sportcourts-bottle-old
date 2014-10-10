@@ -56,6 +56,11 @@ class Cache:
         self._cache[key] = (time.time(), value)
 
     def cache(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class SimpleCache(Cache):
+    def cache(self, *args, **kwargs):
         some_key = args[0]
 
         if isinstance(some_key, str) and len(some_key.split(',')) > 0:
