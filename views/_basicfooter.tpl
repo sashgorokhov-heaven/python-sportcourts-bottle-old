@@ -73,3 +73,24 @@
       </div>
 
       <!-- Yandex.Metrika informer --><a style="visibility:hidden;" href="https://metrika.yandex.ru/stat/?id=25660223&amp;from=informer"target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/25660223/3_0_FFFFFFFF_FFFFFFFF_0_pageviews"style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" /></a><!-- /Yandex.Metrika informer --> <!-- Yandex.Metrika counter --><script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter25660223 = new Ya.Metrika({ id:25660223, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/25660223" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+      <!-- http://reformal.ru/ -->
+      <script type="text/javascript">
+          var reformalOptions = {
+              project_id: 792063,
+              project_host: "sportcourts.reformal.ru",
+              tab_orientation: "right",
+              tab_indent: "50%",
+              tab_bg_color: "#3e85c7",
+              tab_border_color: "#FFFFFF",
+              tab_image_url: "http://tab.reformal.ru/T9GC0LfRi9Cy0Ysg0Lgg0L%252FRgNC10LTQu9C%252B0LbQtdC90LjRjw==/FFFFFF/88128dfd6ca0743b5ccc2f8afed9f3b1/right/0/tab.png",
+              tab_border_width: 2
+          };
+          
+          (function() {
+              var script = document.createElement('script');
+              script.type = 'text/javascript'; script.async = true;
+              script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
+              document.getElementsByTagName('head')[0].appendChild(script);
+          })();
+      </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://sportcourts.reformal.ru">Oтзывы и предложения для SportCourts</a></noscript>
