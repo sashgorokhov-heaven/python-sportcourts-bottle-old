@@ -9,13 +9,13 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h1>
+      <h2>
         {{'Старые' if all else 'Новые'}} уведомления 
         <span class="badge notify">{{total}}</span>
         % if all and total>0:
           <small><a href="/notifications?deleteall">Удалить все</a></small>
         % end
-      </h1>
+      </h2>
       </br>
       <ul class="nav nav-tabs">
         <li  class="active">
