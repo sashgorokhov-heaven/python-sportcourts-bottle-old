@@ -47,7 +47,7 @@ class Subscribe(pages.Page):
                 if another_game:
                     return pages.PageBuilder("game", tab_name=tab_name, game=game, conflict=1, conflict_data=another_game)
 
-            self.subscribe(game_id, user_id, unsubscribe)
+            self.subscribe(game_id, user_id, unsubscribe, db)
 
             if game.datetime.tommorow or game.datetime.today:
                 if not unsubscribe:
@@ -76,7 +76,7 @@ class Subscribe(pages.Page):
         if game.responsible_user_id() != user_id and not pages.auth.current().userlevel.admin() and not pages.auth.current().userlevel.organizer():
             raise bottle.HTTPError(404)
 
-        self.subscribe(game_id, user_id, unsubscribe)
+        self.subscribe(game_id, user_id, unsubscribe, None)
 
         notifications.add(user_id, 'Вы были удалены с игры "{}"'.format(create_link.game(game)), 1, game_id, 1)
 
