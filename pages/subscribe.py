@@ -7,12 +7,12 @@ from modules import create_link
 
 
 class Subscribe(pages.Page):
-    def subscribe(self, game_id:int, user_id:int, unsubscribe:bool):
+    def subscribe(self, game_id:int, user_id:int, unsubscribe:bool, db):
         try:
             if unsubscribe:
-                games.unsubscribe(user_id, game_id)
+                games.unsubscribe(user_id, game_id, dbconnection=db)
             else:
-                games.subscribe(user_id, game_id)
+                games.subscribe(user_id, game_id, dbconnection=db)
         except ValueError:
             pass
 
