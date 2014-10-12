@@ -101,7 +101,7 @@ class Command:
     def title(self) -> str:
         return self._command['title']
 
-    def game_id(self, detalized:bool=False) -> Game:
+    def game_id(self, detalized:bool=False):
         if not detalized:
             if isinstance(self._command['game_id'], Game):
                 return self._command['game_id'].game_id()
@@ -111,7 +111,7 @@ class Command:
             self._command['game_id'] = games.get_by_id(self._command['game_id'], dbconnection=self._db)
         return self._command['game_id']
 
-    def commander_id(self, detalized:bool=False) -> User:
+    def commander_id(self, detalized:bool=False):
         if not detalized:
             if isinstance(self._command['commander_id'], User):
                 return self._command['commander_id'].user_id()
@@ -478,6 +478,20 @@ class Game:
         if not isinstance(self._game['subscribed'][0], User):
             self._game['subscribed'] = users.get(self._game['subscribed'], dbconnection=self._db)
         return self._game['subscribed']
+
+    def reserved(self, detalized:bool=False) -> User:
+        if isinstance(self._game['reserved'], int) and self._game['reserved']==0: return list()
+        if not isinstance(self._game['reserved'], list): self._game['reserved'] = games.get_reserved_to_game(self.game_id(), dbconnection=self._db)
+        if len(self._game['reserved'])==0: return list()
+
+        if not detalized:
+            if isinstance(self._game['reserved'][0], User):
+                return list(map(lambda x: x.user_id(), self._game['reserved']))
+            else:
+                return self._game['reserved']
+        if not isinstance(self._game['reserved'][0], User):
+            self._game['reserved'] = users.get(self._game['reserved'], dbconnection=self._db)
+        return self._game['reserved']
 
     def created_by(self, detalized:bool=False) -> User:
         if not detalized:

@@ -31,15 +31,15 @@ def get_by_id(game_id, dbconnection:dbutils.DBConnection=None) -> Game:
 
 
 @autodb
-def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+def subscribe(user_id:int, game_id:int, reserved:bool=False, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("SELECT status FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
     if len(dbconnection.last())==0:
         dbconnection.execute("INSERT INTO usergames (user_id, game_id, status) VALUES ({}, {}, {})".format(user_id, game_id, -1))
     else:
         status = dbconnection.last()[0][0]
-        if status==-1:
+        if status==-1 or (status==-2 and reserved):
             raise ValueError("User <{}> already subscibed".format(user_id))
-        elif status==-2:
+        elif status==-3 or status==-2:
             dbconnection.execute("UPDATE usergames SET status=-1 WHERE user_id={} AND game_id={}".format(user_id, game_id))
         else:
             raise ValueError('Unknown {}:{} status'.format(user_id, game_id))
@@ -66,7 +66,7 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
         status = dbconnection.last()[0][0]
         if status==-1:
             dbconnection.execute("UPDATE usergames SET status=-2 WHERE user_id={} AND game_id={}".format(user_id, game_id))
-        elif status==-2:
+        elif status==-3:
             raise ValueError("User <{}> not subscibed".format(user_id))
         else:
             raise ValueError('Unknown {}:{} status'.format(user_id, game_id))
@@ -129,7 +129,7 @@ def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnecti
 
 def user_game_intersection(user_id:int, game:Game, dbconnection:dbutils.DBConnection=None) -> Game:
     sql = (" SELECT * FROM games WHERE game_id!='{game_id}'"
-           " AND game_id in (SELECT game_id FROM usergames WHERE user_id='{user_id}' AND (status=-1 OR status=-2))"
+           " AND game_id in (SELECT game_id FROM usergames WHERE user_id='{user_id}' AND status=-1)"
            " AND ("
            " (datetime BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE)"
            " OR "
@@ -182,6 +182,9 @@ def get_subscribed_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) 
     dbconnection.execute("SELECT user_id FROM usergames WHERE game_id='{}' AND status>=-1".format(game_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
+def get_reserved_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT user_id FROM usergames WHERE game_id='{}' AND status=-2".format(game_id))
+    return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last())>0 else list()
 
 @autodb
 def get_responsible_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
