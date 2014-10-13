@@ -12,6 +12,7 @@ from modules import iplib
 import modules.logging
 import dbutils
 import models.notifications
+import models
 
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
@@ -229,6 +230,7 @@ class _AuthDispatcher:
 
     def reloaduser(self, user:User):
         user.closedb()
+        user._user['ampluas'] = models.encode_set(user._user['ampluas'])
         #bottle.response.delete_cookie('user')
         set_cookie('user', pickle.dumps(user._user))
 
