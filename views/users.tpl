@@ -6,25 +6,25 @@
       </div>
     </div>
     <div class="row clearfix">
-      <!-- <div class="col-md-3 column">
+      <div class="col-md-3 column">
         <div class="panel panel-default">
           <div class="panel-body">
             <p class="lead">Наши люди</p>
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Поиск по имени"></input>
             </div>
-            <div class="form-group">
+<!--             <div class="form-group">
               <select id="city" name="city_id" class="form-control">
                 <option value="0">Город</option>
                 <option value="1">Екатеринбург</option>
               </select>
-            </div>
+            </div> -->
             <div class="form-group">
               <button type="button" class="btn btn-primary btn-block" disabled="disabled">Найти</button>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <div class="col-md-9 column">
         <div class="tabbable" id="tabs-612446">
           <ul class="nav nav-tabs">
