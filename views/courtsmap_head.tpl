@@ -113,12 +113,14 @@ function init () {
         var have = have_games;
         var types = games_type;
 
-        if (types[0]) {
-            var arr = types[0];
-            for(var i=0; i<arr.length; i++) {
-              alert(types[0][1]);
-            }
-        };
+        // if (types[0]) {
+        //     var arr = types[0];
+        //     for(var i=0; i<arr.length; i++) {
+        //         if (types[0][1] == section) {
+        //             alert(types[0][1]);
+        //         };
+        //     }
+        // };
 
         placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
 
