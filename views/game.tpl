@@ -79,7 +79,7 @@
               <p>{{game.sport_type(True).title()}} - {{game.game_type(True).title()}}</p>
               <p><a href="/courts?court_id={{game.court_id()}}" target="_blank">{{game.court_id(True).title()}}</a></p>
 
-              % if conflict:
+              % if conflict>0:
               <div class="modal fade" id="GameMsg{{game.game_id()}}Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -88,7 +88,7 @@
                       <h4 class="modal-title" id="myModalLabel">Ошибка</h4>
                     </div>
                     <div class="modal-body">
-                      % if conflict_data.game_id() == 1:
+                      % if conflict == 2:
                         <p>Вы не смогли записаться на игру, так как получили бан от администраторов. Скорее всего вы:</p>
                         <ul>
                           <li>пропустили игру без предупреждения</li>
@@ -97,7 +97,7 @@
                         <p>Чтобы снять бан, свяжитесь с администраторами сервиса.</p>
                       % end
 
-                      % if conflict_data.game_id() == 2:
+                      % if conflict == 1:
                         <p>Вы не смогли записаться на игру, так как вы уже записаны на другую в это же время</p>
                         <ul>
                           <li>проверьте свои заявки на другие игры</li>
@@ -106,7 +106,7 @@
                         <p>Если вы нашли неточности и ошибки в описании игры, свяжитесь с администраторами сервиса.</p>
                       % end
 
-                      % if conflict_data.game_id() == 3:
+                      % if conflict == 3:
                         <p>Вы не можете записаться игру, пока ваш аккаунт не активирован</p>
                         <ul>
                           <li>проверьте свою почту, в том числе вкладку "Спам"</li>
