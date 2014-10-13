@@ -17,7 +17,7 @@ a.title.active{
 
 <script type="text/javascript">
 
-
+var section = '';
 
 function init () {
 
@@ -48,6 +48,12 @@ function init () {
         map.addOverlay(groups[0]);
         $('#menu').find(':first-child').find(':first-child').addClass('active');
 
+        $('.title').each(function() {
+            if ($(this).hasClass("active")) {
+                section = $(this).html();
+            };
+        });
+
     })
 
     // Добавление одного пункта в список
@@ -71,6 +77,12 @@ function init () {
                 // Меняем "активность" пункта меню
                 link.toggleClass("active");
 
+                $('.title').each(function() {
+                    if ($(this).hasClass("active")) {
+                        section = $(this).html();
+                    };
+                });
+
                 return false;
             })
 
@@ -91,7 +103,7 @@ function init () {
     };
 
     // Создание метки
-    function createPlacemark (point, name, description, have_games) {
+    function createPlacemark (point, name, description, have_games, games_type) {
 
         var placemark = new YMaps.Placemark(point);
 
@@ -99,7 +111,14 @@ function init () {
         placemark.description = description;
 
         var have = have_games;
-        //var types = games_type;
+        var types = games_type;
+
+        if (types[0]) {
+            var arr = types[0];
+            for(var i=0; i<arr.length; i++) {
+              alert(types[0][1]);
+            }
+        };
 
         placemark.setBalloonContent("<div style=\"width:250px; height:auto;\"><strong>" + placemark.name + "</strong><br>" + placemark.description + "</div>");
 
@@ -110,6 +129,7 @@ function init () {
                 placemark.setGeoPoint(new YMaps.GeoPoint(0,-90));
             }
         }
+
         return placemark
     }
 
