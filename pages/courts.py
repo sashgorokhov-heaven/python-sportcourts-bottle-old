@@ -62,7 +62,7 @@ class Courts(pages.Page):
                                 n=n)
                         court_string_f += '")'
                     court_string_f = court_string_f[:-1]
-                    court_string_f += ','+('false', 'true')[len(court_games[court.court_id()])>0]
+                    court_string_f += ','+('false', 'true')[len(list(filter(lambda x: x.sport_type(True).title()==name,court_games[court.court_id()])) if name!='Все' else court_games[court.court_id()])>0]
                     dic = {game.sport_type():game.sport_type(True).title() for game in court_games[court.court_id()]}
                     court_string_f += ', [{}]'.format(','.join(['[{}, "{}"]'.format(sport_type_id, dic[sport_type_id]) for sport_type_id in dic]))
                     court_string_f += ')'
