@@ -228,11 +228,9 @@ class _AuthDispatcher:
         if not self.loggedin(): return _MockUser()
         return User(pickle.loads(get_cookie('user')))
 
-    def reloaduser(self, user:User):
-        user.closedb()
-        user._user['ampluas'] = models.encode_set(user._user['ampluas'])
+    def reloaduser(self, user:dict):
         #bottle.response.delete_cookie('user')
-        set_cookie('user', pickle.dumps(user._user))
+        set_cookie('user', pickle.dumps(user))
 
     def __bool__(self):
         return self.loggedin()

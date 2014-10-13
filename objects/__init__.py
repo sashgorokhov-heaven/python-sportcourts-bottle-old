@@ -318,6 +318,8 @@ class User:
         self._user = user
         self._db = dbconnection
 
+        self._pure = user.copy()
+
         self.name = _UserName(self._user['first_name'], self._user['middle_name'], self._user['last_name'])
         self.bdate = UserAge(self._user['bdate'])
         self.regdate = DateTime(self._user['regdate'])
