@@ -1,4 +1,4 @@
-% rebase("_basicpage", title="Отчет по игре")
+% rebase("_basicpage", title="Отчет по игре"+str(game.game_id()))
 % setdefault("showreport", False)
     <div class="row">
       <div class="col-md-12"  style="margin-top:50px;">
