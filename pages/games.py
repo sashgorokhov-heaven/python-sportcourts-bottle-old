@@ -50,7 +50,7 @@ class Games(pages.Page):
                                               params['datetime'],
                                               params['duration'].encode().split(b' ')[0].decode(),
                                               dbconnection=db)
-            if intersection != 0:
+            if intersection:
                 return pages.PageBuilder('text', message='Обнаружен конфликт',
                                          description='В это время уже идет другая <a href="/games?game_id={}">игра</a>'.format(
                                              intersection))
