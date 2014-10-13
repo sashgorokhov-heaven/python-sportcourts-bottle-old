@@ -13,6 +13,7 @@ import modules.logging
 import dbutils
 import models.notifications
 import models
+import models.seo_info
 
 
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
@@ -187,6 +188,9 @@ class PageBuilder:
         self._template_name = template_name
         self._kwargs = kwargs
         auth.set_user(self)
+        seo_info = models.seo_info.get(template_name)
+        if seo_info:
+            self.add_param('seo_info', seo_info)
         self.add_param('serverinfo', modules.config['server'])
         self.add_param('tplname', template_name)
 

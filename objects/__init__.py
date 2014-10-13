@@ -23,6 +23,20 @@ class City:
     def __len__(self): return 1
 
 
+class SeoInfo:
+    def __init__(self, seoinfo:dict):
+        self._seoinfo = seoinfo
+
+    def tplname(self) -> str:
+        return self._seoinfo['tplname']
+
+    def keywords(self) -> str:
+        return self._seoinfo['keywords']
+
+    def description(self) -> str:
+        return self._seoinfo['description']
+
+
 class Report:
     def __init__(self, report:dict):
         self._report = report
