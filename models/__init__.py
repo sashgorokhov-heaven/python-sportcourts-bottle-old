@@ -36,10 +36,9 @@ def encode_set(setlist:list) -> str:
 
 
 class Cache:
-    def __init__(self, lifetime:int, id_attr:str):
+    def __init__(self, lifetime:int):
         self._cache = dict() # key -> (timestamp, value)
         self._lifetime = lifetime
-        self._id_attr = id_attr
 
     def __call__(self, func): # as decarator
         self._func = func
@@ -60,6 +59,10 @@ class Cache:
 
 
 class SimpleCache(Cache):
+    def __init__(self, lifetime:int, id_attr:str):
+        super().__init__(lifetime)
+        self._id_attr = id_attr
+
     def cache(self, *args, **kwargs):
         some_key = args[0]
 
