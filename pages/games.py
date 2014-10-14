@@ -175,7 +175,7 @@ class Games(pages.Page):
 
             if not count:
                 if not bottle.request.is_ajax:
-                    return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type)
+                    return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type, old=ptype=='old')
                 else:
                     return {"stop": True, "games": list()}
 
