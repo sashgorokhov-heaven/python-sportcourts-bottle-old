@@ -18,7 +18,7 @@ class Profile(pages.Page):
                                          user_id, dbconnection=db))
             page.add_param('user_games', games.get_by_id(games.get_user_played_games(user_id, dbconnection=db), dbconnection=db))
             page.add_param('responsible_games', games.get_by_id(games.get_responsible_games(user_id, dbconnection=db), dbconnection=db))
-            page.add_param('organizer_games', games.get_by_id(games.get_organizer_games(user_id, dbconnection=db),dbconnection=db))
+            page.add_param('organizer_games', games.get_all(dbconnection=db))
             return page
 
     def get_edit(self):

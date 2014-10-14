@@ -30,6 +30,12 @@ def get_by_id(game_id, dbconnection:dbutils.DBConnection=None) -> Game:
         return games
 
 
+def get_all(dbconnection:dbutils.DBConnection=None) -> Game:
+    dbconnection.execute("SELECT * FROM games")
+    if len(dbconnection.last())==0: return list()
+    return list(map(lambda x: Game(x, dbconnection), dbconnection.last()))
+
+
 @autodb
 def subscribe(user_id:int, game_id:int, reserved:bool=False, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("SELECT status FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
