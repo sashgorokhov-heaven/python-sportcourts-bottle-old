@@ -33,9 +33,9 @@
                       <option value="1">Екатеринбург</option>
                     </select>
                   </div> -->
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <button type="button" class="btn btn-primary btn-block gamessearch">Найти</button>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

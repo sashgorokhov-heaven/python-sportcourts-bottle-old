@@ -8,7 +8,7 @@
 
 <script>
 
-  $(document).on('click','.gamessearch',function(){
+  $(document).on('change','#sporttype',function(){
 
     var value = $('#sporttype').val();
     if (value == '0'){
