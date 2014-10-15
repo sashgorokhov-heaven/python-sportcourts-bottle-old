@@ -18,13 +18,13 @@ def get(type_id, dbconnection:dbutils.DBConnection=None) -> list:
 
     if isinstance(type_id, int) and type_id != 0:
         dbconnection.execute("SELECT * FROM court_types WHERE type_id='{}'".format(type_id),
-                             dbutils.dbfields['sport_types'])
+                             dbutils.dbfields['court_types'])
     elif isinstance(type_id, list):
         dbconnection.execute(
             "SELECT * FROM court_types WHERE type_id IN (" + ','.join(map(str, type_id)) + ")",
-            dbutils.dbfields['sport_types'])
+            dbutils.dbfields['court_types'])
     elif type_id == 0:
-        dbconnection.execute("SELECT * FROM court_types", dbutils.dbfields['sport_types'])
+        dbconnection.execute("SELECT * FROM court_types", dbutils.dbfields['court_types'])
 
     if len(dbconnection.last()) == 0: return list()
 
