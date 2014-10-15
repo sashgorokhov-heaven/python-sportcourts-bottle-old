@@ -34,7 +34,7 @@
                   <div class="col-sm-10">
                     <select id="city" name="city_id" class="form-control"
                     data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите город"
+                    data-bv-notempty-message="Укажите город">
                     % for city in cities:
                       <option value="{{city.city_id()}}">{{city.title()}}</option>
                     % end
@@ -97,12 +97,15 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="first_name" class="col-sm-2 control-label">Тип площадки</label>
+                  <label for="inlineCheckbox" class="col-sm-2 control-label">Тип площадки</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="type" placeholder="Крытая/откртырая"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Напишите тип площадки" />
-                    <span id="valid"></span>
+                    <select id="courttype" name="type" class="form-control" data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите тип игры">
+                      <option value="">--</option>
+                      % for type in court_types:
+                        <option value="{{type.type_id()}}">{{type.title()}}</option>
+                      % end
+                    </select>
                   </div>
                 </div>
                 <div class="form-group">
