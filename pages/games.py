@@ -45,7 +45,6 @@ class Games(pages.Page):
             params.pop('date')
             params.pop('time')
             params['created_by'] = pages.auth.current().user_id()
-
             intersection = games.court_game_intersection(params['court_id'],
                                               params['datetime'],
                                               params['duration'].encode().split(b' ')[0].decode(),
@@ -57,6 +56,10 @@ class Games(pages.Page):
             page = self.check_responsible(params['responsible_user_id'], params['datetime'],
                                           params['duration'].split(' ')[0], db)
             if page: return page
+
+            if int(params['capacity'])>0:
+                params['reserved'] = round(int(params['capacity'])/4)
+
             game_id = games.add(dbconnection=db, **params)
             self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
             return bottle.redirect('/games?game_id={}'.format(game_id))
