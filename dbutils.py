@@ -2,17 +2,23 @@ import pymysql
 import modules
 
 
+default_connection = {
+    'host':modules.config['api']['db']['dbhost'],
+    'user':modules.config['api']['db']['dbuser'],
+    'passwd':modules.config['api']['db']['dbpasswd'],
+    'db':modules.config['api']['db']['dbname'],
+    'charset':'utf8'
+}
+
+
 class DBConnection:
     def __init__(self, **kwargs):
         if len(kwargs) == 0:
-            self._db = pymysql.connect(host=modules.config['api']['db']['dbhost'],
-                                       user=modules.config['api']['db']['dbuser'],
-                                       passwd=modules.config['api']['db']['dbpasswd'],
-                                       db=modules.config['api']['db']['dbname'],
-                                       charset='utf8'
-            )
+            self._db = pymysql.connect(**default_connection)
+            self._connection_kwargs = default_connection
         else:
             self._db = pymysql.connect(**kwargs)
+            self._connection_kwargs = kwargs
         self._closed = False
         self._locked = False
         self._cursor = self._db.cursor()
@@ -25,6 +31,8 @@ class DBConnection:
         :param mapnames: field names
         :return:  list of lines, where line is also a list of ordered database fields
         """
+        if self.closed:
+            self.reconnect()
         if self._cursor.execute(query) == 0:
             self._last = list()
         else:
@@ -36,6 +44,13 @@ class DBConnection:
 
     def last(self) -> list:
         return self._last
+
+    def reconnect(self):
+        if not self.closed:
+            self.close()
+        self._db = pymysql.connect(**self._connection_kwargs)
+        self._cursor = self._db.cursor()
+        self._closed = False
 
     def lock(self, table:str, method:str='WRITE'):
         if self._locked:
