@@ -31,7 +31,7 @@ def get_by_id(game_id, dbconnection:dbutils.DBConnection=None) -> Game:
 
 
 def get_all(dbconnection:dbutils.DBConnection=None) -> Game:
-    dbconnection.execute("SELECT * FROM games")
+    dbconnection.execute("SELECT * FROM games", dbutils.dbfields['games'])
     if len(dbconnection.last())==0: return list()
     return list(map(lambda x: Game(x, dbconnection), dbconnection.last()))
 
