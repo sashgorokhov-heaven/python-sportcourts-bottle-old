@@ -44,7 +44,7 @@ class Subscribe(pages.Page):
         with dbutils.dbopen() as db:
             game = games.get_by_id(game_id, dbconnection=db)
 
-            if user_id not in set(game.subscribed()):
+            if user_id not in set(game.subscribed()) and user_id not in set(game.reserved_people()):
                 return pages.PageBuilder("game", game=game, conflict=6)
 
             games.unsubscribe(user_id, game_id, dbconnection=db)
