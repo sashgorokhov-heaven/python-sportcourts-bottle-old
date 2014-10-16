@@ -265,6 +265,7 @@
                   </a>
                 % end
               % end
+              
               % if not game.can_subscribe():
                 % if game.datetime.soon:
                     <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
