@@ -495,19 +495,22 @@ class Game:
             self._game['subscribed'] = users.get(self._game['subscribed'], dbconnection=self._db)
         return self._game['subscribed']
 
-    def reserved(self, detalized:bool=False) -> User:
-        if isinstance(self._game['reserved'], int) and self._game['reserved']==0: return list()
-        if not isinstance(self._game['reserved'], list): self._game['reserved'] = games.get_reserved_to_game(self.game_id(), dbconnection=self._db)
-        if len(self._game['reserved'])==0: return list()
+    def reserved(self) -> int:
+        return self._game['reserved']
+
+    def reserved_people(self, detalized:bool=False) -> User:
+        if self.reserved()==0: return list()
+        if 'reserved_people' not in self._game: self._game['reserved_people'] = games.get_reserved_to_game(self.game_id(), dbconnection=self._db)
+        if len(self._game['reserved_people'])==0: return list()
 
         if not detalized:
-            if isinstance(self._game['reserved'][0], User):
-                return list(map(lambda x: x.user_id(), self._game['reserved']))
+            if isinstance(self._game['reserved_people'][0], User):
+                return list(map(lambda x: x.user_id(), self._game['reserved_people']))
             else:
-                return self._game['reserved']
-        if not isinstance(self._game['reserved'][0], User):
-            self._game['reserved'] = users.get(self._game['reserved'], dbconnection=self._db)
-        return self._game['reserved']
+                return self._game['reserved_people']
+        if not isinstance(self._game['reserved_people'][0], User):
+            self._game['reserved_people'] = users.get(self._game['reserved_people'], dbconnection=self._db)
+        return self._game['reserved_people']
 
     def created_by(self, detalized:bool=False) -> User:
         if not detalized:
