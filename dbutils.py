@@ -14,6 +14,7 @@ class DBConnection:
         else:
             self._db = pymysql.connect(**kwargs)
         self._closed = False
+        self._locked = False
         self._cursor = self._db.cursor()
         self._last = None
 
@@ -35,6 +36,18 @@ class DBConnection:
 
     def last(self) -> list:
         return self._last
+
+    def lock(self, table:str, method:str='WRITE'):
+        if self._locked:
+            raise RuntimeError("Trying to lock locked connection")
+        self.execute("LOCK TABLES {} {}".format(table, method))
+        self._locked = True
+
+    def unlock(self):
+        if not self._locked:
+            raise RuntimeError("Trying to unlock unlocked connection")
+        self.execute("UNLOCK TABLES")
+        self._locked = False
 
     @property
     def closed(self) -> bool:
