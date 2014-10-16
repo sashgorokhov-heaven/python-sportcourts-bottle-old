@@ -40,16 +40,16 @@ def get_all(dbconnection:dbutils.DBConnection=None) -> Game:
 def subscribe(user_id:int, game_id:int, reserved:bool=False, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("SELECT status FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
     if len(dbconnection.last())==0:
-        dbconnection.execute("INSERT INTO usergames (user_id, game_id, status) VALUES ({}, {}, {})".format(user_id, game_id, -1))
+        dbconnection.execute("INSERT INTO usergames (user_id, game_id, status) VALUES ({}, {}, {})".format(user_id, game_id, -2 if reserved else -1))
     else:
         status = dbconnection.last()[0][0]
-        if status==-1 or (status==-2 and reserved):
-            raise ValueError("User <{}> already subscibed".format(user_id))
-        elif status==-3 or status==-2:
-            dbconnection.execute("UPDATE usergames SET status=-1 WHERE user_id={} AND game_id={}".format(user_id, game_id))
-        else:
-            raise ValueError('Unknown {}:{} status'.format(user_id, game_id))
-    write_future_notifications(user_id, game_id, dbconnection=dbconnection)
+        if status==-1 or status==-2 and reserved:
+            return
+        if (status==-2 or status==-3) and not reserved:
+            dbconnection.execute("UPDATE usergames SET status={} WHERE user_id={} AND game_id={}".format(-1, user_id, game_id))
+            write_future_notifications(user_id, game_id, dbconnection=dbconnection)
+        if status==-3 and reserved:
+            dbconnection.execute("UPDATE usergames SET status={} WHERE user_id={} AND game_id={}".format(-2, user_id, game_id))
 
 
 @autodb
@@ -67,16 +67,19 @@ def write_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DB
 def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("SELECT status FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
     if len(dbconnection.last())==0:
-        raise ValueError("User <{}> not subscibed".format(user_id))
-    else:
-        status = dbconnection.last()[0][0]
+        return
+    status = dbconnection.last()[0][0]
+    if status==-1 or status==-2:
         if status==-1:
-            dbconnection.execute("UPDATE usergames SET status=-2 WHERE user_id={} AND game_id={}".format(user_id, game_id))
-        elif status==-3:
-            raise ValueError("User <{}> not subscibed".format(user_id))
-        else:
-            raise ValueError('Unknown {}:{} status'.format(user_id, game_id))
-    delete_future_notifications(user_id, game_id, dbconnection=dbconnection)
+            delete_future_notifications(user_id, game_id, dbconnection=dbconnection)
+        dbconnection.execute("UPDATE usergames SET status=-3 WHERE user_id={} AND game_id={}".format(user_id, game_id))
+    elif status==-3:
+        return
+
+    game = get_by_id(game_id, dbconnection=dbconnection)
+    if game.reserved()>0 and len(game.reserved_people())>0:
+        for user_id in game.reserved_people():
+            notifications.add(user_id, 'В игре "{}" освободилось место!'.format(create_link.game(game)), 1, game_id, 1)
 
 
 @autodb
