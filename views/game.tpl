@@ -199,6 +199,7 @@
               % if loggedin and game.can_subscribe():
                 % if len(game.subscribed()) == game.capacity():
                   <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" {{'disabled="disabled"' if not game.is_subscribed() else ''}} data-toggle="dropdown">Места заполнены</button>
+                  % if not game.is_subscribed():
                   % if game.reserved()>0:
                   % if len(game.reserved_people()) < game.reserved():
                   % if currend_user.user_id() not in set(game.reserved_people()):
@@ -207,6 +208,7 @@
                         <a style="cursor:pointer;">Записаться в резерв</a>
                       </li>
                     </ul>
+                  % end
                   % end
                   % end
                   % end
