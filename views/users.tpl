@@ -1,5 +1,8 @@
 % rebase("_basicpage", title='Пользователи')
 % setdefault("myfriends", list())
+% setdefault("count", len(allusers))
+% setdefault("search", False)
+% setdefault("search_q", "")
     <div class="row">
       <div class="col-md-12"  style="margin-top:50px;">
         &nbsp;
@@ -10,18 +13,13 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <p class="lead">Наши люди</p>
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Поиск по имени"></input>
-            </div>
-<!--             <div class="form-group">
-              <select id="city" name="city_id" class="form-control">
-                <option value="0">Город</option>
-                <option value="1">Екатеринбург</option>
-              </select>
-            </div> -->
-            <div class="form-group">
-              <button type="button" class="btn btn-primary btn-block">Найти</button>
-            </div>
+            <form id="searchform" method="POST" class="form-horizontal" action="/users" enctype="multipart/form-data">
+              <input type="hidden" name="search" value="all"></input>
+              <input type="text" name="q" class="form-control"
+                placeholder="Поиск по имени" {{'value={}'.format(search_q) if search else ''}}></input>
+              <br>
+              <input type="submit" class="btn btn-primary btn-block"></button>
+            </form>
           </div>
         </div>
       </div>
@@ -29,7 +27,14 @@
         <div class="tabbable" id="tabs-612446">
           <ul class="nav nav-tabs">
             <li class="active">
-              <a href="#panel-all" data-toggle="tab">Все пользователи <span class="badge">{{count}}</span></a>
+              <a href="#panel-all" data-toggle="tab">
+              % if not search:
+                Все пользователи
+              % end
+              % if search:
+                Поиск "{{search_q}}"
+              % end
+              <span class="badge">{{count}}</span></a>
             </li>
             % if loggedin:
             <li>
@@ -43,12 +48,34 @@
             <div class="tab-pane active" id="panel-all">
               <br>
               <div class="user_cards_all" id='all'>
-              % for user in allusers:
-                % include("user_row", user=user, myfriends=myfriends)
-                <hr>
+              % if not search:
+                % if len(allusers)>0:
+                  % for user in allusers:
+                    % include("user_row", user=user, myfriends=myfriends)
+                    <hr>
+                  % end
+                  % if len(allusers)==8:
+                    <div id="more"><button type="button" class="btn btn-default btn-sm btn-block">Загрузить еще</button></div>
+                  % end
+                % end
+                % if len(allusers)==0:
+                  <div class="alert alert-info fade in">
+                    <p class="lead">Пользователей нет.</p>
+                  </div>
+                % end
               % end
-              % if len(allusers)==8:
-                <div id="more"><button type="button" class="btn btn-default btn-sm btn-block">Загрузить еще</button></div>
+              % if search:
+                % if len(allusers)>0:
+                  % for user in allusers:
+                    % include("user_row", user=user, myfriends=myfriends)
+                    <hr>
+                  % end
+                % end
+                % if len(allusers)==0:
+                  <div class="alert alert-info fade in">
+                    <p class="lead">Никого не найдено.</p>
+                  </div>
+                % end
               % end
               </div>
             </div>

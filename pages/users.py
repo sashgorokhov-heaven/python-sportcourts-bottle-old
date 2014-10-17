@@ -54,6 +54,27 @@ class Users(pages.Page):
                         data.append(user_tpl)
                     return bottle.json_dumps(data)
             return ''
+        else:
+            if 'search' in bottle.request.forms:
+                query = bottle.request.forms.get('q').split(' ')
+                query = list(map(lambda x: '%'+x+'%', query))
+                with dbutils.dbopen() as db:
+                    sql = "SELECT user_id FROM users WHERE "
+                    if len(query)==1:
+                        sql += "first_name LIKE '{first}' OR last_name LIKE '{first}'".format(first=query[0])
+                    else:
+                        sql += ("first_name LIKE '{first}' AND last_name LIKE '{last}'"
+                                " OR "
+                                "first_name LIKE '{last}' AND last_name LIKE '{first}'").format(first=query[0], last=query[1])
+                    db.execute(sql)
+                    user_ids = list(map(lambda x: x[0], db.last())) if len(db.last())>0 else list()
+                    page = pages.PageBuilder('users', allusers=users.get(user_ids, dbconnection=db),
+                                             count=len(user_ids),
+                                             search=True, search_q=bottle.request.forms.get('q'))
+                    if pages.auth.loggedin() and len(pages.auth.current().friends())>0:
+                        friends = pages.auth.current().friends(True)
+                        page.add_param('myfriends', friends)
+                    return page
 
     get.route = '/users'
     post.route = get.route
