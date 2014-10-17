@@ -9,7 +9,7 @@ class SeoCache(Cache):
         if self.check(tplname):
             return self.get(tplname)
         else:
-            retval = get(tplname, dbconnection=kwargs.get('dbconnection'))
+            retval = self._func(tplname, dbconnection=kwargs.get('dbconnection'))
             self.set(tplname, retval)
             return retval
 
