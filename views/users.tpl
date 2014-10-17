@@ -15,10 +15,10 @@
             <p class="lead">Наши люди</p>
             <form id="searchform" method="POST" class="form-horizontal" action="/users" enctype="multipart/form-data">
               <input type="hidden" name="search" value="all"></input>
-              <input type="text" name="q" class="form-control"
+              <input id="searchquery" type="text" name="q" class="form-control"
                 placeholder="Поиск по имени" {{'value={}'.format(search_q) if search else ''}}></input>
               <br>
-              <input type="submit" class="btn btn-primary btn-block"></button>
+              <button id="searchbutton" type="submit" class="btn btn-primary btn-block" value="Найти" {{'' if search else 'disabled'}}>Найти</button>
             </form>
           </div>
         </div>

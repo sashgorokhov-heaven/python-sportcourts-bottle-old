@@ -6,6 +6,15 @@
 <meta property="og:description" content="Здесь вы можете найти своих друзей и всех, кто нас посещает."/>
 
 <script>
+  $(document).on('input','#searchquery',function(){
+    var len = $("#searchquery").val().length;
+    if (len > 2) {
+      $("#searchbutton").attr('disabled',false);
+    } else {
+      $("#searchbutton").attr('disabled',true);
+    };
+  });
+
   $(document).on('click','.friendsbutton',function(){
     arr = $(this).attr("id").split('-');
     var user_id = arr[1],
