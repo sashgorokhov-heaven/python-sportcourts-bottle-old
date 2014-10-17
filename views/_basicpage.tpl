@@ -7,6 +7,9 @@
   % end
   </head>
   <body>
+    <div id="preloader">
+      <div id="status">&nbsp;</div>
+    </div>
     % include("_basicnavbar", loggedin=loggedin, current_user=current_user, tplname=tplname)
     <div class="container theme-showcase">
     <section id="content">
