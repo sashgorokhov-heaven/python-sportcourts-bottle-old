@@ -6,7 +6,7 @@ if not os.path.exists('/bsp/dumps'):
 
 started = True
 
-@uwsgidecorators.cron(-1, -1, -1, -1, -1)
+@uwsgidecorators.cron(0, 0, -1, -1, -1)
 def backup(*args, **kwargs):
     global started
     if not started:
