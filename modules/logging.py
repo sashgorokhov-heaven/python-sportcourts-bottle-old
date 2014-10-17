@@ -9,28 +9,19 @@ import pages
 import uwsgi
 
 
-_dbparams = {
-    'host': modules.config['logdb']['dbhost'],
-    'user': modules.config['logdb']['dbuser'],
-    'passwd': modules.config['logdb']['dbpasswd'],
-    'db': modules.config['logdb']['dbname'],
-    'charset': 'utf8'
-}
-
-
 @utils.as_spooler
 @utils.spooler('logs')
-def _writedb(ip:str, path:str, httpmethod:str='GET', referer:str='None', user_id:int=0, message:str=None,
-             error:str=None, error_description:str=None, traceback:str=None):
+def _writedb(**kwargs):
     try:
-        with dbutils.dbopen(**_dbparams) as db:
+        with dbutils.dbopen(**dbutils.logsdb_connection) as db:
+            keys = list(kwargs.keys())
+            if 'traceback' in kwargs:
+                kwargs['traceback'] = base64.b64encode(kwargs['traceback'].encode()).decode()
+            values = [kwargs[i] for i in keys]
             db.execute(
-                'INSERT INTO access (ip, path, httpmethod, referer, user_id, message, error, error_description, traceback) VALUES ("{}", "{}", "{}", "{}", {}, {}, {}, {}, {})'.format(
-                    ip, path, httpmethod, referer, user_id,
-                    '"{}"'.format(message) if message else 'NULL',
-                    '"{}"'.format(error) if error else 'NULL',
-                    '"{}"'.format(error_description) if error_description else 'NULL',
-                    '"{}"'.format(base64.b64encode(traceback.encode()).decode()) if traceback else 'NULL'))
+                "INSERT INTO access ("+", ".join(keys)+") VALUES ("+','.join(list(map(lambda x: "'{}'".format(x), values)))+")"
+            )
+
     except Exception as e:
         try:
             print(e)
@@ -45,18 +36,20 @@ def _send(data:dict):
     _writedb(**data)
 
 
-def _access_data() -> dict:
+def _access_data(time:float=0.0) -> dict:
     data = dict()
     data['ip'] = bottle.request.remote_addr
     data['httpmethod'] = bottle.request.method
     data['path'] = bottle.request.fullpath + ('?' + bottle.request.query_string if bottle.request.query_string else '')
     data['user_id'] = pages.auth.current().user_id()
+    data['useragent'] = bottle.request.get_header('User-Agent', '')
+    data['time'] = time
     data['referer'] = bottle.request.get_header('Referer')
     return data
 
 
-def _error_data(error:Exception) -> dict():
-    data = _access_data()
+def _error_data(error:Exception, time:float=0.0) -> dict():
+    data = _access_data(time)
     data['error'] = error.__class__.__name__
     if len(error.args) > 0:
         data['error_description'] = ','.join(map(str, error.args))
@@ -64,10 +57,10 @@ def _error_data(error:Exception) -> dict():
     return data
 
 
-def access():
+def access(time:float=0.0):
     if bottle.request.fullpath.startswith('/view') or bottle.request.fullpath.startswith('/images'):
         return
-    data = _access_data()
+    data = _access_data(time)
     _send(data)
 
 

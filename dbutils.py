@@ -10,6 +10,14 @@ default_connection = {
     'charset':'utf8'
 }
 
+logsdb_connection = {
+    'host': modules.config['logdb']['dbhost'],
+    'user': modules.config['logdb']['dbuser'],
+    'passwd': modules.config['logdb']['dbpasswd'],
+    'db': modules.config['logdb']['dbname'],
+    'charset': 'utf8'
+}
+
 
 class DBConnection:
     def __init__(self, **kwargs):
