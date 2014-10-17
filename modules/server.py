@@ -5,7 +5,7 @@ bottle.TEMPLATE_PATH.append('views')
 bottle.debug(modules.config['debug'])
 
 import pages
-
+import modules.backuper
 
 @bottle.error(404)
 def error404(error):
