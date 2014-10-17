@@ -3,13 +3,13 @@ import importlib
 import os
 import threading
 import sys
+import time
 
 import bottle
 
 from objects import User
 import modules
-from modules import iplib
-import modules.logging
+from modules import iplib, config, logging, extract_traceback
 import dbutils
 import models.notifications
 import models
@@ -40,6 +40,71 @@ class Page:  # this name will be reloaded by PageController.reload(name='Page')
     post.route = ''
 
 
+class PageBuilder:
+    def __init__(self, template_name:str, **kwargs):
+        self._template_name = template_name
+        self._kwargs = kwargs
+        auth.set_user(self)
+        seo_info = models.seo_info.get(template_name)
+        if seo_info:
+            self.add_param('seo_info', seo_info)
+        self.add_param('serverinfo', modules.config['server'])
+        self.add_param('tplname', template_name)
+
+    def add_param(self, name:str, value):
+        self._kwargs[name] = value
+
+    def template(self):
+        if os.path.exists(os.path.join(modules.config['server_root'], 'views', self._template_name + '_head.tpl')):
+            return bottle.template(self._template_name, header_name=self._template_name + '_head.tpl', **self._kwargs)
+        return bottle.template(self._template_name, **self._kwargs)
+
+
+class templates:
+    @staticmethod
+    def permission_denied(text:str='Доступ ограничен',
+                          description:str='Вы не можете просматривать эту страницу') -> PageBuilder:
+        return templates.message(text, description)
+
+    @staticmethod
+    def message(text:str, description:str) -> PageBuilder:
+        return PageBuilder("text", message=text, description=description)
+
+
+def denypost(func):
+    def wrapper(*args, **kwargs):
+        serveraddr = 'http://{}'.format(config['server']['ip'])
+        if bottle.request.method.lower() == 'post' and not bottle.request.get_header('Referer',
+                                                                                     serveraddr).startswith(
+                serveraddr):
+            try:
+                raise ValueError('POST request from other domain')
+            except Exception as e:
+                logging.error(e)
+            raise bottle.HTTPError(404) # TODO: refactor
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def access_and_error_log(func):
+    def wrapper(*args, **kwargs):
+        t = time.time()
+        try:
+            response = func(*args, **kwargs)
+            logging.access(time.time()-t)
+            return response
+        except (bottle.HTTPError, bottle.HTTPResponse) as e:
+            logging.access(time.time()-t)
+            raise e
+        except Exception as e:
+            logging.error(e, time.time()-t)
+            if config['debug']:
+                return templates.message(e.__class__.__name__,
+                                         extract_traceback(e, '<br>').replace('\n', '<br>')).template()
+            return templates.message("Возникла непредвиденная ошибка", "Сообщите нам об этом, пожалуйста.").template()
+    return wrapper
+
+
 class _Executor:
     def __init__(self, page:Page):
         self._lock = threading.Lock()
@@ -60,32 +125,12 @@ class _Executor:
 
     # @route(self._page.get.route)
     # @route(self._page.post.route)
+    @access_and_error_log
+    @iplib.ipfilter
+    @denypost
     def execute(self, **kwargs):
         with self._lock:
-            serveraddr = 'http://{}'.format(modules.config['server']['ip'])
-            if bottle.request.method.lower() == 'post' and not bottle.request.get_header('Referer',
-                                                                                         serveraddr).startswith(
-                    serveraddr):
-                try:
-                    raise ValueError('POST request from other domain')
-                except Exception as e:
-                    modules.logging.error(e)
-                raise bottle.HTTPError(404)
-            if not iplib.skip(bottle.request.remote_addr, bottle.request.fullpath):
-                raise bottle.HTTPError(404)
-            try:
-                response = self._page.execute(bottle.request.method, **kwargs)
-                modules.logging.access()
-                return response
-            except (bottle.HTTPError, bottle.HTTPResponse) as e:
-                modules.logging.access()
-                raise e
-            except Exception as e:
-                modules.logging.error(e)
-                if modules.config['debug']:
-                    return templates.message(e.__class__.__name__,
-                                             modules.extract_traceback(e, '<br>').replace('\n', '<br>')).template()
-                return templates.message("Возникла непредвиденная ошибка", "Сообщите нам об этом, пожалуйста.").template()
+            return self._page.execute(bottle.request.method, **kwargs)
 
 
 class _PageController:
@@ -183,24 +228,7 @@ class _MockUser:
     def userlevel(self) -> _MockUserLevel:
         return _MockUserLevel
 
-class PageBuilder:
-    def __init__(self, template_name:str, **kwargs):
-        self._template_name = template_name
-        self._kwargs = kwargs
-        auth.set_user(self)
-        seo_info = models.seo_info.get(template_name)
-        if seo_info:
-            self.add_param('seo_info', seo_info)
-        self.add_param('serverinfo', modules.config['server'])
-        self.add_param('tplname', template_name)
 
-    def add_param(self, name:str, value):
-        self._kwargs[name] = value
-
-    def template(self):
-        if os.path.exists(os.path.join(modules.config['server_root'], 'views', self._template_name + '_head.tpl')):
-            return bottle.template(self._template_name, header_name=self._template_name + '_head.tpl', **self._kwargs)
-        return bottle.template(self._template_name, **self._kwargs)
 
 class _AuthDispatcher:
     def set_user(self, page_builder:PageBuilder):
@@ -239,15 +267,6 @@ class _AuthDispatcher:
     def __bool__(self):
         return self.loggedin()
 
-class _CompleteTemplates:
-    def permission_denied(self, text:str='Доступ ограничен',
-                          description:str='Вы не можете просматривать эту страницу') -> PageBuilder:
-        return self.message(text, description)
-
-    def message(self, text:str, description:str) -> PageBuilder:
-        return PageBuilder("text", message=text, description=description)
-
 
 controller = _PageController()
 auth = _AuthDispatcher()
-templates = _CompleteTemplates()

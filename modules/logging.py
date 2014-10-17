@@ -1,7 +1,5 @@
 import base64
-
 import bottle
-
 import dbutils
 import modules
 from modules import utils
@@ -64,6 +62,6 @@ def access(time:float=0.0):
     _send(data)
 
 
-def error(e:Exception):
+def error(e:Exception, time:float=0.0):
     data = _error_data(e)
     _send(data)
