@@ -1,4 +1,5 @@
 import base64
+import datetime
 import bottle
 import dbutils
 import modules
@@ -43,6 +44,7 @@ def _access_data(time:float=0.0) -> dict:
     data['useragent'] = bottle.request.get_header('User-Agent', '')
     data['time'] = time
     data['referer'] = bottle.request.get_header('Referer')
+    data['datetime'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return data
 
 
