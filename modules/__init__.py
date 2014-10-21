@@ -7,7 +7,7 @@ import time
 
 import bottle
 
-TEST = True
+TEST = False
 
 if not TEST:
     config = json.load(open(os.path.join('modules', 'config.json'), 'r'))
