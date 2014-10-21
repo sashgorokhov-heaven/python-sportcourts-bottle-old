@@ -168,10 +168,12 @@
                       <span id="valid"></span>
                     </div>
                   </div>
+                  <a class="btn btn-success" role="button" href="/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
+                  <br><br>
+                  <a class="btn btn-success" role="button" href="/report?game_id={{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;Заполнить отчет по игре</a>
+                  <br><br>
                % end
-               % if game.created_by()!=current_user.user_id() and not current_user.userlevel.admin():
-               	<div class="col-md-6">
-               % end
+
                   % if len(game.subscribed())>0:
                       <label class="control-label">Список участников</label>
                       <br>
@@ -194,12 +196,26 @@
                             <td><a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a></td>
                           </tr>
                           % end
+                          % for n, user in enumerate(game.reserved_people(True), 1):
+                          <tr class="warning">
+                            <td>{{n}}</td>
+                            <td>
+                              <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+                                {{user.name.first()}}
+                              </a>
+                            </td>
+                            <td>
+                              <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+                                {{user.name.last()}}
+                              </a>
+                            </td>
+                            <td>{{user.phone()}}</td>
+                            <td><a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                          </tr>
+                          % end
                         </table>
                       </div>
                   % end
-                  <a class="btn btn-success" role="button" href="/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
-                  <br><br>
-                  <a class="btn btn-success" role="button" href="/report?game_id={{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;Заполнить отчет по игре</a>
                 </div>
               </div>
             </form>
