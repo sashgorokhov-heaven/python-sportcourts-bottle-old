@@ -47,7 +47,7 @@
           success: function (data, textStatus) {
             if (data["stop"]) {
               stop = true;
-              alert('stop');
+              // alert('stop');
             }
             if (data["games"].length > 0) {
               $.each(data["games"], function(index, data){
