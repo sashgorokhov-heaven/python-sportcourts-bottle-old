@@ -45,26 +45,16 @@
             inProgress = true;
           },
           success: function (data, textStatus) {
-           if (data["stop"]) {
-             stop = true;
-           }
+            if (data["stop"]) {
+              stop = true;
+              alert('stop');
+            }
             if (data["games"].length > 0) {
               $.each(data["games"], function(index, data){
-                //if(section == 'all'){
-                  $('.games_cards_all').append(data);
-                //}
-                // else if(section == 'friends'){
-                //   $('.user_cards_friends').append(data+'<hr>');
-                // }
+                $('.games_cards_all').append(data);
               });
               inProgress = false;
               page++;
-              //if(section == 'all'){
-              //  startFromAll += step;
-              //}
-              // else if(section == 'friends'){
-              //   startFromFriends += step;
-              // }
             }
           },
           error: function (response, status, errorThrown) {
