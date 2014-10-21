@@ -78,7 +78,7 @@
 
       % if loggedin and tplname!='index':
       <!-- http://reformal.ru/ -->
-      <script type="text/javascript">
+      <!-- <script type="text/javascript">
           var reformalOptions = {
               project_id: 792063,
               project_host: "sportcourts.reformal.ru",
@@ -96,5 +96,6 @@
               script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
               document.getElementsByTagName('head')[0].appendChild(script);
           })();
-      </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://sportcourts.reformal.ru">Oтзывы и предложения для SportCourts</a></noscript>
+      </script> -->
+      <!-- <noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://sportcourts.reformal.ru">Oтзывы и предложения для SportCourts</a></noscript> -->
       % end
