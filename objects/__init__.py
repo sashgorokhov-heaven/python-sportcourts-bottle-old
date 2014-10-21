@@ -104,50 +104,50 @@ class GameType:
         return 1
 
 
-class Command:
-    def __init__(self, command:dict, dbconnection:dbutils.DBConnection=None):
-        self._command = command
+class Comand:
+    def __init__(self, comand:dict, dbconnection:dbutils.DBConnection=None):
+        self._comand = comand
         self._db = dbconnection
 
-    def command_id(self) -> int:
-        return self._command['command_id']
+    def comand_id(self) -> int:
+        return self._comand['comand_id']
 
     def title(self) -> str:
-        return self._command['title']
+        return self._comand['title']
 
     def game_id(self, detalized:bool=False):
         if not detalized:
-            if isinstance(self._command['game_id'], Game):
-                return self._command['game_id'].game_id()
+            if isinstance(self._comand['game_id'], Game):
+                return self._comand['game_id'].game_id()
             else:
-                return self._command['game_id']
-        if not isinstance(self._command['game_id'], Game):
-            self._command['game_id'] = games.get_by_id(self._command['game_id'], dbconnection=self._db)
-        return self._command['game_id']
+                return self._comand['game_id']
+        if not isinstance(self._comand['game_id'], Game):
+            self._comand['game_id'] = games.get_by_id(self._comand['game_id'], dbconnection=self._db)
+        return self._comand['game_id']
 
-    def commander_id(self, detalized:bool=False):
+    def comander_id(self, detalized:bool=False):
         if not detalized:
-            if isinstance(self._command['commander_id'], User):
-                return self._command['commander_id'].user_id()
+            if isinstance(self._comand['comander_id'], User):
+                return self._comand['comander_id'].user_id()
             else:
-                return self._command['commander_id']
-        if not isinstance(self._command['commander_id'], User):
-            self._command['commander_id'] = users.get(self._command['commander_id'], dbconnection=self._db)
-        return self._command['commander_id']
+                return self._comand['comander_id']
+        if not isinstance(self._comand['comander_id'], User):
+            self._comand['comander_id'] = users.get(self._comand['comander_id'], dbconnection=self._db)
+        return self._comand['comander_id']
 
     def subscribed(self, detalized:bool=False) -> list:
-        if 'subscribed' not in self._command: self._command['subscribed'] = commands.get_subscribed(self.command_id(), dbconnection=self._db)
-        if len(self._command['subscribed']) == 0: return list()
+        if 'subscribed' not in self._comand: self._comand['subscribed'] = comands.get_subscribed(self.comand_id(), dbconnection=self._db)
+        if len(self._comand['subscribed']) == 0: return list()
 
         if not detalized:
-            if isinstance(self._command['subscribed'][0], User):
-                return list(map(lambda x: x.user_id(), self._command['subscribed']))
+            if isinstance(self._comand['subscribed'][0], User):
+                return list(map(lambda x: x.user_id(), self._comand['subscribed']))
             else:
-                return self._command['subscribed']
-        if not isinstance(self._command['subscribed'][0], User):
-            self._command['subscribed'] = users.get(self._command['subscribed'],
-                                              count=slice(0, len(self._command['subscribed'])), dbconnection=self._db)
-        return self._command['subscribed']
+                return self._comand['subscribed']
+        if not isinstance(self._comand['subscribed'][0], User):
+            self._comand['subscribed'] = users.get(self._comand['subscribed'],
+                                              count=slice(0, len(self._comand['subscribed'])), dbconnection=self._db)
+        return self._comand['subscribed']
 
 class Amplua:
     def __init__(self, amplua:dict, dbconnection:dbutils.DBConnection=None):
@@ -525,22 +525,22 @@ class Game:
     def is_subscribed(self) -> bool:
         return pages.auth.loggedin() and pages.auth.current().user_id() in set(self.subscribed())
 
-    def command_game(self) -> bool:
-        return bool(self._game['command_game'])
+    def comand_game(self) -> bool:
+        return bool(self._game['comand_game'])
 
-    def commands(self, detalized:bool=False) -> list:
-        if not self.command_game(): return list()
-        if 'commands' not in self._game: self._game['commands'] = commands.get_command_ids(self.game_id(), dbconnection=self._db)
-        if len(self._game['commands']) == 0: return list()
+    def comands(self, detalized:bool=False) -> list:
+        if not self.comand_game(): return list()
+        if 'comands' not in self._game: self._game['comands'] = comands.get_comand_ids(self.game_id(), dbconnection=self._db)
+        if len(self._game['comands']) == 0: return list()
 
         if not detalized:
-            if isinstance(self._game['commands'][0], Command):
-                return list(map(lambda x: x.user_id(), self._game['commands']))
+            if isinstance(self._game['comands'][0], Comand):
+                return list(map(lambda x: x.user_id(), self._game['comands']))
             else:
-                return self._game['commands']
-        if not isinstance(self._game['commands'][0], Command):
-            self._game['commands'] = commands.get_commands(self._game['commands'], dbconnection=self._db)
-        return self._game['commands']
+                return self._game['comands']
+        if not isinstance(self._game['comands'][0], Comand):
+            self._game['comands'] = comands.get_comands(self._game['comands'], dbconnection=self._db)
+        return self._game['comands']
 
     def can_subscribe(self) -> bool:
         return self.datetime.can_subscribe
@@ -623,5 +623,5 @@ import models.users as users
 import models.ampluas as ampluas
 import models.usergames as usergames
 import models.ban as ban
-import models.commands as commands
+import models.comands as comands
 import models.court_types as court_types
