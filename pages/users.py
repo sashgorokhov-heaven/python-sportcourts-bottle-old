@@ -11,13 +11,15 @@ USERS_PER_PAGE = 8
 
 class Users(pages.Page):
     def get(self):
-        allusers = users.get(0, count=slice(*modules.pager(1, count=USERS_PER_PAGE)))
-        page = pages.PageBuilder('users', allusers=allusers)
-        if pages.auth.loggedin():
-            if len(pages.auth.current().friends())>0:
-                friends = pages.auth.current().friends(True)
-                page.add_param('myfriends', friends)
-        return page
+        with dbutils.dbopen() as db:
+            count = db.execute("SELECT COUNT(user_id) FROM users")[0][0]
+            allusers = users.get(0, count=slice(*modules.pager(1, count=USERS_PER_PAGE)))
+            page = pages.PageBuilder('users', allusers=allusers, count=count)
+            if pages.auth.loggedin():
+                if len(pages.auth.current().friends())>0:
+                    friends = pages.auth.current().friends(True)
+                    page.add_param('myfriends', friends)
+            return page
 
     def post(self):
         if bottle.request.is_ajax:
