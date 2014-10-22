@@ -19,7 +19,7 @@
                         <li>
                           <a class="topmenu" href="/profile">
 
-                            <img src="/images/avatars/{{current_user.user_id()}}?sq" class="img-circle header_avatar" width="30" height="30" >
+                            <img src="/images/avatars/{{current_user.user_id()}}?sq_sm" class="img-circle header_avatar" width="30" height="30" >
                             &nbsp;
                             Мой профиль
                           </a>

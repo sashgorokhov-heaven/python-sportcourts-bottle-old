@@ -51,7 +51,7 @@
                   {{game.created_by(True).name}}
                 </a>
                 &nbsp;
-                <img src="/images/avatars/{{game.created_by()}}?sq" class="round" width="30" height="30" >
+                <img src="/images/avatars/{{game.created_by()}}?sq_sm" class="round" width="30" height="30" >
                 % end
               </p>
             </div>
