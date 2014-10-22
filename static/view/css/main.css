@@ -7,22 +7,6 @@
     padding-bottom: 10px;
 }
 
-#rotator {
-    position: relative;
-    width: 160px;
-    height: 160px;
-}
-
-#rotator ul li {
-    float: left;
-    position: absolute;
-    list-style: none;
-}
-
-#rotator ul li.show {
-    z-index: 500;
-}
-
 .about {
     /*width: 100%;*/
     margin-right: 10px;

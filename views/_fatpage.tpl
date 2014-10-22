@@ -30,7 +30,7 @@
      }
   </style>
   </head>
-  <body onload="initialize_map()">
+  <body>
     <div id="preloader">
       <div id="status">&nbsp;</div>
     </div>
