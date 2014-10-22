@@ -103,12 +103,14 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="first_name" class="col-sm-2 control-label">Тип площадки</label>
+                  <label for="inlineCheckbox" class="col-sm-2 control-label">Тип площадки</label>
                   <div class="col-sm-10">
-                    <input type="text"  value="{{court.type(True).title()}}" class="form-control" name="type" placeholder="Крытая/откртырая"
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Напишите тип площадки" />
-                    <span id="valid"></span>
+                    <select id="courttype" name="type" class="form-control" data-bv-notempty="true"
+                    data-bv-notempty-message="Укажите тип площадки">
+                      % for type in court_types:
+                        <option value="{{type.type_id()}}" {{'selected' if type.type_id()==court.type() else ''}}>{{type.title()}}</option>
+                      % end
+                    </select>
                   </div>
                 </div>
                 <div class="form-group">
