@@ -34,9 +34,13 @@ def _save_avatar(user_id:int):
     cropped = resized.crop((0,0,new_width, new_height))
     cropped.save(os.path.join('/bsp/data/images/avatars', str(user_id) + '_sq.jpg'))
 
+    small = cropped.resize((50,50))
+    small.save(os.path.join('/bsp/data/images/avatars', str(user_id) + '_sq_sm.jpg'))
+
     original.close()
     resized.close()
     cropped.close()
+    small.close()
 
 def save_avatar(user_id:int, bottlefile):
     filename = str(user_id) + '.jpg'
@@ -67,6 +71,9 @@ def delete_avatar(user_id:int):
     if os.path.exists(fullname):
         os.remove(fullname)
     fullname = os.path.join(dirname, str(user_id)+'_sq.jpg')
+    if os.path.exists(fullname):
+        os.remove(fullname)
+    fullname = os.path.join(dirname, str(user_id)+'_sq_sm.jpg')
     if os.path.exists(fullname):
         os.remove(fullname)
 
