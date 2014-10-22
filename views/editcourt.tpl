@@ -145,7 +145,7 @@
                 <div class="form-group panel panel-primary">
                   <label for="court_add_count" class="col-sm-2 control-label">Комментарии админа</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" name="description_admin" rows="3"></textarea>
+                    <textarea class="form-control" rows="3"></textarea>
                   </div>
                 </div>
                 <div class="form-group">
