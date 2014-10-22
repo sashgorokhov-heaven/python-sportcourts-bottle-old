@@ -65,6 +65,9 @@ class Images(pages.Page):
             filename = filename+'_sq'
         elif 'sq_sm' in bottle.request.query:
             filename = filename+'_sq_sm'
+        if not os.path.exists(os.path.join(dirname, filename+'.jpg')):
+            filename = 'blank'
+            return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname, '{}.jpg'.format(filename))
         return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname, '{}.jpg'.format(filename))
 
     def get_og_image(self, name):
