@@ -11,19 +11,18 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href="/images/static/favicon.ico" />
 
     <link type="text/css" rel="stylesheet" href="/view/css/main.css" />
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
     <link type="text/css" rel="stylesheet" href="/view/bootstrap/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet" href="/view/bootstrap/css/bootstrap-theme.min.css" />
     <link type="text/css" rel="stylesheet" href="/view/bootstrap/css/bootstrap.css" />
     <link type="text/css" rel="stylesheet" href="/view/bootstrap/css/jumbotron-narrow.css" />
     <link href="/view/bootstrap/css/sticky-footer.css" rel="stylesheet">
     <link rel="stylesheet" href="/view/bootstrap/bootstrap_validator/css/bootstrapValidator.css"/>
-
-    <script src="/view/js/jquery-latest.js"></script>
-    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
     <script src="/view/bootstrap/js/bootstrap.min.js"></script>
     <script src="/view/js/current_href.js"></script>
-    <script src="/view/js/rotator.js"></script>
     <script type="text/javascript" src="/view/bootstrap/bootstrap_validator/js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="/view/bootstrap/bootstrap_validator/language/ru_RU.js"></script>
     <script src="/view/js/bootstrap_validator.js"></script>
