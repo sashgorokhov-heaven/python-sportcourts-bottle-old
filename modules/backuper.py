@@ -12,8 +12,8 @@ def backup(*args, **kwargs):
     if not started:
         if os.path.exists('/bsp/dumps/sportcourts_dump.sql'):
             os.remove('/bsp/dumps/sportcourts_dump.sql')
-        if os.path.exists('mysqldump logsdb > /bsp/dumps/logsdb_dump.sql'):
-            os.remove('mysqldump logsdb > /bsp/dumps/logsdb_dump.sql')
+        if os.path.exists('/bsp/dumps/logsdb_dump.sql'):
+            os.remove('/bsp/dumps/logsdb_dump.sql')
         os.system("mysqldump sportcourts > /bsp/dumps/sportcourts_dump.sql")
         os.system("mysqldump logsdb > /bsp/dumps/logsdb_dump.sql")
     else:
