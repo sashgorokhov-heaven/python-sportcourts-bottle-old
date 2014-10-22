@@ -36,7 +36,7 @@
         $.ajax({
           url: '/games',
           data: {
-            page: page {{', sport_id: '+str(bysport) if bysport else ''}}
+            page: page {{', sport_id: '+str(bysport) if bysport else ''}}{{', old: 1' if old else ''}}
           },
           type: "GET",
           dataType: "json",
