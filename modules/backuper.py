@@ -14,7 +14,10 @@ def backup(*args, **kwargs):
             os.remove('/bsp/dumps/sportcourts_dump.sql')
         if os.path.exists('/bsp/dumps/logsdb_dump.sql'):
             os.remove('/bsp/dumps/logsdb_dump.sql')
+        if os.path.exists('/bsp/dumps/data_dump.tar'):
+            os.remove('/bsp/dumps/data_dump.tar')
         os.system("mysqldump sportcourts > /bsp/dumps/sportcourts_dump.sql")
         os.system("mysqldump logsdb > /bsp/dumps/logsdb_dump.sql")
+        os.system("tar -cvf /bsp/dumps/data_dump.tar /bsp/data > /dev/null")
     else:
         started = False
