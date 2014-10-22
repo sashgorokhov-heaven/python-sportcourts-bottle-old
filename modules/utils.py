@@ -40,31 +40,32 @@ def threaded(func):
     return wrapper
 
 
-_spoolers = dict() # func key -> func
-
-
-def _spool_dispatcher(data:dict):
-    spool_key = data[b'key'].decode()
-    pickleddata = pickle.loads(data[b'data'])
-    args, kwargs = pickleddata
-    retval = _spoolers[spool_key](*args, **kwargs)
-    if not retval:
-        return uwsgi.SPOOL_OK
-    return retval
+#_spoolers = dict() # func key -> func
+#
+#
+#def _spool_dispatcher(data:dict):
+#    spool_key = data[b'key'].decode()
+#    pickleddata = pickle.loads(data[b'data'])
+#    args, kwargs = pickleddata
+#    retval = _spoolers[spool_key](*args, **kwargs)
+#    if not retval:
+#        return uwsgi.SPOOL_OK
+#    return retval
 
 
 def spooler(spool_key:str):
     def wraper(func):
-        def spool(*args, **kwargs):
-            pickleddata = pickle.dumps((args, kwargs))
-            uwsgi.spool({b'data': pickleddata, b'key':spool_key.encode()})
-        _spoolers[spool_key] = func
-        uwsgi.spooler = _spool_dispatcher
-        setattr(func, 'spool', spool)
+        #def spool(*args, **kwargs):
+        #    pickleddata = pickle.dumps((args, kwargs))
+        #    uwsgi.spool({b'data': pickleddata, b'key':spool_key.encode()})
+        #_spoolers[spool_key] = func
+        #uwsgi.spooler = _spool_dispatcher
+        #setattr(func, 'spool', spool)
         return func
     return wraper
 
 def as_spooler(func):
     def wrapper(*args, **kwargs):
-        func.spool(*args, **kwargs)
+        #func.spool(*args, **kwargs)
+        return func(*args, **kwargs)
     return wrapper
