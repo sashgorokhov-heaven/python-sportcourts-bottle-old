@@ -38,8 +38,8 @@ class Registration(pages.Page):
         except:
             pass
         for city in cities_list:
-            if city['title'] == data['city']:
-                data['city_id'] = city['city_id']
+            if city.title() == data['city']:
+                data['city_id'] = city.city_id()
                 break
 
         if 'camera' not in user['photo_max']:
@@ -75,8 +75,6 @@ class Registration(pages.Page):
         params['lasttime'] = str(datetime.datetime.now())
         params.pop('confirm_passwd')
         params['phone'] = params['phone'] if params['phone'] else 'Не указан'
-
-
 
         city_title = params['city']
         params.pop('city')
