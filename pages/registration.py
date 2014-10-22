@@ -97,11 +97,14 @@ class Registration(pages.Page):
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Пользователь с таким email уже зарегестрирован',
                                          cities=_cities, **params)
-            if datetime.date(*list(map(int, params['bdate'].split('-')))) > datetime.date.today():
+            date = params['bdate'].split('.')
+            date.reverse()
+            date = datetime.date(*list(map(int, date)))
+            if date > datetime.date.today():
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Ты из будущего?',
                                          cities=_cities, **params)
-            if datetime.date.today() - datetime.date(*list(map(int, params['bdate'].split('-')))) < datetime.timedelta(
+            if datetime.date.today() - date < datetime.timedelta(
                     days=2555):
                 return pages.PageBuilder('registration', error='Ошибка',
                                          error_description='Такой маленький, а уже пользуешься интернетом?',
