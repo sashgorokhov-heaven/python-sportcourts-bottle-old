@@ -12,7 +12,7 @@ class Reloader(pages.Page):
             raise bottle.redirect(bottle.request.get_header("Referer", "/"))
         raise bottle.HTTPError(404)
 
-    @uwsgidecorators.filemon("/bsp/server/pages")
+    @uwsgidecorators.filemon("/bsp/server/python/pages")
     def reload_on_pages_change(self, *args):
         uwsgi.reload()
 
