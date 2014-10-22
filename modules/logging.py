@@ -16,6 +16,10 @@ def _writedb(**kwargs):
             keys = list(kwargs.keys())
             if 'traceback' in kwargs:
                 kwargs['traceback'] = base64.b64encode(kwargs['traceback'].encode()).decode()
+            if 'error' in kwargs:
+                kwargs['error'] = kwargs['error'].replace('"','').replace("'", '')
+            if 'error_description' in kwargs:
+                kwargs['error_description'] = kwargs['error_description'].replace('"','').replace("'", '')
             values = [kwargs[i] for i in keys]
             db.execute(
                 "INSERT INTO access ("+", ".join(keys)+") VALUES ("+','.join(list(map(lambda x: "'{}'".format(x), values)))+")"
