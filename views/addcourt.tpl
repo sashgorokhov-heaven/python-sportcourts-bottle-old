@@ -100,7 +100,7 @@
                   <label for="inlineCheckbox" class="col-sm-2 control-label">Тип площадки</label>
                   <div class="col-sm-10">
                     <select id="courttype" name="type" class="form-control" data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите тип игры">
+                    data-bv-notempty-message="Укажите тип площадки">
                       <option value="">--</option>
                       % for type in court_types:
                         <option value="{{type.type_id()}}">{{type.title()}}</option>
