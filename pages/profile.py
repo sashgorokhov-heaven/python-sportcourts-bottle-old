@@ -2,7 +2,7 @@ import bottle
 
 import pages
 import dbutils
-from models import users, cities, images, usergames, games, ampluas
+from models import users, cities, images, games, ampluas
 
 
 class Profile(pages.Page):
