@@ -72,63 +72,7 @@
       
   });
 
-  // Функция подгрузки пользователей по клику
-  function more() {
 
-    if($('#panel-all').hasClass('active') == true)
-    {
-      var section = 'all';
-      var startFrom = startFromAll;
-    }
-    else if($('#panel-friends').hasClass('active') == true)
-    {
-      return false;
-    }
-
-    $.ajax({
-      url: '/users',
-      data: {
-        startfrom: startFrom,
-        section: section
-      },
-      type: "POST",
-      dataType: "text",
-      async: true,
-      beforeSend: function() {
-        inProgress = true;
-      },
-      success: function (responseData, textStatus) {
-        data = jQuery.parseJSON(responseData);
-        if (data.length > 0) {
-          $('#more').remove();
-          $.each(data, function(index, data){
-            if(section == 'all'){
-              $('.user_cards_all').append(data+'<hr>');
-            }
-            // else if(section == 'friends'){
-            //   $('.user_cards_friends').append(data+'<hr>');
-            // }
-          });
-          $('.user_cards_all').append('<div id="more"><button type="button" class="btn btn-default btn-sm btn-block">Загрузить еще</button></div>');
-          inProgress = false;
-          if(section == 'all'){
-            startFromAll += step;
-          }
-          // else if(section == 'friends'){
-          //   startFromFriends += step;
-          // }
-        }
-        else
-        {
-          $('#more').html('<button type="button" class="btn btn-link btn-sm btn-block" disabled>Все пользователи загружены</button>');
-        }
-      },
-      error: function (response, status, errorThrown) {
-        alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
-        inProgress = false;
-      }
-    });
-  };
 
   $(document).ready(function(){
 
@@ -136,9 +80,11 @@
     var step = 8;
     var startFromAll = step;
     var startFromFriends = step;
+    var search = {{'true' if search else 'false'}};
 
 
     $('#more').click(function() {
+      if (search) {return false;}
       if($('#panel-all').hasClass('active') == true)
       {
         var section = 'all';
@@ -197,7 +143,7 @@
 
 
     $(window).scroll(function() {
-
+      if (search) {return false;}
       if($(window).scrollTop() + $(window).height() >= $(document).height() - 300 && !inProgress) {
 
         if($('#panel-all').hasClass('active') == true)

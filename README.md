@@ -1,4 +1,6 @@
-Bottled-Sportcourts
+SportCourts.ru
 ===================
 
-sportcourts.ru bottle edition
+Ваш проводник в мире любительского спорта.
+
+Наша бета-версия стартовала!

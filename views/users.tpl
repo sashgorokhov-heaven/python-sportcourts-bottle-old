@@ -36,7 +36,7 @@
               % end
               <span class="badge">{{count}}</span></a>
             </li>
-            % if loggedin:
+            % if loggedin and len(myfriends)>0:
             <li>
               <a href="#panel-friends" data-toggle="tab">
                 Мои друзья <span class="badge friendscount">{{len(myfriends)}}</span>
@@ -55,7 +55,7 @@
                     <hr>
                   % end
                   % if len(allusers)==8:
-                    <div id="more" onclick="more()"><button type="button" class="btn btn-default btn-sm btn-block">Загрузить еще</button></div>
+                    <div id="more"><button type="button" class="btn btn-default btn-sm btn-block">Загрузить еще</button></div>
                   % end
                 % end
                 % if len(allusers)==0:
@@ -85,7 +85,7 @@
                 <br>
                 <div class="user_cards_friends" id='friends'>
                 % for user in myfriends:
-                  % include("user_row", user=user, myfriend=True)
+                  % include("user_row", user=user, myfriends=myfriends)
                   <hr>
                 % end
                 </div>
