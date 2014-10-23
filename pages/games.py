@@ -143,12 +143,13 @@ class Games(pages.Page):
             return pages.PageBuilder('game', game=game, standalone=True)
 
     def get_delete(self, game_id:int):
-        with dbutils.dbopen() as db:
-            game = games.get_by_id(game_id, dbconnection=db)
-            if game.created_by() != pages.auth.current().user_id() and not pages.auth.current().userlevel.admin():
-                return pages.templates.permission_denied()
-            games.delete(game_id, dbconnection=db)
-        raise bottle.redirect('/games')
+        return pages.templates.message("Удаление игр не работает.", "Перелопачиваю, напиши")
+        #with dbutils.dbopen() as db:
+        #    game = games.get_by_id(game_id, dbconnection=db)
+        #    if game.created_by() != pages.auth.current().user_id() and not pages.auth.current().userlevel.admin():
+        #        return pages.templates.permission_denied()
+        #    games.delete(game_id, dbconnection=db)
+        #raise bottle.redirect('/games')
 
     def _get_games(self, *args):
         ptype = args[0]
