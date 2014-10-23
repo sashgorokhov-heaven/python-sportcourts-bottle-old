@@ -1,3 +1,4 @@
+% setdefault("myfriends", list())
 % myfriend = user.user_id() in {friend.user_id() for friend in myfriends}
 
 <div class="row">
