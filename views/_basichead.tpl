@@ -29,6 +29,7 @@
     <!--<script src="/view/js/bootstrap_typeahead.js"></script>-->
     <script src="/view/jasny/js/jasny-bootstrap.js"></script>
     <script src="/view/js/preloader.js"></script>
+    <script src="/view/js/jquery.inputmask.js"></script>
 
     <script type="text/javascript" src="//vk.com/js/api/openapi.js?115"></script>
 
