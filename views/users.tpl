@@ -36,7 +36,7 @@
               % end
               <span class="badge">{{count}}</span></a>
             </li>
-            % if loggedin and len(myfriends)>0:
+            % if loggedin:
             <li>
               <a href="#panel-friends" data-toggle="tab">
                 Мои друзья <span class="badge friendscount">{{len(myfriends)}}</span>
@@ -85,7 +85,7 @@
                 <br>
                 <div class="user_cards_friends" id='friends'>
                 % for user in myfriends:
-                  % include("user_row", user=user, myfriends=myfriends)
+                  % include("user_row", user=user, myfriend=True)
                   <hr>
                 % end
                 </div>

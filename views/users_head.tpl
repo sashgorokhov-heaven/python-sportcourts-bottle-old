@@ -72,17 +72,17 @@
       
   });
 
+
+
   $(document).ready(function(){
 
     var inProgress = false;
     var step = 8;
     var startFromAll = step;
     var startFromFriends = step;
-    var search = {{'true' if search else 'false'}};
 
 
     $('#more').click(function() {
-      if (search) {return false;}
       if($('#panel-all').hasClass('active') == true)
       {
         var section = 'all';
@@ -141,7 +141,7 @@
 
 
     $(window).scroll(function() {
-      if (search) {return false;}
+
       if($(window).scrollTop() + $(window).height() >= $(document).height() - 300 && !inProgress) {
 
         if($('#panel-all').hasClass('active') == true)
