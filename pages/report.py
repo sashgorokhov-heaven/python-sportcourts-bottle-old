@@ -1,12 +1,9 @@
-import base64
-import json
-
 import bottle
 
 import dbutils
 import pages
 from modules import create_link
-from models import games, images, notifications, users, usergames
+from models import games, images, notifications, users, usergames, reports
 
 
 class Report(pages.Page):
@@ -22,7 +19,7 @@ class Report(pages.Page):
                 return pages.templates.permission_denied()
             if not game.datetime.passed:
                 return pages.templates.message("Вы не можете отправить отчет по игре", "Игра еще не закончилась")
-            return pages.PageBuilder("report", game=game, showreport=game.report.reported())
+            return pages.PageBuilder("report", game=game, showreport=game.reported())
 
     def post(self):
         game_id = int(bottle.request.forms.get('game_id'))
@@ -38,15 +35,18 @@ class Report(pages.Page):
             info = {key.split('=')[0]: bottle.request.forms.get(key) for key in
                     filter(lambda x: x.endswith(str(user_id)), bottle.request.forms)}
             unregistered[user_id] = info
-        report = {"reported": True}
+        report = dict()
         report['registered'] = {'count': len(registered), 'users': registered}
         report['unregistered'] = {'count': len(unregistered), 'users': unregistered}
-        for user_id in report['unregistered']['users']:
-            user = report['unregistered']['users'][user_id]
-            user['first_name'] = base64.b64encode(user['first_name'].encode()).decode()
-            user['last_name'] = base64.b64encode(user['last_name'].encode()).decode()
-        jsondumped = json.dumps(report)
-        games.update(game_id, report=jsondumped)
+        with dbutils.dbopen() as db:
+            for user_id in report['unregistered']['users']:
+                user = report['unregistered']['users'][user_id]
+                name = user['first_name']+' '+user['last_name']
+                reports.report_unregistered(game_id, user['status'], name, user['phone'], dbconnection=db)
+            for user_id in report['registered']['users']:
+                user = report['registered']['users'][user_id]
+                status = user['status']
+                reports.report(game_id, user_id, status, dbconnection=db)
         if "photo" in bottle.request.files:
             images.save_report(game_id, bottle.request.files.get("photo"))
         if pages.auth.current().user_id() != game.created_by():

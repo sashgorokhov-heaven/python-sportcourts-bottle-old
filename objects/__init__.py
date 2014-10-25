@@ -38,19 +38,6 @@ class SeoInfo:
         return self._seoinfo['description']
 
 
-class Report:
-    def __init__(self, report:dict):
-        self._report = report
-
-    def reported(self) -> bool:
-        return self._report['reported']
-
-    def __getitem__(self, item):
-        return self._report[item]
-
-        # TODO: Report rework
-
-
 class SportType:
     def __init__(self, sport_type:dict):
         self._sport_type = sport_type
@@ -432,7 +419,6 @@ class Game:
         self._game = game
         self._db = dbconnection
         self.datetime = GameDateTime(self._game['datetime'], self)
-        self.report = Report(json.loads(self._game['report']))
 
     def city_id(self, detalized:bool=False) -> City:
         if not detalized:
@@ -525,6 +511,14 @@ class Game:
         if not isinstance(self._game['created_by'], User):
             self._game['created_by'] = users.get(self._game['created_by'], dbconnection=self._db)
         return self._game['created_by']
+
+    def reported(self) -> bool:
+        if 'reported' not in self._game: self._game['reported'] = reports.reported(self.game_id(), dbconnection=self._db)
+        return self._game['reported']
+
+    def report(self) -> dict:
+        if 'report' not in self._game: self._game['report'] = reports.get(self.game_id(), dbconnection=self._db)
+        return self._game['report']
 
     def is_subscribed(self) -> bool:
         return pages.auth.loggedin() and pages.auth.current().user_id() in set(self.subscribed())
@@ -631,3 +625,4 @@ import models.usergames as usergames
 import models.ban as ban
 import models.comands as comands
 import models.court_types as court_types
+import models.reports as reports

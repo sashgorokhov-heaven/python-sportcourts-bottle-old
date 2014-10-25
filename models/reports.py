@@ -23,7 +23,7 @@ def report_unregistered(game_id:int, status:int, name:str, phone:str, dbconnecti
 
 @autodb
 def get(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
-    # registered: user_id -> status, unregistered: name -> (status, phone)
+    # registered: user_id:int -> status:int, unregistered: name:str -> (status:int, phone:str)
     resp = {'registered': dict(), 'unregistered': dict()}
     dbconnection.execute("SELECT user_id, status FROM reports WHERE user_id>0 AND game_id={}".format(game_id))
     if len(dbconnection.last()) > 0:

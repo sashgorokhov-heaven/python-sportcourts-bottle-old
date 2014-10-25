@@ -167,17 +167,17 @@
                                 <td>Статус отчета</td>
                               </tr>
                               % for game in responsible_games:
-                                <tr {{'class=active' if not game.report.reported() else ''}}>
+                                <tr {{'class=active' if not game.reported() else ''}}>
                                   <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
                                   <td>{{game.datetime.beautiful.day_month()}}</td>
                                   <td>{{game.description()}}</td>
                                   <td>{{game.sport_type(True).title()}}</td>
                                   <td>{{game.court_id(True).title()}}</td>
                                   <td>
-                                   % if game.report.reported():
+                                   % if game.reported():
                                         <a href="/report?game_id={{game.game_id()}}">Отправлен</a>
                                    % end
-                                   % if not game.report.reported():
+                                   % if not game.reported():
                                         % if game.datetime.passed:
                                             <a href="/report?game_id={{game.game_id()}}">Ожидается</a>
                                         % end
@@ -221,13 +221,13 @@
                                 <td>Передача денег</td>
                               </tr>
                               % for game in organizer_games:
-                                <tr {{'class=active' if not game.report.reported() else ''}}>
+                                <tr {{'class=active' if not game.reported() else ''}}>
                                   <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
                                   <td>{{game.datetime.beautiful.day_month()}}</td>
                                   <td>{{game.description()}}</td>
                                   <td>{{game.sport_type(True).title()}}</td>
                                   <td>{{game.court_id(True).title()}}</td>
-                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game.game_id()) if game.report.reported() else 'Ожидается'}}</td>
+                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game.game_id()) if game.reported() else 'Ожидается'}}</td>
                                   <td> --- </td>
                                 </tr>
                               % end

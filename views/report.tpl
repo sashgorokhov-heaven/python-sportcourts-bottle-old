@@ -68,7 +68,7 @@
                             </select>
                           % end
                           % if showreport:
-                            % status = int(game.report['registered']['users'][str(user.user_id())]['status'])
+                            % status = int(game.report()['registered'][user.user_id()])
                             % if status==1:
                                Не оплатил
                             % end
@@ -84,25 +84,22 @@
                         % last_n = n
                       % end
                       % if showreport:
-                        % import base64
-                        % for n, user_id in enumerate(game.report['unregistered']['users'], last_n+1):
-                          % user = game.report['unregistered']['users'][user_id]
-                          % first_name = base64.b64decode(user['first_name'].encode()).decode()
-                          % last_name = base64.b64decode(user['last_name'].encode()).decode()
+                        % for n, name in enumerate(game.report()['unregistered'], last_n+1):
+                          % status, phone = game.report()['unregistered'][name]
+                          % first_name, last_name = name.split(' ')
                           <tr class="user">
                             <td>{{n}}</td>
                             <td>{{first_name}}</td>
                             <td>{{last_name}}</td>
-                            <td>{{user['phone']}}</td>
+                            <td>{{phone}}</td>
                             <td colspan="2">
-                                % value = int(user['status'])
-                                % if value==1:
+                                % if status==1:
                                    Не оплатил
                                 % end
-                                % if value==2:
+                                % if status==2:
                                     Оплатил
                                 % end
-                                % if value==0:
+                                % if status==0:
                                     Не пришел
                                 % end
                             </td>
