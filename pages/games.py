@@ -170,7 +170,7 @@ class Games(pages.Page):
                                          old=ptype == 'old',
                                          dbconnection=db))  # TODO: REWORK
             total_pages = count // GAMES_PER_PAGE + (1 if count % GAMES_PER_PAGE != 0 else 0)
-            if page_n > total_pages:
+            if page_n > total_pages and count>0:
                 if not bottle.request.is_ajax:
                     raise bottle.HTTPError(404)
                 else:
