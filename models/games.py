@@ -1,5 +1,6 @@
 import dbutils
-from models import autodb, splitstrlist, notifications, usergames
+from models import autodb, splitstrlist, notifications
+from modules.utils import format_duration
 from objects import Game
 from modules import create_link
 
@@ -37,22 +38,47 @@ def get_all(dbconnection:dbutils.DBConnection=None) -> Game:
 
 
 @autodb
+def usergames_set(user_id:int, game_id:int, status:int, dbconnection:dbutils.DBConnection=None):
+    dbconnection.execute("SELECT COUNT(*) FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
+    if dbconnection.last()[0][0] == 0:
+        sql = "INSERT INTO usergames (user_id, game_id, status) VALUES ({}, {}, {})".format(user_id, game_id, status)
+    else:
+        sql = "UPDATE usergames SET status={} WHERE user_id={} AND game_id={}".format(status, user_id, game_id)
+    dbconnection.execute(sql)
+
+
+@autodb
+def usergames_reserve(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    usergames_set(user_id, game_id, 1, dbconnection=dbconnection)
+
+
+@autodb
+def usergames_subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    usergames_set(user_id, game_id, 2, dbconnection=dbconnection)
+
+
+@autodb
+def usergames_unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    usergames_set(user_id, game_id, 0, dbconnection=dbconnection)
+
+
+@autodb
 def subscribe(user_id:int, game_id:int, reserved:bool=False, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("SELECT status FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
     if len(dbconnection.last()) == 0:
         if reserved:
-            usergames.reserve(user_id, game_id, dbconnection=dbconnection)
+            usergames_reserve(user_id, game_id, dbconnection=dbconnection)
         else:
-            usergames.subscribe(user_id, game_id, dbconnection=dbconnection)
+            usergames_subscribe(user_id, game_id, dbconnection=dbconnection)
     else:
         status = dbconnection.last()[0][0]
         if status == 2 or status == 1 and reserved:
             return
         if (status == 1 or status == 0) and not reserved:
-            usergames.subscribe(user_id, game_id, dbconnection=dbconnection)
+            usergames_subscribe(user_id, game_id, dbconnection=dbconnection)
             write_future_notifications(user_id, game_id, dbconnection=dbconnection)
         if status == 0 and reserved:
-            usergames.reserve(user_id, game_id, dbconnection=dbconnection)
+            usergames_reserve(user_id, game_id, dbconnection=dbconnection)
 
 
 @autodb
@@ -75,7 +101,7 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
     if status == 2 or status == 1:
         if status == 2:
             delete_future_notifications(user_id, game_id, dbconnection=dbconnection)
-        usergames.unsubscribe(user_id, game_id, dbconnection=dbconnection)
+        usergames_unsubscribe(user_id, game_id, dbconnection=dbconnection)
     elif status == 0:
         return
 
@@ -212,3 +238,28 @@ def get_responsible_games(user_id:int, dbconnection:dbutils.DBConnection=None) -
 def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list():
     dbconnection.execute("SELECT game_id FROM games WHERE created_by='{}'".format(user_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
+
+
+@autodb
+def get_game_stats(user_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
+    sql = "SELECT game_id, status FROM usergames WHERE user_id={} AND STATUS=2".format(user_id)
+    usergames = dbconnection.execute(sql)
+    game_ids = list(map(lambda x: x[0], usergames)) if len(usergames) != 0 else list()
+    games = get_by_id(game_ids, dbconnection=dbconnection)
+    info = dict()
+    info['total'] = 0
+    info['sport_types'] = dict()
+    info['beautiful'] = dict()
+    assert isinstance(games, list)
+    for game in games:
+        assert isinstance(game, Game)
+        if game.sport_type() not in info:
+            info[game.sport_type()] = 0
+        info[game.sport_type()] += game.duration()
+        info['total'] += game.duration()
+        if game.sport_type() not in info['sport_types']:
+            info['sport_types'][game.sport_type()] = game.sport_type(True).title()
+    for key in {key for key in info if isinstance(key, int)}:
+        info['beautiful'][key] = format_duration(info[key])
+    info['beautiful']['total'] = format_duration(info['total'])
+    return info

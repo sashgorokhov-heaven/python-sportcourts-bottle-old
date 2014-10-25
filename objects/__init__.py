@@ -370,7 +370,7 @@ class User:
 
     def gameinfo(self) -> dict:
         if 'gameinfo' in self._user: return self._user['gameinfo']
-        self._user['gameinfo'] = usergames.get_game_stats(self.user_id(), dbconnection=self._db)
+        self._user['gameinfo'] = games.get_game_stats(self.user_id(), dbconnection=self._db)
         return self._user['gameinfo']
 
     def activated(self) -> bool:
@@ -621,7 +621,6 @@ import models.games as games
 import models.courts as courts
 import models.users as users
 import models.ampluas as ampluas
-import models.usergames as usergames
 import models.ban as ban
 import models.comands as comands
 import models.court_types as court_types
