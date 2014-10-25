@@ -53,13 +53,7 @@ class Report(pages.Page):
             notifications.add(game.created_by(), 'Ответственный "{}" отправил отчет по игре "{}"'.format(
                 create_link.user(users.get(pages.auth.getuserid())),
                 create_link.game(game)), game_id, 2)
-        self.report_users(game_id, report['registered']['users'])
         raise bottle.redirect('/report?game_id={}'.format(game_id))
-
-    def report_users(self, game_id:int, users:dict):
-        with dbutils.dbopen() as db:
-            for user_id in users:
-                usergames.set(int(user_id), game_id, int(users[user_id]['status']), dbconnection=db)
 
     get.route = '/report'
     post.route = get.route
