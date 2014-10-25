@@ -19,9 +19,9 @@ class Recover(pages.Page):
                 token = activation.get_user_token(pages.auth.current().user_id(), dbconnection=db)
             except ValueError:
                 return pages.templates.message('Ошибка', 'Вы уже активировали свой профиль')
-            user = users.get(pages.auth.getuserid())
+            user = users.get(pages.auth.current().user_id())
             mailing.sendhtml(
-                pages.PageBuilder('mail_activation', first_name=user['first_name'], token=token).template(),
+                pages.PageBuilder('mail_activation', first_name=user.name.first(), token=token).template(),
                 user.email(),
                 'Чтобы активировать профиль, перейдите по ссылке http://sportcourts.ru/activate?token={}'.format(token),
                 'Повторная активация профиля')
