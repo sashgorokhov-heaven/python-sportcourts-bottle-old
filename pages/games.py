@@ -19,14 +19,15 @@ class Games(pages.Page):
         db.execute(query)
         if len(db.last()) != 0:
             return pages.templates.message("{} уже занят на это время".format(
-                modules.create_link.user(users.get( user_id, dbconnection=db))), '')
+                modules.create_link.user(users.get(user_id, dbconnection=db))), '')
 
     def assigned_responsible(self, game_id:int, user_id:int, db):
         if user_id == pages.auth.current().user_id():
             return
         game = games.get_by_id(game_id, dbconnection=db)
         notification = 'Вас назначили ответственным на игру "{}"<br>Свяжитесь с "{}"!'
-        notification = notification.format(modules.create_link.game(game), modules.create_link.user(game.created_by(True)))
+        notification = notification.format(modules.create_link.game(game),
+                                           modules.create_link.user(game.created_by(True)))
         notifications.add(user_id, notification, 2, game_id, 2)
 
     def unassigned_responsible(self, game_id:int, user_id:int, db):
@@ -46,9 +47,9 @@ class Games(pages.Page):
             params.pop('time')
             params['created_by'] = pages.auth.current().user_id()
             intersection = games.court_game_intersection(params['court_id'],
-                                              params['datetime'],
-                                              params['duration'].encode().split(b' ')[0].decode(),
-                                              dbconnection=db)
+                                                         params['datetime'],
+                                                         params['duration'].encode().split(b' ')[0].decode(),
+                                                         dbconnection=db)
             if intersection:
                 return pages.PageBuilder('text', message='Обнаружен конфликт',
                                          description='В это время уже идет другая <a href="/games?game_id={}">игра</a>'.format(
@@ -57,8 +58,8 @@ class Games(pages.Page):
                                           params['duration'].split(' ')[0], db)
             if page: return page
 
-            if int(params['capacity'])>0:
-                params['reserved'] = round(int(params['capacity'])/4)
+            if int(params['capacity']) > 0:
+                params['reserved'] = round(int(params['capacity']) / 4)
 
             game_id = games.add(dbconnection=db, **params)
             self.assigned_responsible(game_id, int(params['responsible_user_id']), db)
@@ -100,7 +101,8 @@ class Games(pages.Page):
                 not pages.auth.current().userlevel.admin() and \
                 not pages.auth.current().userlevel.responsible():
             return pages.templates.permission_denied()
-        if 'submit_add' in bottle.request.forms and (pages.auth.current().userlevel.organizer() or pages.auth.current().userlevel.admin()):
+        if 'submit_add' in bottle.request.forms and (
+                    pages.auth.current().userlevel.organizer() or pages.auth.current().userlevel.admin()):
             return self.post_submit_add()
         if 'submit_edit' in bottle.request.forms:
             return self.post_submit_edit()
@@ -110,7 +112,7 @@ class Games(pages.Page):
         with dbutils.dbopen() as db:
             game_id = int(bottle.request.query.get('edit'))
             game = games.get_by_id(game_id, dbconnection=db)
-            if len(game)==0:
+            if len(game) == 0:
                 raise bottle.HTTPError(404)
             if pages.auth.current().user_id() != game.created_by() and \
                             pages.auth.current().user_id() != game.responsible_user_id() and \
@@ -144,8 +146,8 @@ class Games(pages.Page):
 
     def get_delete(self, game_id:int):
         return pages.templates.message("Удаление игр не работает.", "Перелопачиваю, напиши")
-        #with dbutils.dbopen() as db:
-        #    game = games.get_by_id(game_id, dbconnection=db)
+        # with dbutils.dbopen() as db:
+        # game = games.get_by_id(game_id, dbconnection=db)
         #    if game.created_by() != pages.auth.current().user_id() and not pages.auth.current().userlevel.admin():
         #        return pages.templates.permission_denied()
         #    games.delete(game_id, dbconnection=db)
@@ -156,17 +158,17 @@ class Games(pages.Page):
         sport_type = 0
         page_n = 1
 
-        if ptype=='all' or ptype=='old':
+        if ptype == 'all' or ptype == 'old':
             page_n = args[1]
-        elif ptype=='sport':
+        elif ptype == 'sport':
             sport_type = args[1]
             page_n = args[2]
 
         with dbutils.dbopen() as db:
             count = len(games.get_recent(sport_type=sport_type,
                                          count=slice(0, 99999),
-                                         old=ptype=='old',
-                                         dbconnection=db)) # TODO: REWORK
+                                         old=ptype == 'old',
+                                         dbconnection=db))  # TODO: REWORK
             total_pages = count // GAMES_PER_PAGE + (1 if count % GAMES_PER_PAGE != 0 else 0)
             if page_n > total_pages:
                 if not bottle.request.is_ajax:
@@ -178,14 +180,16 @@ class Games(pages.Page):
 
             if not count:
                 if not bottle.request.is_ajax:
-                    return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type, old=ptype=='old')
+                    return pages.PageBuilder("games", games=list(), sports=sports, bysport=sport_type,
+                                             old=ptype == 'old')
                 else:
                     return {"stop": True, "games": list()}
 
-            allgames = games.get_recent(sport_type=sport_type, old=ptype=='old', count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), dbconnection=db)
+            allgames = games.get_recent(sport_type=sport_type, old=ptype == 'old',
+                                        count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), dbconnection=db)
 
             if not bottle.request.is_ajax:
-                page = pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type, old=ptype=='old')
+                page = pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type, old=ptype == 'old')
                 if page_n < total_pages:
                     page.add_param("nextpage", page_n + 1)
                 return page

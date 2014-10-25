@@ -1,6 +1,8 @@
 import bottle
+
 import pages
 from models import users
+
 
 class Ban(pages.Page):
     def get(self):

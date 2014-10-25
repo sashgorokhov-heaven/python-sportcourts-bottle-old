@@ -11,7 +11,8 @@ class Subscribe(pages.Page):
         with dbutils.dbopen() as db:
             game = games.get_by_id(game_id, dbconnection=db)
 
-            to_reserved = game.reserved()>0 and game.capacity()>0 and len(game.subscribed())==game.capacity() and len(game.reserved_people())<game.reserved()
+            to_reserved = game.reserved() > 0 and game.capacity() > 0 and len(
+                game.subscribed()) == game.capacity() and len(game.reserved_people()) < game.reserved()
 
             if pages.auth.current().banned():
                 return pages.PageBuilder("game", game=game, conflict=2)
@@ -19,7 +20,7 @@ class Subscribe(pages.Page):
             if not pages.auth.current().activated():
                 return pages.PageBuilder("game", game=game, conflict=3)
 
-            if not to_reserved and game.capacity()>0 and len(game.subscribed())==game.capacity():
+            if not to_reserved and game.capacity() > 0 and len(game.subscribed()) == game.capacity():
                 return pages.PageBuilder("game", game=game, conflict=4)
 
             if user_id in set(game.subscribed()):
@@ -34,7 +35,7 @@ class Subscribe(pages.Page):
 
             if game.datetime.tommorow or game.datetime.today:
                 message = 'На игру "{}" записался {}'.format(create_link.game(game),
-                                                                            create_link.user(pages.auth.current()))
+                                                             create_link.user(pages.auth.current()))
                 notifications.add(game.responsible_user_id(), message, 1, game_id, 2)
 
             game = games.get_by_id(game_id, dbconnection=db)
@@ -51,7 +52,7 @@ class Subscribe(pages.Page):
 
             if game.datetime.tommorow or game.datetime.today:
                 message = '{} отписался от игры "{}"'.format(create_link.user(pages.auth.current()),
-                                                                            create_link.game(game))
+                                                             create_link.game(game))
                 notifications.add(game.responsible_user_id(), message, 1, game_id, 2)
 
             game = games.get_by_id(game_id, dbconnection=db)

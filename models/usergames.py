@@ -5,19 +5,37 @@ from modules.utils import format_duration
 
 
 @autodb
-def get(user_id:int, status:int=-1, dbconnection:dbutils.DBConnection=None) -> list:
-    sql = "SELECT game_id, status FROM usergames WHERE user_id={}{}"
-    usergames = dbconnection.execute(sql.format(user_id, '' if status < 0 else " AND status={}".format(status)),
-                                     ['game_id', 'status'])
-    if len(usergames)==0: return list()
-    game_ids = list(map(lambda x: x['game_id'], usergames))
+def get(user_id:int, status:int, dbconnection:dbutils.DBConnection=None) -> list:
+    sql = "SELECT game_id, status FROM usergames WHERE user_id={} AND STATUS={}"
+    usergames = dbconnection.execute(sql.format(user_id, status))
+    if len(usergames) == 0: return list()
+    game_ids = list(map(lambda x: x[0], usergames))
     return games.get_by_id(game_ids, dbconnection=dbconnection)
 
 
 @autodb
 def set(user_id:int, game_id:int, status:int, dbconnection:dbutils.DBConnection=None):
-    dbconnection.execute(
-        "INSERT INTO usergames (user_id, game_id, status) VALUES ({}, {}, {})".format(user_id, game_id, status))
+    dbconnection.execute("SELECT COUNT(*) FROM usergames WHERE user_id={} AND game_id={}".format(user_id, game_id))
+    if dbconnection.last()[0][0] == 0:
+        sql = "INSERT INTO usergames (user_id, game_id, status) VALUES ({}, {}, {})".format(user_id, game_id, status)
+    else:
+        sql = "UPDATE usergames SET status={} WHERE user_id={} AND game_id={}".format(status, user_id, game_id)
+    dbconnection.execute(sql)
+
+
+@autodb
+def reserve(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    set(user_id, game_id, 1, dbconnection=dbconnection)
+
+
+@autodb
+def subscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    set(user_id, game_id, 2, dbconnection=dbconnection)
+
+
+@autodb
+def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
+    set(user_id, game_id, 0, dbconnection=dbconnection)
 
 
 @autodb

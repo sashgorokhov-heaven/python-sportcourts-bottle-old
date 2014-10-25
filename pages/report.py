@@ -31,7 +31,7 @@ class Report(pages.Page):
             return pages.templates.permission_denied()
         if game.report.reported(): return pages.templates.message('Чё', 'Эээ')
         users_ = {int(user_id.split('=')[-1]): {"status": bottle.request.forms.get(user_id)} for user_id in
-                 filter(lambda x: x.startswith("status"), bottle.request.forms)}
+                  filter(lambda x: x.startswith("status"), bottle.request.forms)}
         registered = {user_id: users_[user_id] for user_id in filter(lambda x: x > 0, users_)}
         unregistered = {user_id: users_[user_id] for user_id in filter(lambda x: x < 0, users_)}
         for user_id in unregistered:

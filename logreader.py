@@ -2,7 +2,6 @@ import time
 import base64
 
 import dbutils
-import modules
 
 
 def print_row(row):
@@ -30,11 +29,7 @@ def print_row(row):
         print()
 
 
-with dbutils.dbopen(host=modules.config['logdb']['dbhost'],
-                    user=modules.config['logdb']['dbuser'],
-                    passwd=modules.config['logdb']['dbpasswd'],
-                    db=modules.config['logdb']['dbname'],
-                    charset='utf8') as db:
+with dbutils.dbopen(**dbutils.logsdb_connection) as db:
     last_id = db.execute("SELECT MAX(id) FROM access;")[0][0]
     while True:
         rows = db.execute("SELECT * FROM access WHERE id>{}".format(last_id))

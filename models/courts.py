@@ -14,7 +14,7 @@ def get(court_id, city_id:int=1, dbconnection:dbutils.DBConnection=None) -> Cour
         if len(court_id) == 1:
             court_id = court_id[0]
 
-    if isinstance(court_id, list) and len(court_id)==0: return list()
+    if isinstance(court_id, list) and len(court_id) == 0: return list()
 
     if isinstance(court_id, int) and court_id != 0:
         dbconnection.execute(

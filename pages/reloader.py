@@ -1,4 +1,7 @@
-import bottle, pages, uwsgi
+import bottle
+
+import pages
+import uwsgi
 import uwsgidecorators
 
 

@@ -16,7 +16,7 @@ class Users(pages.Page):
             allusers = users.get(0, count=slice(*modules.pager(1, count=USERS_PER_PAGE)))
             page = pages.PageBuilder('users', allusers=allusers, count=count)
             if pages.auth.loggedin():
-                if len(pages.auth.current().friends())>0:
+                if len(pages.auth.current().friends()) > 0:
                     friends = pages.auth.current().friends(True)
                     page.add_param('myfriends', friends)
             return page
@@ -31,7 +31,7 @@ class Users(pages.Page):
                     allusers = users.get(0, count=slice(startfrom, USERS_PER_PAGE), dbconnection=db)
                     page = pages.PageBuilder('user_row')
                     if pages.auth.loggedin():
-                        if len(pages.auth.current().friends())>0:
+                        if len(pages.auth.current().friends()) > 0:
                             friends = pages.auth.current().friends(True)
                             page.add_param('myfriends', friends)
                     for user in allusers:
@@ -48,7 +48,7 @@ class Users(pages.Page):
                     page = pages.PageBuilder('users', allusers=users.get(allusers, dbconnection=db),
                                              count=len(allusers),
                                              search=True, search_q=bottle.request.forms.get('q'))
-                    if pages.auth.loggedin() and len(pages.auth.current().friends())>0:
+                    if pages.auth.loggedin() and len(pages.auth.current().friends()) > 0:
                         friends = pages.auth.current().friends(True)
                         page.add_param('myfriends', friends)
                     return page

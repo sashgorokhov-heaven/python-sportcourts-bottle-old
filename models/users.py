@@ -17,7 +17,7 @@ def get(user_id, userlevel:int=-1, count:slice=slice(0, 20), dbconnection:dbutil
         if len(user_id) == 1:
             user_id = user_id[0]
 
-    if isinstance(user_id, list) and len(user_id)==0: return list()
+    if isinstance(user_id, list) and len(user_id) == 0: return list()
 
     sql = "SELECT * FROM users WHERE user_id='{}'".format(user_id)
 
@@ -72,18 +72,18 @@ def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=
 @autodb
 def get_friends(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
     friends = dbconnection.execute("SELECT user_id2 FROM friends WHERE user_id1={}".format(user_id))
-    return list(map(lambda x: x[0], friends)) if len(friends)>0 else list()
+    return list(map(lambda x: x[0], friends)) if len(friends) > 0 else list()
 
 
 @autodb
 def search(query:str, dbconnection:dbutils.DBConnection=None) -> list:
-    query = list(map(lambda x: '%'+x+'%', query.split(' ')))
+    query = list(map(lambda x: '%' + x + '%', query.split(' ')))
     sql = "SELECT user_id FROM users WHERE "
-    if len(query)==1:
+    if len(query) == 1:
         sql += "first_name LIKE '{first}' OR last_name LIKE '{first}'".format(first=query[0])
     else:
         sql += ("first_name LIKE '{first}' AND last_name LIKE '{last}'"
                 " OR "
                 "first_name LIKE '{last}' AND last_name LIKE '{first}'").format(first=query[0], last=query[1])
     users = dbconnection.execute(sql)
-    return list(map(lambda x: x[0], users)) if len(users)>0 else list()
+    return list(map(lambda x: x[0], users)) if len(users) > 0 else list()

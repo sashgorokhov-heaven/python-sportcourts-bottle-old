@@ -1,10 +1,10 @@
 import datetime
 
 _months_parent = ['Января', 'ФевралЯ',
-           'Марта', 'Апреля',
-           'Мая', 'Июня', 'Июля',
-           'Августа', 'Сентября',
-           'Октября', 'Ноября', 'Декабря']
+                  'Марта', 'Апреля',
+                  'Мая', 'Июня', 'Июля',
+                  'Августа', 'Сентября',
+                  'Октября', 'Ноября', 'Декабря']
 
 _months = ['Январь', 'Февраль',
            'Март', 'Апрель',
@@ -15,27 +15,29 @@ _months = ['Январь', 'Февраль',
 _days = ['Понедельник', 'Вторник', 'Среда',
          'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 
+
 class BeautifulDatetime:
     def __init__(self, _datetime:datetime.datetime):
         self._datetime = _datetime
 
-    def day(self) -> str: # '25'
+    def day(self) -> str:  # '25'
         return str(self._datetime.date().day)
 
-    def day_name(self) -> str: # 'Четверг'
+    def day_name(self) -> str:  # 'Четверг'
         return _days[self._datetime.date().weekday()]
 
-    def month(self, parent:bool=False) -> str: # 'Сентября' if parent else 'Сентябрь'
-        return _months_parent[self._datetime.date().month-1] if parent else _months[self._datetime.date().month-1]
+    def month(self, parent:bool=False) -> str:  # 'Сентября' if parent else 'Сентябрь'
+        return _months_parent[self._datetime.date().month - 1] if parent else _months[self._datetime.date().month - 1]
 
-    def time(self) -> str: # '15:32'
-        return '{}:{}'.format(self._datetime.time().hour, '0'*(2-len(str(self._datetime.time().minute)))+str(self._datetime.time().minute))
+    def time(self) -> str:  # '15:32'
+        return '{}:{}'.format(self._datetime.time().hour,
+                              '0' * (2 - len(str(self._datetime.time().minute))) + str(self._datetime.time().minute))
 
-    def day_month(self) -> str: # '25 Сентября'
-        return self.day()+' '+self.month(True)
+    def day_month(self) -> str:  # '25 Сентября'
+        return self.day() + ' ' + self.month(True)
 
     def __str__(self) -> str:
-        return self.day_month()+', '+self.time()
+        return self.day_month() + ', ' + self.time()
 
 
 class DateTime:
@@ -55,7 +57,7 @@ class DateTime:
 
     @property
     def today(self) -> bool:
-        return self._datetime.date()==datetime.date.today()
+        return self._datetime.date() == datetime.date.today()
 
     @property
     def tommorow(self) -> bool:
@@ -71,6 +73,7 @@ class DateTime:
     def time(self) -> datetime.time:
         return self._datetime.time()
 
+
 class GameDateTime(DateTime):
     def __init__(self, _datetime:datetime.datetime, game):
         super().__init__(_datetime)
@@ -78,7 +81,8 @@ class GameDateTime(DateTime):
 
     @property
     def can_subscribe(self) -> bool:
-        return (self._datetime - datetime.datetime.now() >= datetime.timedelta(hours=1)) and self > datetime.datetime.now()
+        return (self._datetime - datetime.datetime.now() >= datetime.timedelta(
+            hours=1)) and self > datetime.datetime.now()
 
     @property
     def passed(self) -> bool:
@@ -86,16 +90,20 @@ class GameDateTime(DateTime):
 
     @property
     def now(self, **kwargs) -> bool:
-        return self._datetime <= datetime.datetime.now() <= self._datetime + datetime.timedelta(minutes=self._game.duration())
+        return self._datetime <= datetime.datetime.now() <= self._datetime + datetime.timedelta(
+            minutes=self._game.duration())
 
     @property
     def soon(self) -> bool:
         return self._datetime > datetime.datetime.now() and datetime.timedelta(seconds=1) \
-                                                  <= self._datetime - datetime.datetime.now() <= datetime.timedelta(hours=1)
+                                                            <= self._datetime - datetime.datetime.now() <= datetime.timedelta(
+            hours=1)
 
     @property
     def can_subscribe(self) -> bool:
-        return (self._datetime - datetime.datetime.now() >= datetime.timedelta(hours=1)) and self._datetime > datetime.datetime.now()
+        return (self._datetime - datetime.datetime.now() >= datetime.timedelta(
+            hours=1)) and self._datetime > datetime.datetime.now()
+
 
 class UserAge(DateTime):
     @property
@@ -124,5 +132,5 @@ class UserLastTime(DateTime):
             date = 'вчера'
         else:
             date = self.beautiful.day_month()
-        date += ' в '+self.beautiful.time()
+        date += ' в ' + self.beautiful.time()
         return date

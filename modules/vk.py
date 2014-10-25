@@ -1,8 +1,10 @@
 import json
 import urllib.request
 import urllib.parse
+
 import bottle
-import modules
+
+import config
 
 
 def exec(token, method:str, **kwargs) -> dict:
@@ -24,9 +26,7 @@ def exec(token, method:str, **kwargs) -> dict:
 
 def auth_code(code:str, redirec_page:str) -> (str, int, str):
     url = "https://oauth.vk.com/access_token?client_id={0}&client_secret={1}&code={2}&redirect_uri=http://{3}:{4}" + redirec_page
-    url = url.format(modules.config['api']['vk']['appid'],
-                     modules.config['api']['vk']['secret'], code,
-                     modules.config['server']['ip'], modules.config['server']['port'])
+    url = url.format(config.vk.appid, config.vk.secret, code, config.server.ip, config.server.port)
     try:
         response = urllib.request.urlopen(url)
     except Exception as e:

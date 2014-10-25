@@ -14,10 +14,11 @@ def get(type_id, dbconnection:dbutils.DBConnection=None) -> GameType:
         if len(type_id) == 1:
             type_id = type_id[0]
 
-    if isinstance(type_id, list) and len(type_id)==0: return list()
+    if isinstance(type_id, list) and len(type_id) == 0: return list()
 
     if isinstance(type_id, int) and type_id != 0:
-        dbconnection.execute("SELECT * FROM game_types WHERE type_id='{}'".format(type_id), dbutils.dbfields['game_types'])
+        dbconnection.execute("SELECT * FROM game_types WHERE type_id='{}'".format(type_id),
+                             dbutils.dbfields['game_types'])
     elif isinstance(type_id, list):
         dbconnection.execute(
             "SELECT * FROM game_types WHERE type_id IN (" + ','.join(map(str, type_id)) + ")",

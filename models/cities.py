@@ -14,7 +14,7 @@ def get(city_id, dbconnection:dbutils.DBConnection=None) -> City:
         if len(city_id) == 1:
             city_id = city_id[0]
 
-    if isinstance(city_id, list) and len(city_id)==0: return list()
+    if isinstance(city_id, list) and len(city_id) == 0: return list()
 
     if isinstance(city_id, int) and city_id != 0:
         dbconnection.execute("SELECT * FROM cities WHERE city_id='{}'".format(city_id), dbutils.dbfields['cities'])

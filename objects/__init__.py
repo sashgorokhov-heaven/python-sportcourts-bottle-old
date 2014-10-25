@@ -1,9 +1,10 @@
 import json
-import dbutils
 
+import dbutils
 from objects.mydatetime import GameDateTime, DateTime, UserAge, UserLastTime
 import models
 import pages
+
 
 class City:
     def __init__(self, city:dict):
@@ -136,7 +137,8 @@ class Comand:
         return self._comand['comander_id']
 
     def subscribed(self, detalized:bool=False) -> list:
-        if 'subscribed' not in self._comand: self._comand['subscribed'] = comands.get_subscribed(self.comand_id(), dbconnection=self._db)
+        if 'subscribed' not in self._comand: self._comand['subscribed'] = comands.get_subscribed(self.comand_id(),
+                                                                                                 dbconnection=self._db)
         if len(self._comand['subscribed']) == 0: return list()
 
         if not detalized:
@@ -146,8 +148,10 @@ class Comand:
                 return self._comand['subscribed']
         if not isinstance(self._comand['subscribed'][0], User):
             self._comand['subscribed'] = users.get(self._comand['subscribed'],
-                                              count=slice(0, len(self._comand['subscribed'])), dbconnection=self._db)
+                                                   count=slice(0, len(self._comand['subscribed'])),
+                                                   dbconnection=self._db)
         return self._comand['subscribed']
+
 
 class Amplua:
     def __init__(self, amplua:dict, dbconnection:dbutils.DBConnection=None):
@@ -204,7 +208,7 @@ class Court:
             self._court['sport_types'] = sport_types.get(self._court['sport_types'], dbconnection=self._db)
         return self._court['sport_types']
 
-    def nearest_game(self): # TODO: definition
+    def nearest_game(self):  # TODO: definition
         if 'nearest_game' in self._court: return self._court['nearest_game']
         self._court['nearest_game'] = games.get_recent(court_id=self.court_id(),
                                                        city_id=self.city_id(),
@@ -423,7 +427,6 @@ class User:
         return 1
 
 
-
 class Game:
     def __init__(self, game:dict, dbconnection:dbutils.DBConnection=None):
         self._game = game
@@ -499,9 +502,10 @@ class Game:
         return self._game['reserved']
 
     def reserved_people(self, detalized:bool=False) -> User:
-        if self.reserved()==0: return list()
-        if 'reserved_people' not in self._game: self._game['reserved_people'] = games.get_reserved_to_game(self.game_id(), dbconnection=self._db)
-        if len(self._game['reserved_people'])==0: return list()
+        if self.reserved() == 0: return list()
+        if 'reserved_people' not in self._game: self._game['reserved_people'] = games.get_reserved_to_game(
+            self.game_id(), dbconnection=self._db)
+        if len(self._game['reserved_people']) == 0: return list()
 
         if not detalized:
             if isinstance(self._game['reserved_people'][0], User):
@@ -530,7 +534,8 @@ class Game:
 
     def comands(self, detalized:bool=False) -> list:
         if not self.comand_game(): return list()
-        if 'comands' not in self._game: self._game['comands'] = comands.get_comand_ids(self.game_id(), dbconnection=self._db)
+        if 'comands' not in self._game: self._game['comands'] = comands.get_comand_ids(self.game_id(),
+                                                                                       dbconnection=self._db)
         if len(self._game['comands']) == 0: return list()
 
         if not detalized:
@@ -613,6 +618,7 @@ class Notification:
 
     def __len__(self):
         return 1
+
 
 import models.sport_types as sport_types
 import models.cities as cities

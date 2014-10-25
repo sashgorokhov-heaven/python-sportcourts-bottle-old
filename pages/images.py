@@ -1,12 +1,13 @@
 import os
-import bottle
 import hashlib
+
+import bottle
 
 import pages
 from models import games
 
 
-_hashes = dict() # filename -> hash
+_hashes = dict()  # filename -> hash
 
 
 def _hash(filename:str) -> bytes:
@@ -18,6 +19,7 @@ def _hash(filename:str) -> bytes:
                 break
             hasher.update(b)
     return hasher.hexdigest()
+
 
 def _can_cache(filename:str):
     current_hash = _hash(filename)
@@ -31,18 +33,20 @@ def _can_cache(filename:str):
         _hashes[filename] = current_hash
         return True
 
+
 def cache(func):
     def wrapper(*args, **kwargs):
         resp, filename = func(*args, **kwargs)
-        #print('Cache', filename, '? ', end='')
-        #if not _can_cache(filename):
-            #print('Nope')
+        # print('Cache', filename, '? ', end='')
+        # if not _can_cache(filename):
+        #print('Nope')
         resp.set_header('Cache-Control', 'no-cache, no-store, must-revalidate')
         resp.set_header('Pragma', 'no-cache')
         resp.set_header('Expires', 0)
         #else:
         #    print('Yep')
         return resp
+
     return wrapper
 
 
@@ -57,17 +61,19 @@ class Images(pages.Page):
     def get_avatar_image(self, name):
         filename = str(name)
         dirname = '/bsp/data/images/avatars'
-        fullaname = os.path.join(dirname, filename+'.jpg')
+        fullaname = os.path.join(dirname, filename + '.jpg')
         if not os.path.exists(fullaname):
             filename = 'blank'
-            return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname, '{}.jpg'.format(filename))
+            return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname,
+                                                                                        '{}.jpg'.format(filename))
         if 'sq' in bottle.request.query:
-            filename = filename+'_sq'
+            filename = filename + '_sq'
         elif 'sq_sm' in bottle.request.query:
-            filename = filename+'_sq_sm'
-        if not os.path.exists(os.path.join(dirname, filename+'.jpg')):
+            filename = filename + '_sq_sm'
+        if not os.path.exists(os.path.join(dirname, filename + '.jpg')):
             filename = 'blank'
-            return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname, '{}.jpg'.format(filename))
+            return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname,
+                                                                                        '{}.jpg'.format(filename))
         return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname, '{}.jpg'.format(filename))
 
     def get_og_image(self, name):

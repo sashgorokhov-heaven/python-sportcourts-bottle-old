@@ -13,20 +13,21 @@
  *
  */
 
-;(function($, window, document, undefined) {
+;
+(function ($, window, document, undefined) {
     "use strict";
 
-    $.fn.chained = function(parent_selector, options) {
+    $.fn.chained = function (parent_selector, options) {
 
-        return this.each(function() {
+        return this.each(function () {
 
             /* Save this to child because this changes when scope changes. */
-            var child   = this;
+            var child = this;
             var backup = $(child).clone();
 
             /* Handles maximum two parents now. */
-            $(parent_selector).each(function() {
-                $(this).bind("change", function() {
+            $(parent_selector).each(function () {
+                $(this).bind("change", function () {
                     updateChildren();
                 });
 
@@ -48,7 +49,7 @@
 
                 /* If multiple parents build classname like foo\bar. */
                 var selected = "";
-                $(parent_selector).each(function() {
+                $(parent_selector).each(function () {
                     var selectedClass = $("option:selected", this).val();
                     if (selectedClass) {
                         if (selected.length > 0) {
@@ -74,7 +75,7 @@
                 }
                 var selected_first = $("option:selected", first).val();
 
-                $("option", child).each(function() {
+                $("option", child).each(function () {
                     /* Remove unneeded items but save the default value. */
                     if ($(this).hasClass(selected) && $(this).val() === currently_selected_value) {
                         $(this).prop("selected", true);

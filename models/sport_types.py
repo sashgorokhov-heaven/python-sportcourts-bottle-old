@@ -14,7 +14,7 @@ def get(sport_id, dbconnection:dbutils.DBConnection=None) -> list:
         if len(sport_id) == 1:
             sport_id = sport_id[0]
 
-    if isinstance(sport_id, list) and len(sport_id)==0: return list()
+    if isinstance(sport_id, list) and len(sport_id) == 0: return list()
 
     if isinstance(sport_id, int) and sport_id != 0:
         dbconnection.execute("SELECT * FROM sport_types WHERE sport_id='{}'".format(sport_id),

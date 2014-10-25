@@ -1,20 +1,21 @@
 import pymysql
-import modules
+
+import config
 
 
 default_connection = {
-    'host':modules.config['api']['db']['dbhost'],
-    'user':modules.config['api']['db']['dbuser'],
-    'passwd':modules.config['api']['db']['dbpasswd'],
-    'db':modules.config['api']['db']['dbname'],
-    'charset':'utf8'
+    'host': config.db.dbhost,
+    'user': config.db.dbuser,
+    'passwd': config.db.dbpasswd,
+    'db': config.db.dbname,
+    'charset': 'utf8'
 }
 
 logsdb_connection = {
-    'host': modules.config['logdb']['dbhost'],
-    'user': modules.config['logdb']['dbuser'],
-    'passwd': modules.config['logdb']['dbpasswd'],
-    'db': modules.config['logdb']['dbname'],
+    'host': config.logs.dbhost,
+    'user': config.logs.dbuser,
+    'passwd': config.logs.dbpasswd,
+    'db': config.logs.dbname,
     'charset': 'utf8'
 }
 
@@ -93,6 +94,7 @@ class dbopen:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._db.close()
+
 
 def setdbfields(kwargs=default_connection):
     with dbopen(**kwargs) as db:

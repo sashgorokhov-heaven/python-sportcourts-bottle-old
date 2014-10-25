@@ -16,8 +16,10 @@ class Profile(pages.Page):
                                      myfriend=users.are_friends(
                                          pages.auth.current().user_id(),
                                          user_id, dbconnection=db))
-            page.add_param('user_games', games.get_by_id(games.get_user_played_games(user_id, dbconnection=db), dbconnection=db))
-            page.add_param('responsible_games', games.get_by_id(games.get_responsible_games(user_id, dbconnection=db), dbconnection=db))
+            page.add_param('user_games',
+                           games.get_by_id(games.get_user_played_games(user_id, dbconnection=db), dbconnection=db))
+            page.add_param('responsible_games',
+                           games.get_by_id(games.get_responsible_games(user_id, dbconnection=db), dbconnection=db))
             page.add_param('organizer_games', games.get_all(dbconnection=db))
             return page
 
@@ -26,8 +28,10 @@ class Profile(pages.Page):
             _cities = cities.get(0, dbconnection=db)
             user = users.get(pages.auth.current().user_id(), dbconnection=db)
             _ampluas = ampluas.get(0, dbconnection=db)
-            _ampluas = {sport_type_title: list(filter(lambda x: x.sport_type(True).title()==sport_type_title, _ampluas)) for sport_type_title in {i.sport_type(True).title() for i in _ampluas}}
-            return pages.PageBuilder('editprofile', user=user, cities=_cities, ampluas = _ampluas,
+            _ampluas = {
+                sport_type_title: list(filter(lambda x: x.sport_type(True).title() == sport_type_title, _ampluas)) for
+                sport_type_title in {i.sport_type(True).title() for i in _ampluas}}
+            return pages.PageBuilder('editprofile', user=user, cities=_cities, ampluas=_ampluas,
                                      haveavatar=images.have_avatar(pages.auth.current().user_id()))
 
     def get(self):
@@ -54,9 +58,12 @@ class Profile(pages.Page):
                 user_id = pages.auth.current().user_id()
                 user = users.get(user_id, dbconnection=db)
                 page = pages.PageBuilder('profile', user=user)
-                page.add_param('user_games', games.get_by_id(games.get_user_played_games(user_id, dbconnection=db), dbconnection=db))
-                page.add_param('responsible_games', games.get_by_id(games.get_responsible_games(user_id, dbconnection=db), dbconnection=db))
-                page.add_param('organizer_games', games.get_by_id(games.get_organizer_games(user_id, dbconnection=db),dbconnection=db))
+                page.add_param('user_games',
+                               games.get_by_id(games.get_user_played_games(user_id, dbconnection=db), dbconnection=db))
+                page.add_param('responsible_games',
+                               games.get_by_id(games.get_responsible_games(user_id, dbconnection=db), dbconnection=db))
+                page.add_param('organizer_games',
+                               games.get_by_id(games.get_organizer_games(user_id, dbconnection=db), dbconnection=db))
                 return page
         return pages.templates.permission_denied(
             '<p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегестрируйтесь</a></p>',
@@ -73,7 +80,7 @@ class Profile(pages.Page):
         if 'ampluas[]' in params:
             params.pop('ampluas[]')
             params['ampluas'] = bottle.request.forms.getall('ampluas[]')
-            params['ampluas'] = '|'+'|'.join(params['ampluas'])+'|'
+            params['ampluas'] = '|' + '|'.join(params['ampluas']) + '|'
         else:
             params['ampluas'] = ''
 

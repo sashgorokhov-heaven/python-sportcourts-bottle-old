@@ -14,7 +14,7 @@ def get(type_id, dbconnection:dbutils.DBConnection=None) -> list:
         if len(type_id) == 1:
             type_id = type_id[0]
 
-    if isinstance(type_id, list) and len(type_id)==0: return list()
+    if isinstance(type_id, list) and len(type_id) == 0: return list()
 
     if isinstance(type_id, int) and type_id != 0:
         dbconnection.execute("SELECT * FROM court_types WHERE type_id='{}'".format(type_id),

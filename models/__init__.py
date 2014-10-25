@@ -1,4 +1,5 @@
 import time
+
 from dbutils import DBConnection
 
 
@@ -17,6 +18,7 @@ def autodb(func):
             if mydb:
                 kwargs['dbconnection'].close()
         return result
+
     return wrapper
 
 
@@ -28,24 +30,24 @@ _set_delimiter = '|'
 
 
 def decode_set(setstr:str) -> list:
-    return list() if len(setstr)==0 else setstr[1:-1].split(_set_delimiter)
+    return list() if len(setstr) == 0 else setstr[1:-1].split(_set_delimiter)
 
 
 def encode_set(setlist:list) -> str:
-    return _set_delimiter+_set_delimiter.join(list(map(str, setlist)))+_set_delimiter if len(setlist)>0 else ''
+    return _set_delimiter + _set_delimiter.join(list(map(str, setlist))) + _set_delimiter if len(setlist) > 0 else ''
 
 
 class Cache:
     def __init__(self, lifetime:int):
-        self._cache = dict() # key -> (timestamp, value)
+        self._cache = dict()  # key -> (timestamp, value)
         self._lifetime = lifetime
 
-    def __call__(self, func): # as decarator
+    def __call__(self, func):  # as decarator
         self._func = func
         return self.cache
 
     def check(self, key) -> bool:
-        retval = key in self._cache and time.time()-self._cache[key][0]<=self._lifetime
+        retval = key in self._cache and time.time() - self._cache[key][0] <= self._lifetime
         return retval
 
     def get(self, key):
@@ -80,7 +82,7 @@ class SimpleCache(Cache):
                     unknown.append(some_key)
                 else:
                     response.append(self.get(some_key))
-            if len(unknown)>0:
+            if len(unknown) > 0:
                 retval = self._func(unknown, dbconnection=kwargs.get('dbconnection', None))
                 for obj in retval:
                     self.set(getattr(obj, self._id_attr)(), obj)

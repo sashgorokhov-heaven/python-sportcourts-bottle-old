@@ -46,7 +46,7 @@ $(document).ready(function () {
     $('#profileForm').bootstrapValidator();
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('#gameaddForm')
         .bootstrapValidator({
             feedbackIcons: {
@@ -66,6 +66,6 @@ $(document).ready(function() {
         });
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('#courtaddForm').bootstrapValidator();
 });

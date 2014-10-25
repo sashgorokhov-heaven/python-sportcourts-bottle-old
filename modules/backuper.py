@@ -1,10 +1,13 @@
-import uwsgidecorators
 import os
+
+import uwsgidecorators
+
 
 if not os.path.exists('/bsp/dumps'):
     raise FileNotFoundError('/bsp/dumps not found')
 
 started = True
+
 
 @uwsgidecorators.cron(0, 0, -1, -1, -1)
 def backup(*args, **kwargs):

@@ -4,7 +4,8 @@ from email.mime import multipart
 
 import dbutils
 from models import autodb, users
-from modules import config, utils
+from modules import utils
+import config
 import uwsgi
 
 
@@ -12,13 +13,13 @@ import uwsgi
 @utils.spooler('mailing_sendhtml')
 def sendhtml(html:str, to:str, plain:str='Простой текст', subject:str='Уведомление'):
     try:
-        me = config['email']['login']
+        me = config.email.login
         you = to
 
         server = "smtp.gmail.com"
         port = 25
-        user_name = config['email']['login']
-        user_passwd = config['email']['password']
+        user_name = config.email.login
+        user_passwd = config.email.password
 
         msg = multipart.MIMEMultipart('alternative')
         msg['Subject'] = subject
@@ -39,7 +40,7 @@ def sendhtml(html:str, to:str, plain:str='Простой текст', subject:st
         s.sendmail(me, you, msg.as_string())
         s.quit()
     except Exception as e:
-        #logging.error(e)
+        # logging.error(e)
         return uwsgi.SPOOL_RETRY
     return uwsgi.SPOOL_OK
 
@@ -48,14 +49,14 @@ def sendhtml(html:str, to:str, plain:str='Простой текст', subject:st
 @utils.spooler('mailing_sendmail')
 def sendmail(message:str, to:str, subject:str='Уведомление'):
     try:
-        me = config['email']['login']
+        me = config.email.login
         you = to
         message = str(message)
         subj = '{} | Sportcourts | Спортивные площадки'.format(subject)
         server = "smtp.gmail.com"
         port = 25
-        user_name = config['email']['login']
-        user_passwd = config['email']['password']
+        user_name = config.email.login
+        user_passwd = config.email.password
         msg = text.MIMEText(message, _charset="utf-8")
         msg['Subject'] = subj
         msg['From'] = me
@@ -68,7 +69,7 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
         s.sendmail(me, you, msg.as_string())
         s.quit()
     except Exception as e:
-        #logging.error(e)
+        # logging.error(e)
         return uwsgi.SPOOL_RETRY
     return uwsgi.SPOOL_OK
 

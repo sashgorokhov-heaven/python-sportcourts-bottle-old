@@ -9,7 +9,8 @@ import bottle
 
 from objects import User
 import modules
-from modules import iplib, config, logging, extract_traceback
+import config
+from modules import iplib, logging, extract_traceback
 import dbutils
 import models.notifications
 import models
@@ -48,14 +49,14 @@ class PageBuilder:
         seo_info = models.seo_info.get(template_name)
         if seo_info:
             self.add_param('seo_info', seo_info)
-        self.add_param('serverinfo', modules.config['server'])
+        self.add_param('serverinfo', {'ip': config.server.ip, 'port': config.server.port})
         self.add_param('tplname', template_name)
 
     def add_param(self, name:str, value):
         self._kwargs[name] = value
 
     def template(self):
-        if os.path.exists(os.path.join(modules.config['server_root'], 'views', self._template_name + '_head.tpl')):
+        if os.path.exists(os.path.join(config.server_root, 'views', self._template_name + '_head.tpl')):
             return bottle.template(self._template_name, header_name=self._template_name + '_head.tpl', **self._kwargs)
         return bottle.template(self._template_name, **self._kwargs)
 
@@ -73,7 +74,7 @@ class templates:
 
 def denypost(func):
     def wrapper(*args, **kwargs):
-        serveraddr = 'http://{}'.format(config['server']['ip'])
+        serveraddr = 'http://{}'.format(config.server.ip)
         if bottle.request.method.lower() == 'post' and not bottle.request.get_header('Referer',
                                                                                      serveraddr).startswith(
                 serveraddr):
@@ -81,8 +82,9 @@ def denypost(func):
                 raise ValueError('POST request from other domain')
             except Exception as e:
                 logging.error(e)
-            raise bottle.HTTPError(404) # TODO: refactor
+            raise bottle.HTTPError(404)  # TODO: refactor
         return func(*args, **kwargs)
+
     return wrapper
 
 
@@ -91,17 +93,18 @@ def access_and_error_log(func):
         t = time.time()
         try:
             response = func(*args, **kwargs)
-            logging.access(time.time()-t)
+            logging.access(time.time() - t)
             return response
         except (bottle.HTTPError, bottle.HTTPResponse) as e:
-            logging.access(time.time()-t)
+            logging.access(time.time() - t)
             raise e
         except Exception as e:
-            logging.error(e, time.time()-t)
-            if config['debug']:
+            logging.error(e, time.time() - t)
+            if config.debug:
                 return templates.message(e.__class__.__name__,
                                          extract_traceback(e, '<br>').replace('\n', '<br>')).template()
             return templates.message("Возникла непредвиденная ошибка", "Сообщите нам об этом, пожалуйста.").template()
+
     return wrapper
 
 
@@ -184,11 +187,11 @@ class _PageController:
 
 
 def set_cookie(name:str, value):
-    return bottle.response.set_cookie(name, value, modules.config['secret'])
+    return bottle.response.set_cookie(name, value, config.secret)
 
 
 def get_cookie(name:str, default=None):
-    return bottle.request.get_cookie(name, default, modules.config['secret'])
+    return bottle.request.get_cookie(name, default, config.secret)
 
 
 class _MockUserLevel(set):
@@ -229,7 +232,6 @@ class _MockUser:
         return _MockUserLevel
 
 
-
 class _AuthDispatcher:
     def set_user(self, page_builder:PageBuilder):
         page_builder.add_param('current_user', self.current())
@@ -261,7 +263,7 @@ class _AuthDispatcher:
         return User(pickle.loads(get_cookie('user')))
 
     def reloaduser(self, user:dict):
-        #bottle.response.delete_cookie('user')
+        # bottle.response.delete_cookie('user')
         set_cookie('user', pickle.dumps(user))
 
     def __bool__(self):

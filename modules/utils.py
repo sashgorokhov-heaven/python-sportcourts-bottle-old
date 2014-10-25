@@ -1,5 +1,5 @@
-import threading, pickle
-import uwsgi
+import threading
+
 
 def format_duration(duration:int) -> str:
     postfix = 'минут'
@@ -28,7 +28,7 @@ def format_duration(duration:int) -> str:
                 postfix = 'день'
             elif 2 <= prefix <= 4:
                 postfix = 'дня'
-    return str(duration)+' '+postfix
+    return str(duration) + ' ' + postfix
 
 
 def threaded(func):
@@ -40,10 +40,10 @@ def threaded(func):
     return wrapper
 
 
-#_spoolers = dict() # func key -> func
+# _spoolers = dict() # func key -> func
 #
 #
-#def _spool_dispatcher(data:dict):
+# def _spool_dispatcher(data:dict):
 #    spool_key = data[b'key'].decode()
 #    pickleddata = pickle.loads(data[b'data'])
 #    args, kwargs = pickleddata
@@ -62,10 +62,13 @@ def spooler(spool_key:str):
         #uwsgi.spooler = _spool_dispatcher
         #setattr(func, 'spool', spool)
         return func
+
     return wraper
+
 
 def as_spooler(func):
     def wrapper(*args, **kwargs):
         #func.spool(*args, **kwargs)
         return func(*args, **kwargs)
+
     return wrapper

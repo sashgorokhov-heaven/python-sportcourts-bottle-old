@@ -1,6 +1,8 @@
 import base64
 import datetime
+
 import bottle
+
 import dbutils
 import modules
 from modules import utils
@@ -17,12 +19,13 @@ def _writedb(**kwargs):
             if 'traceback' in kwargs:
                 kwargs['traceback'] = base64.b64encode(kwargs['traceback'].encode()).decode()
             if 'error' in kwargs:
-                kwargs['error'] = kwargs['error'].replace('"','').replace("'", '')
+                kwargs['error'] = kwargs['error'].replace('"', '').replace("'", '')
             if 'error_description' in kwargs:
-                kwargs['error_description'] = kwargs['error_description'].replace('"','').replace("'", '')
+                kwargs['error_description'] = kwargs['error_description'].replace('"', '').replace("'", '')
             values = [kwargs[i] for i in keys]
             db.execute(
-                "INSERT INTO access ("+", ".join(keys)+") VALUES ("+','.join(list(map(lambda x: "'{}'".format(x), values)))+")"
+                "INSERT INTO access (" + ", ".join(keys) + ") VALUES (" + ','.join(
+                    list(map(lambda x: "'{}'".format(x), values))) + ")"
             )
 
     except Exception as e:
@@ -31,7 +34,7 @@ def _writedb(**kwargs):
         except:
             pass
         return uwsgi.SPOOL_OK
-        #return uwsgi.SPOOL_RETRY TODO
+        # return uwsgi.SPOOL_RETRY TODO
     return uwsgi.SPOOL_OK
 
 
