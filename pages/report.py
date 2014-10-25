@@ -3,7 +3,7 @@ import bottle
 import dbutils
 import pages
 from modules import create_link
-from models import games, images, notifications, users, usergames, reports
+from models import games, images, notifications, users, reports
 
 
 class Report(pages.Page):
