@@ -4,7 +4,7 @@ import threading
 def format_duration(duration:int) -> str:
     postfix = 'минут'
     prefix = int(str(duration)[-1])
-    if prefix == 0 or 5 <= prefix <= 9:
+    if prefix == 0 or 5 <= prefix <= 9 or 10<=duration<=19:
         postfix = 'минут'
     elif prefix == 1:
         postfix = 'минута'
@@ -13,7 +13,7 @@ def format_duration(duration:int) -> str:
     if duration > 60:
         duration = round(duration / 60)
         prefix = int(str(duration)[-1])
-        if prefix == 0 or 5 <= prefix <= 9:
+        if prefix == 0 or 5 <= prefix <= 9 or 10<=duration<=19:
             postfix = 'часов'
         elif prefix == 1:
             postfix = 'час'
@@ -22,7 +22,7 @@ def format_duration(duration:int) -> str:
         if duration > 24:
             duration = round(duration / 24)
             prefix = int(str(duration)[-1])
-            if prefix == 0 or 5 <= prefix <= 9:
+            if prefix == 0 or 5 <= prefix <= 9 or 10<=duration<=19:
                 postfix = 'дней'
             elif prefix == 1:
                 postfix = 'день'
