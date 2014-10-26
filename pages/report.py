@@ -41,7 +41,7 @@ class Report(pages.Page):
         with dbutils.dbopen() as db:
             for user_id in report['unregistered']['users']:
                 user = report['unregistered']['users'][user_id]
-                name = user['first_name']+' '+user['last_name']
+                name = user['first_name'].strip()+' '+user['last_name'].strip()
                 reports.report_unregistered(game_id, user['status'], name, user['phone'], dbconnection=db)
             for user_id in report['registered']['users']:
                 user = report['registered']['users'][user_id]
