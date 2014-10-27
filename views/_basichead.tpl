@@ -24,6 +24,7 @@
 
     <script src="/view/js/jquery-latest.js"></script>
     <script src="/view/js/jquery-ui.js"></script>
+    <script src="/view/js/jquery.inputmask.js" type="text/javascript"></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
