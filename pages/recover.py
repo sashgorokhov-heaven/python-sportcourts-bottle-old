@@ -8,7 +8,7 @@ from models import notifications, mailing, activation, users
 class Recover(pages.Page):
     def get(self):
         if pages.auth.loggedin():
-            if 'mail' not in bottle.request.query:
+            if 'mail' in bottle.request.query:
                 return self.sendmail()
             raise bottle.redirect('/profile')
         return pages.PageBuilder('recover')
