@@ -1,5 +1,4 @@
 % rebase("_fatpage", title="Главная")
-% import random
       <div class="row hidden-xs bigheadrow">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <!-- Indicators -->
@@ -13,7 +12,7 @@
           <div class="text-center bighead">
             <h1>SportCourts</h1>
             <p class="lead">Ваш проводник в мире любительского спорта.</p>
-            <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
+            <p class="lead">Играй в <span class="gamestyped"></span> вместе с нами!</p>
             % if not loggedin:
                 <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
                 <p class="text-center">или</p>
@@ -72,7 +71,46 @@
         % end
       </div>
 
-      <div class="container">
+      <div class="row hidden-xs">
+        <div class="col-md-12 bigheadrow">
+          <div class="row marketing">
+            <div class="col-md-4 text-center indexpromo">
+              <p>Увлекаешься спортом? Ищешь друзей для совместных занятий или соперников для твоей команды? Хочешь быть в курсе спортивных событий твоего города?</p>
+            </div>
+
+            <div class="col-md-4 text-center indexpromo">
+              <p>Выбери из сотен спортивных событий своего города. Найди подходящую площадку и время. Общайся с участниками и приглашай друзей.</p>
+            </div>
+
+            <div class="col-md-4 text-center indexpromo">
+              <p>Занимайся спортом. Делись своими достижениями с друзьями. Находи новые площадки и узнавай о том, что происходит вокруг.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 bigheadrow">
+          <div class="row marketing">
+            <div class="col-md-12 text-center">
+              <h3 class="h1">Чем мы занимаемся?</h3>
+              <br>
+              <br>
+              <br>
+            </div>
+            <div class="col-md-4 text-center indexpromo">
+              <p>Проводим регулярные любительские игры по всему Екатеринбургу</p>
+            </div>
+
+            <div class="col-md-4 text-center indexpromo">
+              <p>Размещаем на сайте актуальную информацию о площадках города.</p>
+            </div>
+
+            <div class="col-md-4 text-center indexpromo">
+              <p>Организуем крутые турниры, участие в которых может принять каждый!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container visible-xs">
         <div class="row marketing">
           <div class="col-md-4 text-center indexpromo">
             <p>Увлекаешься спортом? Ищешь друзей для совместных занятий или соперников для твоей команды? Хочешь быть в курсе спортивных событий твоего города?</p>
