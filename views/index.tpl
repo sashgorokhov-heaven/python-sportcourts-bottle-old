@@ -12,8 +12,9 @@
           </ol>
           <div class="text-center bighead">
             <h1>SportCourts</h1>
-            <p class="lead">Ваш проводник в мире любительского спорта.</p>
-             <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
+            <p class="h3">Ваш проводник в мире любительского спорта.</p>
+            <p class="h3">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
+            <br><br>
             % if not loggedin:
                 <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
                 <p class="text-center">или</p>
