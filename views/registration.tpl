@@ -175,7 +175,7 @@
         <div class="form-group">
           <label for="phone" class="col-sm-2 control-label">Телефон</label>
           <div class="col-sm-10">
-          	<input type="text" class="form-control" name="phone" placeholder="" id="phone" value="{{phone}}" data-toggle="tooltip" data-placement="bottom" title="Телефон необходим для координаторов игр" data-bv-notempty="true" data-bv-notempty-message="Укажите телефон" data-inputmask="'mask': '+7 (999) 999 99 99'"></input>
+          	<input type="text" class="form-control" name="phone" placeholder="" id="phone" value="{{phone}}" data-toggle="tooltip" data-placement="bottom" title="Телефон необходим для координаторов игр" data-bv-notempty="true" data-bv-notempty-message="Укажите телефон" ></input>
             <span id="valid"></span>
           </div>
         </div>

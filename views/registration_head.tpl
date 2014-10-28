@@ -3,6 +3,6 @@
 
     <script>
     	$(document).ready(function(){
-    	    $("#phone").inputmask();
+    	    $('#phone').mask('+0 (000) 000 00 00',{placeholder: "+7 (___) ___ __ __"});
     	});
     </script>
