@@ -12,7 +12,6 @@
 
     <link type="text/css" rel="stylesheet" href="/view/css/main.css" />
 
-    <!--<link type="text/css" rel="stylesheet" href="/view/css/jquery-ui.css" />-->
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 
     <link type="text/css" rel="stylesheet" href="/view/bootstrap/css/bootstrap.min.css" />
@@ -23,16 +22,13 @@
     <link href="/view/bootstrap/css/sticky-footer.css" rel="stylesheet">
     <link rel="stylesheet" href="/view/bootstrap/bootstrap_validator/css/bootstrapValidator.css"/>
 
-    <!--<script src="/view/js/jquery-latest.js"></script> -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <!--<script src="/view/js/jquery-ui.js"></script> -->
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="/view/js/jquery.mask.min.js" type="text/javascript"></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <script src="/view/js/current_href.js"></script>
-    <script src="/view/js/rotator.js"></script>
 
     <script type="text/javascript" src="/view/bootstrap/bootstrap_validator/js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="/view/bootstrap/bootstrap_validator/language/ru_RU.js"></script>
