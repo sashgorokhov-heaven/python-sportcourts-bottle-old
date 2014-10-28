@@ -16,8 +16,9 @@
             % if not loggedin:
                 <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
                 <p class="text-center">или</p>
-                <p><a class="btn btn-main btn-lg btn-primary" href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/auth&response_type=code&v=5.21" role="button">Войти через ВКонтакте</a></p>
-                <p>&nbsp;</p>
+                <!-- <p><a class="btn btn-main btn-lg btn-primary" href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/auth&response_type=code&v=5.21" role="button">Войти через ВКонтакте</a></p> -->
+                <p><a class="btn btn-main btn-lg btn-primary" href="#" data-toggle="modal" data-target="#loginModal" role="button">Войти</a></p>
+<!--                 <p>&nbsp;</p> -->
             % end
           </div>
           <!-- Wrapper for slides -->
