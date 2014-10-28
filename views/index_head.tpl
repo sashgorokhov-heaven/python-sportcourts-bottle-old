@@ -50,9 +50,9 @@
   .bighead{
     position:absolute;
     top:{{'45' if loggedin else '20'}}%;
-    left:25%;
+    left:15%;
     z-index:30;
-    width:50%;
+    width:70%;
     height: 100vh;
     max-height:800px;
     color: rgb(255, 255, 255);
