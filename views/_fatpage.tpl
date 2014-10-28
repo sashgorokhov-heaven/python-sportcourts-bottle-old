@@ -22,7 +22,7 @@
          height: 200px;
          position: absolute;
          left: 50%;
-         top: 30%;
+         top: 15%;
          background-image: url(http://w3lessons.info/demo/jquery-preloader/ajax-loader.gif);
          background-repeat: no-repeat;
          background-position: center;
