@@ -27,7 +27,7 @@
         <div class="yashare-auto-init" data-yashareL10n="ru"
          data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,gplus" data-yashareTheme="counter"
 
-        ></div> 
+        ></div>
       </div>
     </div>
   </div>
@@ -194,101 +194,78 @@
             </div>
             <div class="col-md-2">
               <div class="btn-group" style="float:right;">
-              % if loggedin and game.can_subscribe():
-                % if len(game.subscribed()) == game.capacity():
-                  % if current_user.user_id() not in set(game.reserved_people()):
-                  <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" {{'disabled="disabled"' if len(game.reserved_people())==game.reserved() else ''}} data-toggle="dropdown">Места заполнены</button>
-                  % end
-
-                  % if current_user.user_id() in set(game.reserved_people()):
-                  <button type="button" class="btn btn-warning btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" data-toggle="dropdown">В резерве</button>
-                  % end
-
-                  % if not game.is_subscribed():
-                  % if game.reserved()>0:
-                  % if len(game.reserved_people()) < game.reserved():
-                  % if current_user.user_id() not in set(game.reserved_people()):
-                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}" role="menu">
-                      <li id="{{game.game_id()}}-{{current_user.user_id()}}">
-                        <a style="cursor:pointer;">Записаться в резерв</a>
-                      </li>
-                    </ul>
-                  % end
-                  % end
-                  % end
-                  % end
-
-                  % if current_user.user_id() in set(game.reserved_people()):
-                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
-                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
-                        <a style="cursor:pointer;">Выйти из резерва</a>
-                      </li>
-                    </ul>
-                  % end
-
-                  % if game.is_subscribed():
-                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
-                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
-                        <a style="cursor:pointer;">Не пойду</a>
-                      </li>
-                    </ul>
-                  % end
-                % end
-
-                % if len(game.subscribed()) < game.capacity() or game.capacity()<0:
-                  % if game.is_subscribed():
-                    <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" data-toggle="dropdown">Я записан{{'а' if current_user.sex()=='female' else ''}}</button>
-                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
-                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
-                        <a style="cursor:pointer;">Не пойду</a>
-                      </li>
-                    </ul>
-                  % end
-
-                  % if current_user.user_id() in set(game.reserved_people()):
-                    <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" data-toggle="dropdown">Я в резерве</button>
-                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
-                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
-                        <a style="cursor:pointer;">Не пойду</a>
-                      </li>
-                    </ul>
-                  % end
-
-                  % if not game.is_subscribed():
-                    <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}" data-toggle="dropdown">Идет набор</button>
-                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}" role="menu">
-                      <li id="{{game.game_id()}}-{{current_user.user_id()}}">
-                        <a style="cursor:pointer;">Пойду</a>
-                      </li>
-                    </ul>
-                  % end
-                % end
-              % end
-              % if not loggedin and game.can_subscribe():
-                % if len(game.subscribed()) == game.capacity():
-                  <a href="#" data-toggle="modal" data-target="#loginModal">
-                    <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Места заполнены</button>
-                  </a>
-                % end
-                % if len(game.subscribed()) < game.capacity():
-                  <a href="#" data-toggle="modal" data-target="#loginModal">
-                    <button type="button" class="btn btn-primary btn-xs">Идет набор</button>
-                  </a>
-                % end
-              % end
-
-              % if not game.can_subscribe():
-                % if game.datetime.soon:
+              ehlo
+              % if loggedin:
+                % if game.datetime.passed:
+                    <button id="blocked" type="button" class="btn btn-success btn-xs" disabled>Игра прошла</button>
+                % elif game.datetime.soon:
                     <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
                     <script type="text/javascript">
                       $('#blocked').tooltip();
                     </script>
-                % end
-                % if game.datetime.now:
+                % elif game.datetime.now:
                     <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра идет</button>
+                % elif game.is_subscribed():
+                    <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" data-toggle="dropdown">Вы записаны</button>
+                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
+                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
+                        <a style="cursor:pointer;">Отписаться</a>
+                      </li>
+                    </ul>
+                % elif game.capacity()>0 and len(game.subscribed())<game.capacity() or game.capacity()<0:
+                    % if game.reserved() and current_user.user_id() in set(game.reserved_people()):
+                        <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown">В резерве</button>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a style="cursor:pointer;">Записаться</a></li>
+                          <li><a style="cursor:pointer;">Выйти из резерва</a></li>
+                        </ul>
+                    % else:
+                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}" data-toggle="dropdown">Идет набор</button>
+                        <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}" role="menu">
+                          <li id="{{game.game_id()}}-{{current_user.user_id()}}">
+                            <a style="cursor:pointer;">Записаться</a>
+                          </li>
+                        </ul>
+                    % end
+                % elif game.reserved():
+                    % if current_user.user_id() in set(game.reserved_people()):
+                        <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown">В резерве</button>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a style="cursor:pointer;">Выйти из резерва</a></li>
+                        </ul>
+                    % elif len(game.reserved_people())<game.reserved():
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}" data-toggle="dropdown">Мест нет</button>
+                        <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}" role="menu">
+                          <li id="{{game.game_id()}}-{{current_user.user_id()}}">
+                            <a style="cursor:pointer;">Записаться в резерв</a>
+                          </li>
+                        </ul>
+                    % else:
+                        <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Мест нет</button>
+                    % end
+                % else:
+                    <button type="button" class="btn btn-default btn-xs" disabled="disabled" data-toggle="dropdown">Мест нет</button>
                 % end
+              % else:
                 % if game.datetime.passed:
                     <button id="blocked" type="button" class="btn btn-success btn-xs" disabled>Игра прошла</button>
+                % elif game.datetime.soon:
+                    <button id="blocked" type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="bottom" title="До игры осталось менее 1 часа">Скоро начнется</button>
+                    <script type="text/javascript">
+                      $('#blocked').tooltip();
+                    </script>
+                % elif game.datetime.now:
+                    <a href="#" data-toggle="modal" data-target="#loginModal">
+                        <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра идет</button>
+                    </a>
+                % elif game.capacity()>0 and len(game.subscribed())<game.capacity():
+                    <a href="#" data-toggle="modal" data-target="#loginModal">
+                        <button type="button" class="btn btn-primary btn-xs">Идет набор</button>
+                    </a>
+                % else:
+                    <a href="#" data-toggle="modal" data-target="#loginModal">
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="dropdown">Мест нет</button>
+                    </a>
                 % end
               % end
               </div>
