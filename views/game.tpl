@@ -140,37 +140,43 @@
                 % elif game.datetime.now:
                     <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра идет</button>
                 % elif game.is_subscribed():
-                    <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}-u" data-toggle="dropdown">Вы записаны</button>
-                    <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}-u" role="menu">
-                      <li id="{{game.game_id()}}-{{current_user.user_id()}}-u">
+                    <button type="button" class="btn btn-success btn-xs dropdown-toggle button-{{game.game_id()}}" data-toggle="dropdown">Вы записаны</button>
+                    <ul class="dropdown-menu ul-{{game.game_id()}}" role="menu">
+                      <li id="{{game.game_id()}}-unsubscribe">
                         <a style="cursor:pointer;">Отписаться</a>
                       </li>
                     </ul>
                 % elif game.capacity()>0 and len(game.subscribed())<game.capacity() or game.capacity()<0:
                     % if game.reserved() and current_user.user_id() in set(game.reserved_people()):
-                        <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown">В резерве</button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a style="cursor:pointer;">Записаться</a></li>
-                          <li><a style="cursor:pointer;">Выйти из резерва</a></li>
+                        <button type="button" class="btn btn-warning btn-xs dropdown-toggle button-{{game.game_id()}}" data-toggle="dropdown">В резерве</button>
+                        <ul class="dropdown-menu ul-{{game.game_id()}}" role="menu">
+                          <li id="{{game.game_id()}}-fromreserve">
+                            <a style="cursor:pointer;">Записаться</a>
+                          </li>
+                          <li id="{{game.game_id()}}-unreserve">
+                            <a style="cursor:pointer;">Выйти из резерва</a>
+                          </li>
                         </ul>
                     % else:
-                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}" data-toggle="dropdown">Идет набор</button>
-                        <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}" role="menu">
-                          <li id="{{game.game_id()}}-{{current_user.user_id()}}">
+                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle button-{{game.game_id()}}" data-toggle="dropdown">Идет набор</button>
+                        <ul class="dropdown-menu ul-{{game.game_id()}}" role="menu">
+                          <li id="{{game.game_id()}}-subscribe">
                             <a style="cursor:pointer;">Записаться</a>
                           </li>
                         </ul>
                     % end
                 % elif game.reserved():
                     % if current_user.user_id() in set(game.reserved_people()):
-                        <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown">В резерве</button>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a style="cursor:pointer;">Выйти из резерва</a></li>
+                        <button type="button" class="btn btn-warning btn-xs dropdown-toggle button-{{game.game_id()}}" data-toggle="dropdown">В резерве</button>
+                        <ul class="dropdown-menu ul-{{game.game_id()}}" role="menu">
+                          <li id="{{game.game_id()}}-unreserve">
+                            <a style="cursor:pointer;">Выйти из резерва</a>
+                          </li>
                         </ul>
                     % elif len(game.reserved_people())<game.reserved():
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game.game_id()}}-{{current_user.user_id()}}" data-toggle="dropdown">Мест нет</button>
-                        <ul class="dropdown-menu ul-{{game.game_id()}}-{{current_user.user_id()}}" role="menu">
-                          <li id="{{game.game_id()}}-{{current_user.user_id()}}">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle button-{{game.game_id()}}" data-toggle="dropdown">Мест нет</button>
+                        <ul class="dropdown-menu ul-{{game.game_id()}}" role="menu">
+                          <li id="{{game.game_id()}}-reserve">
                             <a style="cursor:pointer;">Записаться в резерв</a>
                           </li>
                         </ul>
@@ -232,50 +238,25 @@
     <script type="text/javascript">
     $(document).on('click', 'li', function() {
       arr = $(this).attr("id").split('-');
-      var user_id = arr[1],
-        game_id = arr[0],
-        unsubscribe = arr[2];
-
-        var pane = 'None';
-
-        if (unsubscribe=='u') {
-          $.ajax({
-            url: '/subscribe',
-            data: {
-              game_id: game_id,
-              unsubscribe: 0
-            },
-            async: true,
-            success: function (responseData, textStatus) {
-              $('#gamepane-'+game_id+'-'+pane).fadeOut('slow', function() {
-                  $('#gamepane-'+game_id+'-'+pane).replaceWith(responseData);
-              });
-            },
-            error: function (response, status, errorThrown) {
-              alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
-            },
-            type: "POST",
-            dataType: "text"
+      var game_id = arr[0], action = arr[1];
+      var pane = 'None';
+      $.ajax({
+        url: '/subscribe',
+        data: {
+          game_id: game_id, action: action
+        },
+        async: true,
+        success: function (responseData, textStatus) {
+          $('#gamepane-'+game_id+'-'+pane).fadeOut('slow', function() {
+              $('#gamepane-'+game_id+'-'+pane).replaceWith(responseData);
           });
-        } else {
-          $.ajax({
-            url: '/subscribe',
-            data: {
-              game_id: game_id
-            },
-            async: true,
-            success: function (responseData, textStatus) {
-              $('#gamepane-'+game_id+'-'+pane).fadeOut('slow', function() {
-                  $('#gamepane-'+game_id+'-'+pane).replaceWith(responseData);
-              });
-            },
-            error: function (response, status, errorThrown) {
-              alert('Все плохо' + response + status + errorThrown);
-            },
-            type: "POST",
-            dataType: "text"
-          });
-        }
+        },
+        error: function (response, status, errorThrown) {
+          alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+        },
+        type: "POST",
+        dataType: "text"
+      });
 
     });
     </script>
