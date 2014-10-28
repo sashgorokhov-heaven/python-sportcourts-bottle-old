@@ -85,10 +85,7 @@
               <div class="panel panel-deafult">
                 <br>
                 % for game in games:
-                    % if current_user.user_id() in set(game.subscribed()):
-                        % include("game", game=game, tab_name="my")
-                    % end
-                    % if current_user.user_id() in set(game.reserved_people()):
+                    % if current_user.user_id() in set(game.reserved_people()) or current_user.user_id() in set(game.subscribed()):
                         % include("game", game=game, tab_name="my")
                     % end
                 % end
