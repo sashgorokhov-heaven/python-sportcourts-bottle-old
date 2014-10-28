@@ -1,154 +1,195 @@
 % rebase("_adminpage", title="Админка")
-<h1 class="page-header">Dashboard</h1>
+<h1 class="page-header">Обзор месяца</h1>
 
-<div class="row placeholders">
-  <div class="col-xs-6 col-sm-3 placeholder">
-    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <span class="text-muted">Something else</span>
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
+    <h2>Финансы</h2>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Идеальный доход:
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>180 (1 игр)</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Потеряно изза пустых мест:
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>-180 (-100.0%)</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Потеряно изза непришедших:
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>0 (0.0%)</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Потеряно изза неоплативших:
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>0 (0.0%)</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Реальный доход:
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>360 (200.0%)</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Расходы на аренду:
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>0.0 (0.0%)</small>
+          </td>
+        </tr>
+        <tr class="success">
+          <td>
+            <small>
+              <strong>
+                Прибыль
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>360.0 (100.0%)</small>
+          </td>
+        </tr>
+        <tr class="success">
+          <td>
+            <small>
+              <strong>
+                Баскетбол
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>360.0 (100.0%)</small>
+          </td>
+        </tr>
+        <tr class="success">
+          <td>
+            <small>
+              <strong>
+                Футбол
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>360.0 (100.0%)</small>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
-  <div class="col-xs-6 col-sm-3 placeholder">
-    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <span class="text-muted">Something else</span>
-  </div>
-  <div class="col-xs-6 col-sm-3 placeholder">
-    <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <span class="text-muted">Something else</span>
-  </div>
-  <div class="col-xs-6 col-sm-3 placeholder">
-    <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-    <h4>Label</h4>
-    <span class="text-muted">Something else</span>
+  <div class="col-xs-12 col-sm-6">
+    <h2>Посещаемость</h2>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Уникальных посетителей за месяц
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>180</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Уников в день
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>10</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Новых пользователей
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>6</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Записей на игры
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>140</small>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>
 
-<h2 class="sub-header">Section title</h2>
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Header</th>
-        <th>Header</th>
-        <th>Header</th>
-        <th>Header</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1,001</td>
-        <td>Lorem</td>
-        <td>ipsum</td>
-        <td>dolor</td>
-        <td>sit</td>
-      </tr>
-      <tr>
-        <td>1,002</td>
-        <td>amet</td>
-        <td>consectetur</td>
-        <td>adipiscing</td>
-        <td>elit</td>
-      </tr>
-      <tr>
-        <td>1,003</td>
-        <td>Integer</td>
-        <td>nec</td>
-        <td>odio</td>
-        <td>Praesent</td>
-      </tr>
-      <tr>
-        <td>1,003</td>
-        <td>libero</td>
-        <td>Sed</td>
-        <td>cursus</td>
-        <td>ante</td>
-      </tr>
-      <tr>
-        <td>1,004</td>
-        <td>dapibus</td>
-        <td>diam</td>
-        <td>Sed</td>
-        <td>nisi</td>
-      </tr>
-      <tr>
-        <td>1,005</td>
-        <td>Nulla</td>
-        <td>quis</td>
-        <td>sem</td>
-        <td>at</td>
-      </tr>
-      <tr>
-        <td>1,006</td>
-        <td>nibh</td>
-        <td>elementum</td>
-        <td>imperdiet</td>
-        <td>Duis</td>
-      </tr>
-      <tr>
-        <td>1,007</td>
-        <td>sagittis</td>
-        <td>ipsum</td>
-        <td>Praesent</td>
-        <td>mauris</td>
-      </tr>
-      <tr>
-        <td>1,008</td>
-        <td>Fusce</td>
-        <td>nec</td>
-        <td>tellus</td>
-        <td>sed</td>
-      </tr>
-      <tr>
-        <td>1,009</td>
-        <td>augue</td>
-        <td>semper</td>
-        <td>porta</td>
-        <td>Mauris</td>
-      </tr>
-      <tr>
-        <td>1,010</td>
-        <td>massa</td>
-        <td>Vestibulum</td>
-        <td>lacinia</td>
-        <td>arcu</td>
-      </tr>
-      <tr>
-        <td>1,011</td>
-        <td>eget</td>
-        <td>nulla</td>
-        <td>Class</td>
-        <td>aptent</td>
-      </tr>
-      <tr>
-        <td>1,012</td>
-        <td>taciti</td>
-        <td>sociosqu</td>
-        <td>ad</td>
-        <td>litora</td>
-      </tr>
-      <tr>
-        <td>1,013</td>
-        <td>torquent</td>
-        <td>per</td>
-        <td>conubia</td>
-        <td>nostra</td>
-      </tr>
-      <tr>
-        <td>1,014</td>
-        <td>per</td>
-        <td>inceptos</td>
-        <td>himenaeos</td>
-        <td>Curabitur</td>
-      </tr>
-      <tr>
-        <td>1,015</td>
-        <td>sodales</td>
-        <td>ligula</td>
-        <td>in</td>
-        <td>libero</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col-xs-12 col-sm-6">
+    <h2>Технические функции</h2>
+
+    <a href="" class="btn btn-link">Просмотр логов</a>
+    <br>
+    <a href="" class="btn btn-link">Перезагрузка страницы</a>
+    <input type="text">
+    <br>
+    <a href="" class="btn btn-link">Перезагрузка всего сервера</a>
+    <br>
+    <a href="" class="btn btn-link">Сброс кеша</a>
+    <br>
+    <a href="" class="btn btn-link">Общий дамп</a>
+    <br>
+    <a href="" class="btn btn-link">Тестовый режим</a>
+    <input type="checkbox">
+  </div>
 </div>
