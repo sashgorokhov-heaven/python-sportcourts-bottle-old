@@ -187,7 +187,7 @@ class _PageController:
 
 
 def set_cookie(name:str, value):
-    return bottle.response.set_cookie(name, value, config.secret)
+    return bottle.response.set_cookie(name, value, config.secret, max_age=604800)
 
 
 def get_cookie(name:str, default=None):
