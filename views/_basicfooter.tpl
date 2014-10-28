@@ -1,9 +1,11 @@
+      % if loggedin and tplname!='index':
       <div class="container theme-showcase">
         <br>
         <div class="alert alert-danger fade in">
           <p>Если вы обнаружили проблему в работе сайта, или что-то подозрительное, пожалуйста, напишите <a target="_blank" href="https://vk.com/write28638603">СЮДА</a></p>
         </div>
       </div>
+      % end
   
       <div id="footer">
         <div class="container">
