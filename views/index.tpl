@@ -1,4 +1,5 @@
 % rebase("_fatpage", title="Главная")
+% import random
       <div class="row hidden-xs bigheadrow">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <!-- Indicators -->
