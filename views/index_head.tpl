@@ -41,4 +41,40 @@
       50% { opacity:0; }
       100% { opacity:1; }
   }
+
+  .bigheadrow{
+    height:100vh;
+    max-height:800px;
+  }
+
+  .bighead{
+    position:absolute;
+    top:{{'45' if loggedin else '20'}}%;
+    left:25%;
+    z-index:30;
+    width:50%;
+    height: 100vh;
+    max-height:800px;
+    color: rgb(255, 255, 255);
+    text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
+  }
+
+  .item{
+    background-color:black;
+    height:100vh;
+    max-height:800px;
+  }
+
+  .item img{
+    min-height:100% !important;
+    opacity:0.5;
+  }
+
+  .smallhead{
+    padding-top:60px;
+  }
+
+  .indexpromo{
+    padding-bottom: 30px;
+  }
 </style>

@@ -34,7 +34,9 @@
     <div id="preloader">
       <div id="status">&nbsp;</div>
     </div>
-    % include("_basicnavbar", loggedin=loggedin, current_user=current_user)
+    % if loggedin:
+      % include("_basicnavbar", loggedin=loggedin, current_user=current_user)
+    % end
     <div class="container-fluid theme-showcase">
     <section id="content">
         % setdefault("error_description", '')
