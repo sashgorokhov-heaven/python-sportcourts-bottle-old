@@ -100,7 +100,7 @@
           <br>
           <br>
 
-          % if user.user_id()==current_user.user_id() or current_user.userlevel.admin():
+          % if user.user_id()==current_user.user_id():
             <div class="panel-group" id="accordion">
               % if len(user_games)>0:
                 <div class="panel panel-default">
