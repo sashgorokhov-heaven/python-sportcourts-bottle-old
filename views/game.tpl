@@ -194,7 +194,6 @@
             </div>
             <div class="col-md-2">
               <div class="btn-group" style="float:right;">
-              ehlo
               % if loggedin:
                 % if game.datetime.passed:
                     <button id="blocked" type="button" class="btn btn-success btn-xs" disabled>Игра прошла</button>
