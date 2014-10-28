@@ -88,6 +88,9 @@
                     % if current_user.user_id() in set(game.subscribed()):
                         % include("game", game=game, tab_name="my")
                     % end
+                    % if current_user.user_id() in set(game.reserved_people()):
+                        % include("game", game=game, tab_name="my")
+                    % end
                 % end
               </div>
             </div>
