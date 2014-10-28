@@ -1,10 +1,10 @@
 <ul class="nav nav-sidebar">
-  <li class="active"><a href="/admin">Overview</a></li>
-  <li><a href="#">Reports</a></li>
-  <li><a href="#">Analytics</a></li>
-  <li><a href="#">Export</a></li>
+  <li class="active"><a href="/admin">Обзор</a></li>
+  <li><a href="#">Посещаемость</a></li>
+  <li><a href="/fin">Финансы</a></li>
 </ul>
 <ul class="nav nav-sidebar">
+  <li><a href="">Технические функции</a></li>
   <li><a href="">Nav item</a></li>
   <li><a href="">Nav item again</a></li>
   <li><a href="">One more nav</a></li>
