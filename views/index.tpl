@@ -12,7 +12,7 @@
           <div class="text-center bighead">
             <h1>SportCourts</h1>
             <p class="lead">Ваш проводник в мире любительского спорта.</p>
-            <p class="lead">Играй в <span class="gamestyped"></span> вместе с нами!</p>
+             <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
             % if not loggedin:
                 <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
                 <p class="text-center">или</p>
@@ -63,7 +63,7 @@
       <div class="jumbotron visible-xs smallhead">
         <h1>SportCourts</h1>
         <p class="lead">Ваш проводник в мире любительского спорта.</p>
-        <p class="lead">Наша бета-версия стартовала!</p>
+        <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
         % if not loggedin:
             <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
             <p class="text-center">или</p>
