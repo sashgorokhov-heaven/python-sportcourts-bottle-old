@@ -241,5 +241,147 @@
               % end
             </div>
           % end
+
+          % if current_user.userlevel.admin():
+            <div class="panel-group" id="accordion">
+              % if len(user_games)>0:
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        Мои игры
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                              <tr class="active">
+                                <td>№ игры</td>
+                                <td>Дата</td>
+                                <td>Название</td>
+                                <td>Вид спорта</td>
+                                <td>Площадка</td>
+                                <td>Время на площадке</td>
+                              </tr>
+                              % for game in user_games:
+                                <tr>
+                                  <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
+                                  <td>{{game.datetime.beautiful.day_month()}}</td>
+                                  <td>{{game.description()}}</td>
+                                  <td>{{game.sport_type(True).title()}}</td>
+                                  <td>{{game.court_id(True).title()}}</td>
+                                  <td>{{game.duration()}} мин.</td>
+                                </tr>
+                              % end
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              % end
+              % if len(responsible_games)>0:
+                <div class="panel panel-warning">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        Игры, на которых я был ответственным.
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                              <tr class="warning">
+                                <td>№ игры</td>
+                                <td>Дата</td>
+                                <td>Название</td>
+                                <td>Вид спорта</td>
+                                <td>Площадка</td>
+                                <td>Статус отчета</td>
+                              </tr>
+                              % for game in responsible_games:
+                                <tr {{'class=active' if not game.reported() else ''}}>
+                                  <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
+                                  <td>{{game.datetime.beautiful.day_month()}}</td>
+                                  <td>{{game.description()}}</td>
+                                  <td>{{game.sport_type(True).title()}}</td>
+                                  <td>{{game.court_id(True).title()}}</td>
+                                  <td>
+                                   % if game.reported():
+                                        <a href="/report?game_id={{game.game_id()}}">Отправлен</a>
+                                   % end
+                                   % if not game.reported():
+                                        % if game.datetime.passed:
+                                            <a href="/report?game_id={{game.game_id()}}">Ожидается</a>
+                                        % end
+                                        % if not game.datetime.passed:
+                                            <a href="/list/{{game.game_id()}}">Распечатать списки</a>
+                                        % end
+                                   % end
+                                  </td>
+                                </tr>
+                              % end
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              % end
+              % if len(organizer_games)>0:
+                <div class="panel panel-danger">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                        Игры моего направления
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-bordered" style="font-size:90%; margin-bottom:0px;">
+                              <tr class="danger">
+                                <td>№ игры</td>
+                                <td>Дата</td>
+                                <td>Название</td>
+                                <td>Вид спорта</td>
+                                <td>Площадка</td>
+                                <td>Статус отчета</td>
+                                <td>Передача денег</td>
+                              </tr>
+                              % for game in organizer_games:
+                                <tr {{'class=active' if not game.reported() else ''}}>
+                                  <td><a href="/games?game_id={{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
+                                  <td>{{game.datetime.beautiful.day_month()}}</td>
+                                  <td>{{game.description()}}</td>
+                                  <td>{{game.sport_type(True).title()}}</td>
+                                  <td>{{game.court_id(True).title()}}</td>
+                                  <td>{{!'<a href="/report?game_id={}">Отправлен</a>'.format(game.game_id()) if game.reported() else 'Ожидается'}}</td>
+                                  <td> --- </td>
+                                </tr>
+                              % end
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              % end
+            </div>
+          % end
         </div>
       </div>
