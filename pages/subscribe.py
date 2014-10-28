@@ -73,7 +73,7 @@ class Subscribe(pages.Page):
             raise ValueError("Not ajax request")
 
         resp = self.subscribe(user_id, game_id) if not unsubscribe else self.unsubscribe(user_id, game_id)
-        resp.add_param('tab_name', bottle.request.forms.get("tab_name"))
+        resp.add_param('tab_name', bottle.request.forms.get("tab_name")) # TODO: unuseful?
         return resp
 
     def get(self):  # для ручного отписывания
