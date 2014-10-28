@@ -249,7 +249,7 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        Мои игры
+                        Игры пользователя
                       </a>
                     </h4>
                   </div>
@@ -290,7 +290,7 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                        Игры, на которых я был ответственным.
+                        Игры, на которых пользователь ответственным.
                       </a>
                     </h4>
                   </div>
@@ -343,7 +343,7 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                        Игры моего направления
+                        Созданные пользователем игры
                       </a>
                     </h4>
                   </div>
