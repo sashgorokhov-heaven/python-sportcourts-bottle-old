@@ -169,8 +169,7 @@
               % if game.capacity() < 0:
               <p><span class="glyphicon glyphicon-user"></span> Заявок: {{len(game.subscribed())}}</p>
               % end
-              % if len(game.subscribed()) > 0:
-              % if loggedin:
+              % if len(game.subscribed()) > 0 and loggedin:
               <div class="panel-group" id="accordion" style="margin-bottom:15px;">
                 <div class="panel panel-default">
                   <div class="panel-heading" style="text-align: center">
@@ -187,7 +186,6 @@
                   </div>
                 </div>
               </div>
-              % end
               % end
             </div>
             <div class="col-md-2">
