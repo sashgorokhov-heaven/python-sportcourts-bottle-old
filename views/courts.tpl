@@ -1,10 +1,9 @@
 % rebase("_basicpage", title=court.title())
-      <div class="profile">
-        <!-- <div class="row">
-          <div class="col-md-12">
-            <p class="lead">{{court.title()}}</p>
+        <div class="row">
+          <div class="col-md-12"  style="margin-top:50px;">
+            &nbsp;
           </div>
-        </div> -->
+        </div>
         <div class="row">
           <div class="col-md-8">
             <img src="/images/courts/{{court.court_id()}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
@@ -110,4 +109,3 @@
             <br><br>
           </div>
         </div>
-      </div>

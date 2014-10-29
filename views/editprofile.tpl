@@ -1,6 +1,10 @@
 % rebase("_basicpage", title="Изменение профиля")
-
-      <div class="row profile">
+      <div class="row">
+        <div class="col-md-12"  style="margin-top:50px;">
+          &nbsp;
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-12">
           <form id="profileForm" method="post" class="form-horizontal" action="/profile"
             data-bv-message="This value is not valid"  enctype="multipart/form-data"
