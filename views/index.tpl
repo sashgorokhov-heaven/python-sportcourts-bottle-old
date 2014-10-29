@@ -3,13 +3,13 @@
       <div class="row hidden-xs bigheadrow">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <!-- Indicators -->
-          <ol class="carousel-indicators">
+          <!-- <ol class="carousel-indicators">
             <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
             <li data-target="#carousel-example-generic" data-slide-to="1"></li>
             <li data-target="#carousel-example-generic" data-slide-to="2"></li>
             <li data-target="#carousel-example-generic" data-slide-to="3"></li>
             <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-          </ol>
+          </ol> -->
           <div class="text-center bighead">
             <h1>SportCourts</h1>
             <p class="h3">Ваш проводник в мире любительского спорта.</p>
@@ -28,7 +28,7 @@
               <div class="carousel-caption">
               </div>
             </div>
-            <div class="item">
+            <!-- <div class="item">
               <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg" alt="...">
               <div class="carousel-caption">
               </div>
@@ -47,7 +47,7 @@
               <img src="https://pp.vk.me/c620918/v620918493/116f4/hA1KaeFeLXU.jpg">
               <div class="carousel-caption">
               </div>
-            </div>
+            </div> -->
           </div>
 
           <!-- Controls -->
@@ -102,7 +102,7 @@
         </div>
       </div>
 
-      <div class="row hidden-xs bigheadrow">
+      <div class="row hidden-xs emailrow" style="margin-bottom: -50px;">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="text-center emailhead">
             <h2>Присоединяйся к сообществу спортсменов!</h2>
@@ -115,7 +115,7 @@
             </div><!-- /input-group -->
           </div>
           <!-- Wrapper for slides -->
-          <div class="carousel-inner" style="overflow:hidden;">
+          <div class="carousel-inner">
             <div class="item active">
               <img src="https://pp.vk.me/c620918/v620918493/11775/SvCsj0Bu6qY.jpg">
               <div class="carousel-caption">

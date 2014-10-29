@@ -58,9 +58,15 @@
     text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
   }
 
+  .emailrow{
+    height:100vh;
+    max-height:800px;
+    margin-bottom: -50px;
+  }
+
   .emailhead{
     position:absolute;
-    top:60%;
+    top:50%;
     left:15%;
     z-index:30;
     width:70%;
@@ -73,6 +79,7 @@
     background-color:black;
     height:100vh;
     max-height:800px;
+    overflow:hidden;
   }
 
   .item img{
