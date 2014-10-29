@@ -1,6 +1,11 @@
 % rebase("_basicpage", title=user.name)
 % setdefault('myfriend', False)
-      <div class="row profile">
+      <div class="row">
+        <div class="col-md-12"  style="margin-top:50px;">
+          &nbsp;
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-3">
           <img src="/images/avatars/{{user.user_id()}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
           <br>
