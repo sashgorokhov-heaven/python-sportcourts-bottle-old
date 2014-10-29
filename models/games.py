@@ -161,7 +161,7 @@ def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnecti
            " AND "
            " (datetime + INTERVAL duration MINUTE)!='{datetime}' AND (datetime + INTERVAL duration MINUTE)!=('{datetime}' + INTERVAL '{duration}' MINUTE)")
     sql = sql.format(court_id=court_id, datetime=datetime, duration=duration)
-    dbconnection.execute(sql)
+    dbconnection.execute(sql, dbutils.dbfields['games'])
     if len(dbconnection.last()) > 0:
         return Game(dbconnection.last()[0], dbconnection=dbconnection)
     return None
