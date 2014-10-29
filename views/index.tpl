@@ -16,9 +16,9 @@
             <p class="h3">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
             <br><br>
             % if not loggedin:
-                <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
-                <p class="text-center">или</p>
-                <p><a class="btn btn-main btn-lg btn-primary" href="#" data-toggle="modal" data-target="#loginModal" role="button">Войти</a></p>
+              <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+              <p class="text-center">или</p>
+              <p><a class="btn btn-main btn-lg btn-primary" href="#" data-toggle="modal" data-target="#loginModal" role="button">Войти</a></p>
             % end
           </div>
           <!-- Wrapper for slides -->
@@ -62,16 +62,6 @@
       <script>
         $('.carousel').carousel();
       </script>
-      <div class="jumbotron visible-xs smallhead">
-        <h1>SportCourts</h1>
-        <p class="lead">Ваш проводник в мире любительского спорта.</p>
-        <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
-        % if not loggedin:
-            <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
-            <p class="text-center">или</p>
-            <p><a class="btn btn-main btn-lg btn-primary" href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/auth&response_type=code&v=5.21" role="button">Войти через ВКонтакте</a></p>
-        % end
-      </div>
 
       <div class="row hidden-xs">
         <div class="col-md-12 bigheadrow">
@@ -110,6 +100,42 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="row hidden-xs bigheadrow">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="text-center emailhead">
+            <h2>Присоединяйся к сообществу спортсменов!</h2>
+            <br><br>
+            <div class="input-group" style="max-width:500px; margin: 0 auto;">
+              <input type="text" class="form-control input-lg" placeholder="Введи свой email">
+              <span class="input-group-btn">
+                <button class="btn btn-main btn-lg btn-success" type="button">Присоединиться</button>
+              </span>
+            </div><!-- /input-group -->
+          </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" style="overflow:hidden;">
+            <div class="item active">
+              <img src="https://pp.vk.me/c620918/v620918493/11775/SvCsj0Bu6qY.jpg">
+              <div class="carousel-caption">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Началь мобильного -->
+
+      <div class="jumbotron visible-xs smallhead">
+        <h1>SportCourts</h1>
+        <p class="lead">Ваш проводник в мире любительского спорта.</p>
+        <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
+        % if not loggedin:
+            <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+            <p class="text-center">или</p>
+            <p><a class="btn btn-main btn-lg btn-primary" href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/auth&response_type=code&v=5.21" role="button">Войти через ВКонтакте</a></p>
+        % end
       </div>
 
       <div class="container visible-xs">

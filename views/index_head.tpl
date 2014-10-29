@@ -53,7 +53,17 @@
     left:15%;
     z-index:30;
     width:70%;
-    height: 100vh;
+    max-height:800px;
+    color: rgb(255, 255, 255);
+    text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
+  }
+
+  .emailhead{
+    position:absolute;
+    top:60%;
+    left:15%;
+    z-index:30;
+    width:70%;
     max-height:800px;
     color: rgb(255, 255, 255);
     text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
@@ -72,6 +82,7 @@
 
   .smallhead{
     padding-top:60px;
+    padding-bottom: 0;
   }
 
   .indexpromo{
