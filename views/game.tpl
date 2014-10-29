@@ -243,7 +243,7 @@
       $.ajax({
         url: '/subscribe',
         data: {
-          game_id: game_id, action: action
+          game_id: game_id, action: action, tab_name:pane
         },
         async: true,
         success: function (responseData, textStatus) {

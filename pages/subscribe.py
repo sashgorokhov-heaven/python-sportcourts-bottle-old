@@ -135,7 +135,7 @@ class Subscribe(pages.Page):
         resp = getattr(self, action, None)(user_id, game_id)
         if not resp: raise bottle.HTTPError(404)
 
-        resp.add_param('tab_name', bottle.request.forms.get("tab_name")) # TODO: unuseful?
+        resp.add_param('tab_name', bottle.request.forms.get("tab_name"))
         return resp
 
     def get(self):  # для ручного отписывания
