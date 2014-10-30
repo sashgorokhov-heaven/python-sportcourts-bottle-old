@@ -118,10 +118,6 @@
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="text-center emailhead">
             <h2>Присоединяйся к сообществу спортсменов!</h2>
-<<<<<<< HEAD
-            <br>
-            <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
-=======
             <br><br>
             <div class="input-group" style="min-width:498px; margin: 0 auto;">
               <form action="" style="text-align: center">
@@ -131,7 +127,6 @@
                 </span>
               </form>
             </div><!-- /input-group -->
->>>>>>> new-registration
           </div>
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
