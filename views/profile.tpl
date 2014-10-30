@@ -10,7 +10,7 @@
           <img src="/images/avatars/{{user.user_id()}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
           <br>
           % if current_user.userlevel.admin():
-            % if
+            % if not user.activated():
               <br>
               <a class="btn btn-danger btn-block profile-avatar" >
                Не активирован
