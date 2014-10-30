@@ -9,6 +9,20 @@
         <div class="col-md-3">
           <img src="/images/avatars/{{user.user_id()}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
           <br>
+          % if current_user.userlevel.admin():
+            % if
+              <br>
+              <a class="btn btn-danger btn-block profile-avatar" >
+               Не активирован
+              </a>
+            % end
+          % end
+          % if user.banned():
+            <br>
+              <a class="btn btn-warning btn-block profile-avatar" >
+               Забанен
+              </a>
+          % end
           % if loggedin and user.user_id()!=current_user.user_id():
           <br>
             <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user.user_id()}}">
