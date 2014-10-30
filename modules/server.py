@@ -4,7 +4,7 @@ import config
 import modules
 
 
-bottle.TEMPLATE_PATH.append('views')
+list(map(bottle.TEMPLATE_PATH.append, config.paths.server.views))
 bottle.debug(config.debug)
 
 import pages
