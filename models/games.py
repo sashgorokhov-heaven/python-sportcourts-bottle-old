@@ -242,7 +242,7 @@ def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> 
 
 @autodb
 def get_game_stats(user_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
-    sql = "SELECT game_id, status FROM usergames WHERE user_id={} AND STATUS=2".format(user_id)
+    sql = "SELECT game_id, status FROM reports WHERE user_id={} AND STATUS=2".format(user_id)
     usergames = dbconnection.execute(sql)
     game_ids = list(map(lambda x: x[0], usergames)) if len(usergames) != 0 else list()
     games = get_by_id(game_ids, dbconnection=dbconnection)
