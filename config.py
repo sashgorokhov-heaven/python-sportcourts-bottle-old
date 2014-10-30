@@ -3,11 +3,12 @@ import sys
 import os
 import itertools
 
+configpath = '/bsp' # сюда путь до конфига
 
-sys.path.append('/bsp')
+sys.path.append(configpath)
 
-if not os.path.exists('/bsp/serverconfig.py'):
-    raise FileNotFoundError('Config .py file is not found in /bsp folder!')
+if not os.path.exists(os.path.join(configpath, 'serverconfig.py')):
+    raise FileNotFoundError('Config .py file is not found in {} folder!'.format(configpath))
 
 from serverconfig import *
 
