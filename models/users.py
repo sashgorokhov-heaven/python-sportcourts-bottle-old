@@ -11,7 +11,7 @@ JUDGE = 4
 
 
 @autodb
-def get(user_id, userlevel:int=-1, count:slice=slice(0, 20), dbconnection:dbutils.DBConnection=None) -> User:
+def get(user_id, userlevel:int=-1, activated:int=0, count:slice=slice(0, 20), dbconnection:dbutils.DBConnection=None) -> User:
     if isinstance(user_id, str) and len(user_id.split(',')) > 0:
         user_id = splitstrlist(user_id)
         if len(user_id) == 1:
@@ -32,6 +32,11 @@ def get(user_id, userlevel:int=-1, count:slice=slice(0, 20), dbconnection:dbutil
         sql += (' WHERE ' if user_id == 0 else ' AND ') + \
                ("LOCATE('|{}|', userlevel)".format(userlevel) if isinstance(userlevel, int) else ' AND '.join(
                    map(lambda x: "LOCATE('|{}|', userlevel)".format(x), userlevel)))
+
+    if activated>0:
+        sql += ' AND activated=1 '
+    elif activated<0:
+        sql += ' AND activated=0 '
 
     if user_id == 0:
         sql += " LIMIT {}, {}".format(count.start if count.start else 0, count.stop)

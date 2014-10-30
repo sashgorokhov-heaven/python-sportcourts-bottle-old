@@ -12,8 +12,8 @@ USERS_PER_PAGE = 8
 class Users(pages.Page):
     def get(self):
         with dbutils.dbopen() as db:
-            count = db.execute("SELECT COUNT(user_id) FROM users")[0][0]
-            allusers = users.get(0, count=slice(*modules.pager(1, count=USERS_PER_PAGE)))
+            count = db.execute("SELECT COUNT(user_id) FROM users WHERE activated=1")[0][0]
+            allusers = users.get(0, activated=1, count=slice(*modules.pager(1, count=USERS_PER_PAGE)))
             page = pages.PageBuilder('users', allusers=allusers, count=count)
             if pages.auth.loggedin():
                 if len(pages.auth.current().friends()) > 0:
@@ -28,7 +28,7 @@ class Users(pages.Page):
             data = list()
             if section == 'all':
                 with dbutils.dbopen() as db:
-                    allusers = users.get(0, count=slice(startfrom, USERS_PER_PAGE), dbconnection=db)
+                    allusers = users.get(0, activated=1,  count=slice(startfrom, USERS_PER_PAGE), dbconnection=db)
                     page = pages.PageBuilder('user_row')
                     if pages.auth.loggedin():
                         if len(pages.auth.current().friends()) > 0:
@@ -45,7 +45,7 @@ class Users(pages.Page):
                 query = bottle.request.forms.get('q')
                 with dbutils.dbopen() as db:
                     allusers = users.search(query, dbconnection=db)
-                    page = pages.PageBuilder('users', allusers=users.get(allusers, dbconnection=db),
+                    page = pages.PageBuilder('users', allusers=users.get(allusers, activated=1, dbconnection=db),
                                              count=len(allusers),
                                              search=True, search_q=bottle.request.forms.get('q'))
                     if pages.auth.loggedin() and len(pages.auth.current().friends()) > 0:
