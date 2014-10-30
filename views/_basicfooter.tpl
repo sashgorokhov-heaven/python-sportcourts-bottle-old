@@ -63,13 +63,39 @@
                 </div>
                 <div class="form-group">
                   <div class="col-sm-10 col-sm-offset-2">
-                    <button type="submit" class="btn btn-default" name="submit_reg">Войти</button> &nbsp; или &nbsp; <a href="/registration">   Зарегистрироваться</a>
+                    <button type="submit" class="btn btn-default" name="submit_reg">Войти</button> &nbsp; или &nbsp; <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#regModal">Зарегистрироваться</a>
                     <br>
                     <br>
                     <a href="/recover">Восстановить пароль</a> 
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Регистрация</h4>
+            </div>
+      
+            <div class="modal-body text-center">
+              <h3>Присоединяйся к сообществу спортсменов!</h3>
+              <br><br>
+              <div class="input-group" style="min-width:498px; margin: 0 auto;">
+                <form action="" style="text-align: center">
+                  <input type="text" id="email1" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
+                  <span class="input-group-btn">
+                    <button id="email1button" class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
+                  </span>
+                </form>
+                <br>
+                <br>
+              </div><!-- /input-group -->
             </div>
           </div>
         </div>
