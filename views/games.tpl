@@ -118,7 +118,8 @@
             async: true,
             success: function (responseData, textStatus) {
               $('#gamepane-'+game_id+'-'+pane).fadeOut('slow', function() {
-                  $('#gamepane-'+game_id+'-'+pane).replaceWith(responseData);
+                  $('#gamepane-'+game_id+'-all').replaceWith(responseData);
+                  $('#gamepane-'+game_id+'-my').replaceWith(responseData);
               });
             },
             error: function (response, status, errorThrown) {
