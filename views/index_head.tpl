@@ -8,6 +8,40 @@
 <script src="/view/js/typed.js"></script>
 
 <script>
+
+  $(document).ready(function() {
+      $(document).on('input','#email', function(){
+        if($(this).val() != '') {
+          var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
+          if(pattern.test($(this).val())){
+              $(this).css({'border' : '1px solid #569b44'});
+              $('#emailbutton').removeAttr('disabled');
+          } else {
+              $(this).css({'border' : '1px solid #ff0000'});
+              $('#emailbutton').attr('disabled', 'disabled');
+          }
+        } else {
+          $(this).css({'border' : '1px solid #ff0000'});
+          $('#emailbutton').attr('disabled', 'disabled');
+        };
+      });
+      $(document).on('input','#email1', function(){
+        if($(this).val() != '') {
+          var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
+          if(pattern.test($(this).val())){
+              $(this).css({'border' : '1px solid #569b44'});
+              $('#email1button').removeAttr('disabled');
+          } else {
+              $(this).css({'border' : '1px solid #ff0000'});
+              $('#email1button').attr('disabled', 'disabled');
+          }
+        } else {
+          $(this).css({'border' : '1px solid #ff0000'});
+          $('#email1button').attr('disabled', 'disabled');
+        };
+      });
+  });
+
   $(function(){
     $(".gamestyped").typed({
       strings: ["футбол", "баскетбол", "волейбол"],
@@ -15,6 +49,15 @@
       backDelay: 600,
       loop: true,
       loopCount: false
+    });
+  });
+
+
+  $(document).on('click','#regbutton',function(){
+    $('#reg1').fadeOut('slow', function() {
+      $('#reg2').fadeIn('slow', function() {
+
+      });
     });
   });
 </script>

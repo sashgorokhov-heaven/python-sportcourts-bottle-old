@@ -16,7 +16,19 @@
             <p class="h3">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
             <br><br>
             % if not loggedin:
-              <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+              <div id="reg1">
+                <p>
+                  <a id="regbutton" class="btn btn-main btn-lg btn-success" role="button">Зарегистрироваться</a>
+                </p>
+              </div>
+              <div id="reg2" hidden class="input-group" style="min-width:498px; margin: 0 auto; margin-bottom:10px; display: none;">
+                <form action="" style="text-align: center">
+                  <input type="text" id="email" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
+                  <span class="input-group-btn">
+                    <button id="emailbutton" class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
+                  </span>
+                </form>
+              </div>
               <p class="text-center">или</p>
               <p><a class="btn btn-main btn-lg btn-primary" href="#" data-toggle="modal" data-target="#loginModal" role="button">Войти</a></p>
             % end
@@ -106,8 +118,20 @@
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="text-center emailhead">
             <h2>Присоединяйся к сообществу спортсменов!</h2>
+<<<<<<< HEAD
             <br>
             <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+=======
+            <br><br>
+            <div class="input-group" style="min-width:498px; margin: 0 auto;">
+              <form action="" style="text-align: center">
+                <input type="text" id="email1" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
+                <span class="input-group-btn">
+                  <button id="email1button" class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
+                </span>
+              </form>
+            </div><!-- /input-group -->
+>>>>>>> new-registration
           </div>
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
