@@ -15,14 +15,14 @@
           var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
           if(pattern.test($(this).val())){
               $(this).css({'border' : '1px solid #569b44'});
-              $('#valid').text('Верно');
+              $('#emailbutton').removeAttr('disabled');
           } else {
               $(this).css({'border' : '1px solid #ff0000'});
-              $('#valid').text('Не верно');
+              $('#emailbutton').attr('disabled', 'disabled');
           }
         } else {
           $(this).css({'border' : '1px solid #ff0000'});
-          $('#valid').text('Поле email не должно быть пустым');
+          $('#emailbutton').attr('disabled', 'disabled');
         };
       });
       $(document).on('input','#email1', function(){
@@ -30,14 +30,14 @@
           var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
           if(pattern.test($(this).val())){
               $(this).css({'border' : '1px solid #569b44'});
-              $('#valid').text('Верно');
+              $('#email1button').removeAttr('disabled');
           } else {
               $(this).css({'border' : '1px solid #ff0000'});
-              $('#valid').text('Не верно');
+              $('#email1button').attr('disabled', 'disabled');
           }
         } else {
           $(this).css({'border' : '1px solid #ff0000'});
-          $('#valid').text('Поле email не должно быть пустым');
+          $('#email1button').attr('disabled', 'disabled');
         };
       });
   });

@@ -25,7 +25,7 @@
                 <form action="" style="text-align: center">
                   <input type="text" id="email" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
                   <span class="input-group-btn">
-                    <button class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
+                    <button id="emailbutton" class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
                   </span>
                 </form>
               </div>
@@ -123,7 +123,7 @@
               <form action="" style="text-align: center">
                 <input type="text" id="email1" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
                 <span class="input-group-btn">
-                  <button class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
+                  <button id="email1button" class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
                 </span>
               </form>
             </div><!-- /input-group -->
