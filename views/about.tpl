@@ -1,5 +1,10 @@
 % rebase("_basicpage", title="О нас")
       <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-12"  style="margin-top:20px;">
+            &nbsp;
+          </div>
+        </div>
         <h1 class="text-center">Наша команда</h1>
         <div class="row">
           <div class="about">

@@ -49,11 +49,27 @@
 
   .bighead{
     position:absolute;
-    top:{{'45' if loggedin else '20'}}%;
+    top:{{'37' if loggedin else '20'}}%;
     left:15%;
     z-index:30;
     width:70%;
-    height: 100vh;
+    max-height:800px;
+    color: rgb(255, 255, 255);
+    text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
+  }
+
+  .emailrow{
+    height:100vh;
+    max-height:800px;
+    margin-bottom: -50px;
+  }
+
+  .emailhead{
+    position:absolute;
+    top:50%;
+    left:15%;
+    z-index:30;
+    width:70%;
     max-height:800px;
     color: rgb(255, 255, 255);
     text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
@@ -63,6 +79,7 @@
     background-color:black;
     height:100vh;
     max-height:800px;
+    overflow:hidden;
   }
 
   .item img{
@@ -72,6 +89,7 @@
 
   .smallhead{
     padding-top:60px;
+    padding-bottom: 0;
   }
 
   .indexpromo{

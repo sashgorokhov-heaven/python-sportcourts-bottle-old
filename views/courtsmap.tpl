@@ -1,10 +1,9 @@
 % rebase("_basicpage", title="Карта площадок")
-      <div class="profile">
-        <!-- <div class="row">
-          <div class="col-md-12">
-            <p class="lead">court.title()</p>
+        <div class="row">
+          <div class="col-md-12"  style="margin-top:50px;">
+            &nbsp;
           </div>
-        </div> -->
+        </div>
         <div class="row">
           <div class="col-md-3">
             <div class="row">
@@ -34,4 +33,3 @@
             <div id="YMapsID" style="width: 650px; height:400px; width: 100%;"></div>
           </div>
         </div>
-      </div>

@@ -1,6 +1,11 @@
 % rebase("_basicpage", title=user.name)
 % setdefault('myfriend', False)
-      <div class="row profile">
+      <div class="row">
+        <div class="col-md-12"  style="margin-top:50px;">
+          &nbsp;
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-3">
           <img src="/images/avatars/{{user.user_id()}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
           <br>
@@ -74,9 +79,13 @@
           % end
           <br>
           {{str(user.bdate)+', '+user.city_id(True).title()}}<br>
-          <br>
-          Рост: {{user.height()}} см.<br>
-          Вес: {{user.weight()}} кг.<br>
+          % if user.height() != 0:
+            <br>
+            Рост: {{user.height()}} см.<br>
+          % end
+          % if user.weight() != 0:
+            Вес: {{user.weight()}} кг.<br>
+          % end
           <br>
           % if loggedin and (user.user_id()==current_user.user_id() or current_user.userlevel.resporgadmin() or user.settings.show_phone()):
           Телефон: {{user.phone()}}

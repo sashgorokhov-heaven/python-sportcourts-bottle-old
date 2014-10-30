@@ -1,5 +1,10 @@
 % rebase("_basicpage", title="Настройки")
-      <div class="row profile">
+      <div class="row">
+        <div class="col-md-12"  style="margin-top:50px;">
+          &nbsp;
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-12">
           <h1>Настройки профиля</h1>
           <br>
