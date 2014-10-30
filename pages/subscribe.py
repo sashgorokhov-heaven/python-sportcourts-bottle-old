@@ -1,3 +1,4 @@
+import datetime
 import bottle
 
 import dbutils
@@ -50,7 +51,7 @@ class Subscribe(pages.Page):
 
             games.unsubscribe(user_id, game_id, dbconnection=db)
 
-            if game.datetime.tommorow or game.datetime.today:
+            if datetime.datetime.now()-game.datetime()<datetime.timedelta(days=3):
                 message = '{} отписался от игры "{}"'.format(create_link.user(pages.auth.current()),
                                                              create_link.game(game))
                 notifications.add(game.responsible_user_id(), message, 1, game_id, 2)
