@@ -1,8 +1,9 @@
 import os
+import config
 
 import uwsgidecorators
 
-
+# TODO: rework!
 if not os.path.exists('/bsp/dumps'):
     raise FileNotFoundError('/bsp/dumps not found')
 
