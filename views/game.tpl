@@ -151,7 +151,7 @@
                         <button type="button" class="btn btn-warning btn-xs dropdown-toggle button-{{game.game_id()}}" data-toggle="dropdown">В резерве</button>
                         <ul class="dropdown-menu ul-{{game.game_id()}}" role="menu">
                           <li id="{{game.game_id()}}-fromreserve">
-                            <a style="cursor:pointer;">Записаться</a>
+                            <a style="cursor:pointer;">В основу</a>
                           </li>
                           <li id="{{game.game_id()}}-unreserve">
                             <a style="cursor:pointer;">Выйти из резерва</a>
