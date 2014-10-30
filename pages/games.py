@@ -189,10 +189,7 @@ class Games(pages.Page):
                                         count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), dbconnection=db)
 
             if not bottle.request.is_ajax:
-                page = pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type, old=ptype == 'old')
-                if page_n < total_pages:
-                    page.add_param("nextpage", page_n + 1)
-                return page
+                return pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type, old=ptype == 'old')
             else:
                 data = {"stop": page_n >= total_pages, "games": list()}
                 page = pages.PageBuilder("game", tab_name="all")

@@ -55,7 +55,7 @@
         <div class="col-md-9">
           <ul class="nav nav-tabs">
             <li class="active"><a href="#all" data-toggle="tab">Все</a></li>
-            % if loggedin and len([game for game in games if current_user.user_id() in set(game.subscribed())])>0:
+            % if loggedin and (len([game for game in games if current_user.user_id() in set(game.subscribed())])>0 or len([game for game in games if current_user.user_id() in set(game.reserved_people())])>0):
             <li><a href="#my" data-toggle="tab">Мои игры</a></li>
             % end
             % if current_user.userlevel.organizer() or current_user.userlevel.admin():
