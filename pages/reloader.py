@@ -1,4 +1,6 @@
+import os
 import bottle
+import config
 
 import pages
 import uwsgi
@@ -15,7 +17,7 @@ class Reloader(pages.Page):
             raise bottle.redirect(bottle.request.get_header("Referer", "/"))
         raise bottle.HTTPError(404)
 
-    @uwsgidecorators.filemon("/bsp/server/python/pages")
+    @uwsgidecorators.filemon(os.path.join(config.paths.server.root, 'pages'))
     def reload_on_pages_change(self, *args):
         uwsgi.reload()
 

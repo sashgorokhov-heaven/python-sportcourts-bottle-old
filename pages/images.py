@@ -2,6 +2,7 @@ import os
 import hashlib
 
 import bottle
+import config
 
 import pages
 from models import games
@@ -52,15 +53,15 @@ def cache(func):
 
 class Images(pages.Page):
     def get_court_image(self, name):
-        return bottle.static_file("{}.jpg".format(name), '/bsp/data/images/courts/')
+        return bottle.static_file("{}.jpg".format(name), config.paths.images.courts)
 
     def get_static_image(self, name):
-        return bottle.static_file(name, '/bsp/data/images/static/')
+        return bottle.static_file(name, config.paths.images.static)
 
     @cache
     def get_avatar_image(self, name):
         filename = str(name)
-        dirname = '/bsp/data/images/avatars'
+        dirname = config.paths.images.avatars
         fullaname = os.path.join(dirname, filename + '.jpg')
         if not os.path.exists(fullaname):
             filename = 'blank'
@@ -77,13 +78,13 @@ class Images(pages.Page):
         return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname, '{}.jpg'.format(filename))
 
     def get_og_image(self, name):
-        return bottle.static_file(name, '/bsp/data/images/og/')
+        return bottle.static_file(name, config.paths.images.og)
 
     def get_report_image(self, game_id):
         game = games.get_by_id(game_id)
         if pages.auth.current().user_id() == game.responsible_user_id() or pages.auth.current().user_id() == \
                 game.created_by() or pages.auth.current().userlevel.admin():
-            return bottle.static_file(game_id + '.jpg', '/bsp/data/images/reports/')
+            return bottle.static_file(game_id + '.jpg', config.paths.images.reports)
         raise bottle.HTTPError(404)
 
     def get(self, what, name):

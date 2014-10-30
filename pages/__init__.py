@@ -56,9 +56,12 @@ class PageBuilder:
         self._kwargs[name] = value
 
     def template(self):
-        if os.path.exists(os.path.join(config.server_root, 'views', self._template_name + '_head.tpl')):
+        if self._search_head(self._template_name + '_head.tpl'):
             return bottle.template(self._template_name, header_name=self._template_name + '_head.tpl', **self._kwargs)
         return bottle.template(self._template_name, **self._kwargs)
+
+    def _search_head(self, tplname:str):
+        return any(map(lambda x: os.path.exists(os.path.join(x, tplname)), config.paths.server.views))
 
 
 class templates:
