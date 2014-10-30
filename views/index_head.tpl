@@ -49,7 +49,7 @@
 
   .bighead{
     position:absolute;
-    top:{{'45' if loggedin else '20'}}%;
+    top:{{'37' if loggedin else '20'}}%;
     left:15%;
     z-index:30;
     width:70%;
