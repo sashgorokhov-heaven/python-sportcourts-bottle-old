@@ -80,8 +80,12 @@
           <br>
           {{str(user.bdate)+', '+user.city_id(True).title()}}<br>
           <br>
-          Рост: {{user.height()}} см.<br>
-          Вес: {{user.weight()}} кг.<br>
+          % if user.height() != 0:
+            Рост: {{user.height()}} см.<br>
+          % end
+          % if user.weight() != 0:
+            Вес: {{user.weight()}} кг.<br>
+          % end
           <br>
           % if loggedin and (user.user_id()==current_user.user_id() or current_user.userlevel.resporgadmin() or user.settings.show_phone()):
           Телефон: {{user.phone()}}
