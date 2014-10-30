@@ -29,14 +29,19 @@ def get(user_id, userlevel:int=-1, activated:int=0, count:slice=slice(0, 20), db
         sql = "SELECT * FROM users"
 
     if userlevel >= 0 or isinstance(userlevel, set):
-        sql += (' WHERE ' if user_id == 0 else ' AND ') + \
-               ("LOCATE('|{}|', userlevel)".format(userlevel) if isinstance(userlevel, int) else ' AND '.join(
-                   map(lambda x: "LOCATE('|{}|', userlevel)".format(x), userlevel)))
+        if user_id==0:
+            sql += ' WHERE '
+        else:
+            sql += ' AND '
+        if isinstance(userlevel, int):
+            sql += " LOCATE('|{}|', userlevel) ".format(userlevel)
+        else:
+            ' AND '.join(map(lambda x: "LOCATE('|{}|', userlevel)".format(x), userlevel))
 
     if activated>0:
-        sql += ' AND activated=1 '
+        sql += ' {} activated=1 '.format('WHERE' if user_id==0 else 'AND')
     elif activated<0:
-        sql += ' AND activated=0 '
+        sql += ' {} activated=0 '.format('WHERE' if user_id==0 else 'AND')
 
     if user_id == 0:
         sql += " LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
