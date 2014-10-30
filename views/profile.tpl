@@ -79,8 +79,8 @@
           % end
           <br>
           {{str(user.bdate)+', '+user.city_id(True).title()}}<br>
-          <br>
           % if user.height() != 0:
+            <br>
             Рост: {{user.height()}} см.<br>
           % end
           % if user.weight() != 0:
