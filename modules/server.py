@@ -20,3 +20,6 @@ def error404(error):
 application = bottle.default_app()
 
 bottle.install(modules.exec_time_measure)
+
+if config.standalone:
+    bottle.run(host=config.server.ip, port=config.server.port, debug=config.debug)
