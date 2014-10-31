@@ -18,8 +18,11 @@ for class_name in filter(lambda x: not x.startswith('_'), paths.__dict__):
     class_type = getattr(paths, class_name)
     for pathattr in filter(lambda x: not x.startswith('_'), class_type.__dict__):
         path = getattr(class_type, pathattr)
-        if not os.path.exists(path):
-            _notfound.append(('paths.{}.{}'.format(class_name, pathattr), path))
+        if isinstance(path, str):
+            path = [path]
+        for p in path:
+            if not os.path.exists(p):
+                _notfound.append(('paths.{}.{}'.format(class_name, pathattr), p))
 if len(_notfound)>0:
     for path in _notfound:
         try:
