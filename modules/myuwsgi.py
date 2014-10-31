@@ -29,11 +29,15 @@ class _my_uwsgi:
 class _my_uwsgidecorators:
     @staticmethod
     def cron(*args):
-        pass
+        def wrapper(*args, **kwargs):
+            pass
+        return wrapper
 
     @staticmethod
     def filemon(*args):
-        pass
+        def wrapper(*args, **kwargs):
+            pass
+        return wrapper
 
 
 uwsgi = _my_uwsgi if import_error or config.standalone else _uwsgi
