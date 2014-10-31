@@ -2,6 +2,7 @@ import bottle
 
 import config
 import modules
+import modules.myuwsgi
 
 
 list(map(bottle.TEMPLATE_PATH.append, config.paths.server.views))

@@ -6,7 +6,7 @@ import dbutils
 from models import autodb, users
 from modules import utils
 import config
-import uwsgi
+from modules.myuwsgi import uwsgi
 
 
 @utils.as_spooler

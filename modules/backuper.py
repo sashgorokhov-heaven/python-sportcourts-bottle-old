@@ -1,11 +1,13 @@
 import os
 import config
 
-import uwsgidecorators
+from modules.myuwsgi import uwsgidecorators
+
 
 # TODO: rework!
-if not os.path.exists('/bsp/dumps'):
-    raise FileNotFoundError('/bsp/dumps not found')
+if not config.standalone and not os.path.exists(config.paths.dumps.root):
+    raise FileNotFoundError('{} not found'.format(config.paths.dumps.root))
+
 
 started = True
 

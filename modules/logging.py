@@ -7,7 +7,7 @@ import dbutils
 import modules
 from modules import utils
 import pages
-import uwsgi
+from modules.myuwsgi import uwsgi
 
 
 @utils.as_spooler

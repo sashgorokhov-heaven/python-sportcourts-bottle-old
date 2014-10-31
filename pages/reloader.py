@@ -3,8 +3,7 @@ import bottle
 import config
 
 import pages
-import uwsgi
-import uwsgidecorators
+from modules.myuwsgi import uwsgi, uwsgidecorators
 
 
 class Reloader(pages.Page):
