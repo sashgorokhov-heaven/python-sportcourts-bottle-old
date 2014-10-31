@@ -6,10 +6,7 @@ try:
 except ImportError:
     import_error = True
     if not config.standalone:
-        try:
-            print('UWSGI import error')
-        except IOError:
-            pass
+        raise
 else:
     import_error = False
 
