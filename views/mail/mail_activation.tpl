@@ -1,3 +1,4 @@
+% setdefault("first_name", "Noname")
 <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="height:100%;margin:0;padding:0;width:100%;border-collapse:collapse;background-color:#dae2e6">
   <tbody>
     <tr>
