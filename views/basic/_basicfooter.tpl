@@ -9,17 +9,17 @@
   
       <div id="footer">
         <div class="container">
-          <div style="float:left;">
+          <div id="footerleft" style="float:left;">
             <p class="text-muted">
               &copy; Sportcourts 2014
               &nbsp&nbsp&nbsp&nbsp
               <a class="topmenu" href="/about">О нас</a>
             </p>
           </div>
-          <div style="float:right;">
+          <div id="footerright" style="float:right;">
             <p class="text-muted text-right">
               Powered by <img src="http://nichol.as/wp-content/uploads/2010/03/uwsgi.png" height=15 style="margin-bottom: 4px;">
-              &nbsp
+              &nbsp;
               <img src="http://bottlepy.org/docs/dev/_static/logo_nav.png" height=15 style="margin-bottom: 4px;">
             </p>
           </div>

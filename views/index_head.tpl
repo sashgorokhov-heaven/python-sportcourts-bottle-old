@@ -118,6 +118,17 @@
     text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
   }
 
+  .page1head{
+    position:absolute;
+    top:50%;
+    left:15%;
+    z-index:30;
+    width:70%;
+    max-height:800px;
+    color: rgb(255, 255, 255);
+    text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
+  }
+
   .item{
     background-color:black;
     height:100vh;
@@ -137,5 +148,14 @@
 
   .indexpromo{
     padding-bottom: 30px;
+  }
+
+  #footer{
+    background-color: black;
+    height:61px;
+  }
+
+  #footerright{
+    display:none;
   }
 </style>
