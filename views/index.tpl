@@ -75,7 +75,7 @@
         $('.carousel').carousel();
       </script>
 
-      <div class="row hidden-xs">
+      <!-- <div class="row hidden-xs">
         <div class="col-md-12 bigheadrow">
           <div class="row marketing">
             <div class="col-md-4 text-center indexpromo">
@@ -112,9 +112,89 @@
             </div>
           </div>
         </div>
+      </div> -->
+
+      <div class="row hidden-xs bigheadrow">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="text-center page1head">
+            <h2>Хочешь поиграть, но не знаешь где и с кем? Ты нашел то, что искал! От желания до игры за 5 минут! (далее последовательность действий)</h2>
+          </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item active">
+              <!-- <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg"> -->
+              <div class="carousel-caption">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="row hidden-xs emailrow" style="margin-bottom: -50px;">
+      <div class="row hidden-xs bigheadrow">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="text-center page1head">
+            <h2>Вы уже играете и вам не хватает игроков? Подключайтесь к нам! Мы соберем участников, обзвоним всех, возьмем на себя переговоры с площадками. (Мы провели уже более 300 игр)</h2>
+          </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="https://pp.vk.me/c620918/v620918493/116f4/hA1KaeFeLXU.jpg">
+              <div class="carousel-caption">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row hidden-xs bigheadrow">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="text-center page1head">
+            <h2>Найдите свое место в мире любительского спорта. Пройдите весь путь от интереса к игре, через тренировки, поиск команды, участие в турнирах к получению необходимой игровой практики, достижению собственных целей.</h2>
+          </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item active">
+              <!-- <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg"> -->
+              <div class="carousel-caption">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row hidden-xs bigheadrow">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="text-center page1head">
+            <h2>Ради чего? Мы мечтаем построить динамичное и здоровое спортивное сообщество. (В России доля людей, активно занимающихся спортом - 16%. Средний показатель в Европе - 50%)</h2>
+          </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="https://pp.vk.me/c625829/v625829744/17f8/yxWs5iYf8UY.jpg">
+              <div class="carousel-caption">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row hidden-xs bigheadrow">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="text-center page1head">
+            <h2>Не можете играть каждую неделю? Отвлекает семья и работа? Со SportCourts это не помеха. Планируйте ваше время удобным образом!</h2>
+          </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item active">
+              <!-- <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg"> -->
+              <div class="carousel-caption">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row hidden-xs emailrow" style="margin-bottom: -52px;">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="text-center emailhead">
             <h2>Присоединяйся к сообществу спортсменов!</h2>
