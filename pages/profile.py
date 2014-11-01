@@ -21,6 +21,11 @@ class Profile(pages.Page):
             page.add_param('responsible_games',
                            games.get_by_id(games.get_responsible_games(user_id, dbconnection=db), dbconnection=db))
             page.add_param('organizer_games', games.get_all(dbconnection=db))
+
+            with dbutils.dbopen(**dbutils.logsdb_connection) as logsdb:
+                logsdb.execute("SELECT COUNT(DISTINCT(ip)), COUNT(ip) FROM access WHERE path='/profile?user_id={}' and user_id!=0".format(user_id))
+                page.add_param('views', logsdb.last()[0][1])
+                page.add_param('uviews', logsdb.last()[0][0])
             return page
 
     def get_edit(self):
@@ -64,6 +69,10 @@ class Profile(pages.Page):
                                games.get_by_id(games.get_responsible_games(user_id, dbconnection=db), dbconnection=db))
                 page.add_param('organizer_games',
                                games.get_by_id(games.get_organizer_games(user_id, dbconnection=db), dbconnection=db))
+                with dbutils.dbopen(**dbutils.logsdb_connection) as logsdb:
+                    logsdb.execute("SELECT COUNT(DISTINCT(ip)), COUNT(ip) FROM access WHERE path='/profile?user_id={}' and user_id!=0".format(user_id))
+                    page.add_param('views', logsdb.last()[0][1])
+                    page.add_param('uviews', logsdb.last()[0][0])
                 return page
         return pages.templates.permission_denied(
             '<p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегестрируйтесь</a></p>',

@@ -1,5 +1,7 @@
 % rebase("_basicpage", title=user.name)
 % setdefault('myfriend', False)
+% setdefault('views', 0)
+% setdefault('uviews', 0)
       <div class="row">
         <div class="col-md-12"  style="margin-top:50px;">
           &nbsp;
@@ -62,6 +64,10 @@
                 <span id="badge3" class="glyphicon glyphicon-star-empty" data-toggle="tooltip" data-placement="bottom" title="Ответственный"></span>
                 <script>$('#badge3').tooltip();</script>
                 &nbsp;
+            % end
+            % if current_user.userlevel.admin() and views>0:
+                <span id="views" class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="bottom" title="Просмотров: {{'{} всего, {} уникальных ({}%)'.format(views, uviews, round((uviews/views)*100))}}"></span>
+                <script>$('#views').tooltip();</script>
             % end
           % if user.user_id()==current_user.user_id():
             &nbsp;
