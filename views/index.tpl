@@ -25,7 +25,7 @@
                 <form action="" style="text-align: center">
                   <input type="text" id="email" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
                   <span class="input-group-btn">
-                    <button id="emailbutton" class="btn btn-main btn-lg btn-success" type="submit" disabled>Присоединиться</button>
+                    <a id="emailbutton" class="btn btn-main btn-lg btn-success" disabled>Присоединиться</a>
                   </span>
                 </form>
               </div>
@@ -147,7 +147,7 @@
               <form action="" style="text-align: center">
                 <input type="text" id="email1" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
                 <span class="input-group-btn">
-                  <button id="email1button" class="btn btn-main btn-lg btn-success" type="submit" disabled>Присоединиться</button>
+                  <a id="email1button" class="btn btn-main btn-lg btn-success" disabled>Присоединиться</a>
                 </span>
               </form>
             </div><!-- /input-group -->
@@ -158,6 +158,23 @@
               <img src="https://pp.vk.me/c620918/v620918493/11775/SvCsj0Bu6qY.jpg">
               <div class="carousel-caption">
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="activateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Активируйте свой профиль</h4>
+            </div>
+      
+            <div class="modal-body text-center">
+              <br>
+              <p>Сейчас на указанный Вами адрес электронной почты <span class="text-primary" id="useremail"></span> придет сообщение, содержащее ссылку для активации профиля. Если сообщения не видно в папке "Входящие", проверьте папку "Спам"</p>
+              <br><br>
             </div>
           </div>
         </div>

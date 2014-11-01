@@ -40,6 +40,46 @@
           $('#email1button').attr('disabled', 'disabled');
         };
       });
+      $(document).on('click','#emailbutton', function(){
+        var email = $('#email').val();
+
+        $.ajax({
+          url: '/reg',
+          data: {
+            email: email
+          },
+          async: true,
+          success: function (responseData, textStatus) {
+            $('#useremail').html(email);
+            $('#activateModal').modal('show');
+          },
+          error: function (response, status, errorThrown) {
+            alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+          },
+          type: "POST",
+          dataType: "text"
+        });
+      });
+      $(document).on('click','#email1button', function(){
+        var email = $('#email1').val();
+
+        $.ajax({
+          url: '/reg',
+          data: {
+            email: email
+          },
+          async: true,
+          success: function (responseData, textStatus) {
+            $('#useremail').html(email);
+            $('#activateModal').modal('show');
+          },
+          error: function (response, status, errorThrown) {
+            alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+          },
+          type: "POST",
+          dataType: "text"
+        });
+      });
   });
 
   $(function(){
