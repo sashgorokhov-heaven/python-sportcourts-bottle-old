@@ -22,7 +22,7 @@ class Authorize(pages.Page):
             return pages.PageBuilder('auth', error=e.vkerror['error'], error_description=e.vkerror['error_description'])
 
         with dbutils.dbopen() as db:
-            db.execute("SELECT email,passwd FROM users WHERE user_id='{}'".format(user_id))
+            db.execute("SELECT email, passwd FROM users WHERE vkuserid='{}'".format(user_id))
             if not email or len(db.last()) == 0:
                 return pages.PageBuilder('auth', error='Ошибка авторизации', error_description="Пользователь не найден.")
             email = db.last()[0][0]

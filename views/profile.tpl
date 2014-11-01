@@ -109,11 +109,16 @@
             <br>
           % end
           <br>
-          % if user.vkuserid() and loggedin:
-            <a href="http://vk.com/id{{user.vkuserid()}}" target="_blank">
-              <img src="/images/static/vk.png" width="32"/>
-            </a>
-          % end
+          % if loggedin:
+            % if user.vkuserid():
+              <a href="http://vk.com/id{{user.vkuserid()}}" target="_blank">
+                <img src="/images/static/vk.png" width="32"/>
+              </a>
+            % else:
+             <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/setvkid&response_type=code&v=5.21" target="_blank">
+                + связать свой аккаунт с вконтакте
+             </a>
+            % end
           <br>
           <br>
 

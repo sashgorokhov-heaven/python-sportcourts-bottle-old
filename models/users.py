@@ -81,6 +81,11 @@ def get_friends(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
 
 
 @autodb
+def setvkuserid(user_id:int, vkuserid:int, dbconnection:dbutils.DBConnection=None):
+    dbconnection.execute("UPDATE users SET vkuserid={} WHERE user_id={}".format(vkuserid, user_id))
+
+
+@autodb
 def search(query:str, dbconnection:dbutils.DBConnection=None) -> list:
     query = list(map(lambda x: '%' + x + '%', query.split(' ')))
     sql = "SELECT user_id FROM users WHERE "
