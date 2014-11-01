@@ -12,7 +12,26 @@ from models import images, cities, notifications, mailing, activation, users
 
 class Registration(pages.Page):
     def get(self):
-        pass
+        if pages.auth.loggedin():
+            raise bottle.redirect('/profile')
+        if 'token' not in bottle.request.query:
+            raise bottle.HTTPError(404)
+        token = bottle.request.query.get('token')
+        with dbutils.dbopen() as db:
+            try:
+                email = activation.get(token, dbconnection=db)
+            except ValueError:
+                return pages.templates.message('Ошибка', 'Неверный код.')
+            status = activation.status(email, dbconnection=db)
+            if status==0:
+                activation.activate(email, dbconnection=db)
+            elif status==2:
+                return pages.PageBuilder('auth',
+                                         error='Вы уже зарегестрированы в системе',
+                                         error_description='Используйте пароль, чтобы войти', email=email)
+            _cities = cities.get(0, dbconnection=db)
+            return pages.PageBuilder('registration', cities=_cities, email=email)
+
 
     def post(self, action):
         if action=='email':
@@ -21,7 +40,12 @@ class Registration(pages.Page):
                 db.execute("SELECT user_id, first_name, last_name FROM users WHERE email='{}'".format(email))
                 if len(db.last())>0:
                     return json.dumps({'error_code':1, 'error_data':db.last()[0]})
-                token = activation.create(email, dbconnection=db)
+                try:
+                    token = activation.create(email, dbconnection=db)
+                except ValueError as e: # юзер активирован
+                    return json.dumps({'error_code':2, 'error_data':[list(e.args)[1:]]})
+                except KeyError as e: # юзер зареган
+                    return json.dumps({'error_code':3, 'error_data':[list(e.args)[1:]]})
                 mailing.sendhtml(
                     pages.PageBuilder('mail_activation', token=token).template(),
                     email,

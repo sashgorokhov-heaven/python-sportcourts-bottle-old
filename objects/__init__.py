@@ -258,10 +258,9 @@ class Court:
 
 
 class _UserName:
-    def __init__(self, first_name:str, middle_name:str, last_name:str):
+    def __init__(self, first_name:str, last_name:str):
         self._first_name = first_name
         self._last_name = last_name
-        self._middle_name = middle_name
 
     def first(self) -> str:
         return self._first_name
@@ -269,8 +268,8 @@ class _UserName:
     def last(self) -> str:
         return self._last_name
 
-    def middle(self) -> str:
-        return self._middle_name
+    #def middle(self) -> str:
+    #    return self._middle_name
 
     def __str__(self):
         return self.first() + ' ' + self.last()
@@ -325,7 +324,7 @@ class User:
 
         self._pure = user.copy()
 
-        self.name = _UserName(self._user['first_name'], self._user['middle_name'], self._user['last_name'])
+        self.name = _UserName(self._user['first_name'], self._user['last_name'])
         self.bdate = UserAge(self._user['bdate'])
         self.regdate = DateTime(self._user['regdate'])
         self.lasttime = UserLastTime(self._user['lasttime'])
