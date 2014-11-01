@@ -1,4 +1,5 @@
 import bottle
+import time
 
 import config
 import dbutils
@@ -30,6 +31,7 @@ class Authorize(pages.Page):
             try:
                 pages.auth.login(email, password)
             except ValueError:
+                time.sleep(3)
                 return pages.PageBuilder('auth', error='Ошибка авторизации',
                                          error_description='Неверный email или пароль')
             raise bottle.redirect(bottle.request.get_header("Referer", "/games"))
