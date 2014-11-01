@@ -354,8 +354,8 @@ class User:
             else:
                 return self._user['friends']
         if not isinstance(self._user['friends'][0], User):
-            self._user['friends'] = users.get(self._user['friends'],
-                                              count=slice(0, len(self._user['friends'])), dbconnection=self._db)
+            self._user['friends'] = users.get(self._user['friends'], count=slice(0, len(self._user['friends'])),
+                                              dbconnection=self._db)
         return self._user['friends']
 
     def city_id(self, detalized:bool=False) -> City:
@@ -373,8 +373,8 @@ class User:
         self._user['gameinfo'] = games.get_game_stats(self.user_id(), dbconnection=self._db)
         return self._user['gameinfo']
 
-    def activated(self) -> bool:
-        return bool(self._user['activated'])
+    #def activated(self) -> bool:
+    #    return bool(self._user['activated'])
 
     def banned(self) -> bool:
         if 'banned' not in self._user: self._user['banned'] = ban.banned(self.user_id(), dbconnection=self._db)

@@ -9,14 +9,6 @@
         <div class="col-md-3">
           <img src="/images/avatars/{{user.user_id()}}" class="profile-avatar img-thumbnail" alt="User avatar" width="300">
           <br>
-          % if current_user.userlevel.admin():
-            % if not user.activated():
-              <br>
-              <a class="btn btn-danger btn-block profile-avatar" >
-               Не активирован
-              </a>
-            % end
-          % end
           % if user.banned():
             <br>
               <a class="btn btn-warning btn-block profile-avatar" >
@@ -116,10 +108,6 @@
               <img src="/images/static/vk.png" width="32"/>
             </a>
           % end
-          % if user.user_id()==current_user.user_id() and not user.activated():
-            <p>Вы не активировали свой профиль!</p>
-          % end
-
           <br>
           <br>
 

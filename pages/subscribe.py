@@ -17,8 +17,8 @@ class Subscribe(pages.Page):
             if pages.auth.current().banned():
                 return pages.PageBuilder("game", game=game, conflict=2)
 
-            if not pages.auth.current().activated():
-                return pages.PageBuilder("game", game=game, conflict=3)
+            #if not pages.auth.current().activated():
+            #    return pages.PageBuilder("game", game=game, conflict=3)
 
             if game.capacity() > 0 and len(game.subscribed()) == game.capacity():
                 return pages.PageBuilder("game", game=game, conflict=4)
@@ -65,6 +65,12 @@ class Subscribe(pages.Page):
 
             if game.datetime.passed: raise bottle.HTTPError(404)
 
+            #if not pages.auth.current().activated():
+            #    return pages.PageBuilder("game", game=game, conflict=3)
+
+            if pages.auth.current().banned():
+                return pages.PageBuilder("game", game=game, conflict=2)
+
             if game.reserved()==0:
                 return pages.PageBuilder("game", game=game, conflict=8)
 
@@ -88,6 +94,9 @@ class Subscribe(pages.Page):
             game = games.get_by_id(game_id, dbconnection=db)
 
             if game.datetime.passed: raise bottle.HTTPError(404)
+
+            if pages.auth.current().banned():
+                return pages.PageBuilder("game", game=game, conflict=2)
 
             if user_id not in set(game.reserved_people()):
                 return pages.PageBuilder("game", game=game, conflict=11)
