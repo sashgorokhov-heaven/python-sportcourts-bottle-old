@@ -152,7 +152,7 @@ class Registration(pages.Page):
                 dbvaluelist=', '.join(["'{}'".format(str(params[key])) for key in keylist]))
             db.execute(sql)
             db.execute(
-                'SELECT user_id, vkuserid, first_name, last_name FROM users WHERE email="{}"'.format(params['email']))
+                "SELECT user_id, vkuserid, first_name, last_name, email, passwd FROM users WHERE email='{}'".format(params['email']))
             user_id = db.last()[0][0]
             vkuserid = db.last()[0][1]
             first_name = db.last()[0][2]
@@ -189,8 +189,8 @@ class Registration(pages.Page):
                         users.add_friend(friend_id, user_id, dbconnection=db)
             activation.register(params['email'], dbconnection=db)
             bottle.response.delete_cookie('token')
-            return pages.PageBuilder('auth', message='Вы успешно зарегестрированы',
-                                     description='Войдите, используя пароль.', email=params['email'])
+            pages.auth.login(db.last()[4], db.last()[5])
+            raise bottle.redirect('/profile')
 
     def post(self, action):
         if pages.auth.loggedin(): raise bottle.redirect('/profile')
