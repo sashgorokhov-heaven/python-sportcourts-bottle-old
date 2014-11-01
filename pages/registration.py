@@ -187,6 +187,8 @@ class Registration(pages.Page):
                                                   friend_id))
                         users.add_friend(user_id, friend_id, dbconnection=db)
                         users.add_friend(friend_id, user_id, dbconnection=db)
+            activation.register(params['email'], dbconnection=db)
+            bottle.response.delete_cookie('token')
             return pages.PageBuilder('auth', message='Вы успешно зарегестрированы',
                                      description='Войдите, используя пароль.', email=params['email'])
 

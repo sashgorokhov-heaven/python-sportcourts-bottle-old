@@ -23,6 +23,11 @@ def activate(email:str, dbconnection:dbutils.DBConnection=None):
 
 
 @autodb
+def register(email:str, dbconnection:dbutils.DBConnection=None):
+    dbconnection.execute("UPDATE activation SET activated=2 WHERE email='{}'".format(email))
+
+
+@autodb
 def get(token:str, dbconnection:dbutils.DBConnection=None) -> str:
     dbconnection.execute("SELECT email FROM activation WHERE token='{}'".format(token))
     if len(dbconnection.last())==0:
