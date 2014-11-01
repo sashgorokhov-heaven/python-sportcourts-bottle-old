@@ -22,8 +22,8 @@
                 </p>
               </div>
               <div id="reg2" hidden class="input-group" style="min-width:498px; margin: 0 auto; margin-bottom:10px; display: none;">
-                <form action="" style="text-align: center">
-                  <input type="text" id="email" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
+                <form action="/registration/email" method="POST" style="text-align: center">
+                  <input type="text" id="email" name="email" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
                   <span class="input-group-btn">
                     <a id="emailbutton" class="btn btn-main btn-lg btn-success" disabled>Присоединиться</a>
                   </span>
@@ -173,7 +173,7 @@
       
             <div class="modal-body text-center">
               <br>
-              <p>Сейчас на указанный Вами адрес электронной почты <span class="text-primary" id="useremail"></span> придет сообщение, содержащее ссылку для активации профиля. Если сообщения не видно в папке "Входящие", проверьте папку "Спам"</p>
+              <p>Сейчас на указанный Вами адрес электронной почты <span class="text-primary" id="useremail"></span> придет сообщение, содержащее ссылку для подтверждения email.<br>Если сообщение не видно в папке "Входящие", проверьте папку "Спам"</p>
               <br><br>
             </div>
           </div>

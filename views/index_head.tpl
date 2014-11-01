@@ -8,7 +8,7 @@
 <script src="/view/js/typed.js"></script>
 
 <script>
-
+  var pressed = false;
   $(document).ready(function() {
       $(document).on('input','#email', function(){
         if($(this).val() != '') {
@@ -42,43 +42,40 @@
       });
       $(document).on('click','#emailbutton', function(){
         var email = $('#email').val();
-
-        $.ajax({
-          url: '/reg',
-          data: {
-            email: email
-          },
-          async: true,
-          success: function (responseData, textStatus) {
-            $('#useremail').html(email);
-            $('#activateModal').modal('show');
-          },
-          error: function (response, status, errorThrown) {
-            alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
-          },
-          type: "POST",
-          dataType: "text"
-        });
-      });
-      $(document).on('click','#email1button', function(){
-        var email = $('#email1').val();
-
-        $.ajax({
-          url: '/reg',
-          data: {
-            email: email
-          },
-          async: true,
-          success: function (responseData, textStatus) {
-            $('#useremail').html(email);
-            $('#activateModal').modal('show');
-          },
-          error: function (response, status, errorThrown) {
-            alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
-          },
-          type: "POST",
-          dataType: "text"
-        });
+        if (!pressed) {
+            $.ajax({
+              url: '/registration/email',
+              data: {
+                email: email
+              },
+              async: true,
+              beforeSend: function() {
+                pressed = true;
+                $('#emailbutton').attr('disabled', 'disabled');
+                $('#emailbutton').html('Отправка...');
+                $('#email').attr('disabled', 'disabled');
+              },
+              success: function (data, textStatus) {
+                if (data['error_code']!=0) {
+                    alert('Ошибка, пользовтель с таким email уже зарегестрирован!')
+                    // в data['error_data'] лежит список [user_id, first_name, last_name] - типо "Вася Пупкин, eto ti?"
+                    pressed = false;
+                    $('#emailbutton').removeAttr('disabled');
+                    $('#emailbutton').html('Присоединиться');
+                    $('#email').removeAttr('disabled');
+                } else {
+                    $('#emailbutton').html('Отправлено');
+                }
+                $('#useremail').html(email);
+                $('#activateModal').modal('show');
+              },
+              error: function (response, status, errorThrown) {
+                alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+              },
+              type: "POST",
+              dataType: "json"
+            });
+        }
       });
   });
 
