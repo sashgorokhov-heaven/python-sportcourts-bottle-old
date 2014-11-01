@@ -25,7 +25,7 @@
                 <form action="" style="text-align: center">
                   <input type="text" id="email" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
                   <span class="input-group-btn">
-                    <button id="emailbutton" class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
+                    <button id="emailbutton" class="btn btn-main btn-lg btn-success" type="submit" disabled>Присоединиться</button>
                   </span>
                 </form>
               </div>
@@ -75,56 +75,11 @@
         $('.carousel').carousel();
       </script>
 
-      <!-- <div class="row hidden-xs">
-        <div class="col-md-12 bigheadrow">
-          <div class="row marketing">
-            <div class="col-md-4 text-center indexpromo">
-              <p>Увлекаешься спортом? Ищешь друзей для совместных занятий или соперников для твоей команды? Хочешь быть в курсе спортивных событий твоего города?</p>
-            </div>
-
-            <div class="col-md-4 text-center indexpromo">
-              <p>Выбери из сотен спортивных событий своего города. Найди подходящую площадку и время. Общайся с участниками и приглашай друзей.</p>
-            </div>
-
-            <div class="col-md-4 text-center indexpromo">
-              <p>Занимайся спортом. Делись своими достижениями с друзьями. Находи новые площадки и узнавай о том, что происходит вокруг.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12 bigheadrow">
-          <div class="row marketing">
-            <div class="col-md-12 text-center">
-              <h3 class="h1">Чем мы занимаемся?</h3>
-              <br>
-              <br>
-              <br>
-            </div>
-            <div class="col-md-4 text-center indexpromo">
-              <p>Проводим регулярные любительские игры по всему Екатеринбургу</p>
-            </div>
-
-            <div class="col-md-4 text-center indexpromo">
-              <p>Размещаем на сайте актуальную информацию о площадках города.</p>
-            </div>
-
-            <div class="col-md-4 text-center indexpromo">
-              <p>Организуем крутые турниры, участие в которых может принять каждый!</p>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <div class="row hidden-xs bigheadrow">
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-          <div class="text-center page1head">
-            <h2>Хочешь поиграть, но не знаешь где и с кем? Ты нашел то, что искал! От желания до игры за 5 минут! (далее последовательность действий)</h2>
-          </div>
-          <!-- Wrapper for slides -->
-          <div class="carousel-inner">
-            <div class="item active">
-              <!-- <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg"> -->
-              <div class="carousel-caption">
-              </div>
+        <div class="row marketing" style="margin-top: 30vh;">
+          <div class="col-md-12 text-center indexpromo">
+            <div id="" style="max-width: 60%; margin: 0 auto;">
+              <h2>Хочешь поиграть, но не знаешь где и с кем? Ты нашел то, что искал! От желания до игры за 5 минут! (далее последовательность действий)</h2>
             </div>
           </div>
         </div>
@@ -147,16 +102,11 @@
       </div>
 
       <div class="row hidden-xs bigheadrow">
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-          <div class="text-center page1head">
-            <h2>Найдите свое место в мире любительского спорта. Пройдите весь путь от интереса к игре, через тренировки, поиск команды, участие в турнирах к получению необходимой игровой практики, достижению собственных целей.</h2>
-          </div>
-          <!-- Wrapper for slides -->
-          <div class="carousel-inner">
-            <div class="item active">
-              <!-- <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg"> -->
-              <div class="carousel-caption">
-              </div>
+        <div class="row marketing" style="margin-top: 30vh;">
+          <div class="col-md-12 text-center indexpromo">
+            <div id="" style="max-width: 60%; margin: 0 auto;">
+              <h2>Найдите свое место в мире любительского спорта!</h2>
+              <p>Пройдите весь путь от интереса к игре, через тренировки, поиск команды, участие в турнирах к получению необходимой игровой практики, достижению собственных целей. (схема)</p>
             </div>
           </div>
         </div>
@@ -179,16 +129,10 @@
       </div>
 
       <div class="row hidden-xs bigheadrow">
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-          <div class="text-center page1head">
-            <h2>Не можете играть каждую неделю? Отвлекает семья и работа? Со SportCourts это не помеха. Планируйте ваше время удобным образом!</h2>
-          </div>
-          <!-- Wrapper for slides -->
-          <div class="carousel-inner">
-            <div class="item active">
-              <!-- <img src="https://pp.vk.me/c620918/v620918493/117a7/jSIAcO1gn3A.jpg"> -->
-              <div class="carousel-caption">
-              </div>
+        <div class="row marketing" style="margin-top: 30vh;">
+          <div class="col-md-12 text-center indexpromo">
+            <div id="" style="max-width: 60%; margin: 0 auto;">
+              <h2>Не можете играть каждую неделю? Отвлекает семья и работа? Со SportCourts это не помеха. Планируйте ваше время удобным образом!</h2>
             </div>
           </div>
         </div>
@@ -203,7 +147,7 @@
               <form action="" style="text-align: center">
                 <input type="text" id="email1" class="form-control input-lg" placeholder="Введи свой email" style="max-width:320px;">
                 <span class="input-group-btn">
-                  <button id="email1button" class="btn btn-main btn-lg btn-success" type="submit">Присоединиться</button>
+                  <button id="email1button" class="btn btn-main btn-lg btn-success" type="submit" disabled>Присоединиться</button>
                 </span>
               </form>
             </div><!-- /input-group -->

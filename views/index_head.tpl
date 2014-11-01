@@ -151,11 +151,16 @@
   }
 
   #footer{
-    background-color: black;
+    background-color: rgb(20,20,20);
     height:61px;
   }
 
   #footerright{
     display:none;
+  }
+
+  #footerleft{
+    float: none;
+    text-align: center;
   }
 </style>
