@@ -25,7 +25,7 @@ class Registration(pages.Page):
                 mailing.sendhtml(
                     pages.PageBuilder('mail_activation', token=token).template(),
                     email,
-                    'Чтобы подтвердить email, перейдите по ссылке http://{}/activate?token={}'.format(config.server, token),
+                    'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(config.server, token),
                     'Подтверждение email')
                 return json.dumps({'error_code':0})
 

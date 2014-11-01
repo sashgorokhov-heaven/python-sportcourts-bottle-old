@@ -88,7 +88,7 @@
                                 <tbody>
                                   <tr>
                                     <td align="center" valign="middle" style="font-family:Arial;font-size:16px;padding:16px">
-                                      <a title="Подтвердить" href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/activate?token={{token}}" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word" target="_blank">Подтвердить</a>
+                                      <a title="Подтвердить" href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/registration?token={{token}}" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word" target="_blank">Подтвердить</a>
                                     </td>
                                   </tr>
                                 </tbody>
