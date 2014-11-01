@@ -2,13 +2,9 @@
 % setdefault("vkphoto", "")
 % setdefault("sex", "")
 % setdefault("first_name", "")
-% setdefault("middle_name", "")
 % setdefault("last_name", "")
 % setdefault("city", "Екатеринбург")
 % setdefault("bdate", "")
-% setdefault("height", "")
-% setdefault("weight", "")
-% setdefault("email", "")
 % setdefault("phone", "")
 
 <div class="jumbotron">
