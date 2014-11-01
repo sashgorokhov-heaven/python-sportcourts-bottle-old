@@ -56,18 +56,35 @@
                 $('#email').attr('disabled', 'disabled');
               },
               success: function (data, textStatus) {
-                if (data['error_code']!=0) {
+                if (data['error_code']==0) {
+                    $('#emailbutton').html('Отправлено');
+                    $('#useremail').html(email);
+                    $('#activateModal').modal('show');
+                }
+                if (data['error_code']==1) {
                     alert('Ошибка, пользовтель с таким email уже зарегестрирован!')
                     // в data['error_data'] лежит список [user_id, first_name, last_name] - типо "Вася Пупкин, eto ti?"
                     pressed = false;
                     $('#emailbutton').removeAttr('disabled');
                     $('#emailbutton').html('Присоединиться');
                     $('#email').removeAttr('disabled');
-                } else {
-                    $('#emailbutton').html('Отправлено');
                 }
-                $('#useremail').html(email);
-                $('#activateModal').modal('show');
+                if (data['error_code']==2) {
+                    alert('Ошибка, пользовтель с таким email уже активирован!')
+                    // в data['error_data'] лежит список [email, token]
+                    pressed = false;
+                    $('#emailbutton').removeAttr('disabled');
+                    $('#emailbutton').html('Присоединиться');
+                    $('#email').removeAttr('disabled');
+                }
+                if (data['error_code']==3) {
+                    alert('Ошибка, пользовтель с таким email уже зарегестрирован!')
+                    // в data['error_data'] лежит список [email]
+                    pressed = false;
+                    $('#emailbutton').removeAttr('disabled');
+                    $('#emailbutton').html('Присоединиться');
+                    $('#email').removeAttr('disabled');
+                }
               },
               error: function (response, status, errorThrown) {
                 alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
