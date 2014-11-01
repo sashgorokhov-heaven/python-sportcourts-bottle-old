@@ -77,15 +77,15 @@ class templates:
 
 def denypost(func):
     def wrapper(*args, **kwargs):
-        serveraddr = 'http://{}'.format(config.server.ip)
-        if bottle.request.method.lower() == 'post' and not bottle.request.get_header('Referer',
-                                                                                     serveraddr).startswith(
-                serveraddr):
-            try:
-                raise ValueError('POST request from other domain')
-            except Exception as e:
-                logging.error(e)
-            raise bottle.HTTPError(404)  # TODO: refactor
+        #serveraddr = 'http://{}'.format(config.server.ip)
+        #if bottle.request.method.lower() == 'post' and not bottle.request.get_header('Referer',
+        #                                                                             serveraddr).startswith(
+        #        serveraddr):
+        #    try:
+        #        raise ValueError('POST request from other domain')
+        #    except Exception as e:
+        #        logging.error(e)
+        #    raise bottle.HTTPError(404)  # TODO: refactor
         return func(*args, **kwargs)
 
     return wrapper
@@ -240,7 +240,7 @@ class _AuthDispatcher:
         page_builder.add_param('current_user', self.current())
         page_builder.add_param('loggedin', self.loggedin())
         if self.loggedin():
-            page_builder.add_param('notifycount', models.notifications.get_count(self.current().user_id()))
+            page_builder.add_param('notifycount', models.notifications.get_count(self.current().user_id())) # TODO: CACHE!
 
 
     def login(self, email:str, password:str):
