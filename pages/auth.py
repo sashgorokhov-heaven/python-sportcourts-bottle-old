@@ -25,7 +25,7 @@ class Authorize(pages.Page):
             db.execute("SELECT passwd FROM users WHERE email='{}'".format(email))
             if len(db.last()) == 0:
                 raise bottle.redirect(
-                    "https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{}:{}/registration&response_type=code&v=5.21".format(
+                    "https://oauth.vk.com/authorize?client_id=4436558&scope=&redirect_uri=http://{}:{}/registration&response_type=code&v=5.21".format(
                         config.server.ip, config.server.port))
             password = db.last()[0][0]
             try:

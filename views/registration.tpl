@@ -16,7 +16,7 @@
         <div class="row">
           <div class="col-sm-10 col-sm-offset-2">
             <p class="lead">
-              <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=email&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/registration&response_type=code&v=5.21">
+              <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/registration&response_type=code&v=5.21">
                 <img src="/images/static/vk.png" width="32" style="margin-top:-19px;"/>
                 Использовать данные из ВКонтакте
               </a>
@@ -25,12 +25,12 @@
         </div>
     % end
 
-    <form id="registrationForm" method="post" class="form-horizontal" action="/registration"
+    <form id="registrationForm" method="post" class="form-horizontal" action="/registration/reg"
             data-bv-message="This value is not valid" enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-
+    <input type="hidden" name="token" value="{{token}}">
         <div class="form-group">
           <label for="sex" class="col-sm-2 control-label">Фото</label>
           <div class="col-sm-10">
@@ -89,7 +89,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label for="city" class="col-sm-2 control-label">Город</label>
           <div class="col-sm-10">
             <input type="text" class="form-control typeahead" name="city" value="{{city if city in {i.title() for i in cities} else 'Екатеринбург'}}" data-provide="typeahead" data-bv-notempty="true" data-bv-notempty-message="Укажите город"/>
@@ -102,7 +102,7 @@
             items: {{len(cities)}},
             minLength: 1
           })
-        </script>
+        </script>-->
 
         <div class="form-group">
           <label for="bdate" class="col-sm-2 control-label">Дата рождения</label>
@@ -131,7 +131,7 @@
         <div class="form-group">
           <label for="email" class="col-sm-2 control-label">Email</label>
           <div class="col-sm-10">
-            <input type="email" class="form-control" name="email" placeholder="example@mail.com" id="email" value="{{email}}"></input>
+            <input type="email" class="form-control" name="email" placeholder="example@mail.com" id="email" value="{{email}}" disabled></input>
             <span id="valid"></span>
           </div>
         </div>
