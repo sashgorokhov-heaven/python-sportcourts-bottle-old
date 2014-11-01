@@ -22,12 +22,11 @@ class Authorize(pages.Page):
             return pages.PageBuilder('auth', error=e.vkerror['error'], error_description=e.vkerror['error_description'])
 
         with dbutils.dbopen() as db:
-            db.execute("SELECT passwd FROM users WHERE email='{}'".format(email))
-            if len(db.last()) == 0:
-                raise bottle.redirect(
-                    "https://oauth.vk.com/authorize?client_id=4436558&scope=&redirect_uri=http://{}:{}/registration&response_type=code&v=5.21".format(
-                        config.server.ip, config.server.port))
-            password = db.last()[0][0]
+            db.execute("SELECT email,passwd FROM users WHERE user_id='{}'".format(user_id))
+            if not email or len(db.last()) == 0:
+                return pages.PageBuilder('auth', error='Ошибка авторизации', error_description="Пользователь не найден.")
+            email = db.last()[0][0]
+            password = db.last()[0][1]
             try:
                 pages.auth.login(email, password)
             except ValueError:
