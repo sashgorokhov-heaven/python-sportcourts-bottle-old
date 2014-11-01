@@ -195,7 +195,7 @@
                     <a href="#" data-toggle="modal" data-target="#loginModal">
                         <button id="blocked" type="button" class="btn btn-warning btn-xs">Игра идет</button>
                     </a>
-                % elif game.capacity()>0 and len(game.subscribed())<game.capacity():
+                % elif game.capacity()>0 and len(game.subscribed())<game.capacity() or game.capacity()<0:
                     <a href="#" data-toggle="modal" data-target="#loginModal">
                         <button type="button" class="btn btn-primary btn-xs">Идет набор</button>
                     </a>
