@@ -94,6 +94,12 @@
                           <td><small><strong>Телефон:</strong></small></td>
                           <td><small>{{court.phone()}}</small></td>
                         </tr>
+                        % if (current_user.userlevel.organizer() or current_user.userlevel.admin()) and len(court.admin_description())>0:
+                            <tr>
+                              <td><small><strong>Комментарии админа:</strong></small></td>
+                              <td><small>{{court.admin_description()}}</small></td>
+                            </tr>
+                        % end
                       </table>
                     </div>
                     <br>

@@ -217,6 +217,9 @@ class Court:
             self._court['type'] = court_types.get(self._court['type'], dbconnection=self._db)
         return self._court['type']
 
+    def admin_description(self) -> str:
+        return self._court['admin_description']
+
     def court_id(self) -> int:
         return self._court['court_id']
 

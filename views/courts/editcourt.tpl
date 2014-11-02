@@ -144,12 +144,12 @@
                     <textarea class="form-control" name="description" rows="3">{{court.description()}}</textarea>
                   </div>
                 </div>
-                <!-- <div class="form-group panel panel-primary">
+                <div class="form-group panel panel-primary">
                   <label for="court_add_count" class="col-sm-2 control-label">Комментарии админа</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" rows="3"></textarea>
+                    <textarea class="form-control" name="admin_description" rows="3">{{court.admin_description()}}</textarea>
                   </div>
-                </div> -->
+                </div>
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
                     <button type="submit" name="submit_edit" class="btn btn-primary">Редактировать</button>
