@@ -30,14 +30,19 @@ class Finances(pages.Page):
         if not pages.auth.current().userlevel.admin():
             raise bottle.HTTPError(404)
         with dbutils.dbopen() as db:
-            # получаем всю необходимую инфу
+            if 'month' in bottle.request.query:
+                month = int(bottle.request.query.get('month'))
+            else:
+                month = 'MONTH(NOW())'
             games = db.execute("SELECT * FROM games WHERE "
-                               "MONTH(datetime)=MONTH(NOW()) AND "
+                               "MONTH(datetime)={} AND "
                                "datetime+INTERVAL duration MINUTE<NOW() AND "
-                               "game_id IN (SELECT game_id FROM reports)", dbutils.dbfields['games'])
+                               "game_id IN (SELECT game_id FROM reports)".format(month), dbutils.dbfields['games'])
             games_dict = {game['game_id']:game for game in games}
 
-            if len(games_dict)==0: return 'Игор нет. (небыло еще) (точнее не было отчетов)'
+            if len(games_dict)==0:
+                yield 'Игор нет. (небыло еще) (точнее не было отчетов)'
+                raise StopIteration
 
             courts = db.execute("SELECT * FROM courts", dbutils.dbfields['courts'])
             courts_dict = {court['court_id']:court for court in courts}
@@ -65,22 +70,28 @@ class Finances(pages.Page):
                 games.pop(p)
 
             ideal_income = sum([game['capacity']*game['cost'] for game in games if game['capacity']>0])
-            # TODO: считать идеальный доход от неограниченных по колву игроков игр (capacity считать из отчетов)
+            ideal_income += sum([len(reports_dict[game['game_id']])*game['cost'] for game in games if game['capacity']<0])
 
-            # TODO: добавить общее количество отыгравших
             yield 'Идеальный доход: {} ({} игр)'.format(ideal_income, len(games))
 
-            #TODO: добавить количество (пустых мест, непришедших, неоплативших)
-            lost_empty = sum([(game['capacity']-len(list(filter(lambda x: x['status']>=0, reports_dict[game['game_id']]))))*game['cost'] for game in games])
-            yield 'Потеряно изза пустых мест: {} ({}%)'.format(lost_empty, percents(lost_empty, ideal_income))
+            played_users = list(filter(lambda x: x['status']==2,reports))
+            played_unique = {i['user_id'] for i in played_users if i['user_id']!=0}
+            yield 'Отыграло: {} ({} уникумов - {}%)'.format(len(played_users), len(played_unique), percents(len(played_unique), len(played_users)))
+
+            # TODO везде где capacity проверять на capacity>0
+            empty = sum([game['capacity']-len(list(filter(lambda x: x['status']>=0 and x['user_id']!=0, reports_dict[game['game_id']]))) for game in games])
+            lost_empty = sum([(game['capacity']-len(list(filter(lambda x: x['status']>=0 and x['user_id']!=0, reports_dict[game['game_id']]))))*game['cost'] for game in games])
+            yield 'Потеряно изза пустых мест: {} ({}%) ({})'.format(lost_empty, percents(lost_empty, ideal_income), empty)
             #ideal_income -= lost_empty
 
+            notvisited = sum([len(list(filter(lambda x: x['status']==0, reports_dict[game['game_id']]))) for game in games])
             lost_notvisited = sum([len(list(filter(lambda x: x['status']==0, reports_dict[game['game_id']])))*game['cost'] for game in games])
-            yield 'Потеряно изза непришедших: {} ({}%)'.format(lost_notvisited, percents(lost_notvisited, ideal_income))
+            yield 'Потеряно изза непришедших: {} ({}%) ({})'.format(lost_notvisited, percents(lost_notvisited, ideal_income), notvisited)
             #ideal_income -= lost_notvisited
 
+            notpayed = sum([len(list(filter(lambda x: x['status']==1, reports_dict[game['game_id']]))) for game in games])
             lost_notpayed = sum([len(list(filter(lambda x: x['status']==1, reports_dict[game['game_id']])))*game['cost'] for game in games])
-            yield 'Потеряно изза неоплативших: {} ({}%)'.format(lost_notpayed, percents(lost_notpayed, ideal_income))
+            yield 'Потеряно изза неоплативших: {} ({}%) ({})'.format(lost_notpayed, percents(lost_notpayed, ideal_income), notpayed)
             #ideal_income -= lost_notpayed
 
             real_income = ideal_income-lost_empty-lost_notvisited-lost_notpayed
@@ -142,5 +153,7 @@ class Finances(pages.Page):
                     income = visited*game['cost']
                     profit = income-rent
                     yield 'Пришло {} чел и заплатило {}р   - {}р за аренду = {}'.format(visited, income, rent, profit)
+
+            # TODO Самые популярные площадки
 
     get.route = '/fin'
