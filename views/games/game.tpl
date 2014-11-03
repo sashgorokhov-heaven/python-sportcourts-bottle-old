@@ -99,29 +99,9 @@
                     </div>
                 % else:
                   <div class="progress">
-                    % reglen = len(game.report()['registered'])
-                    % unreglen = len(game.report()['unregistered'])
-                    % capacity = game.report(True)[1] if unreglen>0 else game.capacity()
-                    % reg_p = round((reglen/capacity)*100)
-                    % unreg_p = round((unreglen/capacity)*100)
-                    % if unreglen==0:
-                        % width = reg_p
-                    % else:
-                        % if reg_p+unreg_p>100:
-                            % width = 100-unreg_p
-                        % else:
-                            % width = round((reglen/game.capacity())*100)
-                            % unreg_p = round((unreglen/game.capacity())*100)
-                        % end
-                    % end
-                    <div class="progress-bar{{' progress-bar-success progress-bar-striped active' if reglen == game.capacity() else ' progress-bar-info'}}" role="progressbar" style="width:{{width}}%">
-                          <span class="">{{str(reglen)+'/'+str(game.capacity())}}</span>
+                    <div class="progress-bar{{' progress-bar-success progress-bar-striped active' if len(game.report()['registered']) == game.capacity() else ' progress-bar-info'}}" role="progressbar" style="width:{{round((len(game.report()['registered'])/game.capacity())*100)}}%">
+                          <span class="">{{str(len(game.report()['registered']))+'/'+str(game.capacity())}}</span>
                     </div>
-                    % if unreglen>0:
-                      <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{unreg_p}}%">
-                          <span class="">{{unreglen}}</span>
-                      </div>
-                    % end
                   </div>
                 % end
               </div>
