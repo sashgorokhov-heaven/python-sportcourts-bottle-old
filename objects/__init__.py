@@ -518,8 +518,22 @@ class Game:
         if 'reported' not in self._game: self._game['reported'] = reports.reported(self.game_id(), dbconnection=self._db)
         return self._game['reported']
 
-    def report(self) -> dict:
+    def report(self, detalized:bool=False) -> dict:
         if 'report' not in self._game: self._game['report'] = reports.get(self.game_id(), dbconnection=self._db)
+
+        if detalized:
+            if 'report_detalized' not in self._game:
+                self._game['report_detalized'] = {'registered': dict(), 'unregistered': self._game['report']['unregistered']}
+                self._game['report_detalized']['registered'] = {
+                    user.user_id():user for user in users.get(
+                        list(map(lambda x: int(x), self._game['report']['registered'])),
+                        count=slice(0, len(self._game['report']['registered'])),
+                        dbconnection=self._db
+                    )
+                }
+            total = len(self._game['report_detalized']['registered'])+len(self._game['report_detalized']['unregistered'])
+            return self._game['report_detalized'], total
+
         return self._game['report']
 
     def is_subscribed(self) -> bool:

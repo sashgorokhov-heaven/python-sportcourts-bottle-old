@@ -93,31 +93,89 @@
               % end
               % if game.capacity()>0:
               <div class="progress">
-                <div class="progress-bar{{' progress-bar-success' if len(game.subscribed()) == game.capacity() else ''}}" role="progressbar" style="width:{{round((len(game.subscribed())/game.capacity())*100)}}%">
-                    <span class="">{{str(len(game.subscribed()))+'/'+str(game.capacity())}}</span>
-                </div>
+                % if not game.reported():
+                    <div class="progress-bar{{' progress-bar-success progress-bar-striped active' if len(game.subscribed()) == game.capacity() else ''}}" role="progressbar" style="width:{{round((len(game.subscribed())/game.capacity())*100)}}%">
+                        <span class="">{{str(len(game.subscribed()))+'/'+str(game.capacity())}}</span>
+                    </div>
+                % else:
+                  <div class="progress">
+                    % reglen = len(game.report()['registered'])
+                    % unreglen = len(game.report()['unregistered'])
+                    % capacity = game.report(True)[1] if unreglen>0 else game.capacity()
+                    % reg_p = round((reglen/capacity)*100)
+                    % unreg_p = round((unreglen/capacity)*100)
+                    % if unreglen==0:
+                        % width = reg_p
+                    % else:
+                        % if reg_p+unreg_p>100:
+                            % width = 100-unreg_p
+                        % else:
+                            % width = round((reglen/game.capacity())*100)
+                            % unreg_p = round((unreglen/game.capacity())*100)
+                        % end
+                    % end
+                    <div class="progress-bar{{' progress-bar-success progress-bar-striped active' if reglen == game.capacity() else ' progress-bar-info'}}" role="progressbar" style="width:{{width}}%">
+                          <span class="">{{str(reglen)+'/'+str(game.capacity())}}</span>
+                    </div>
+                    % if unreglen>0:
+                      <div class="progress-bar progress-bar-warning" role="progressbar" style="width:{{unreg_p}}%">
+                          <span class="">{{unreglen}}</span>
+                      </div>
+                    % end
+                  </div>
+                % end
               </div>
               % end
               % if game.capacity() < 0:
               <p><span class="glyphicon glyphicon-user"></span> Заявок: {{len(game.subscribed())}}</p>
               % end
-              % if len(game.subscribed()) > 0 and loggedin:
-              <div class="panel-group" id="accordion" style="margin-bottom:15px;">
-                <div class="panel panel-default">
-                  <div class="panel-heading" style="text-align: center">
-                    <h5 class="panel-title" style="font-size:1em;">
-                      <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{game.game_id()}}-{{tab_name}}">Список участников <span class="caret"></span>
-                    </h5>
-                  </div>
-                  <div id="collapse-{{game.game_id()}}-{{tab_name}}" class="panel-collapse collapse">
-                    <div class="panel-body" style="padding-bottom:5px;">
-                      % for n, user in enumerate(game.subscribed(True), 1):
-                      <p><a target="_blank" href="/profile?user_id={{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
-                      % end
+              % if loggedin:
+                % if not game.reported() and len(game.subscribed()) > 0 or game.reported() and game.report(True)[1]>0:
+                <div class="panel-group" id="accordion" style="margin-bottom:15px;">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" style="text-align: center">
+                      <h5 class="panel-title" style="font-size:1em;">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{game.game_id()}}-{{tab_name}}">Список участников <span class="caret"></span></a>
+                      </h5>
+                    </div>
+                    <div id="collapse-{{game.game_id()}}-{{tab_name}}" class="panel-collapse collapse">
+                      <div class="panel-body" style="padding-bottom:5px;">
+                        % if not game.reported():
+                            % for n, user in enumerate(game.subscribed(True), 1):
+                                <p><a target="_blank" href="/profile?user_id={{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
+                            % end
+                        % else:
+                            % last = 0
+                            % for n, user_id in enumerate(game.report(True)[0]['registered'], 1):
+                                % user = game.report(True)[0]['registered'][user_id]
+                                    <p>
+                                        <a id="{{game.game_id()}}-{{user.user_id()}}-{{n}}-{{tab_name}}" target="_blank" href="/profile?user_id={{user.user_id()}}"
+                                           % if game.report()['registered'][user_id]<2:
+                                                style="color: #bb4444"
+                                                data-toggle="tooltip" data-placement="left" title="{{'Не пришел' if game.report()['registered'][user_id]==0 else 'Не оплатил'}}"
+                                           % end
+                                           >{{'{}. {}'.format(n, user.name)}}
+                                        </a>
+                                    </p>
+                                    <script>$('#{{game.game_id()}}-{{user.user_id()}}-{{n}}-{{tab_name}}').tooltip();</script>
+                                % last = n
+                            % end
+                            % for n, name in enumerate(game.report(True)[0]['unregistered'], last+1):
+                                <p id="{{game.game_id()}}-{{n}}-{{tab_name}}"
+                                    % if game.report()['unregistered'][name][0]<2:
+                                        style="color: #bb4444"
+                                        data-toggle="tooltip" data-placement="left" title="{{'Не пришел' if game.report()['unregistered'][name][0]==0 else 'Не оплатил'}}"
+                                    % end
+                                    >{{'{}. {}'.format(n, name)}}
+                                </p>
+                                <script>$('#{{game.game_id()}}-{{n}}-{{tab_name}}').tooltip();</script>
+                            % end
+                        % end
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+                % end
               % end
             </div>
             <div class="col-md-2">
