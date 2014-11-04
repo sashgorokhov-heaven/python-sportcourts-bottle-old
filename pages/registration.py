@@ -167,6 +167,8 @@ class Registration(pages.Page):
             db.execute(
                 "SELECT user_id, vkuserid, first_name, last_name, email, passwd FROM users WHERE email='{}'".format(params['email']))
             user_id = db.last()[0][0]
+            email = db.last()[0][4]
+            passwd = db.last()[0][5]
             vkuserid = db.last()[0][1]
             first_name = db.last()[0][2]
             username = db.last()[0][2] + ' ' + db.last()[0][3]
@@ -202,7 +204,7 @@ class Registration(pages.Page):
                         users.add_friend(friend_id, user_id, dbconnection=db)
             activation.register(params['email'], dbconnection=db)
             bottle.response.delete_cookie('token')
-            pages.auth.login(db.last()[4], db.last()[5])
+            pages.auth.login(email, passwd)
             raise bottle.redirect('/profile')
 
     def post(self, action):
