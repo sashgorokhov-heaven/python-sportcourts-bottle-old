@@ -91,12 +91,17 @@
           % end
           <br>
           {{str(user.bdate)+', '+user.city_id(True).title()}}<br>
-          % if user.height() != 0:
             <br>
-            Рост: {{user.height()}} см.<br>
+          % if user.height() > 0:
+            Рост: {{user.height()}} см.
+          % else:
+            Рост: <a href="/profile?edit">Заполнить...</a><br>
           % end
-          % if user.weight() != 0:
+            <br>
+          % if user.weight() > 0:
             Вес: {{user.weight()}} кг.<br>
+          % else:
+            Вес: <a href="/profile?edit">Заполнить...</a><br>
           % end
           <br>
           % if loggedin and (user.user_id()==current_user.user_id() or current_user.userlevel.resporgadmin() or user.settings.show_phone()):
