@@ -94,13 +94,13 @@
             <br>
           % if user.height() > 0:
             Рост: {{user.height()}} см.
-          % else:
+          % elif user.user_id()==current_user.user_id():
             Рост: <a href="/profile?edit">Заполнить...</a><br>
           % end
             <br>
           % if user.weight() > 0:
             Вес: {{user.weight()}} кг.<br>
-          % else:
+          % elif user.user_id()==current_user.user_id():
             Вес: <a href="/profile?edit">Заполнить...</a><br>
           % end
           <br>
