@@ -76,10 +76,27 @@
       </script>
 
       <div class="row hidden-xs bigheadrow">
-        <div class="row marketing" style="margin-top: 30vh;">
+        <div class="row marketing" style="margin-top: 10vh;">
           <div class="col-md-12 text-center indexpromo">
             <div id="" style="max-width: 60%; margin: 0 auto;">
-              <h2>Хочешь поиграть, но не знаешь где и с кем? Ты нашел то, что искал! От желания до игры за 5 минут! (далее последовательность действий)</h2>
+              <h2>Хочешь поиграть, но не знаешь где и с кем? Ты нашел то, что искал! От желания до игры за 5 минут!</h2>
+              <br><br><br>
+              <div class="row visible-md visible-lg" style="padding:20px;">
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <h1>1</h1>
+                  Регистрируетесь в системе
+                </div>
+                <div class="col-sm-4">
+                  <h1>2</h1>
+                  Записываетесь на подходящую игру
+                </div>
+                <div class="col-sm-4">
+                  <h1>3</h1>
+                  Играете в свое удовольствие
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -88,7 +105,9 @@
       <div class="row hidden-xs bigheadrow">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="text-center page1head">
-            <h2>Вы уже играете и вам не хватает игроков? Подключайтесь к нам! Мы соберем участников, обзвоним всех, возьмем на себя переговоры с площадками. (Мы провели уже более 300 игр)</h2>
+            <h2>Вы уже играете и вам не хватает игроков? Подключайтесь к нам! Мы соберем участников, обзвоним всех, возьмем на себя переговоры с площадками.</h2>
+            <br>
+            <h2>Мы провели уже более 300 игр</h2>
           </div>
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
