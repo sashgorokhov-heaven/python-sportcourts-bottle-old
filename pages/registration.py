@@ -14,6 +14,15 @@ class Registration(pages.Page):
     def get(self):
         if pages.auth.loggedin():
             raise bottle.redirect('/profile')
+        if 'ref' in bottle.request.query:
+            referer = bottle.request.query.get('ref')
+            with dbutils.dbopen() as db:
+                db.execute("SELECT user_id, first_name, last_name FROM users WHERE user_id='{}'".format(referer))
+                if len(db.last())==0:
+                    return pages.templates.message('Ошибка', 'Неверный реферальный код <b>{}</b>'.format(referer))
+                pages.set_cookie('referer', referer)
+                raise bottle.redirect('/')
+
         if 'code' in bottle.request.query:
             code = bottle.request.query.get('code')
             _cities = cities.get(0)
@@ -144,6 +153,10 @@ class Registration(pages.Page):
             if vkparams:
                 vkparams = pickle.loads(vkparams)
                 params['vkuserid'] = vkparams['vkuserid']
+
+            referer = pages.get_cookie('referer', 0)
+            if referer:
+                params['referer'] = referer
 
             sql = 'INSERT INTO users ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
