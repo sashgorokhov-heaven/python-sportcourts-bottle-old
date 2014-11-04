@@ -99,8 +99,8 @@
                     </div>
                 % else:
                   <div class="progress">
-                    <div class="progress-bar{{' progress-bar-success progress-bar-striped active' if len(game.report()['registered']) == game.capacity() else ' progress-bar-info'}}" role="progressbar" style="width:{{round((len(game.report()['registered'])/game.capacity())*100)}}%">
-                          <span class="">{{str(len(game.report()['registered']))+'/'+str(game.capacity())}}</span>
+                    <div class="progress-bar{{' progress-bar-success progress-bar-striped active' if game.report(True)[1] >= game.capacity() else ' progress-bar-info'}}" role="progressbar" style="width:{{round(((game.capacity() if game.report(True)[1] >= game.capacity() else game.report(True)[1]) /game.capacity())*100)}}%">
+                          <span class="">{{str(game.report(True)[1])+'/'+str(game.capacity())}}</span>
                     </div>
                   </div>
                 % end
@@ -128,27 +128,11 @@
                             % last = 0
                             % for n, user_id in enumerate(game.report(True)[0]['registered'], 1):
                                 % user = game.report(True)[0]['registered'][user_id]
-                                    <p>
-                                        <a id="{{game.game_id()}}-{{user.user_id()}}-{{n}}-{{tab_name}}" target="_blank" href="/profile?user_id={{user.user_id()}}"
-                                           % if game.report()['registered'][user_id]<2:
-                                                style="color: #bb4444"
-                                                data-toggle="tooltip" data-placement="left" title="{{'Не пришел' if game.report()['registered'][user_id]==0 else 'Не оплатил'}}"
-                                           % end
-                                           >{{'{}. {}'.format(n, user.name)}}
-                                        </a>
-                                    </p>
-                                    <script>$('#{{game.game_id()}}-{{user.user_id()}}-{{n}}-{{tab_name}}').tooltip();</script>
+                                    <p><a target="_blank" href="/profile?user_id={{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
                                 % last = n
                             % end
                             % for n, name in enumerate(game.report(True)[0]['unregistered'], last+1):
-                                <p id="{{game.game_id()}}-{{n}}-{{tab_name}}"
-                                    % if game.report()['unregistered'][name][0]<2:
-                                        style="color: #bb4444"
-                                        data-toggle="tooltip" data-placement="left" title="{{'Не пришел' if game.report()['unregistered'][name][0]==0 else 'Не оплатил'}}"
-                                    % end
-                                    >{{'{}. {}'.format(n, name)}}
-                                </p>
-                                <script>$('#{{game.game_id()}}-{{n}}-{{tab_name}}').tooltip();</script>
+                                <p>{{'{}. {}'.format(n, name)}}</p>
                             % end
                         % end
                       </div>

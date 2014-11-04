@@ -523,10 +523,10 @@ class Game:
 
         if detalized:
             if 'report_detalized' not in self._game:
-                self._game['report_detalized'] = {'registered': dict(), 'unregistered': self._game['report']['unregistered']}
+                self._game['report_detalized'] = {'registered': dict(), 'unregistered': {name:self._game['report']['unregistered'][name] for name in self._game['report']['unregistered'] if self._game['report']['unregistered'][name][0]==2}}
                 self._game['report_detalized']['registered'] = {
                     user.user_id():user for user in users.get(
-                        list(map(lambda x: int(x), self._game['report']['registered'])),
+                        list(map(lambda x: int(x), filter(lambda x: self._game['report']['registered'][x]==2, self._game['report']['registered']))),
                         count=slice(0, len(self._game['report']['registered'])),
                         dbconnection=self._db
                     )
