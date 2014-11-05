@@ -117,6 +117,10 @@
 </script>
 
 <style>
+  #content{
+    font-family: 'PF Agora Sans', Helvetica, Arial, sans-serif;
+  }
+
   .typed-cursor{
       opacity: 1;
       -webkit-animation: blink 0.7s infinite;

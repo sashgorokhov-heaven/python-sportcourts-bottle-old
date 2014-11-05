@@ -31,6 +31,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <script src="/view/js/current_href.js"></script>
+    <script src="/view/js/registration.js"></script>
 
     <script type="text/javascript" src="/view/bootstrap/bootstrap_validator/js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="/view/bootstrap/bootstrap_validator/language/ru_RU.js"></script>

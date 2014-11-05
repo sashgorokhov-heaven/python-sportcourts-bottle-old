@@ -182,23 +182,6 @@
         </div>
       </div>
 
-      <div class="modal fade" id="activateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Активируйте свой профиль</h4>
-            </div>
-      
-            <div class="modal-body text-center">
-              <br>
-              <p>Сейчас на указанный Вами адрес электронной почты <span class="text-primary" id="useremail"></span> придет сообщение, содержащее ссылку для подтверждения email.<br>Если сообщение не видно в папке "Входящие", проверьте папку "Спам"</p>
-              <br><br>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Началь мобильного -->
 
       <div class="jumbotron visible-xs smallhead">
