@@ -158,7 +158,7 @@ class Registration(pages.Page):
             referer = pages.get_cookie('referer', 0)
             if referer:
                 params['referer'] = referer
-
+            params.pop('token')
             sql = 'INSERT INTO users ({dbkeylist}) VALUES ({dbvaluelist})'
             keylist = list(params.keys())
             sql = sql.format(
