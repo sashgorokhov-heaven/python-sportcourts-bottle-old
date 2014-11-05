@@ -18,7 +18,7 @@
           </div>
           <div id="footerright">
             <p class="text-muted text-right">
-              Powered by fasdf <img src="http://nichol.as/wp-content/uploads/2010/03/uwsgi.png" height=15 style="margin-bottom: 4px;">
+              Powered by <img src="http://nichol.as/wp-content/uploads/2010/03/uwsgi.png" height=15 style="margin-bottom: 4px;">
               &nbsp;
               <img src="http://bottlepy.org/docs/dev/_static/logo_nav.png" height=15 style="margin-bottom: 4px;">
             </p>

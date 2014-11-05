@@ -76,6 +76,42 @@
       </script>
 
       <div class="row hidden-xs bigheadrow">
+        <div class="row marketing" style="margin-top: 15vh;">
+          <div class="col-md-12 text-center indexpromo">
+            <div id="" style="max-width: 80%; margin: 0 auto;">
+              <h2>Хочешь поиграть, но не знаешь где и с кем? Ты нашел то, что искал! От желания до игры за 5 минут!</h2>
+              <br><br><br>
+              <div class="row visible-md visible-lg" style="padding:20px;">
+              </div>
+              <div class="row">
+                <div class="col-sm-5 col-md-4">
+                  <div class="text-left" style="float:right;">
+                    <h2>Просто</h2>
+                    <ul style="margin-left: -24px;">
+                      <li>регистрируешься в системе</li>
+                      <li>выбираешь подходящую игру</li>
+                      <li>получаешь удовольствие!</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-4 hidden-sm">
+                  <img src="/images/static/site_preview.png" style="width:100%;"/>
+                </div>
+                <div class="col-sm-5 col-sm-offset-2 col-md-4 col-md-offset-0 text-left">
+                  <h2>Удобно</h2>
+                  <ul style="margin-left: -24px;">
+                    <li>пользуйся с любого устройства</li>
+                    <li>задавай вопросы организаторам</li>
+                    <li>меняй свои планы одним кликом!</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row hidden-xs bigheadrow">
         <div class="row marketing" style="margin-top: 10vh;">
           <div class="col-md-12 text-center indexpromo">
             <div id="" style="max-width: 60%; margin: 0 auto;">
@@ -86,28 +122,28 @@
               <div class="row">
                 <div class="col-sm-4">
                   <h1>1</h1>
-                  Регистрируетесь в системе
+                  <p>Регистрируетесь в системе</p>
                 </div>
                 <div class="col-sm-4">
                   <h1>2</h1>
-                  Записываетесь на подходящую игру
+                  <p>Выбираете подходящую <a href="/games">игру</a> и занимаете место</p>
                 </div>
                 <div class="col-sm-4">
                   <h1>3</h1>
-                  Играете в свое удовольствие
+                  <p>Играете в свое удовольствие!</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="row hidden-xs bigheadrow">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="text-center page1head">
-            <h2>Вы уже играете и вам не хватает игроков? Подключайтесь к нам! Мы соберем участников, обзвоним всех, возьмем на себя переговоры с площадками.</h2>
+            <h2>Вы уже играете и вам не хватает игроков? Подключайтесь к нам! Проблем с составом больше не будет.</h2>
             <br>
-            <h2>Мы провели уже более 300 игр</h2>
+            <h2>Мы провели уже более 300 игр!</h2>
           </div>
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
@@ -124,8 +160,8 @@
         <div class="row marketing" style="margin-top: 30vh;">
           <div class="col-md-12 text-center indexpromo">
             <div id="" style="max-width: 60%; margin: 0 auto;">
-              <h2>Найдите свое место в мире любительского спорта!</h2>
-              <p>Пройдите весь путь от интереса к игре, через тренировки, поиск команды, участие в турнирах к получению необходимой игровой практики, достижению собственных целей. (схема)</p>
+              <h2>Найди свое место в мире любительского спорта!</h2>
+              <p>Пройди весь путь от интереса к игре, через тренировки, поиск команды, участие в турнирах к получению необходимой игровой практики, достижению собственных целей.</p>
             </div>
           </div>
         </div>
@@ -133,8 +169,10 @@
 
       <div class="row hidden-xs bigheadrow">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-          <div class="text-center page1head">
-            <h2>Ради чего? Мы мечтаем построить динамичное и здоровое спортивное сообщество. (В России доля людей, активно занимающихся спортом - 16%. Средний показатель в Европе - 50%)</h2>
+          <div class="text-center page2head">
+            <h2>Мы мечтаем построить в России динамичное и здоровое спортивное сообщество</h2>
+            <!-- <br><br><br>
+            <img src="/images/static/stats_index.png" style="width: 70%;"/> -->
           </div>
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
@@ -147,20 +185,36 @@
         </div>
       </div>
 
-      <div class="row hidden-xs bigheadrow">
+      <div class="row hidden-xs bigheadrow bigheadrow-dark">
         <div class="row marketing" style="margin-top: 30vh;">
           <div class="col-md-12 text-center indexpromo">
             <div id="" style="max-width: 60%; margin: 0 auto;">
-              <h2>Не можете играть каждую неделю? Отвлекает семья и работа? Со SportCourts это не помеха. Планируйте ваше время удобным образом!</h2>
+              <h2>Не можешь играть каждую неделю? Отвлекает семья и работа? Со SportCourts это не помеха. Планируй свое время удобным образом!</h2>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- <div class="row hidden-xs bigheadrow">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="text-center page2head">
+            <h2>Не можешь играть каждую неделю? Отвлекает семья и работа? Со SportCourts это не помеха. Планируй свое время удобным образом!</h2>
+          </div>
+          Wrapper for slides
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="http://megamall.oneoweb.com/uploads/site_50/background/min/slika-_original-1319918859-559052.jpg">
+              <div class="carousel-caption">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
       <div class="row hidden-xs emailrow" style="margin-bottom: -52px;">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="text-center emailhead">
-            <h2>Присоединяйся к сообществу спортсменов!</h2>
+            <h2>Будь в игре!</h2>
             <br><br>
             <div class="input-group" style="min-width:498px; margin: 0 auto;">
               <form action="" style="text-align: center">
@@ -189,9 +243,21 @@
         <p class="lead">Ваш проводник в мире любительского спорта.</p>
         <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
         % if not loggedin:
-            <p><a class="btn btn-main btn-lg btn-success" href="/registration" role="button">Зарегистрироваться</a></p>
+            <div id="reg3">
+              <p>
+                <a id="regbutton" class="btn btn-lg btn-success" role="button">Зарегистрироваться</a>
+              </p>
+            </div>
+            <div id="reg4" hidden class="input-group" style="min-width:440px; margin: 0 auto; margin-bottom:10px; display: none;">
+              <form action="/registration/email" method="POST" style="text-align: center">
+                <input type="text" id="email3" name="email" class="form-control input-lg" placeholder="Введи свой email" style="max-width:260px;">
+                <span class="input-group-btn">
+                  <a id="email3button" class="btn btn-success btn-lg" disabled>Присоединиться</a>
+                </span>
+              </form>
+            </div>
             <p class="text-center">или</p>
-            <p><a class="btn btn-main btn-lg btn-primary" href="#" data-toggle="modal" data-target="#loginModal" role="button">Войти</a></p>
+            <p><a class="btn btn-lg btn-primary" href="#" data-toggle="modal" data-target="#loginModal" role="button">Войти</a></p>
             <p>&nbsp;</p>
         % end
       </div>
