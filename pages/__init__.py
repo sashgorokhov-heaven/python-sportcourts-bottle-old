@@ -197,6 +197,10 @@ def get_cookie(name:str, default=None):
     return bottle.request.get_cookie(name, default, config.secret)
 
 
+def delete_cookie(name:str):
+    return bottle.response.delete_cookie(name, config.secret)
+
+
 class _MockUserLevel(set):
     @staticmethod
     def admin() -> bool:

@@ -203,8 +203,8 @@ class Registration(pages.Page):
                         users.add_friend(user_id, friend_id, dbconnection=db)
                         users.add_friend(friend_id, user_id, dbconnection=db)
             activation.register(params['email'], dbconnection=db)
-            bottle.response.delete_cookie('token')
-            bottle.response.delete_cookie('referer')
+            pages.delete_cookie('referer')
+            pages.delete_cookie('token')
             pages.auth.login(email, passwd)
             raise bottle.redirect('/profile')
 
