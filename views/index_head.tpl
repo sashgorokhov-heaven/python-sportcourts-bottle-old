@@ -103,6 +103,7 @@
               },
               error: function (response, status, errorThrown) {
                 alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+                $('#emailbutton').html('Ошибка');
               },
               type: "POST",
               dataType: "json"
@@ -157,6 +158,7 @@
               },
               error: function (response, status, errorThrown) {
                 alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+                $('#email1button').html('Ошибка');
               },
               type: "POST",
               dataType: "json"
@@ -211,6 +213,7 @@
               },
               error: function (response, status, errorThrown) {
                 alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+                $('#email3button').html('Ошибка');
               },
               type: "POST",
               dataType: "json"
