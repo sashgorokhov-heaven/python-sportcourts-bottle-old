@@ -40,6 +40,21 @@
           $('#email1button').attr('disabled', 'disabled');
         };
       });
+      $(document).on('input','#email3', function(){
+        if($(this).val() != '') {
+          var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
+          if(pattern.test($(this).val())){
+              $(this).css({'border' : '1px solid #569b44'});
+              $('#email3button').removeAttr('disabled');
+          } else {
+              $(this).css({'border' : '1px solid #ff0000'});
+              $('#email3button').attr('disabled', 'disabled');
+          }
+        } else {
+          $(this).css({'border' : '1px solid #ff0000'});
+          $('#email3button').attr('disabled', 'disabled');
+        };
+      });
       $(document).on('click','#emailbutton', function(){
         var email = $('#email').val();
         if (!pressed) {
@@ -88,6 +103,117 @@
               },
               error: function (response, status, errorThrown) {
                 alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+                $('#emailbutton').html('Ошибка');
+              },
+              type: "POST",
+              dataType: "json"
+            });
+        }
+      });
+      $(document).on('click','#email1button', function(){
+        var email = $('#email1').val();
+        if (!pressed) {
+            $.ajax({
+              url: '/registration/email',
+              data: {
+                email: email
+              },
+              async: true,
+              beforeSend: function() {
+                pressed = true;
+                $('#email1button').attr('disabled', 'disabled');
+                $('#email1button').html('Отправка...');
+                $('#email1').attr('disabled', 'disabled');
+              },
+              success: function (data, textStatus) {
+                if (data['error_code']==0) {
+                    $('#email1button').html('Отправлено');
+                    $('#useremail').html(email);
+                    $('#activateModal').modal('show');
+                }
+                if (data['error_code']==1) {
+                    alert('Ошибка, пользовтель с таким email уже зарегестрирован!')
+                    // в data['error_data'] лежит список [user_id, first_name, last_name] - типо "Вася Пупкин, eto ti?"
+                    pressed = false;
+                    $('#email1button').removeAttr('disabled');
+                    $('#email1button').html('Присоединиться');
+                    $('#email1').removeAttr('disabled');
+                }
+                if (data['error_code']==2) {
+                    alert('Ошибка, пользовтель с таким email уже активирован!')
+                    // в data['error_data'] лежит список [email, token]
+                    pressed = false;
+                    $('#email1button').removeAttr('disabled');
+                    $('#email1button').html('Присоединиться');
+                    $('#email1').removeAttr('disabled');
+                }
+                if (data['error_code']==3) {
+                    alert('Ошибка, пользовтель с таким email уже зарегестрирован!')
+                    // в data['error_data'] лежит список [email]
+                    pressed = false;
+                    $('#email1button').removeAttr('disabled');
+                    $('#email1button').html('Присоединиться');
+                    $('#email1').removeAttr('disabled');
+                }
+              },
+              error: function (response, status, errorThrown) {
+                alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+                $('#email1button').html('Ошибка');
+              },
+              type: "POST",
+              dataType: "json"
+            });
+        }
+      });
+      $(document).on('click','#email3button', function(){
+        var email = $('#email3').val();
+        if (!pressed) {
+            $.ajax({
+              url: '/registration/email',
+              data: {
+                email: email
+              },
+              async: true,
+              beforeSend: function() {
+                pressed = true;
+                $('#email3button').attr('disabled', 'disabled');
+                $('#email3button').html('Отправка...');
+                $('#email3').attr('disabled', 'disabled');
+              },
+              success: function (data, textStatus) {
+                if (data['error_code']==0) {
+                    $('#email3button').html('Отправлено');
+                    $('#useremail').html(email);
+                    $('#activateModal').modal('show');
+                }
+                if (data['error_code']==1) {
+                    alert('Ошибка, пользовтель с таким email уже зарегестрирован!')
+                    // в data['error_data'] лежит список [user_id, first_name, last_name] - типо "Вася Пупкин, eto ti?"
+                    pressed = false;
+                    $('#email3button').removeAttr('disabled');
+                    $('#email3button').html('Присоединиться');
+                    $('#email3').removeAttr('disabled');
+                }
+                if (data['error_code']==2) {
+                    alert('Ошибка, пользовтель с таким email уже активирован!')
+                    // в data['error_data'] лежит список [email, token]
+                    pressed = false;
+                    $('#email3button').removeAttr('disabled');
+                    $('#email3button').html('Присоединиться');
+                    $('#email3').removeAttr('disabled');
+                }
+                if (data['error_code']==3) {
+                    alert('Ошибка, пользовтель с таким email уже зарегестрирован!')
+                    // в data['error_data'] лежит список [email]
+                    pressed = false;
+                    $('#emailbutton').removeAttr('disabled');
+                    $('#emailbutton').html('Присоединиться');
+                    $('#email').removeAttr('disabled');
+                }
+              },
+              error: function (response, status, errorThrown) {
+                alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+                $('#email3button').html('Ошибка');
               },
               type: "POST",
               dataType: "json"
@@ -114,9 +240,26 @@
       });
     });
   });
+
+  $(document).on('click','#regbutton',function(){
+    $('#reg3').fadeOut('slow', function() {
+      $('#reg4').fadeIn('slow', function() {
+
+      });
+    });
+  });
 </script>
 
 <style>
+  ul{
+    font-size: 120%;
+    margin-top: 30px;
+  }
+
+  li{
+    margin-top: 10px;
+  }
+
   #content{
     font-family: 'PF Agora Sans', Helvetica, Arial, sans-serif;
   }
@@ -146,6 +289,11 @@
   .bigheadrow{
     height:100vh;
     max-height:800px;
+  }
+
+  .bigheadrow-dark{
+    background: #585350;
+    color: white;
   }
 
   .bighead{
@@ -179,6 +327,17 @@
   .page1head{
     position:absolute;
     top:50%;
+    left:15%;
+    z-index:30;
+    width:70%;
+    max-height:800px;
+    color: rgb(255, 255, 255);
+    text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
+  }
+
+  .page2head{
+    position:absolute;
+    top:70%;
     left:15%;
     z-index:30;
     width:70%;
