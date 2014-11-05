@@ -34,6 +34,7 @@ $(document).ready(function() {
               if (data['error_code']==0) {
                   $('#email2button').html('Отправлено');
                   $('#useremail').html(email);
+                  $('#regModal').modal('hide');
                   $('#activateModal').modal('show');
               }
               if (data['error_code']==1) {
