@@ -198,7 +198,7 @@ def get_cookie(name:str, default=None):
 
 
 def delete_cookie(name:str):
-    return bottle.response.delete_cookie(name, config.secret)
+    return bottle.response.delete_cookie(name)
 
 
 class _MockUserLevel(set):
@@ -262,8 +262,7 @@ class _AuthDispatcher:
         bottle.response.delete_cookie('user')
 
     def loggedin(self) -> bool:
-        user = get_cookie('user')
-        return not (user is None)
+        return bool(get_cookie('user'))
 
     def current(self) -> User:
         if not self.loggedin(): return _MockUser()
