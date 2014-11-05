@@ -100,6 +100,7 @@ class Registration(pages.Page):
         token = bottle.request.forms.get('token')
         params['email'] = activation.get(token)
         params.pop('token')
+        params['token'] = token
 
         if params['bdate'] == '00.00.0000':
             return pages.PageBuilder('registration', error='Ошибка',
@@ -172,7 +173,6 @@ class Registration(pages.Page):
             vkuserid = db.last()[0][1]
             first_name = db.last()[0][2]
             username = db.last()[0][2] + ' ' + db.last()[0][3]
-            # pages.auth_dispatcher.login(params['email'], params['passwd'])
             if 'avatar' in bottle.request.files:
                 images.save_avatar(user_id, bottle.request.files.get('avatar'))
             elif vkparams and 'vkphoto' in vkparams:
@@ -204,6 +204,7 @@ class Registration(pages.Page):
                         users.add_friend(friend_id, user_id, dbconnection=db)
             activation.register(params['email'], dbconnection=db)
             bottle.response.delete_cookie('token')
+            bottle.response.delete_cookie('referer')
             pages.auth.login(email, passwd)
             raise bottle.redirect('/profile')
 
