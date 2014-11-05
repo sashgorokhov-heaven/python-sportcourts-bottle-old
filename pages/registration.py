@@ -209,9 +209,9 @@ class Registration(pages.Page):
             raise bottle.redirect('/profile')
 
     def post(self, action):
-        if pages.auth.loggedin(): raise bottle.redirect('/profile')
         if action=='email':
             return self.post_email()
+        if pages.auth.loggedin(): raise bottle.redirect('/profile')
         if action=='reg':
             return self.post_reg()
         raise bottle.HTTPError(404)
