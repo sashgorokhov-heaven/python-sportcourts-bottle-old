@@ -19,3 +19,5 @@
 
 .idea/dataSourses.xml
 config.py
+
+*.pyc
