@@ -88,9 +88,9 @@
                   <div class="text-left" style="float:right;">
                     <h2>Просто</h2>
                     <ul style="margin-left: -24px;">
-                      <li>регистрируешься в системе</li>
-                      <li>выбираешь подходящую игру</li>
-                      <li>получаешь удовольствие!</li>
+                      <li>регистрируйся в системе</li>
+                      <li>выбирай подходящую игру</li>
+                      <li>получай удовольствие!</li>
                     </ul>
                   </div>
                 </div>
@@ -185,7 +185,7 @@
         </div>
       </div>
 
-      <div class="row hidden-xs bigheadrow bigheadrow-dark">
+      <div class="row hidden-xs bigheadrow">
         <div class="row marketing" style="margin-top: 30vh;">
           <div class="col-md-12 text-center indexpromo">
             <div id="" style="max-width: 60%; margin: 0 auto;">
