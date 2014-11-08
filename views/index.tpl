@@ -87,10 +87,10 @@
                 <div class="col-sm-5 col-md-4">
                   <div class="text-left" style="float:right;">
                     <h2>Просто</h2>
-                    <ul style="margin-left: -24px;">
-                      <li>регистрируйся в системе</li>
-                      <li>выбирай подходящую игру</li>
-                      <li>получай удовольствие!</li>
+                    <ul class="promo-ul" style="margin-left: -24px;">
+                      <li class="promo-li">регистрируйся в системе</li>
+                      <li class="promo-li">выбирай подходящую игру</li>
+                      <li class="promo-li">получай удовольствие!</li>
                     </ul>
                   </div>
                 </div>
@@ -99,10 +99,10 @@
                 </div>
                 <div class="col-sm-5 col-sm-offset-2 col-md-4 col-md-offset-0 text-left">
                   <h2>Удобно</h2>
-                  <ul style="margin-left: -24px;">
-                    <li>пользуйся с любого устройства</li>
-                    <li>задавай вопросы организаторам</li>
-                    <li>меняй свои планы одним кликом!</li>
+                  <ul class="promo-ul" style="margin-left: -24px;">
+                    <li class="promo-li">пользуйся с любого устройства</li>
+                    <li class="promo-li">задавай вопросы организаторам</li>
+                    <li class="promo-li">меняй свои планы одним кликом!</li>
                   </ul>
                 </div>
               </div>

@@ -251,12 +251,12 @@
 </script>
 
 <style>
-  ul{
+  .promo-ul{
     font-size: 120%;
     margin-top: 30px;
   }
 
-  li{
+  .promo-li{
     margin-top: 10px;
   }
 
