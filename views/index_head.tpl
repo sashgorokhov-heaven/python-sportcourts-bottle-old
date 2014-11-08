@@ -288,6 +288,7 @@
 
   .bigheadrow{
     height:100vh;
+    min-height: 600px;
     max-height:800px;
   }
 
@@ -303,6 +304,7 @@
     z-index:30;
     width:70%;
     max-height:800px;
+    min-height: 600px;
     color: rgb(255, 255, 255);
     text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
   }
@@ -350,6 +352,7 @@
     background-color:black;
     height:100vh;
     max-height:800px;
+    min-height: 600px;
     overflow:hidden;
   }
 
