@@ -176,7 +176,7 @@ class _PageController:
         return page_class
 
     def loadpages(self):
-        for module_name in os.listdir('pages'):
+        for module_name in os.listdir(os.path.join(config.paths.server.root, 'pages')):
             if module_name.startswith('_'):
                 continue
             try:
