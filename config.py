@@ -3,7 +3,7 @@ import sys
 import os
 import itertools
 
-configpath = '/Users/vitaliyharchenko/SportCourts' # сюда путь до конфига
+configpath = '/bsp' # сюда путь до конфига
 
 sys.path.append(configpath)
 
