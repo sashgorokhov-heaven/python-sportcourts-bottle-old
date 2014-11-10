@@ -3,7 +3,7 @@
 
 <div class="row">
   <div class="col-xs-12 col-sm-6">
-    <h2>Финансы</h2>
+    <h2><a href="/admin/finances">Финансы</a></h2>
     <div class="table-responsive">
       <table class="table table-hover">
         <tr>
@@ -103,6 +103,7 @@
                 <small>{{fin.sport_money[sport_id]}} (#TODO %)</small>
               </td>
             </tr>
+        % end
       </table>
     </div>
   </div>

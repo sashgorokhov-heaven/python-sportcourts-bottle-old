@@ -15,4 +15,4 @@ class Finances1(pages.Page):
             fin = finances.Finances(month, db)
             return pages.PageBuilder('finances', **fin.dict())
 
-    get.route = '/finances'
+    get.route = '/admin/finances'
