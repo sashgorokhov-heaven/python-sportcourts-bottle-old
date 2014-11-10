@@ -74,8 +74,8 @@ class Finances(pages.Page):
 
             yield 'Идеальный доход: {} ({} игр)'.format(ideal_income, len(games))
 
-            played_users = list(filter(lambda x: x['status']==2,reports))
-            played_unique = {i['user_id'] for i in played_users if i['user_id']!=0}
+            played_users = list(filter(lambda x: x['status']==2 and x['user_id']!=0,reports))
+            played_unique = {i['user_id'] for i in played_users}
             yield 'Отыграло: {} ({} уникумов - {}%)'.format(len(played_users), len(played_unique), percents(len(played_unique), len(played_users)))
 
             # TODO везде где capacity проверять на capacity>0

@@ -15,7 +15,7 @@
             </small>
           </td>
           <td>
-            <small>180 (1 игр)</small>
+            <small>{{fin.ideal_income}} ({{len(fin.games)}} игр)</small>
           </td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@
             </small>
           </td>
           <td>
-            <small>-180 (-100.0%)</small>
+            <small>{{fin.lost_empty}} ({{fin.percents(fin.lost_empty, fin.ideal_income)}}%) ({{fin.empty}})</small>
           </td>
         </tr>
         <tr>
@@ -39,7 +39,7 @@
             </small>
           </td>
           <td>
-            <small>0 (0.0%)</small>
+            <small>{{fin.lost_notvisited}} ({{fin.percents(fin.lost_notvisited, fin.ideal_income)}}%) ({{fin.notvisited}})</small>
           </td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@
             </small>
           </td>
           <td>
-            <small>0 (0.0%)</small>
+            <small>{{fin.lost_notpayed}} ({{fin.percents(fin.lost_notpayed, fin.ideal_income)}}%) ({{fin.notpayed}})</small>
           </td>
         </tr>
         <tr>
@@ -63,7 +63,7 @@
             </small>
           </td>
           <td>
-            <small>360 (200.0%)</small>
+            <small>{{fin.real_income}} ({{fin.percents(fin.real_income, fin.ideal_income)}}%)</small>
           </td>
         </tr>
         <tr>
@@ -75,10 +75,10 @@
             </small>
           </td>
           <td>
-            <small>0.0 (0.0%)</small>
+            <small>{{fin.rent_charges}} ({{fin.percents(fin.rent_charges, fin.real_income)}}%)</small>
           </td>
         </tr>
-        <tr class="success">
+        <tr class="{{'success' if fin.profit>0 else 'danger'}}">
           <td>
             <small>
               <strong>
@@ -87,33 +87,22 @@
             </small>
           </td>
           <td>
-            <small>360.0 (100.0%)</small>
+            <small>{{fin.profit}} ({{fin.percents(fin.profit, fin.real_income)}}%)</small>
           </td>
         </tr>
-        <tr class="success">
-          <td>
-            <small>
-              <strong>
-                Баскетбол
-              </strong>
-            </small>
-          </td>
-          <td>
-            <small>360.0 (100.0%)</small>
-          </td>
-        </tr>
-        <tr class="success">
-          <td>
-            <small>
-              <strong>
-                Футбол
-              </strong>
-            </small>
-          </td>
-          <td>
-            <small>360.0 (100.0%)</small>
-          </td>
-        </tr>
+        % for sport_id in fin.sport_games:
+            <tr class="{{'success' if fin.sport_money[sport_id]>0 else 'danger'}}">
+              <td>
+                <small>
+                  <strong>
+                    {{fin.sports[sport_id].title()}} ({{len(fin.sport_games[sport_id])}} игр)
+                  </strong>
+                </small>
+              </td>
+              <td>
+                <small>{{fin.sport_money[sport_id]}} (#TODO %)</small>
+              </td>
+            </tr>
       </table>
     </div>
   </div>
