@@ -64,7 +64,7 @@
                 </small>
               </td>
               <td>
-                <small>{{fin.sport_money[sport_id]}} (#TODO %)</small>
+                <small>{{fin.sport_money[sport_id]}} ({{round((fin.sport_money[sport_id]/fin.profit)*100)}} %)</small>
               </td>
             </tr>
         % end
