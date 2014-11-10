@@ -22,42 +22,6 @@
           <td>
             <small>
               <strong>
-                Потеряно изза пустых мест:
-              </strong>
-            </small>
-          </td>
-          <td>
-            <small>{{fin.lost_empty}} ({{fin.percents(fin.lost_empty, fin.ideal_income)}}%) ({{fin.empty}})</small>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <small>
-              <strong>
-                Потеряно изза непришедших:
-              </strong>
-            </small>
-          </td>
-          <td>
-            <small>{{fin.lost_notvisited}} ({{fin.percents(fin.lost_notvisited, fin.ideal_income)}}%) ({{fin.notvisited}})</small>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <small>
-              <strong>
-                Потеряно изза неоплативших:
-              </strong>
-            </small>
-          </td>
-          <td>
-            <small>{{fin.lost_notpayed}} ({{fin.percents(fin.lost_notpayed, fin.ideal_income)}}%) ({{fin.notpayed}})</small>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <small>
-              <strong>
                 Реальный доход:
               </strong>
             </small>
@@ -168,16 +132,14 @@
   <div class="col-xs-12 col-sm-6">
     <h2>Технические функции</h2>
 
-    <a href="" class="btn btn-link">Просмотр логов</a>
+    <a href="/admin/logs" class="btn btn-link">Просмотр логов</a>
     <br>
-    <a href="" class="btn btn-link">Перезагрузка страницы</a>
-    <input type="text">
     <br>
-    <a href="" class="btn btn-link">Перезагрузка всего сервера</a>
+    <a href="/admin/reload" class="btn btn-link">Перезагрузка сервера</a>
     <br>
-    <a href="" class="btn btn-link">Сброс кеша</a>
+    <a href="/admin/clear_cache" class="btn btn-link">Сброс кеша</a>
     <br>
-    <a href="" class="btn btn-link">Общий дамп</a>
+    <a href="/admin/dump" class="btn btn-link">Общий дамп</a>
     <br>
     <a href="" class="btn btn-link">Тестовый режим</a>
     <input type="checkbox">
