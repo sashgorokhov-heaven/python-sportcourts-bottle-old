@@ -75,9 +75,9 @@ class Finances:
             else:
                 self.sport_games[game['sport_type']].append(game)
 
-        sport_money = dict()
+        self.sport_money = dict()
         for sport_id in self.sport_games:
-            sport_money[sport_id] = sum([self.games_profit[game['game_id']] for game in self.sport_games[sport_id]])
+            self.sport_money[sport_id] = sum([self.games_profit[game['game_id']] for game in self.sport_games[sport_id]])
 
     def dict(self) -> dict:
         return {i:self.__dict__[i] for i in self.__dict__ if not i.startswith('_')}
