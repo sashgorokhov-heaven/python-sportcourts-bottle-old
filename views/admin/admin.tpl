@@ -72,7 +72,7 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6">
-    <h2>Посещаемость</h2>
+    <h2><a href="/admin/logs">Посещаемость</a></h2>
     <div class="table-responsive">
       <table class="table table-hover">
         <tr>
@@ -84,7 +84,7 @@
             </small>
           </td>
           <td>
-            <small>180</small>
+            <small>{{len(log.ips)}}</small>
           </td>
         </tr>
         <tr>
@@ -96,7 +96,7 @@
             </small>
           </td>
           <td>
-            <small>10</small>
+            <small>len({log.logs_dict[i]['ip'] for i in log.today})</small>
           </td>
         </tr>
         <tr>
@@ -108,7 +108,7 @@
             </small>
           </td>
           <td>
-            <small>6</small>
+            <small># TODO</small>
           </td>
         </tr>
         <tr>
@@ -120,7 +120,7 @@
             </small>
           </td>
           <td>
-            <small>140</small>
+            <small># TODO</small>
           </td>
         </tr>
       </table>

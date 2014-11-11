@@ -2,7 +2,7 @@ import bottle
 import json
 import pages
 import dbutils
-from models import finances
+from models import finances, logs
 
 def get_finances(db:dbutils.DBConnection) -> dict:
     return {'fin':finances.Finances(0, db)}
@@ -14,6 +14,10 @@ def get_users(db:dbutils.DBConnection) -> dict:
     return {'users': json.dumps(users)}
 
 
+def get_logs(db:dbutils.DBConnection) -> dict:
+    return {'log':logs.Logs(db)}
+
+
 class Admin(pages.Page):
     def get(self, **kwargs):
         if not pages.auth.current().userlevel.admin():
@@ -21,6 +25,7 @@ class Admin(pages.Page):
         with dbutils.dbopen() as db:
             respdict = get_users(db)
             respdict.update(get_finances(db))
+            respdict.update(get_logs(db))
             return pages.PageBuilder('admin', **respdict)
 
     get.route = '/admin'

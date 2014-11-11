@@ -1,7 +1,6 @@
 import bottle
 import pages
 import dbutils
-import datetime
 from models import logs
 
 def yield_handler(func):
@@ -32,11 +31,11 @@ class Logs(pages.Page):
             logs_ = logs.Logs(db)
 
             yield 'Посещений в этом месяце: {} ({} уникальных {}%)'.format(len(logs_.logs), len(logs_.ips), percents(len(logs_.ips), len(logs_.logs)))
-            today = datetime.date.today()
-            dates = {str(today + datetime.timedelta(days=i)) for i in range(0 - today.weekday(), 7 - today.weekday())}
-            this_week = sum([len(logs_.logs_by_date[date]) for date in dates if date in logs_.logs_by_date])
-            yield 'Посещений в на этой неделе: {} ({}%) ({} уникальных {}%)'.format(this_week, percents(this_week, len(logs_.logs)), 0, 0)
-            yield 'Посещений сегодня: {} ({}%) ({} уникальных {}%)'.format(len(logs_.logs_by_date[str(today)]), percents(len(logs_.logs_by_date[str(today)]), this_week), 0, 0)
+            this_week = sum([len(day) for day in logs_.this_week])
+            unique_week = {logs_.logs_dict[i]['ip'] for day in logs_.this_week for i in day}
+            yield 'Посещений в на этой неделе: {} ({}%) ({} уникальных {}%)'.format(this_week, percents(this_week, len(logs_.logs)), len(unique_week), percents(len(unique_week), this_week))
+            unique_day = {logs_.logs_dict[i]['ip'] for i in logs_.today}
+            yield 'Посещений сегодня: {} ({}%) ({} уникальных {}%)'.format(len(logs_.today), percents(len(logs_.today), this_week), len(unique_day), percents(len(unique_day), len(logs_.today)))
             yield ''
             registered = len(logs_.ips-set(list(logs_.users_by_ips)))
             yield 'Пользователей в системе: {} ({}%)'.format(registered, percents(registered, len(logs_.ips)))
