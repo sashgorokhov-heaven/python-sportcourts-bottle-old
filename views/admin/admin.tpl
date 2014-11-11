@@ -96,7 +96,7 @@
             </small>
           </td>
           <td>
-            <small>len({log.logs_dict[i]['ip'] for i in log.today})</small>
+            <small>{{len({log.logs_dict[i]['ip'] for i in log.today})}}</small>
           </td>
         </tr>
         <tr>
