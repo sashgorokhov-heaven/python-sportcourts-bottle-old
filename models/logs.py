@@ -66,6 +66,10 @@ class Logs:
                 else:
                    self.users_by_ips[log['ip']].add(log['user_id'])
 
+            today = datetime.date.today()
+            dates = [str(today + datetime.timedelta(days=i)) for i in range(0 - today.weekday(), 7 - today.weekday())]
+            self.this_week = [self.logs_by_date[date] for date in dates if date in self.logs_by_date]
+            self.today = self.logs_by_date[str(today)]
 
     def dict(self) -> dict:
         return {i:self.__dict__[i] for i in self.__dict__ if not i.startswith('_')}
