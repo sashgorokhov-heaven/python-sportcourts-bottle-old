@@ -186,10 +186,14 @@
       </div>
 
       <div class="row hidden-xs bigheadrow">
-        <div class="row marketing" style="margin-top: 30vh;">
+        <div class="row marketing" style="margin-top: 10vh;">
           <div class="col-md-12 text-center indexpromo">
             <div id="" style="max-width: 60%; margin: 0 auto;">
-              <h2>Не можешь играть каждую неделю? Отвлекает семья и работа? Со SportCourts это не помеха. Планируй свое время удобным образом!</h2>
+              <h2>Не можешь играть каждую неделю? Отвлекает семья и работа? </h2>
+              <br>
+              <img src="http://s1.iconbird.com/ico/2013/12/505/w450h4001385925290Clock.png" alt="" height="300">
+              <br>
+              <h2>Со SportCourts это не помеха. Планируй свое время удобным образом!</h2>
             </div>
           </div>
         </div>
