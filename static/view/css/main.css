@@ -128,8 +128,8 @@ body{
     float:left;
 }
 
-@media only screen and (max-width : 800px) {
-    .reformal{
-        display:none;
+@media all and (max-width : 800px) {
+    #reformal_tab{
+        display:none !important;
     }
 }
