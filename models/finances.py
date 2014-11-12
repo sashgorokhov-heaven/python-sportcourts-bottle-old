@@ -6,7 +6,7 @@ from objects import Game, Court
 class Finances:
     @staticmethod
     def percents(n:int, mx:int, digits:int=1) -> int:
-        return round((n/mx)*100, digits)
+        return round((n/mx)*100, digits) if mx>0 else 0
 
     def __init__(self, month:int, db:dbutils.DBConnection):
         self._db = db
@@ -23,7 +23,7 @@ class Finances:
         self.games_dict = {game.game_id():game for game in self.games}
 
         self.reports = db.execute("SELECT * FROM reports WHERE game_id IN ({})".format(', '.join(map(str, self.games_dict))),
-                     dbutils.dbfields['reports'])
+                     dbutils.dbfields['reports']) if len(self.games)>0 else list()
         self.reports_dict = dict()
         for report in self.reports:
             if report['game_id'] not in self.reports_dict:
