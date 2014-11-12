@@ -339,7 +339,7 @@
 
   .page2head{
     position:absolute;
-    top:70%;
+    top:10%;
     left:15%;
     z-index:30;
     width:70%;
@@ -381,6 +381,19 @@
 
   #footerleft{
     float: none;
+    text-align: center;
+  }
+
+  @media all and (max-width : 1000px) {
+    .time{
+      height: 250px;
+    }
+  }
+
+  .img-row{
+    height:100px;
+    overflow: hidden;
+    width:100%;
     text-align: center;
   }
 </style>
