@@ -95,13 +95,13 @@
           % if user.height() > 0:
             Рост: {{user.height()}} см.
           % elif user.user_id()==current_user.user_id():
-            Рост: <a href="/profile?edit">Заполнить...</a><br>
+            Рост: <small><a href="/profile?edit">Заполнить...</a></small><br>
           % end
             <br>
           % if user.weight() > 0:
             Вес: {{user.weight()}} кг.<br>
           % elif user.user_id()==current_user.user_id():
-            Вес: <a href="/profile?edit">Заполнить...</a><br>
+            Вес: <small><a href="/profile?edit">Заполнить...</a></small><br>
           % end
           <br>
           % if loggedin and (user.user_id()==current_user.user_id() or current_user.userlevel.resporgadmin() or user.settings.show_phone()):

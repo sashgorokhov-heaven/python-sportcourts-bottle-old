@@ -127,3 +127,9 @@ body{
 #footerleft{
     float:left;
 }
+
+@media all and (max-width : 800px) {
+    #reformal_tab{
+        display:none !important;
+    }
+}

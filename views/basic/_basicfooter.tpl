@@ -140,5 +140,13 @@
               script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
               document.getElementsByTagName('head')[0].appendChild(script);
           })();
-      </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://sportcourts.reformal.ru">Oтзывы и предложения для SportCourts</a></noscript>
+      </script>
+      <noscript>
+        <a href="http://reformal.ru">
+          <img src="http://media.reformal.ru/reformal.png" />
+        </a>
+        <a href="http://sportcourts.reformal.ru" class="reformal">
+          Oтзывы и предложения для SportCourts
+        </a>
+      </noscript>
       % end
