@@ -127,3 +127,9 @@ body{
 #footerleft{
     float:left;
 }
+
+@media only screen and (max-width : 800px) {
+    .reformal{
+        display:none;
+    }
+}
