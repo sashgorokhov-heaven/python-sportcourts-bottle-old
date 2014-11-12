@@ -34,7 +34,7 @@ class Authorize(pages.Page):
                 time.sleep(3)
                 return pages.PageBuilder('auth', error='Ошибка авторизации',
                                          error_description='Неверный email или пароль')
-            raise bottle.redirect(bottle.request.get_header("Referer", "/games"))
+            raise bottle.redirect('/games')
 
     def post(self):
         if pages.auth.loggedin():
