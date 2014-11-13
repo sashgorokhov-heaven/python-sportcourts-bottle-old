@@ -17,7 +17,7 @@ class Finances:
         self.games = db.execute("SELECT * FROM games WHERE "
                                "MONTH(datetime)={} AND "
                                "datetime+INTERVAL duration MINUTE<NOW() AND "
-                               "capacity>0 AND "
+                               "capacity>0 AND deleted=0 AND "
                                "game_id IN (SELECT game_id FROM reports) ORDER BY datetime DESC".format(month), dbutils.dbfields['games'])
         self.games = list(map(lambda x: Game(x, dbconnection=db), self.games))
         self.games_dict = {game.game_id():game for game in self.games}

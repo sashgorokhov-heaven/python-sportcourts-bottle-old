@@ -536,6 +536,9 @@ class Game:
 
         return self._game['report']
 
+    def deleted(self) -> bool:
+        return bool(self._game['deleted'])
+
     def is_subscribed(self) -> bool:
         return pages.auth.loggedin() and pages.auth.current().user_id() in set(self.subscribed())
 

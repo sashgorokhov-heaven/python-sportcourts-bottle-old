@@ -126,6 +126,7 @@ def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slic
     sql = "SELECT * FROM games WHERE {} ORDER BY DATETIME {} LIMIT {}, {}"
     where = list()
     where.append("city_id={}".format(city_id))
+    where.append("deleted=0")
     where.append("datetime+INTERVAL duration MINUTE {} NOW()".format('>' if not old else '<'))
     if court_id:
         where.append("court_id={}".format(court_id))
@@ -141,18 +142,13 @@ def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slic
 
 @autodb
 def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
-    #dbconnection.execute("INSERT INTO deleted_games SELECT * FROM games WHERE game_id={}".format(game_id))
-    #dbconnection.execute("DELETE FROM games WHERE game_id={}".format(game_id))
-    #dbconnection.execute("DELETE FROM usergames WHERE game_id={}".format(game_id))
-    #dbconnection.execute("DELETE FROM notifications WHERE game_id={}".format(game_id))
-
-    raise NotImplementedError
+    dbconnection.execute("UPDATE games SET deleted=1 WHERE game_id={}".format(game_id))
 
 
 @autodb
 def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnection:dbutils.DBConnection=None) -> Game:
     sql = (" SELECT * FROM games WHERE court_id='{court_id}'"
-           " AND ("
+           " AND deleted=0 AND ("
            " (datetime BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE)"
            " OR "
            " (datetime + INTERVAL duration MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE))"
@@ -170,7 +166,7 @@ def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnecti
 def user_game_intersection(user_id:int, game:Game, dbconnection:dbutils.DBConnection=None) -> Game:
     sql = (" SELECT * FROM games WHERE game_id!='{game_id}'"
            " AND game_id IN (SELECT game_id FROM usergames WHERE user_id='{user_id}' AND status=2)"
-           " AND ("
+           " AND deleted=0 AND ("
            " (datetime BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE)"
            " OR "
            " (datetime + INTERVAL duration MINUTE BETWEEN '{datetime}' AND '{datetime}' + INTERVAL '{duration}' MINUTE))"
