@@ -6,7 +6,7 @@ from objects import Game, Court
 class Finances:
     @staticmethod
     def percents(n:int, mx:int, digits:int=1) -> int:
-        return round((n/mx)*100, digits) if mx>0 else 0
+        return round((n/mx)*100, digits) if mx!=0 else 0
 
     def __init__(self, month:int, db:dbutils.DBConnection):
         self._db = db
