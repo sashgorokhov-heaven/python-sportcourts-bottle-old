@@ -1,3 +1,3 @@
 <script>
-    var users = {{!users}}
+    var users = {{!users}};
 </script>
