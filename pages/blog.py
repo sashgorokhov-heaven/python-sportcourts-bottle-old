@@ -3,6 +3,7 @@ import bottle
 import dbutils
 import pages
 
+import base64
 
 class Blog(pages.Page):
     def get(self, **kwargs):
@@ -10,7 +11,7 @@ class Blog(pages.Page):
 
     def post(self):
         with dbutils.dbopen() as db:
-            text = bottle.request.forms.get('text')
+            text = base64.b64encode(bottle.request.forms.get('text'))
             sql = 'INSERT INTO blog_posts (content) VALUES ({contentval})'
             sql = sql.format(
                 contentval=text)
