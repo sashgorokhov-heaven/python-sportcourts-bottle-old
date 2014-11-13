@@ -15,7 +15,7 @@ class Blog(pages.Page):
         if not pages.auth.current().userlevel.admin():
             raise bottle.HTTPError(404)
         with dbutils.dbopen() as db:
-            text = base64.b64encode(bottle.request.forms.get('text')).decode()
+            text = base64.b64encode(bottle.request.forms.get('text').encode()).decode()
             sql = 'INSERT INTO blog_posts (content) VALUES ({})'.format(text)
             db.execute(sql)
             raise bottle.redirect("/blog")
