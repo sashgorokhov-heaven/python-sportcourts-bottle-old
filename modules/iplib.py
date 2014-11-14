@@ -11,7 +11,7 @@ def skip(ip:str, fullpath:str):
 def ipfilter(func):
     def wrapper(*args, **kwargs):
         if not skip(bottle.request.remote_addr, bottle.request.fullpath):
-            raise bottle.HTTPError(404)
+            raise bottle.HTTPError(403, 'Your IP ({}) was banned. Please contact domain administrator for more details.'.format(bottle.request.remote_addr))
         return func(*args, **kwargs)
 
     return wrapper
