@@ -60,6 +60,14 @@ def route(path=None, method='GET', name=None, apply=None, skip=None, **kwconfig)
     return decorator
 
 
+def get(path=None, name=None, apply=None, skip=None, **kwconfig):
+    return route(path=path, name=name, apply=apply, skip=skip, **kwconfig)
+
+
+def post(path=None, name=None, apply=None, skip=None, **kwconfig):
+    return route(path=path, method='POST', name=name, apply=apply, skip=skip, **kwconfig)
+
+
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
         if method == 'POST':
