@@ -1,8 +1,6 @@
 import pages
 
 
-class Index(pages.Page):
-    def get(self):
-        return pages.PageBuilder('index')
-
-    get.route = '/'
+@pages.get(['/', '/main', '/index'])
+def index():
+    return pages.PageBuilder('index')
