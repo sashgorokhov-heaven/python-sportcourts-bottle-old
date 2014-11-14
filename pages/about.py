@@ -1,8 +1,6 @@
 import pages
 
 
-class About(pages.Page):
-    def get(self, **kwargs):
-        return pages.PageBuilder('about')
-
-    get.route = '/about'
+@pages.get('/about')
+def about():
+    return pages.PageBuilder('about')
