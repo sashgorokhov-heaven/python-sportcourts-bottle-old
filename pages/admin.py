@@ -55,7 +55,7 @@ def yield_handler(func):
 @pages.get('/admin/finances')
 @pages.only_admins
 @yield_handler
-def finances():
+def finances_page():
     with dbutils.dbopen() as db:
         month = int(bottle.request.query.get('month', 0))
         fin = finances.Finances(month, db)
@@ -102,7 +102,7 @@ def finances():
 @pages.get('/admin/logs')
 @pages.only_admins
 @yield_handler
-def logs():
+def logs_page():
     with dbutils.dbopen(**dbutils.logsdb_connection) as db:
         if 'text' not in bottle.request.query:
             raise bottle.HTTPError(404)
