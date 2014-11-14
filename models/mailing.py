@@ -4,7 +4,7 @@ from email.mime import multipart
 
 import dbutils
 from models import autodb, users
-from modules import utils
+from modules import utils, logging
 import config
 from modules.myuwsgi import uwsgi
 
@@ -40,7 +40,7 @@ def sendhtml(html:str, to:str, plain:str='Простой текст', subject:st
         s.sendmail(me, you, msg.as_string())
         s.quit()
     except Exception as e:
-        # logging.error(e)
+        logging.error(e)
         return uwsgi.SPOOL_RETRY
     return uwsgi.SPOOL_OK
 

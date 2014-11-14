@@ -17,6 +17,49 @@ import models
 import models.seo_info
 
 
+def log(func):
+    def wrapper(*args, **kwargs):
+        t = time.time()
+        try:
+            response = func(*args, **kwargs)
+            logging.access(time.time() - t)
+            return response
+        except (bottle.HTTPError, bottle.HTTPResponse) as e:
+            logging.access(time.time() - t)
+            raise e
+        except Exception as e:
+            logging.error(e, time.time() - t)
+            if config.debug:
+                return templates.message(e.__class__.__name__,
+                                         extract_traceback(e, '<br>').replace('\n', '<br>')).template()
+            return templates.message("Возникла непредвиденная ошибка", "Сообщите нам об этом, пожалуйста.").template()
+    return wrapper
+
+
+def deny_post(func):
+    def wrapper(*args, **kwargs):
+        raise NotImplementedError # TODO
+    return wrapper
+
+
+@iplib.ipfilter
+@log
+def execute(func, *args, **kwargs):
+    data = func(*args, **kwargs)
+    if isinstance(data, PageBuilder):
+        return data.template()
+    return data
+
+
+def route(path=None, method='GET', name=None, apply=None, skip=None, **kwconfig):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            return execute(func, *args, **kwargs)
+        bottle.route(path=path, method=method, callback=wrapper, name=name, apply=apply, skip=skip, **kwconfig)
+        return wrapper
+    return decorator
+
+
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
         if method == 'POST':
