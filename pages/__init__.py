@@ -72,6 +72,22 @@ def post(path=None, name=None, apply=None, skip=None, **kwconfig):
     return route(path=path, method='POST', name=name, apply=apply, skip=skip, **kwconfig)
 
 
+def only_admins(func):
+    def wrapper(*args, **kwargs):
+        if not auth.current().userlevel.admin():
+            return templates.permission_denied()
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def only_loggedin(func):
+    def wrapper(*args, **kwargs):
+        if not auth.loggedin():
+            return templates.not_loggedin()
+        return func(*args, **kwargs)
+    return wrapper
+
+
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
         if method == 'POST':
@@ -124,6 +140,10 @@ class templates:
     def permission_denied(text:str='Доступ ограничен',
                           description:str='Вы не можете просматривать эту страницу') -> PageBuilder:
         return templates.message(text, description)
+
+    @staticmethod
+    def not_loggedin():
+        return templates.permission_denied(description='Доступно только зарегестрированным пользователям')
 
     @staticmethod
     def message(text:str, description:str) -> PageBuilder:
