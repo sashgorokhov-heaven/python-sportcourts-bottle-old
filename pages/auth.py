@@ -7,6 +7,13 @@ from modules import vk
 import pages
 
 
+@pages.get('/logout')
+def logout():
+    if pages.auth.loggedin():
+        pages.auth.logout()
+    raise bottle.redirect(bottle.request.get_header("Referer", "/"))
+
+
 class Authorize(pages.Page):
     def get(self):
         if pages.auth.loggedin():
