@@ -1,6 +1,7 @@
 import pages
 
 
+@pages.get('/showtpl/<tplname>')
 @pages.only_admins
-def show_template(name:str):
-    return pages.PageBuilder(name)
+def show_template(tplname:str):
+    return pages.PageBuilder(tplname)
