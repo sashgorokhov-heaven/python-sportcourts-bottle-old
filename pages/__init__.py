@@ -55,7 +55,7 @@ def route(path=None, method='GET', name=None, apply=None, skip=None, **kwconfig)
     def decorator(func):
         def wrapper(*args, **kwargs):
             return execute(func, *args, **kwargs)
-        if not isinstance(path, (list, tuple)):
+        if not isinstance(path, list):
             bottle.route(path=path, method=method, callback=wrapper, name=name, apply=apply, skip=skip, **kwconfig)
         else:
             for p in path:
