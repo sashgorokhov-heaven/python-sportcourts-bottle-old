@@ -20,6 +20,11 @@ logsdb_connection = {
 }
 
 
+class DatabaseError(Exception):
+    def __init__(self, e:Exception, query:str):
+        super().__init__(query, *e.args)
+
+
 class DBConnection:
     def __init__(self, **kwargs):
         if len(kwargs) == 0:
@@ -33,6 +38,12 @@ class DBConnection:
         self._cursor = self._db.cursor()
         self._last = None
 
+    def _execute(self, query:str):
+        try:
+            return self._cursor.execute(query)
+        except Exception as e:
+            raise DatabaseError(e, query)
+
     def execute(self, query:str, mapnames:list=None) -> list:
         """
         Execute a SQL query
@@ -42,7 +53,7 @@ class DBConnection:
         """
         if self.closed:
             self.reconnect()
-        if self._cursor.execute(query) == 0:
+        if self.execute(query) == 0:
             self._last = list()
         else:
             data = self._cursor.fetchall()
