@@ -9,8 +9,7 @@ import config
 from modules.myuwsgi import uwsgi
 
 
-@utils.as_spooler
-@utils.spooler('mailing_sendhtml')
+@utils.spool('mailing_sendhtml')
 def sendhtml(html:str, to:str, plain:str='Простой текст', subject:str='Уведомление'):
     try:
         me = config.email.login
@@ -45,8 +44,7 @@ def sendhtml(html:str, to:str, plain:str='Простой текст', subject:st
     return uwsgi.SPOOL_OK
 
 
-@utils.as_spooler
-@utils.spooler('mailing_sendmail')
+@utils.spool('mailing_sendmail')
 def sendmail(message:str, to:str, subject:str='Уведомление'):
     try:
         me = config.email.login
@@ -69,7 +67,7 @@ def sendmail(message:str, to:str, subject:str='Уведомление'):
         s.sendmail(me, you, msg.as_string())
         s.quit()
     except Exception as e:
-        # logging.error(e)
+        logging.error(e)
         return uwsgi.SPOOL_RETRY
     return uwsgi.SPOOL_OK
 

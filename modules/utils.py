@@ -1,4 +1,6 @@
+import pickle
 import threading
+from .myuwsgi import uwsgidecorators, uwsgi
 
 
 def format_duration(duration:int) -> str:
@@ -40,17 +42,18 @@ def threaded(func):
     return wrapper
 
 
-# _spoolers = dict() # func key -> func
-#
-#
-# def _spool_dispatcher(data:dict):
-#    spool_key = data[b'key'].decode()
-#    pickleddata = pickle.loads(data[b'data'])
-#    args, kwargs = pickleddata
-#    retval = _spoolers[spool_key](*args, **kwargs)
-#    if not retval:
-#        return uwsgi.SPOOL_OK
-#    return retval
+_spoolers = dict() # func key -> func
+
+
+@uwsgidecorators.spool
+def _spool_dispatcher(data:dict):
+   spool_key = data['spool_key']
+   pickleddata = pickle.loads(data['data'])
+   args, kwargs = pickleddata
+   retval = _spoolers[spool_key](*args, **kwargs)
+   if not retval:
+       return uwsgi.SPOOL_OK
+   return retval
 
 
 def spooler(spool_key:str):
@@ -72,3 +75,13 @@ def as_spooler(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def spool(spool_key:str):
+    def decorator(func):
+        _spoolers[spool_key] = func
+        def wrapper(*args, **kwargs):
+            pickleddata = pickle.dumps((args, kwargs))
+            _spool_dispatcher.spool(spool_key=spool_key, data=pickleddata)
+        return wrapper
+    return decorator

@@ -10,8 +10,7 @@ import pages
 from modules.myuwsgi import uwsgi
 
 
-@utils.as_spooler
-@utils.spooler('logs')
+@utils.spool('logs')
 def _writedb(**kwargs):
     try:
         with dbutils.dbopen(**dbutils.logsdb_connection) as db:
