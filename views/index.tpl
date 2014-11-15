@@ -157,11 +157,35 @@
       </div>
 
       <div class="row hidden-xs bigheadrow">
-        <div class="row marketing" style="margin-top: 30vh;">
+        <div class="row marketing" style="margin-top: 18vh;">
           <div class="col-md-12 text-center indexpromo">
-            <div id="" style="max-width: 60%; margin: 0 auto;">
+            <div id="" style="max-width: 80%; margin: 0 auto;">
+              <div class="img-row">
+                <img src="/images/static/1.png" style="width:100px;"/>
+                <img src="/images/static/2.png" style="width:100px;"/>
+                <img src="/images/static/3.png" style="width:100px;"/>
+                <img src="/images/static/4.png" style="width:100px;"/>
+                <img src="/images/static/5.png" style="width:100px;"/>
+                <img src="/images/static/6.png" style="width:100px;"/>
+                <img src="/images/static/7.png" style="width:100px;"/>
+                <img src="/images/static/8.png" style="width:100px;"/>
+                <img src="/images/static/9.png" style="width:100px;"/>
+              </div>
+              <br><br>
               <h2>Найди свое место в мире любительского спорта!</h2>
               <p>Пройди весь путь от интереса к игре, через тренировки, поиск команды, участие в турнирах к получению необходимой игровой практики, достижению собственных целей.</p>
+              <br><br>
+              <div class="img-row">
+                <img src="/images/static/10.png" style="width:100px;"/>
+                <img src="/images/static/11.png" style="width:100px;"/>
+                <img src="/images/static/12.png" style="width:100px;"/>
+                <img src="/images/static/13.png" style="width:100px;"/>
+                <img src="/images/static/14.png" style="width:100px;"/>
+                <img src="/images/static/15.png" style="width:100px;"/>
+                <img src="/images/static/16.png" style="width:100px;"/>
+                <img src="/images/static/17.png" style="width:100px;"/>
+                <img src="/images/static/18.png" style="width:100px;"/>
+              </div>
             </div>
           </div>
         </div>
