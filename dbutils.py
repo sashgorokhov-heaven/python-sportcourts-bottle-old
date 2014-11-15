@@ -53,7 +53,7 @@ class DBConnection:
         """
         if self.closed:
             self.reconnect()
-        if self.execute(query) == 0:
+        if self._execute(query) == 0:
             self._last = list()
         else:
             data = self._cursor.fetchall()
