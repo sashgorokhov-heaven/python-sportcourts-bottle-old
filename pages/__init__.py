@@ -80,6 +80,14 @@ def only_admins(func):
     return wrapper
 
 
+def only_organizers(func):
+    def wrapper(*args, **kwargs):
+        if not auth.current().userlevel.admin() and not auth.current().userlevel.organizer():
+            return templates.permission_denied()
+        return func(*args, **kwargs)
+    return wrapper
+
+
 def only_loggedin(func):
     def wrapper(*args, **kwargs):
         if not auth.loggedin():
