@@ -1,20 +1,18 @@
 import bottle
-
 import pages
 from models import users
 
 
-class Ban(pages.Page):
-    def get(self):
-        if 'user_id' not in bottle.request.query:
-            raise bottle.HTTPError(404)
-        if not pages.auth.current().userlevel.admin():
-            raise pages.templates.permission_denied()
-        user = users.get(int(bottle.request.query.get('user_id')))
-        return pages.PageBuilder('ban', user=user)
+@pages.get('/ban')
+@pages.only_admins
+def get_ban():
+    if 'user_id' not in bottle.request.query:
+        raise bottle.HTTPError(404)
+    user = users.get(int(bottle.request.query.get('user_id')))
+    return pages.PageBuilder('ban', user=user)
 
-    def post(self):
-        pass
 
-    get.route = '/ban'
-    post.route = get.route
+@pages.post('/ban')
+@pages.only_admins
+def post_ban():
+    raise NotImplementedError
