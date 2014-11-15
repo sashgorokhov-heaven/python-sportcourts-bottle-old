@@ -110,13 +110,24 @@
         <div class="panel panel-default tag_toolbar">
           <div class="panel-body">
             <p class="lead">Теги</p>
-            <form id="searchform" method="POST" class="form-horizontal" action="/users" enctype="multipart/form-data">
-              <input type="hidden" name="search" value="all"></input>
-              <input id="searchquery" type="text" name="q" class="form-control"
-                placeholder="Поиск по имени"></input>
+            
+            <p>
+              <a href="">Баскетбол</a>
               <br>
-              <button id="searchbutton" type="submit" class="btn btn-primary btn-block" value="Найти">Найти</button>
-            </form>
+              <a href="">Тренинг</a>
+              <br>
+              <a href="">Волейбол</a>
+              <br>
+              <a href="">Питание</a>
+              <br>
+              <a href="">Образ жизни</a>
+              <br>
+              <a href="">Растяжка</a>
+              <br>
+              <a href="">Обзоры</a>
+              <br>
+              <a href="">Новости</a>
+            </p>
           </div>
         </div>
       </div>
