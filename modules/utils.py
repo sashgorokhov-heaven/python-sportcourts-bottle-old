@@ -1,7 +1,7 @@
 import pickle
 import threading
 from .myuwsgi import uwsgidecorators, uwsgi
-
+from . import logging
 
 def format_duration(duration:int) -> str:
     postfix = 'минут'
@@ -47,34 +47,17 @@ _spoolers = dict() # func key -> func
 
 @uwsgidecorators.spool
 def _spool_dispatcher(data:dict):
-   spool_key = data['spool_key']
-   pickleddata = pickle.loads(data['data'])
-   args, kwargs = pickleddata
-   retval = _spoolers[spool_key](*args, **kwargs)
-   if not retval:
-       return uwsgi.SPOOL_OK
-   return retval
-
-
-def spooler(spool_key:str):
-    def wraper(func):
-        #def spool(*args, **kwargs):
-        #    pickleddata = pickle.dumps((args, kwargs))
-        #    uwsgi.spool({b'data': pickleddata, b'key':spool_key.encode()})
-        #_spoolers[spool_key] = func
-        #uwsgi.spooler = _spool_dispatcher
-        #setattr(func, 'spool', spool)
-        return func
-
-    return wraper
-
-
-def as_spooler(func):
-    def wrapper(*args, **kwargs):
-        #func.spool(*args, **kwargs)
-        return func(*args, **kwargs)
-
-    return wrapper
+    spool_key = data['spool_key']
+    pickleddata = pickle.loads(data['data'])
+    args, kwargs = pickleddata
+    try:
+        retval = _spoolers[spool_key](*args, **kwargs)
+    except Exception as e:
+        logging.error(e)
+        return uwsgi.SPOOL_OK
+    if not retval:
+        return uwsgi.SPOOL_OK
+    return retval
 
 
 def spool(spool_key:str):
