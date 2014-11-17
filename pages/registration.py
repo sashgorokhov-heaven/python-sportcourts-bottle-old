@@ -29,8 +29,10 @@ class Registration(pages.Page):
             try:
                 access_token, user_id, email = vk.auth_code(code, '/registration')
             except ValueError as e:
+                token = pages.get_cookie('token', None)
+                email = activation.get(token)
                 return pages.PageBuilder('registration', cities=_cities, error=e.vkerror['error'],
-                                         error_description=e.vkerror['error_description'])
+                                         error_description=e.vkerror['error_description'], token=token, email=email)
             user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max', 'contacts'])[0]
             data = dict()
             data['vkuserid'] = user_id

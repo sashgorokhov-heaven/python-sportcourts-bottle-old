@@ -30,7 +30,9 @@
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
-    <input type="hidden" name="token" value="{{token}}">
+    % if defined("token"):
+        <input type="hidden" name="token" value="{{token}}">
+    % end
         <div class="form-group">
           <label for="sex" class="col-sm-2 control-label">Фото</label>
           <div class="col-sm-10">
