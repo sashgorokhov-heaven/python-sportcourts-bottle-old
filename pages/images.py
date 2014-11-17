@@ -40,7 +40,7 @@ def get_og_image(name):
     return bottle.static_file(name, config.paths.images.og)
 
 
-@pages.get('/images/reports/<name>')
+@pages.get('/images/reports/<game_id>')
 @pages.only_loggedin
 def get_report_image(game_id):
     game = games.get_by_id(game_id)
