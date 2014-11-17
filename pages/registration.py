@@ -223,3 +223,18 @@ class Registration(pages.Page):
 
     get.route = '/registration'
     post.route = '/registration/<action>'
+
+
+@pages.get('/oldvactivation')
+def oldvactivation():
+    token = bottle.request.query.get('token')
+    with dbutils.dbopen() as db:
+        db.execute("SELECT email, activated FROM activation WHERE token='{}'".format(token))
+        if len(db.last())==0:
+            return pages.templates.message('Ошибка', 'Неверный код.')
+        email = db.last()[0][0]
+        activated = db.last()[0][0]
+        if activated==2:
+            return pages.templates.message('Ошибка', 'Вы уже активировали свой профиль.')
+        db.execute("UPDATE activation SET activated=2 WHERE email='{}'".format(email))
+        return pages.templates.message('Успешно', 'Вы активировали свой профиль.')
