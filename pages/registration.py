@@ -209,9 +209,6 @@ class Registration(pages.Page):
             #raise bottle.redirect('/profile')
             return pages.PageBuilder('auth', email=email, error='Вы успешно зарегестрированы', error_description='Войдите, используя пароль.')
 
-    @bottle.get('/registration/reg')
-    def get_registration_reg(self):
-        raise bottle.redirect('/games')
 
     def post(self, action):
         if action=='email':
@@ -224,6 +221,9 @@ class Registration(pages.Page):
     get.route = '/registration'
     post.route = '/registration/<action>'
 
+@pages.get('/registration/reg')
+def get_registration_reg():
+    raise bottle.redirect('/games')
 
 @pages.get('/oldvactivation')
 def oldvactivation():
