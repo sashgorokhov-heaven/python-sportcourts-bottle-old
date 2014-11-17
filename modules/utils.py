@@ -1,7 +1,7 @@
 import pickle
 import threading
 from .myuwsgi import uwsgidecorators, uwsgi
-from . import logging
+
 
 def format_duration(duration:int) -> str:
     postfix = 'минут'
@@ -50,11 +50,7 @@ def _spool_dispatcher(data:dict):
     spool_key = data['spool_key']
     pickleddata = pickle.loads(data['data'])
     args, kwargs = pickleddata
-    try:
-        retval = _spoolers[spool_key](*args, **kwargs)
-    except Exception as e:
-        logging.error(e)
-        return uwsgi.SPOOL_OK
+    retval = _spoolers[spool_key](*args, **kwargs)
     if not retval:
         return uwsgi.SPOOL_OK
     return retval
@@ -66,5 +62,6 @@ def spool(spool_key:str):
         def wrapper(*args, **kwargs):
             pickleddata = pickle.dumps((args, kwargs))
             _spool_dispatcher.spool(spool_key=spool_key, data=pickleddata)
+        setattr(wrapper, 'pure', func)
         return wrapper
     return decorator
