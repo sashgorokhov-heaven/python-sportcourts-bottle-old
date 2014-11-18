@@ -4,8 +4,7 @@ from modules import utils
 from models import autodb, splitstrlist
 
 
-@utils.as_spooler
-@utils.spooler('notifications_add')
+@utils.spool('notifications_add')
 def add(user_id:int, text:str, level:int=0, game_id:int=0, type:int=0, date_time:str=None):
     with dbutils.dbopen() as db:
         db.execute(
@@ -43,8 +42,7 @@ def get(user_id:int, all:bool=False, type:int=-1, dbconnection:dbutils.DBConnect
     return notifications
 
 
-@utils.as_spooler
-@utils.spooler('notifications_read')
+@utils.spool('notifications_read')
 def read(notification_id):
     with dbutils.dbopen() as db:
         if isinstance(notification_id, str) and len(notification_id.split(',')) > 0:
@@ -65,8 +63,7 @@ def read(notification_id):
             db.execute("UPDATE notifications SET `read`=1 WHERE `read`=0 AND user_id={}".format(user_id))
 
 
-@utils.as_spooler
-@utils.spooler('notifications_delete')
+@utils.spool('notifications_delete')
 def delete(notification_id):
     with dbutils.dbopen() as db:
         if isinstance(notification_id, str) and len(notification_id.split(',')) > 0:

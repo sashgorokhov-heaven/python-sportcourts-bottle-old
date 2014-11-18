@@ -39,6 +39,10 @@ class _my_uwsgidecorators:
             pass
         return wrapper
 
+    @staticmethod
+    def spool(func):
+        return func
+
 
 uwsgi = _my_uwsgi if import_error or config.standalone else _uwsgi
 uwsgidecorators = _my_uwsgidecorators if import_error or config.standalone else _uwsgidecorators
