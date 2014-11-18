@@ -1,18 +1,8 @@
 <ul class="nav nav-sidebar">
-  <li class="active"><a href="/admin">Обзор</a></li>
-  <li><a href="#">Посещаемость</a></li>
-  <li><a href="/fin">Финансы</a></li>
+  <li><a class="adminmenu" href="/admin">Обзор</a></li>
 </ul>
 <ul class="nav nav-sidebar">
-  <li><a href="">Технические функции</a></li>
-  <li><a href="">Nav item</a></li>
-  <li><a href="">Nav item again</a></li>
-  <li><a href="">One more nav</a></li>
-  <li><a href="">Another nav item</a></li>
-  <li><a href="">More navigation</a></li>
-</ul>
-<ul class="nav nav-sidebar">
-  <li><a href="">Nav item again</a></li>
-  <li><a href="">One more nav</a></li>
-  <li><a href="">Another nav item</a></li>
+  <li><a class="adminmenu" href="/blog" target="_blank">Блог</a></li>
+  <li><a class="adminmenu" href="/blog/add">Создать статью</a></li>
+  <li><a class="adminmenu" href="/blog/1">Просмотр статьи</a></li>
 </ul>
