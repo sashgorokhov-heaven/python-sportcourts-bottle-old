@@ -23,3 +23,7 @@ def post_blog(): # добавление новости
 @pages.get('/blog/<article_id:int>')
 def get_article(article_id:int): # просмотр отдельной новости
     raise NotImplementedError
+
+@pages.get('/blog/add')
+def get_blog(): # для добавления статьи
+    return pages.PageBuilder('addarticle')
