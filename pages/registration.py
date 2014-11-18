@@ -29,8 +29,10 @@ class Registration(pages.Page):
             try:
                 access_token, user_id, email = vk.auth_code(code, '/registration')
             except ValueError as e:
+                token = pages.get_cookie('token', None)
+                email = activation.get(token)
                 return pages.PageBuilder('registration', cities=_cities, error=e.vkerror['error'],
-                                         error_description=e.vkerror['error_description'])
+                                         error_description=e.vkerror['error_description'], token=token, email=email)
             user = vk.exec(access_token, 'users.get', fields=['sex', 'bdate', 'city', 'photo_max', 'contacts'])[0]
             data = dict()
             data['vkuserid'] = user_id
@@ -209,9 +211,6 @@ class Registration(pages.Page):
             #raise bottle.redirect('/profile')
             return pages.PageBuilder('auth', email=email, error='Вы успешно зарегестрированы', error_description='Войдите, используя пароль.')
 
-    @bottle.get('/registration/reg')
-    def get_registration_reg(self):
-        raise bottle.redirect('/games')
 
     def post(self, action):
         if action=='email':
@@ -223,3 +222,21 @@ class Registration(pages.Page):
 
     get.route = '/registration'
     post.route = '/registration/<action>'
+
+@pages.get('/registration/reg')
+def get_registration_reg():
+    raise bottle.redirect('/games')
+
+@pages.get('/oldvactivation')
+def oldvactivation():
+    token = bottle.request.query.get('token')
+    with dbutils.dbopen() as db:
+        db.execute("SELECT email, activated FROM activation WHERE token='{}'".format(token))
+        if len(db.last())==0:
+            return pages.templates.message('Ошибка', 'Неверный код.')
+        email = db.last()[0][0]
+        activated = db.last()[0][0]
+        if activated==2:
+            return pages.templates.message('Ошибка', 'Вы уже активировали свой профиль.')
+        db.execute("UPDATE activation SET activated=2 WHERE email='{}'".format(email))
+        return pages.templates.message('Успешно', 'Вы активировали свой профиль.')

@@ -1,4 +1,3 @@
-% setdefault("first_name", "Noname")
 <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="height:100%;margin:0;padding:0;width:100%;border-collapse:collapse;background-color:#dae2e6">
   <tbody>
     <tr>
@@ -65,7 +64,7 @@
                                     <td valign="top" style="padding-top:9px;padding-right:18px;padding-bottom:9px;padding-left:18px;color:#606060;font-family:Helvetica;font-size:15px;line-height:150%;text-align:left">
                                       <h1 style="margin:0;padding:0;color:#606060;display:block;font-family:Helvetica;font-size:40px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:-1px;text-align:left">
                                         <br>
-                                        Привет, {{first_name}}!
+                                        Привет!
                                       </h1>
                                       <h3 style="margin:0;padding:0;color:#606060;display:block;font-family:Helvetica;font-size:18px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:-.5px;text-align:left">
                                         <br>
