@@ -2,7 +2,7 @@
 % setdefault("games", list())
 <h1 class="page-header">Финансы</h1>
 
-<table class="table table-condensed table-hover">
+<table class="table table-condensed table-hover" style="font-size:80%;">
   <thead>
     <th>Дата</th>
     <th>Игра</th>
@@ -32,14 +32,16 @@
                 <a href="/report?game_id={{game.game_id()}}">Отчет</a>
               </td>
               <td>
-                <div class="btn-group">
+                % visited = games_counted[game.game_id()]['playedpayed']
+                <p>{{round((visited/game.capacity())*100)}}% ({{visited}}/{{game.capacity()}})</p>
+                <!-- <div class="btn-group">
                   % visited = games_counted[game.game_id()]['playedpayed']
                   <a type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" style="margin-top:-7px;">{{round((visited/game.capacity())*100)}}% ({{visited}}/{{game.capacity()}}) <span class="caret"></span></a>
-                  <!--<ul class="dropdown-menu" role="menu">
+                  <ul class="dropdown-menu" role="menu">
                     <li><a> зарегестрированных</a></li>
                     <li><a> новых</a></li>
-                  </ul>-->
-                </div>
+                  </ul>
+                </div> -->
               </td>
               <td>
                 <p>{{game.cost()}} RUB</p>
