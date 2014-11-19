@@ -148,8 +148,8 @@
     <h2>Пользователи</h2>
     <div class="table-responsive">
       <form>
-        <input type="text" class="form-control col-sm-6" placeholder="Search..." style="max-width:60%;">
-        <a href="" class="btn btn-link">Найти</a>
+        <input id="searchTextbox" type="text" class="form-control col-sm-6" placeholder="Search..." style="max-width:60%;">
+        <!-- <a href="" class="btn btn-link">Найти</a> -->
       </form>
       <hr>
       <table class="table table-hover" style="font-size:80%">
@@ -161,25 +161,8 @@
           <td>Функции</td>
           <td>Бан</td>
         </thead>
-        <tr>
-          <td>1</td>
-          <td>Виталий Харченко</td>
-          <td>+7 (982) 646 94 54</td>
-          <td><a href="mailto:harchenko.grape@gmail.com">Написать</a></td>
-          <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Забанить</a></li>
-                <li><a href="#">Пригласить на игру</a></li>
-                <li><a href="#">Записать на игру</a></li>
-              </ul>
-            </div>
-          </td>
-          <td>
-            <span class="glyphicon glyphicon-remove"></span>
-          </td>
-        </tr>
+        <tbody id="userssearchtable">
+        </tbody>
       </table>
     </div>
     

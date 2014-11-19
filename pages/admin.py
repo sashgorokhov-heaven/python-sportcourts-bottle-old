@@ -14,7 +14,7 @@ def get_finances(db:dbutils.DBConnection) -> dict:
 def get_users(db:dbutils.DBConnection) -> dict:
     users_ = db.execute("SELECT user_id, first_name, last_name, email, phone  FROM users",
                        ['user_id', 'first_name', 'last_name', 'email', 'phone'])
-    return {'users': json.dumps(users_)}
+    return {'users': json.dumps(users_,ensure_ascii=False)}
 
 
 def get_logs(db:dbutils.DBConnection) -> dict:
@@ -50,6 +50,14 @@ def yield_handler(func):
         else:
             return list(func(*args, **kwargs))[0]
     return wrapper
+
+
+@pages.get('/admin/users')
+@pages.only_admins
+def index():
+    with dbutils.dbopen() as db:
+        respdict = get_users(db)
+        return pages.PageBuilder('userbase', **respdict)
 
 
 @pages.get('/admin/finances')
