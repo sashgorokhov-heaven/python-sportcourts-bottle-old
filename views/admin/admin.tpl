@@ -144,27 +144,4 @@
     <a href="" class="btn btn-link">Тестовый режим</a>
     <input type="checkbox">
   </div>
-  <div class="col-xs-12 col-sm-6">
-    <h2>Пользователи</h2>
-    <div class="table-responsive">
-      <form>
-        <input id="searchTextbox" type="text" class="form-control col-sm-6" placeholder="Search..." style="max-width:60%;">
-        <!-- <a href="" class="btn btn-link">Найти</a> -->
-      </form>
-      <hr>
-      <table class="table table-hover" style="font-size:80%">
-        <thead>
-          <td>ID</td>
-          <td>Имя</td>
-          <td>Телефон</td>
-          <td>Email</td>
-          <td>Функции</td>
-          <td>Бан</td>
-        </thead>
-        <tbody id="userssearchtable">
-        </tbody>
-      </table>
-    </div>
-    
-  </div>
 </div>
