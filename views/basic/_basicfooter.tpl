@@ -1,12 +1,3 @@
-      % if loggedin and tplname!='index':
-      <div class="container theme-showcase">
-        <br>
-        <div class="alert alert-danger fade in">
-          <p>Если вы обнаружили проблему в работе сайта, или что-то подозрительное, пожалуйста, напишите <a target="_blank" href="https://vk.com/write28638603">СЮДА</a></p>
-        </div>
-      </div>
-      % end
-  
       <div id="footer">
         <div class="container">
           <div id="footerleft">
@@ -14,13 +5,22 @@
               &copy; Sportcourts 2014
               &nbsp&nbsp&nbsp&nbsp
               <a class="topmenu" href="/about">О нас</a>
+              &nbsp&nbsp&nbsp&nbsp
+              <a class="topmenu" href="/contacts">Контакты</a>
+              &nbsp&nbsp&nbsp&nbsp
+              <a class="topmenu" target="_blank" href="https://vk.com/write28638603">Сообщить об ошибке</a>
             </p>
           </div>
           <div id="footerright">
-            <p class="text-muted text-right">
+            <!-- <p class="text-muted text-right">
               Powered by <img src="http://nichol.as/wp-content/uploads/2010/03/uwsgi.png" height=15 style="margin-bottom: 4px;">
               &nbsp;
               <img src="http://bottlepy.org/docs/dev/_static/logo_nav.png" height=15 style="margin-bottom: 4px;">
+            </p> -->
+            <p class="text-muted text-right" style="margin-bottom:0">
+              <a href="http://vk.com/sportcourts" target="_blank">
+                <img src="/images/static/vk.png" width="32" style="margin-top:-5px; margin-bottom:0;"/>
+              </a>
             </p>
           </div>
         </div>

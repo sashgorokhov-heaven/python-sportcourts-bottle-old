@@ -96,12 +96,16 @@
             Рост: {{user.height()}} см.
           % elif user.user_id()==current_user.user_id():
             Рост: <small><a href="/profile?edit">Заполнить...</a></small><br>
+          % elif user.user_id()!=current_user.user_id():
+            Рост: не указан
           % end
             <br>
           % if user.weight() > 0:
             Вес: {{user.weight()}} кг.<br>
           % elif user.user_id()==current_user.user_id():
             Вес: <small><a href="/profile?edit">Заполнить...</a></small><br>
+          % elif user.user_id()!=current_user.user_id():
+            Вес: не указан<br>
           % end
           <br>
           % if loggedin and (user.user_id()==current_user.user_id() or current_user.userlevel.resporgadmin() or user.settings.show_phone()):
@@ -119,11 +123,16 @@
               <a href="http://vk.com/id{{user.vkuserid()}}" target="_blank">
                 <img src="/images/static/vk.png" width="32"/>
               </a>
-            % else:
-             <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/setvkid&response_type=code&v=5.21" target="_blank">
-                + связать свой аккаунт с вконтакте
-             </a>
             % end
+          % end
+
+          % if user.user_id()==current_user.user_id():
+            % if not user.vkuserid():
+              <a href="https://oauth.vk.com/authorize?client_id=4436558&scope=&redirect_uri=http://{{serverinfo['ip']}}:{{serverinfo['port']}}/setvkid&response_type=code&v=5.21" target="_blank">
+                + связать свой аккаунт с вконтакте
+              </a>
+            % end
+          % end
           <br>
           <br>
 
