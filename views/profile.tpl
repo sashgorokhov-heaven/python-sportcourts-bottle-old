@@ -99,13 +99,13 @@
           {{str(user.bdate)+', '+user.city_id(True).title()}}<br>
             <br>
           % if user.height() > 0:
-            Рост: {{user.height()}} см.
+            Рост: {{user.height()}} см.<br>
           % elif user.user_id()==current_user.user_id():
             Рост: <small><a href="/profile?edit">Заполнить...</a></small><br>
           % elif user.user_id()!=current_user.user_id():
             Рост: не указан
-          % end
             <br>
+          % end
           % if user.weight() > 0:
             Вес: {{user.weight()}} кг.<br>
           % elif user.user_id()==current_user.user_id():
@@ -126,7 +126,7 @@
           <br>
           % if loggedin:
             % if user.vkuserid():
-              <a href="http://vk.com/id{{user.vkuserid()}}" target="_blank">
+              <a href="http://vk.com/id{{user.vkuserid()}}" target="_blank" style="text-decoration:none;">
                 <img src="/images/static/vk.png" width="32"/>
               </a>
             % end
