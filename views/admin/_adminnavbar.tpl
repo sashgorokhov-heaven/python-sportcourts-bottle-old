@@ -9,8 +9,15 @@
       </button>
       <a class="navbar-brand" href="#">Админка</a>
     </div>
-    <div class="navbar-collapse collapse">
-      <!-- <ul class="nav navbar-nav navbar-right">
+    <div class="navbar-collapse collapse text-right">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class="topmenu" href="/profile">
+            <img src="/images/avatars/{{current_user.user_id()}}?sq_sm" class="img-circle" width="30" height="30" style="margin-top: -6px; margin-bottom:-5px;">
+          </a>
+        </li>
+        <li><a class="topmenu" href="/logout">Выход</a></li>
+      <!--
         <li><a href="#">Dashboard</a></li>
         <li><a href="#">Settings</a></li>
         <li><a href="#">Profile</a></li>
