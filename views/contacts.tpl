@@ -1,7 +1,7 @@
 % rebase("_basicpage", title="Контакты")
       <div class="jumbotron text-left">
         <div class="row">
-          <div class="col-md-12"  style="margin-top:20px;">
+          <div class="col-md-12"  style="margin-top:0px;">
             &nbsp;
           </div>
         </div>
