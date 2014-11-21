@@ -1,10 +1,43 @@
 % rebase("_adminpage", title="Админка")
-
 <form id="data" method="post" action="">
-    <textarea id="textcontent" name="content" style="width:100%; height: 65vh;"></textarea>
+  <div class="row">
+    <div class="col-md-8">
+      <textarea id="textcontent" name="content" style="width:100%; height: 65vh;"></textarea>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <p class="lead">Автор: Харченко Виталий</p>
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" name="blog_title" placeholder="Заголовок статьи" value=""
+        data-bv-notempty="true"
+        data-bv-notempty-message="Название не может быть пустым"/>
+        <span id="valid"></span>
+      </div>
+      <div class="form-group">
+        <select data-placeholder="Выберите разделы для статьи"  multiple="multiple" class="form-control chosen-select chosen-select-1" tabindex="-1" name="category[]">
+          <option value=""></option>
+          <optgroup label="a">
+            <option value="1">Питание</option>
+            <option value="2">Баскетбол</option>
+            <option value="3">Физиология</option>
+            <option value="4">Растяжка</option>
+            <option value="5">Соревнования</option>
+          </optgroup>
+        </select>
+        <script>
+          $(".chosen-select").chosen({
+            disable_search: true,
+            max_selected_options: 5
+          });
+        </script>
+        <span id="valid"></span>
+      </div>
+      <a class="btn btn-success" id="submittext">Отправить модератору</a>
+    </div>
+  </div>
 </form>
-<br>
-<a class="btn btn-lg btn-success" id="submittext">Отправить</a>
+
 
 <script type="text/javascript">
 tinymce.init({
