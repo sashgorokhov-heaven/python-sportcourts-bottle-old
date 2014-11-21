@@ -17,6 +17,12 @@
                Забанен
               </a>
           % end
+          % if current_user.userlevel.admin():
+            <br>
+              <a href="mailto:{{user.email()}}" class="btn btn-primary btn-block profile-avatar" >
+                {{user.email()}}
+              </a>
+          % end
           % if loggedin and user.user_id()!=current_user.user_id():
           <br>
             <a class="friendsbutton btn btn-default btn-block profile-avatar" id="{{'addfriend' if not myfriend else 'removefriend'}}-{{user.user_id()}}">
