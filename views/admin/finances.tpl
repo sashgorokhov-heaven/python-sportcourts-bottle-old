@@ -23,13 +23,13 @@
                 <p>{{str(game.datetime.date())}}</p>
               </td>
               <td>
-                <a href="/games?game_id={{game.game_id()}}">{{game.description()}} #{{game.game_id()}}</a>
+                <a target="_blank" href="/games?game_id={{game.game_id()}}">{{game.description()}} #{{game.game_id()}}</a>
               </td>
               <td>
                 <p>{{sports[game.sport_type()].title()}}</p>
               </td>
               <td>
-                <a href="/report?game_id={{game.game_id()}}">Отчет</a>
+                <a target="_blank" href="/report?game_id={{game.game_id()}}">Отчет</a>
               </td>
               <td>
                 % visited = games_counted[game.game_id()]['playedpayed']
