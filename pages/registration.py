@@ -90,7 +90,7 @@ class Registration(pages.Page):
             except KeyError as e: # юзер зареган
                 return json.dumps({'error_code':3, 'error_data':[list(e.args)[1:]]})
             mailing.sendhtml(
-                pages.PageBuilder('mail_activation', token=token).template(),
+                pages.PageBuilder('mail_a1', token=token).template(),
                 email,
                 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(config.server, token),
                 'Подтверждение email')
