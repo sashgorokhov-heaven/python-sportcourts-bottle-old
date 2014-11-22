@@ -380,7 +380,7 @@
                   </div>
                 </div>
               % end
-              % if len(organizer_games)>0:
+              % if len(organizer_games)>0 and user.user_id()==current_user.user_id():
                 <div class="panel panel-danger">
                   <div class="panel-heading">
                     <h4 class="panel-title">
