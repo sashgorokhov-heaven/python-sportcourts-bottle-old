@@ -45,8 +45,7 @@
                   <p class="lead">Поделиться</p>
                   <script type="text/javascript" src="//yandex.st/share/share.js"
                   charset="utf-8"></script>
-                  <div class="yashare-auto-init" data-yashareL10n="ru"
-                   data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter"></div>
+                  <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" style="margin-left: -5px; width: 110%;"></div>
                 </div>
               </div>
             </div>
