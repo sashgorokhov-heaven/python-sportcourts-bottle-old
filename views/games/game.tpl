@@ -34,10 +34,10 @@
       <div class="panel panel-default {{'panel-success' if current_user.user_id()==game.created_by() else 'panel-default'}} "><a name="{{game.game_id()}}"></a>
         <div class="panel-heading">
           <div class="panel_head">
-            <div style="float:left; max-width:45%;">
+            <div style="float:left; max-width:60%;">
               <a href="/games?game_id={{game.game_id()}}">#{{game.game_id()}} | {{game.description()}}</a>
             </div>
-            <div class="organizer" style="float:right; max-width:45%;">
+            <div class="organizer" style="float:right; max-width:40%;">
               <p class="text-right">
                 % if current_user.user_id()==game.created_by() or current_user.user_id()==game.responsible_user_id() or current_user.userlevel.admin():
                 <a href="/games?edit={{game.game_id()}}"><span class="glyphicon glyphicon-pencil"></span></a>
