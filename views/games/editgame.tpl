@@ -15,14 +15,14 @@
                   <div class="form-group">
                     <label for="court_add_count" class="col-sm-4 control-label">Название</label>
                     <div class="col-sm-8">
-                      <input class="form-control" type="text" name="description" value="{{game.description()}}"/>
+                      <input class="form-control" type="text" name="description" value="{{game.description()}}" {{'disabled' if game.reported() else ''}}/>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="inlineCheckbox" class="col-sm-4 control-label">Вид спорта</label>
                     <div class="col-sm-8">
                       <select id="sporttype" name="sport_type" class="form-control" data-bv-notempty="true"
-                      data-bv-notempty-message="Укажите вид спорта">
+                      data-bv-notempty-message="Укажите вид спорта" {{'disabled' if game.reported() else ''}}>
                         <option value="{{game.sport_type()}}">{{game.sport_type(True).title()}}</option>
                         % for sport_type in sports:
                           % if sport_type.sport_id() != game.sport_type():
@@ -35,8 +35,7 @@
                   <div class="form-group">
                     <label for="inlineCheckbox" class="col-sm-4 control-label">Тип игры</label>
                     <div class="col-sm-8">
-                      <select id="gametype" name="game_type" class="form-control" data-bv-notempty="true"
-                      data-bv-notempty-message="Укажите тип игры">
+                      <select id="gametype" name="game_type" class="form-control" data-bv-notempty="true" data-bv-notempty-message="Укажите тип игры" {{'disabled="disabled"' if game.reported() else ''}}>
                         <option value="{{game.game_type()}}" class="{{game.game_type(True).sport_type()}}">{{game.game_type(True).title()}}</option>
                         % for type in game_types:
                           % if type.type_id() != game.game_type():
@@ -46,15 +45,15 @@
                       </select>
                     </div>
                   </div>
-                  <script type="text/javascript">
-                    $("#gametype").chained("#sporttype");
-                  </script>
+                  % if not game.reported():
+                    <script type="text/javascript">
+                      $("#gametype").chained("#sporttype");
+                    </script>
+                  % end
                   <div class="form-group">
                     <label for="inputCity" class="col-sm-4 control-label">Город</label>
                     <div class="col-sm-8">
-                      <select id="city" name="city_id" class="form-control"
-                      data-bv-notempty="true"
-                      data-bv-notempty-message="Укажите город">
+                      <select id="city" name="city_id" class="form-control" data-bv-notempty="true" data-bv-notempty-message="Укажите город" {{'disabled' if game.reported() else ''}}>
                       <option value="{{game.city_id()}}">{{game.city_id(True).title()}}</option>
                       % for city in cities:
                           % if city.city_id() != game.city_id():
@@ -68,9 +67,7 @@
                   <div class="form-group">
                     <label for="inputBirght" class="col-sm-4 control-label">Площадка</label>
                     <div class="col-sm-8">
-                      <select id="court" name="court_id" class="form-control"
-                      data-bv-notempty="true"
-                      data-bv-notempty-message="Укажите площадку">
+                      <select id="court" name="court_id" class="form-control" data-bv-notempty="true" data-bv-notempty-message="Укажите площадку" {{'disabled' if game.reported() else ''}}>
                         <option value="{{game.court_id()}}" class="{{game.court_id(True).city_id()}}">{{game.court_id(True).title()}}</option>
                         % for court in courts:
                           % if court.court_id()!=game.court_id():
@@ -83,17 +80,13 @@
                   <div class="form-group">
                     <label for="inputBirght" class="col-sm-4 control-label">Дата</label>
                     <div class="col-sm-8">
-                      <input type="date" class="form-control" name="date"
-                      data-bv-notempty="true" value="{{game.datetime.date()}}"
-                      data-bv-notempty-message="Укажите дату проведения" />
+                      <input type="date" class="form-control" name="date"data-bv-notempty="true" value="{{game.datetime.date()}}" data-bv-notempty-message="Укажите дату проведения" {{'disabled' if game.reported() else ''}}/>
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="inputBirght" class="col-sm-4 control-label">Начало</label>
                     <div class="col-sm-6">
-                      <input type="time" class="form-control" name="time"
-                      data-bv-notempty="true" value="{{game.datetime.time()}}"
-                      data-bv-notempty-message="Укажите время начала" />
+                      <input type="time" class="form-control" name="time"data-bv-notempty="true" value="{{game.datetime.time()}}" data-bv-notempty-message="Укажите время начала" {{'disabled' if game.reported() else ''}}/>
                     </div>
                   </div>
                   <div class="form-group">
@@ -122,14 +115,25 @@
                     <div class="col-sm-8">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" id="unlimit" value="-1" onchange="showOrHide();" {{'checked' if game.capacity()<0 else ''}}>Безлимитно
+                          <input type="checkbox" id="unlimit" value="-1" onchange="showOrHide();" {{'checked' if game.capacity()<0 else ''}} {{'disabled="disabled"' if game.reported() else ''}}>Безлимитно
                         </label>
                       </div>
                     </div>
                   </div>
+                  % if game.reported():
+                    <script type="text/javascript">
+                      $( document ).ready(function() {
+                        $("#game_add_slider1").slider( "disable" );
+                        $("#game_add_slider").slider( "disable" );
+                        $("#game_add_slider2").slider( "disable" );
+                      });
+                    </script>
+                  % end
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8" style="text-align:center;">
+                      % if not game.reported():
                       <button type="submit" name="submit_edit" class="btn btn-primary">Применить</button>
+                      % end
                       % if current_user.user_id()==game.created_by() or (loggedin and current_user.userlevel.admin()):
                         <button type="button" data-toggle="modal" data-target="#deleteGameModal" class="btn btn-danger">Удалить игру</button>
                         <div class="modal fade" id="deleteGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -157,7 +161,7 @@
                   <div class="form-group">
                     <label for="inputCity" class="col-sm-4 control-label text-left">Ответственный</label>
                     <div class="col-sm-8">
-                      <select name="responsible_user_id" class="form-control">
+                      <select name="responsible_user_id" class="form-control" {{'disabled="disabled"' if game.reported() else ''}}>
                         % for user in responsibles:
                           % if user.user_id()!=current_user.user_id():
                             <option value="{{user.user_id()}}" {{'selected' if game.responsible_user_id()==user.user_id() else ''}}>{{user.name}}</option>
@@ -168,9 +172,13 @@
                       <span id="valid"></span>
                     </div>
                   </div>
-                  <a class="btn btn-success" role="button" href="/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
+                  % if not game.reported():
+                    <a class="btn btn-success" role="button" href="/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
                   <br><br>
-                  <a class="btn btn-success" role="button" href="/report?game_id={{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;Заполнить отчет по игре</a>
+                  % end
+                  <a class="btn btn-success" role="button" href="/report?game_id={{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;
+                    {{'Смотреть отчет' if game.reported() else 'Заполнить отчет по игре'}}
+                  </a>
                   <br><br>
                % end
 
@@ -193,7 +201,11 @@
                               </a>
                             </td>
                             <td>{{user.phone()}}</td>
-                            <td><a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                            <td>
+                              % if not game.reported():
+                                <a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
+                              % end
+                            </td>
                           </tr>
                           % end
                           % for n, user in enumerate(game.reserved_people(True), 1):
@@ -210,7 +222,11 @@
                               </a>
                             </td>
                             <td>{{user.phone()}}</td>
-                            <td><a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a></td>
+                            <td>
+                              % if not game.reported():
+                                <a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
+                              % end
+                            </td>
                           </tr>
                           % end
                         </table>
