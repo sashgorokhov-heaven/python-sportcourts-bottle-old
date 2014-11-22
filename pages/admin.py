@@ -59,6 +59,11 @@ def index():
         respdict = get_users(db)
         return pages.PageBuilder('userbase', **respdict)
 
+@pages.get('/admin/sms')
+@pages.only_admins
+def sms():
+    return pages.PageBuilder('smstest')
+
 
 @pages.get('/admin/finances')
 @pages.only_admins
