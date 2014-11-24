@@ -2,5 +2,5 @@ import pages
 
 
 @pages.get('/contacts')
-def cjntacts():
+def get():
     return pages.PageBuilder('contacts')
