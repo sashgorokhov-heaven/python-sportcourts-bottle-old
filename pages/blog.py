@@ -26,5 +26,6 @@ def get_article(article_id:int): # просмотр отдельной ново�
     raise NotImplementedError
 
 @pages.get('/blog/add')
+@pages.only_admins
 def get_blog(): # для добавления статьи
     return pages.PageBuilder('addarticle')
