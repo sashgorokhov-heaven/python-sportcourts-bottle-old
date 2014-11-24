@@ -33,7 +33,8 @@
                   <td><small>
                   </small></td>
                 </tr> -->
-                % if defined("game"):
+                % court.nearest_game():
+                  % game = court.nearest_game()
                 <tr>
                   <td colspan="2">
                     <p><a href="/games?game_id={{game.game_id()}}">Ближайшая игра:</a></p>
