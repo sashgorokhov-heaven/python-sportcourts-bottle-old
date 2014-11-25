@@ -35,16 +35,16 @@
         <div class="panel-heading">
           <div class="panel_head">
             <div style="float:left; max-width:60%;">
-              <a href="/games?game_id={{game.game_id()}}">#{{game.game_id()}} | {{game.description()}}</a>
+              <a href="/games/{{game.game_id()}}">#{{game.game_id()}} | {{game.description()}}</a>
             </div>
             <div class="organizer" style="float:right; max-width:40%;">
               <p class="text-right">
                 % if current_user.user_id()==game.created_by() or current_user.user_id()==game.responsible_user_id() or current_user.userlevel.admin():
-                <a href="/games?edit={{game.game_id()}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a href="/games/edit/{{game.game_id()}}"><span class="glyphicon glyphicon-pencil"></span></a>
                 % end
                 % if current_user.user_id()!=game.created_by():
                 &nbsp;&nbsp;
-                <a href="/profile?user_id={{game.created_by()}}" target="_blank">
+                <a href="/profile/{{game.created_by()}}" target="_blank">
                   {{game.created_by(True).name}}
                 </a>
                 &nbsp;
@@ -74,7 +74,7 @@
             </div>
             <div class="col-md-6">
               <p>{{game.sport_type(True).title()}} - {{game.game_type(True).title()}}</p>
-              <p><a href="/courts?court_id={{game.court_id()}}" target="_blank">{{game.court_id(True).title()}}</a></p>
+              <p><a href="/courts/{{game.court_id()}}" target="_blank">{{game.court_id(True).title()}}</a></p>
 
               % if conflict>0:
                 % include("game_conflict_handler", game=game, conflict=conflict, conflict_data=conflict_data)
@@ -83,7 +83,7 @@
               % if standalone:
                 <p>
                   Ответственный:
-                  <a href="/profile?user_id={{game.responsible_user_id()}}" target="_blank">
+                  <a href="/profile/{{game.responsible_user_id()}}" target="_blank">
                     {{game.responsible_user_id(True).name}}
                   </a>
                   &nbsp;
@@ -122,13 +122,13 @@
                       <div class="panel-body" style="padding-bottom:5px;">
                         % if not game.reported():
                             % for n, user in enumerate(game.subscribed(True), 1):
-                                <p><a target="_blank" href="/profile?user_id={{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
+                                <p><a target="_blank" href="/profile/{{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
                             % end
                         % else:
                             % last = 0
                             % for n, user_id in enumerate(game.report(True)[0]['registered'], 1):
                                 % user = game.report(True)[0]['registered'][user_id]
-                                    <p><a target="_blank" href="/profile?user_id={{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
+                                    <p><a target="_blank" href="/profile/{{user.user_id()}}">{{'{}. {}'.format(n, user.name)}}</a></p>
                                 % last = n
                             % end
                             % for n, name in enumerate(game.report(True)[0]['unregistered'], last+1):
@@ -260,9 +260,9 @@
       var game_id = arr[0], action = arr[1];
       var pane = 'None';
       $.ajax({
-        url: '/subscribe',
+        url: '/games/'+action+'/'+game_id,
         data: {
-          game_id: game_id, action: action, tab_name:pane
+          tab_name:pane
         },
         async: true,
         success: function (responseData, textStatus) {
@@ -273,7 +273,7 @@
         error: function (response, status, errorThrown) {
           alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
         },
-        type: "POST",
+        type: "GET",
         dataType: "text"
       });
 

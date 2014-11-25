@@ -11,7 +11,7 @@
           <div class="col-md-4">
             <p class="lead">{{court.title()}}
               % if loggedin and current_user.userlevel.organizer() or current_user.userlevel.admin():
-              <small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/courts?edit={{court.court_id()}}">Ред.</a></small>
+              <small><span class="glyphicon glyphicon-pencil"></span>&nbsp;<a href="/courts/edit/{{court.court_id()}}">Ред.</a></small>
               % end
             </p>
             <div class="table-responsive">
@@ -33,11 +33,11 @@
                   <td><small>
                   </small></td>
                 </tr> -->
-                % court.nearest_game():
+                % if court.nearest_game():
                   % game = court.nearest_game()
                 <tr>
                   <td colspan="2">
-                    <p><a href="/games?game_id={{game.game_id()}}">Ближайшая игра:</a></p>
+                    <p><a href="/games/{{game.game_id()}}">Ближайшая игра:</a></p>
                     <small><p>{{str(game.datetime.beautiful)}}</p></small>
                     <small><p>{{game.sport_type(True).title()}} - {{game.game_type(True).title()}}</p></small>
                     <div class="progress">

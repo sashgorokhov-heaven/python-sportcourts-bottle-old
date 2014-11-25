@@ -3,12 +3,12 @@
 
 <div class="row">
   <div class="col-md-2 col-sm-2 col-xs-2">
-    <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+    <a href="/profile/{{user.user_id()}}" target="_blank">
       <img src="/images/avatars/{{user.user_id()}}" class="img-thumbnail profile-avatar" alt="User {{user.user_id()}} avatar" width="120" >
     </a>
   </div>
   <div class="col-md-6 col-sm-6 col-xs-6">
-    <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+    <a href="/profile/{{user.user_id()}}" target="_blank">
       <p class="lead">{{user.name}}</p>
     </a>
     <p>{{str(user.bdate)+', '+user.city_id(True).title()}}</p>

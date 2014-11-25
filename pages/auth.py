@@ -1,7 +1,6 @@
 import bottle
 import time
 
-import config
 import dbutils
 from modules import vk
 import pages
@@ -9,8 +8,7 @@ import pages
 
 @pages.get('/logout')
 def logout():
-    if pages.auth.loggedin():
-        pages.auth.logout()
+    pages.auth.logout()
     raise bottle.redirect(bottle.request.get_header("Referer", "/"))
 
 

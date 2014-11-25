@@ -13,7 +13,7 @@
               <div class="col-md-3">
                 <div class="row">
                   <div class="col-md-12 col-sm-6 col-xs-6">
-                    <p class="lead">Игра <a href="/games?game_id={{game.game_id()}}">#{{game.game_id()}}</a></p>
+                    <p class="lead">Игра <a href="/games/{{game.game_id()}}">#{{game.game_id()}}</a></p>
                     <small>
                       <p>Ответственный: {{game.responsible_user_id(True).name}}</p>
                       <p>Вид спорта: {{game.sport_type(True).title()}}</p>

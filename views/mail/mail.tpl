@@ -62,7 +62,7 @@
     <tr>
       <td colspan="3" style="text-align:center">
         <div style="color:#737373;font-size:12px">
-          <a style="color:#737373;margin-right:15px" href="http://sportcourts.ru/settings" target="_blank">Настройка рассылки</a>
+          <a style="color:#737373;margin-right:15px" href="http://sportcourts.ru/profile/settings" target="_blank">Настройка рассылки</a>
           |
           <a style="color:#737373;margin-left:15px" href="mailto:seo@sportcourts.ru" target="_blank">Связь с администрацией</a>
         </div>

@@ -1,7 +1,7 @@
 <meta property="og:title" content="Наши люди" />
 <meta property="og:site_name" content="SportCourts.ru" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/users>
+<meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/users">
 <meta property="og:image" content="/images/og/games.jpg" />
 <meta property="og:description" content="Здесь вы можете найти своих друзей и всех, кто нас посещает."/>
 
@@ -21,10 +21,8 @@
       action = arr[0];
     if (action == 'addfriend'){
       $.ajax({
-        url: '/profile',
-        data: {
-          addfriend: user_id
-        },
+        url: '/profile/addfriend/'+user_id,
+        data: {},
         type: "GET",
         dataType: "text",
         async: true,
@@ -46,10 +44,8 @@
       });
     } else if (action == 'removefriend'){
       $.ajax({
-        url: '/profile',
-        data: {
-          removefriend: user_id
-        },
+        url: '/profile/removefriend/'+user_id,
+        data: {},
         type: "GET",
         dataType: "text",
         async: true,

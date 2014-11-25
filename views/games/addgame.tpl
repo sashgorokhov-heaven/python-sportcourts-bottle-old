@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-md-12 registration" style="text-align:left;">
             <h2 class="text-center">Новая игра</h2><br>
-            <form id="gameaddForm" method="post" class="form-horizontal" action="/games"
+            <form id="gameaddForm" method="post" class="form-horizontal" action="/games/add"
             data-bv-message="This value is not valid" enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
@@ -66,7 +66,7 @@
                         </option>
                       % end
                     </select>
-                    <small><a href="/courts?add">Создать новую...</a></small>
+                    <small><a href="/courts/add">Создать новую...</a></small>
                   </div>
                 </div>
                 <script>

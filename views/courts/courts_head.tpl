@@ -1,7 +1,7 @@
 <meta property="og:title" content="{{court.title()}}" />
 <meta property="og:site_name" content="SportCourts.ru" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}"/courts?court_id={{court.court_id()}}>
+<meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/courts/{{court.court_id()}}">
 <meta property="og:image" content="/images/og/games.jpg" />
 <meta property="og:description" content="Рекомендую площадку {{court.title()}}, {{court.address()}}"/>
 

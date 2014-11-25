@@ -51,6 +51,11 @@ def execute(func, *args, **kwargs):
     return data
 
 
+@property
+def referer():
+    return bottle.request.get_header('Referer', '/')
+
+
 def route(path=None, method='GET', name=None, apply=None, skip=None, **kwconfig):
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -96,6 +101,14 @@ def only_loggedin(func):
     return wrapper
 
 
+def only_ajax(func):
+    def wrapper(*args, **kwargs):
+        if not bottle.request.is_ajax:
+            raise bottle.HTTPError(404)
+        return func(*args, **kwargs)
+    return wrapper
+
+
 class Page:  # this name will be reloaded by PageController.reload(name='Page')
     def execute(self, method:str, **kwargs):
         if method == 'POST':
@@ -133,6 +146,12 @@ class PageBuilder:
 
     def add_param(self, name:str, value):
         self._kwargs[name] = value
+
+    def param(self, name:str):
+        return self._kwargs[name]
+
+    def __contains__(self, item):
+        return item in self._kwargs
 
     def template(self):
         if self._search_head(self._template_name + '_head.tpl'):

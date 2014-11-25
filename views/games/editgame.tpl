@@ -3,7 +3,7 @@
         <div class="row">
           <div class="col-md-12 registration" style="text-align:left;">
             <h2 class="text-center">Редактирование игры №{{game.game_id()}}</h2><br>
-            <form id="gameaddForm" method="post" class="form-horizontal" action="/games"
+            <form id="gameaddForm" method="post" class="form-horizontal" action="/games/edit/{{game.game_id()}}"
             data-bv-message="This value is not valid" enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
@@ -147,7 +147,7 @@
                                 <p>Вы действительно хотите удалить игру?</p>
                               </div>
                               <div class="modal-footer">
-                                <a class="btn btn-danger" href="/games?delete={{game.game_id()}}">Удалить</a>
+                                <a class="btn btn-danger" href="/games/delete/{{game.game_id()}}">Удалить</a>
                                 <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
                               </div>
                             </div>
@@ -173,10 +173,10 @@
                     </div>
                   </div>
                   % if not game.reported():
-                    <a class="btn btn-success" role="button" href="/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
+                    <a class="btn btn-success" role="button" href="/games/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
                   <br><br>
                   % end
-                  <a class="btn btn-success" role="button" href="/report?game_id={{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;
+                  <a class="btn btn-success" role="button" href="/games/report/{{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;
                     {{'Смотреть отчет' if game.reported() else 'Заполнить отчет по игре'}}
                   </a>
                   <br><br>
@@ -191,19 +191,19 @@
                           <tr class="success">
                             <td>{{n}}</td>
                             <td>
-                              <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+                              <a href="/profile/{{user.user_id()}}" target="_blank">
                                 {{user.name.first()}}
                               </a>
                             </td>
                             <td>
-                              <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+                              <a href="/profile/{{user.user_id()}}" target="_blank">
                                 {{user.name.last()}}
                               </a>
                             </td>
                             <td>{{user.phone()}}</td>
                             <td>
-                              % if not game.reported():
-                                <a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
+                              % if not game.reported() and not game.datetime.passed:
+                                <a href="/games/unsubscribe/{{game.game_id()}}/{{user.user_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
                               % end
                             </td>
                           </tr>
@@ -212,19 +212,19 @@
                           <tr class="warning">
                             <td>{{n}}</td>
                             <td>
-                              <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+                              <a href="/profile/{{user.user_id()}}" target="_blank">
                                 {{user.name.first()}}
                               </a>
                             </td>
                             <td>
-                              <a href="/profile?user_id={{user.user_id()}}" target="_blank">
+                              <a href="/profile/{{user.user_id()}}" target="_blank">
                                 {{user.name.last()}}
                               </a>
                             </td>
                             <td>{{user.phone()}}</td>
                             <td>
-                              % if not game.reported():
-                                <a href="/subscribe?user_id={{user.user_id()}}&unsubscribe&game_id={{game.game_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
+                              % if not game.reported() and not game.datetime.passed:
+                                <a href="/games/unreserve/{{game.game_id()}}/{{user.user_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
                               % end
                             </td>
                           </tr>

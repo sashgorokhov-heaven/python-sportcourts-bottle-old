@@ -198,7 +198,7 @@ background-color: #f6f6f6;
                 <span style="text-align:center">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</span>
                 <a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">sportcourts.ru</a>
                 <span style="text-align:center">&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;</span>
-                <a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/settings" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">Отписаться от рассылки</a>
+                <a href="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/profile/settings" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:underline" target="_blank">Отписаться от рассылки</a>
               </td>
             </tr>
           </table>

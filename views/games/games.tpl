@@ -58,7 +58,7 @@
             <li><a href="#my" data-toggle="tab">Мои игры</a></li>
             % end
             % if current_user.userlevel.organizer() or current_user.userlevel.admin():
-            <li class="pull-right"><a href="/games?add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
+            <li class="pull-right"><a href="/games/add"><span class="glyphicon glyphicon-plus"></span> Создать</a></li>
             % end
           </ul>
 
@@ -110,9 +110,9 @@
           };
 
           $.ajax({
-            url: '/subscribe',
+            url: '/games/'+action+'/'+game_id,
             data: {
-              game_id: game_id, action: action, tab_name:pane
+              tab_name:pane
             },
             async: true,
             success: function (responseData, textStatus) {
@@ -124,7 +124,7 @@
             error: function (response, status, errorThrown) {
               alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
             },
-            type: "POST",
+            type: "GET",
             dataType: "text"
           });
 

@@ -4,7 +4,7 @@
           <div class="col-md-12 registration" style="text-align:left;">
             <h2 class="text-center">Редактирование площадки</h2><br>
             <form id="courtaddForm" method="post" class="form-horizontal"
-            data-bv-message="This value is not valid" action="/courts"
+            data-bv-message="This value is not valid" action="/courts/edit/{{court.court_id()}}"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok" enctype="multipart/form-data"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
             data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">

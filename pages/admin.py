@@ -142,3 +142,17 @@ def reload():
 @uwsgidecorators.filemon(os.path.join(config.paths.server.root, 'pages'))
 def reload_on_pages_change(*args):
     uwsgi.reload()
+
+
+@pages.post('/admin/poster')
+def poster():
+    resp = list()
+    for i in bottle.request.forms:
+        resp.append('<b>{}:&nbsp</b>{}'.format(i, bottle.request.forms.get(i)))
+    return '<br>'.join(resp)
+
+
+@pages.get('/showtpl/<tplname>')
+@pages.only_admins
+def show_template(tplname:str):
+    return pages.PageBuilder(tplname)

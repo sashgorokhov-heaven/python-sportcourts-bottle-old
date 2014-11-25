@@ -8,7 +8,7 @@
         <div class="col-md-12">
           <h1>Настройки профиля</h1>
           <br>
-          <form id="settingsForm" method="post" class="form-horizontal" action="/settings"
+          <form id="settingsForm" method="post" class="form-horizontal" action="/profile/settings"
             data-bv-message="This value is not valid"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"

@@ -11,27 +11,27 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-12">
-                <p class="lead">Отчет по игре <a href="/games?game_id={{game.game_id()}}">#{{game.game_id()}}</a> {{'[ОТПРАВЛЕН]' if showreport else ''}}</p>
+                <p class="lead">Отчет по игре <a href="/games/{{game.game_id()}}">#{{game.game_id()}}</a> {{'[ОТПРАВЛЕН]' if showreport else ''}}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-4">
                 <small>
-                  <p>Ответственный: <a href="/profile?user_id={{game.responsible_user_id()}}">{{game.responsible_user_id(True).name}}</a></p>
+                  <p>Ответственный: <a href="/profile/{{game.responsible_user_id()}}">{{game.responsible_user_id(True).name}}</a></p>
                   <p>Вид спорта: {{game.sport_type(True).title()}}</p>
                   <p>Тип игры: {{game.game_type(True).title()}}</p>
                 </small>
               </div>
               <div class="col-md-4">
                 <small>
-                  <p>Площадка: <a href="/courts?court_id={{game.court_id()}}">{{game.court_id(True).title()}}</a></p>
+                  <p>Площадка: <a href="/courts/{{game.court_id()}}">{{game.court_id(True).title()}}</a></p>
                   <p>{{game.datetime.beautiful}}</p>
                   <p>Продолжительность: {{game.duration()}} минут</p>
                 </small>
               </div>
               <div class="col-md-4"></div>
             </div>
-            <form id="reportForm" method="post" class="form-horizontal" action="/report"
+            <form id="reportForm" method="post" class="form-horizontal" action="/games/report/{{game.game_id()}}"
               data-bv-message="This value is not valid" enctype="multipart/form-data"
               data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
               data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
@@ -56,8 +56,8 @@
                       % for n, user in enumerate(game.subscribed(True), 1):
                         <tr class="user">
                           <td>{{n}}</td>
-                          <td><a href="/profile?user_id={{user.user_id()}}">{{user.name.first()}}</a></td>
-                          <td><a href="/profile?user_id={{user.user_id()}}">{{user.name.last()}}</a></td>
+                          <td><a href="/profile/{{user.user_id()}}">{{user.name.first()}}</a></td>
+                          <td><a href="/profile/{{user.user_id()}}">{{user.name.last()}}</a></td>
                           <td>{{user.phone()}}</td>
                           <td colspan="2">
                           % if not showreport:

@@ -6,7 +6,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <form id="profileForm" method="post" class="form-horizontal" action="/profile"
+          <form id="profileForm" method="post" class="form-horizontal" action="/profile/edit"
             data-bv-message="This value is not valid"  enctype="multipart/form-data"
             data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
             data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
