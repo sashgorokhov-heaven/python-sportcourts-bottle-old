@@ -111,7 +111,7 @@ def settings_post():
             json.dumps({'send_mail': send_email, 'show_phone': show_phone}), pages.auth.current().user_id()))
         user = users.get(pages.auth.current().user_id(), dbconnection=db)
         pages.auth.reloaduser(user._pure)
-        raise bottle.redirect("/profile")
+        raise bottle.redirect("/profile/settings")
 
 
 @pages.get('/profile/addfriend/<user_id:int>')
