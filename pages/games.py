@@ -1,9 +1,10 @@
 import bottle
+import json
 
 import pages
 import modules
 import dbutils
-from models import sport_types, game_types, cities, courts, games, notifications, users
+from models import sport_types, game_types, cities, courts, games, notifications, users, mailing
 
 
 GAMES_PER_PAGE = 4
@@ -225,6 +226,16 @@ def get():
     return get_all(int(bottle.request.query.get('page')) if 'page' in bottle.request.query else 1)
 
 
-@pages.post('/games')
-def post():
-    pass
+@pages.get('/games/notify/<game_id:int>')
+@pages.only_ajax
+@pages.only_organizers
+def notify(game_id:int):
+    with dbutils.dbopen() as db:
+        game = games.get_by_id(game_id, dbconnection=db)
+        db.execute("SELECT DISTINCT user_id FROM reports WHERE user_id!=0 AND status=2 AND game_id IN (SELECT * FROM games WHERE deleted=0 AND datetime+INTERVAL duration MINUTE < NOW() AND court_id='{}' AND sport_type='{}')".format( # as long as my dick
+            game.court_id(), game.sport_type() ))
+        if len(db.last())==0: return json.dumps({'count':0})
+        users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
+        for user in users_:
+            mailing.emailtpl.game_invite(game, user)
+        return json.dumps({'count':len(users_)})

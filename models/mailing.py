@@ -95,13 +95,21 @@ class emailtpl:
     @staticmethod
     def email_confirm(token:str, email:str):
         html_email = pages.PageBuilder('mail_a1', token=token).template()
-        plain = 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(token)
+        plain = 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(config.server, token)
         subject = 'Подверждение адреса электронной почты'
         sendhtml(html_email, email, plain, subject)
 
     @staticmethod
     def email_confirm_again(token:str, email:str):
         html_email = pages.PageBuilder('mail_a2', token=token).template()
-        plain = 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(token)
+        plain = 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(config.server, token)
         subject = 'Повторное подверждение адреса электронной почты'
+        sendhtml(html_email, email, plain, subject)
+
+    @staticmethod
+    def game_invite(game, user):
+        html_email = pages.PageBuilder('mail_invite', game=game, user=user).template()
+        email = user.email()
+        plain = 'Приглашаем вас на игру http://{}/games/{}'.format(config.server, game.game_id())
+        subject = 'Приглашение на игру'
         sendhtml(html_email, email, plain, subject)
