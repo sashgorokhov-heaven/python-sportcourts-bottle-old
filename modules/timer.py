@@ -3,6 +3,7 @@ import dbutils
 import datetime
 from objects import Game
 from models import mailing
+from . import logging
 
 
 _tasks = list()
@@ -18,8 +19,8 @@ def main_timer(*args):
     for func in _tasks:
         try:
             func()
-        except:
-            continue
+        except Exception as e:
+            logging.message('Error on executing function <{}>'.format(func.__name__), e)
 
 
 def send_notification(game:Game):
@@ -28,8 +29,8 @@ def send_notification(game:Game):
     for user in game.subscribed(True):
         try:
             mailing.emailtpl.oncoming_game(game, user)
-        except:
-            pass
+        except Exception as e:
+            logging.message('Error on sending email of upcoming game <{}> notification for <{}>'.format(game.game_id(), user.user_id()), e)
 
 
 @add_task
@@ -75,8 +76,8 @@ def game_notification():
         for game in notify:
             try:
                 send_notification(game)
-            except:
-                continue
+            except Exception as e:
+                logging.message('Error on sending upcoming game notifications for <{}>'.format(game.game_id()), e)
             else:
                 db.execute("UPDATE games SET notificated=1 WHERE game_id={}".format(game.game_id()))
 
