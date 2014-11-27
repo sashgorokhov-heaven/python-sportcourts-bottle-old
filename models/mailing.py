@@ -7,7 +7,7 @@ from models import autodb, users
 from modules import utils, logging
 import config
 from modules.myuwsgi import uwsgi
-
+import pages
 
 @utils.spool('mailing_sendhtml')
 def sendhtml(html:str, to:str, plain:str='Простой текст', subject:str='Уведомление'):
@@ -80,3 +80,14 @@ def send_to_user(user_id:int, message:str, subject:str='Уведомление',
         return
     email = users.get(user_id, dbconnection=dbconnection).email()
     sendmail(message, email, subject)
+
+
+
+class emailtpl:
+    @staticmethod
+    def oncoming_game(game, user):
+        html_email = pages.PageBuilder('mail_notify', game=game, user=user).template()
+        email = user.email()
+        plain = 'Уведомление о приближающейся игре - надо заполнить, но лень. Напишите vk.com/sashgorokhov, если прочли это.'
+        subject = 'Уведомление о приближающейся игре'
+        sendhtml(html_email, email, plain, subject)

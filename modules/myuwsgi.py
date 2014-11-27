@@ -40,6 +40,12 @@ class _my_uwsgidecorators:
         return wrapper
 
     @staticmethod
+    def timer(*args, **kwargs):
+        def wrapper(*args, **kwargs):
+            pass
+        return wrapper
+
+    @staticmethod
     def spool(func):
         return func
 

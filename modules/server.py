@@ -10,7 +10,7 @@ bottle.debug(config.debug)
 
 import pages
 import modules.backuper
-
+import modules.timer
 
 @bottle.error(404)
 def error404(error):

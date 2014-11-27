@@ -563,6 +563,9 @@ class Game:
     def can_subscribe(self) -> bool:
         return self.datetime.can_subscribe
 
+    def notificated(self) -> bool:
+        return bool(self._game['notificated'])
+
     def description(self) -> str:
         return self._game['description']
 
