@@ -21,15 +21,6 @@ def format_duration(duration:int) -> str:
             postfix = 'час'
         elif 2 <= prefix <= 4:
             postfix = 'часа'
-        if duration > 24:
-            duration = round(duration / 24)
-            prefix = int(str(duration)[-1])
-            if prefix == 0 or 5 <= prefix <= 9 or 10<=duration<=19:
-                postfix = 'дней'
-            elif prefix == 1:
-                postfix = 'день'
-            elif 2 <= prefix <= 4:
-                postfix = 'дня'
     return str(duration) + ' ' + postfix
 
 
