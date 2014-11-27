@@ -155,4 +155,4 @@ def poster():
 @pages.get('/showtpl/<tplname>')
 @pages.only_admins
 def show_template(tplname:str):
-    return pages.PageBuilder(tplname)
+    return pages.PageBuilder(tplname, **{i:bottle.request.query.get(i) for i in bottle.request.query})
