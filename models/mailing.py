@@ -91,3 +91,10 @@ class emailtpl:
         plain = 'Уведомление о приближающейся игре - надо заполнить, но лень. Напишите vk.com/sashgorokhov, если прочли это.'
         subject = 'Уведомление о приближающейся игре'
         sendhtml(html_email, email, plain, subject)
+
+    @staticmethod
+    def email_confirm(token:str, email:str):
+        html_email = pages.PageBuilder('mail_a1', token=token).template()
+        plain = 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(token)
+        subject = 'Подверждение адреса электронной почты'
+        sendhtml(html_email, email, plain, subject)
