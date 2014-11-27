@@ -1,5 +1,6 @@
 import datetime
 import bottle
+import json
 
 import dbutils
 import pages
@@ -107,7 +108,11 @@ def get_subscibe(game_id:int):
 def admin_subscribe(game_id:int, user_id:int):
     resp = subscribe(user_id, game_id)
     if 'conflict' in resp:
+        if bottle.request.is_ajax:
+            return json.dumps({'error_code':resp.param('conflict')})
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
+    if bottle.request.is_ajax:
+        return json.dumps({'error_code':0})
     raise bottle.redirect(pages.referer)
 
 
@@ -127,7 +132,11 @@ def get_unsubscribe(game_id:int):
 def admin_unsubscribe(game_id:int, user_id:int):
     resp = unsubscribe(user_id, game_id)
     if 'conflict' in resp:
+        if bottle.request.is_ajax:
+            return json.dumps({'error_code':resp.param('conflict')})
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
+    if bottle.request.is_ajax:
+        return json.dumps({'error_code':0})
     raise bottle.redirect(pages.referer)
 
 
@@ -147,7 +156,11 @@ def get_reserve(game_id:int):
 def admin_reserve(game_id:int, user_id:int):
     resp = reserve(user_id, game_id)
     if 'conflict' in resp:
+        if bottle.request.is_ajax:
+            return json.dumps({'error_code':resp.param('conflict')})
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
+    if bottle.request.is_ajax:
+        return json.dumps({'error_code':0})
     raise bottle.redirect(pages.referer)
 
 
@@ -167,7 +180,11 @@ def get_unreserve(game_id:int):
 def admin_unreserve(game_id:int, user_id:int):
     resp = unreserve(user_id, game_id)
     if 'conflict' in resp:
+        if bottle.request.is_ajax:
+            return json.dumps({'error_code':resp.param('conflict')})
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
+    if bottle.request.is_ajax:
+        return json.dumps({'error_code':0})
     raise bottle.redirect(pages.referer)
 
 
@@ -187,5 +204,9 @@ def get_fromreserve(game_id:int):
 def admin_fromreserve(game_id:int, user_id:int):
     resp = fromreserve(user_id, game_id)
     if 'conflict' in resp:
+        if bottle.request.is_ajax:
+            return json.dumps({'error_code':resp.param('conflict')})
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
+    if bottle.request.is_ajax:
+        return json.dumps({'error_code':0})
     raise bottle.redirect(pages.referer)
