@@ -98,3 +98,10 @@ class emailtpl:
         plain = 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(token)
         subject = 'Подверждение адреса электронной почты'
         sendhtml(html_email, email, plain, subject)
+
+    @staticmethod
+    def email_confirm_again(token:str, email:str):
+        html_email = pages.PageBuilder('mail_a2', token=token).template()
+        plain = 'Чтобы подтвердить email, перейдите по ссылке http://{}/registration?token={}'.format(token)
+        subject = 'Повторное подверждение адреса электронной почты'
+        sendhtml(html_email, email, plain, subject)

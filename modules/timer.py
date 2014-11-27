@@ -4,6 +4,24 @@ import datetime
 from objects import Game
 from models import mailing
 
+
+_tasks = list()
+
+
+def add_task(func):
+    _tasks.append(func)
+    return func
+
+
+@uwsgidecorators.timer(720, target='spooler') # 720s = 12min
+def main_timer(*args):
+    for func in _tasks:
+        try:
+            func()
+        except:
+            continue
+
+
 def send_notification(game:Game):
     if len(game.subscribed())==0:
         return
@@ -14,8 +32,8 @@ def send_notification(game:Game):
             pass
 
 
-@uwsgidecorators.timer(720, target='spooler') # 720s = 12min
-def main_timer(*args):
+@add_task
+def game_notification():
     with dbutils.dbopen() as db:
         db.execute("SELECT * FROM games WHERE deleted=0 AND notificated=0 AND NOW()<datetime", dbutils.dbfields['games'])
         if len(db.last())==0: return
@@ -61,3 +79,13 @@ def main_timer(*args):
                 continue
             else:
                 db.execute("UPDATE games SET notificated=1 WHERE game_id={}".format(game.game_id()))
+
+
+@add_task
+def continue_registration():
+    with dbutils.dbopen() as db:
+        db.execute("SELECT token, email FROM activation WHERE activated=0 AND again=0 AND datetime+INTERVAL 6 HOUR BETWEEN NOW()-INTERVAL 12 MINUTE AND NOW()+INTERVAL 12 MINUTE")
+        if len(db.last())==0: return
+        for pair in db.last():
+            mailing.emailtpl.email_confirm_again(*pair)
+            db.execute("UPDATE activation SET again=1 WHERE email={}".format(pair[1]))
