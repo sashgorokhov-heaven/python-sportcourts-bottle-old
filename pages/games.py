@@ -234,8 +234,9 @@ def notify(game_id:int):
         game = games.get_by_id(game_id, dbconnection=db)
         db.execute("SELECT DISTINCT user_id FROM reports WHERE user_id!=0 AND status=2 AND game_id IN (SELECT * FROM games WHERE deleted=0 AND datetime+INTERVAL duration MINUTE < NOW() AND court_id='{}' AND sport_type='{}')".format( # as long as my dick
             game.court_id(), game.sport_type() ))
-        if len(db.last())==0: return json.dumps({'count':0})
+        if len(db.last())==0: return json.dumps({'users':list(), 'count':0})
         users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
         for user in users_:
             mailing.emailtpl.game_invite(game, user)
-        return json.dumps({'count':len(users_)})
+        ids = list(map(lambda x: x.user_id(), users_))
+        return json.dumps({'count':len(ids), 'users':ids})
