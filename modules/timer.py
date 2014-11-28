@@ -88,5 +88,8 @@ def continue_registration():
         db.execute("SELECT token, email FROM activation WHERE activated=0 AND again=0 AND datetime+INTERVAL 6 HOUR BETWEEN NOW()-INTERVAL 12 MINUTE AND NOW()+INTERVAL 12 MINUTE")
         if len(db.last())==0: return
         for pair in db.last():
-            mailing.emailtpl.email_confirm_again(*pair)
-            db.execute("UPDATE activation SET again=1 WHERE email={}".format(pair[1]))
+            try:
+                mailing.emailtpl.email_confirm_again(*pair)
+                db.execute("UPDATE activation SET again=1 WHERE email={}".format(pair[1]))
+            except Exception as e:
+                logging.message('Error while sending activation email to <{}>'.format(pair[1]), e)
