@@ -111,14 +111,18 @@ def finances_page():
                                                                                     fin.games_counted[game_id]['rent_charges'],
                                                                                     fin.games_counted[game_id]['profit'])
 
-
 @pages.get('/admin/logs')
 @pages.only_admins
-@yield_handler
 def logs_page():
     with dbutils.dbopen(**dbutils.logsdb_connection) as db:
-        if 'text' not in bottle.request.query:
-            raise bottle.HTTPError(404)
+        return pages.PageBuilder('logs', logs=logs.Logs(db))
+
+
+@pages.get('/admin/logs/text')
+@pages.only_admins
+@yield_handler
+def logs_page_text():
+    with dbutils.dbopen(**dbutils.logsdb_connection) as db:
         logs_ = logs.Logs(db)
         yield 'Посещений в этом месяце: {} ({} уникальных {}%)'.format(len(logs_.logs), len(logs_.ips), percents(len(logs_.ips), len(logs_.logs)))
         this_week = sum([len(day) for day in logs_.this_week])
