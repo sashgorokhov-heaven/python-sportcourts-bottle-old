@@ -176,6 +176,10 @@
                     <a class="btn btn-success" role="button" href="/games/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
                   <br><br>
                   % end
+                  % if not game.reported():
+                    <a class="btn btn-success" role="button" href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Пригласить бывших</a>
+                  <br><br>
+                  % end
                   <a class="btn btn-success" role="button" href="/games/report/{{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;
                     {{'Смотреть отчет' if game.reported() else 'Заполнить отчет по игре'}}
                   </a>
