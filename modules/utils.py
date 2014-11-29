@@ -56,3 +56,7 @@ def spool(spool_key:str):
         setattr(wrapper, 'pure', func)
         return wrapper
     return decorator
+
+
+def spool_func(func, *args, **kwargs):
+    spool(func.__name__)(*args, **kwargs)
