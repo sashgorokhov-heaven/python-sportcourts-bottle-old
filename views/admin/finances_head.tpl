@@ -31,7 +31,7 @@
         linechart.draw(data, options);
 
 
-        var data = new google.visualization.DataTable();
+        data = new google.visualization.DataTable();
         data.addColumn('string', 'Название площадки');
         data.addColumn('number', 'Прибыль с площадки');
         data.addRows([
@@ -48,5 +48,28 @@
 
         var piechart = new google.visualization.PieChart(document.getElementById('piechart_div'));
         piechart.draw(data, options);
+
+        data = new google.visualization.DataTable();
+        data.addColumn('string', 'ID игры');
+        data.addColumn('number', 'Потери изза пустых мест');
+        data.addColumn('number', 'Потери изза непришедших');
+        data.addColumn('number', 'Прибыль');
+        data.addRows([
+          % lost_empty = 0
+          % lost_notvisited = 0
+          % profit = 0
+          % for n, game in enumerate(sorted_games):
+            % lost_empty += games_counted[game.game_id()]['lost_empty']
+            % lost_notvisited += games_counted[game.game_id()]['lost_notvisited']
+            % profit += games_counted[game.game_id()]['profit']
+            ['{{game.game_id()}}', {{lost_empty}}, {{lost_notvisited}}, {{profit}}] {{',' if n<len(sorted_games) else ''}}
+          % end
+         ]);
+        var options = {
+          title: 'Прибыль'
+        };
+
+        var linechart2 = new google.visualization.LineChart(document.getElementById('linechart2_div'));
+        linechart2.draw(data, options);
       }
     </script>

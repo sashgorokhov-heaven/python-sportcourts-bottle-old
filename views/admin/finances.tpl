@@ -4,6 +4,7 @@
 
 <div id="piechart_div" style="width: 600px; height: 400px;"></div>
 <div id="linechart_div" style="height: 600px;"></div>
+<div id="linechart2_div" style="height: 600px;"></div>
 
 
 <table class="table table-condensed table-hover" style="font-size:80%;">
