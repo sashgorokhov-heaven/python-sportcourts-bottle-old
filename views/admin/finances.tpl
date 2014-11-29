@@ -60,7 +60,7 @@
                 <p class="text-{{'danger' if profit<0 else 'success'}}">{{games_counted[game.game_id()]['profit']}} RUB</p>
               </td>
               <td>
-                <p>{{round(games_counted[game.game_id()]['real_income']/games_counted[game.game_id()]['playedpayed'])}} RUB</p>
+                <p>{{round(games_counted[game.game_id()]['profit']/games_counted[game.game_id()]['playedpayed'])}} RUB</p>
               </td>
             </tr>
         % end
