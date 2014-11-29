@@ -2,6 +2,9 @@
 % setdefault("games", list())
 <h1 class="page-header">Финансы</h1>
 
+<div id="chart_div" style="height: 600px;"></div>
+
+
 <table class="table table-condensed table-hover" style="font-size:80%;">
   <thead>
     <th>Дата</th>
