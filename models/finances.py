@@ -36,6 +36,8 @@ class Finances:
         self.courts_dict = {court.court_id():court for court in self.courts}
         self.sports = {sport.sport_id():sport for sport in sport_types.get(0, dbconnection=db)}
 
+        self.games_by_courts = {court_id:list(filter(lambda x: x.court_id()==court_id, self.games)) for court_id in {game.court_id() for game in self.games}}
+
         delete_keys = list()
         for game_id in self.games_dict:
             if game_id not in self.reports_dict:

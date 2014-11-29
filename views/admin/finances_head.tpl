@@ -23,11 +23,30 @@
             {{games_counted[game.game_id()]['profit']}}] {{',' if n<len(sorted_games) else ''}}
           % end
          ]);
-          var options = {
-            title: 'График финансов'
-          };
+        var options = {
+          title: 'График финансов'
+        };
 
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+        var linechart = new google.visualization.LineChart(document.getElementById('linechart_div'));
+        linechart.draw(data, options);
+
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Название площадки');
+        data.addColumn('number', 'Прибыль с площадки');
+        data.addRows([
+          % for n, court_id in enumerate(games_by_courts):
+            % profit = sum([games_counted[game.game_id()]['profit'] for game in games_by_courts[court_id]])
+            % if profit>0:
+                ['{{!courts_dict[court_id].title()}}', {{profit}}] {{',' if n<len(games_by_courts) else ''}}
+            % end
+          % end
+         ]);
+        var options = {
+          title: 'Прибыль по площадкам'
+        };
+
+        var piechart = new google.visualization.PieChart(document.getElementById('piechart_div'));
+        piechart.draw(data, options);
       }
     </script>
