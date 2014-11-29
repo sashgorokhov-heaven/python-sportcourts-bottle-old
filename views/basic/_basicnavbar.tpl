@@ -24,6 +24,13 @@
                             Мой профиль
                           </a>
                         </li>
+                        % if current_user.userlevel.admin():
+                        <li>
+                          <a class="topmenu" href="/admin">
+                            Админка
+                          </a>
+                        </li>
+                        % end
                         <li>
                             <a class="topmenu" href="/notifications">
                                 <span class="glyphicon glyphicon-bell"></span>

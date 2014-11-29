@@ -33,7 +33,7 @@
         </script>
         <span id="valid"></span>
       </div>
-      <a class="btn btn-success" id="submittext">Отправить модератору</a>
+      <a class="btn btn-success" id="submittext" type="submit">Отправить модератору</a>
     </div>
   </div>
 </form>
@@ -64,7 +64,7 @@ $(document).on('click','#submittext',function(){
     var value = tinyMCE.get('textcontent').getContent();
 
     $.ajax({
-      url: '/blog',
+      url: '/blog/add',
       data: {
         text: value
       },
