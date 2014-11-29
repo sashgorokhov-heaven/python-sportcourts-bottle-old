@@ -9,7 +9,7 @@
         var data = google.visualization.arrayToDataTable([
           ['День', 'Посещений в день', 'Уникальных посещений в день'],
           % for n, date in enumerate(sorted_dates):
-            ['{{date}}', {{len(logs.logs_by_date[date])}}, {{len({logs.logs_dict[id]['ipad']  for id in logs.logs_by_date[date]})}}] {{',' if n<len(sorted_dates) else ''}}
+            ['{{date}}', {{len(logs.logs_by_date[date])}}, {{len({logs.logs_dict[id]['ip']  for id in logs.logs_by_date[date]})}}] {{',' if n<len(sorted_dates) else ''}}
           % end
           ]);
 
