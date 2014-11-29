@@ -105,7 +105,7 @@ def edit_post(game_id:int):
             if responsible_old == int(params['responsible_user_id']):
                 notifications.add(responsible_old, 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
                     modules.create_link.game(game)), 1, game_id, 2)
-        raise bottle.redirect('/games?game_id={}'.format(game_id))
+        raise bottle.redirect('/games/{}'.format(game_id))
 
 
 @pages.get('/games/add')
@@ -137,7 +137,7 @@ def add_post():
                                                      dbconnection=db)
         if intersection:
             return pages.PageBuilder('text', message='Обнаружен конфликт',
-                                     description='В это время уже идет другая <a href="/games?game_id={}">игра</a>'.format(
+                                     description='В это время уже идет другая <a href="/games/{}">игра</a>'.format(
                                          intersection))
         page = check_responsible(params['responsible_user_id'], params['datetime'],
                                       params['duration'].split(' ')[0], db)
@@ -146,7 +146,7 @@ def add_post():
             params['reserved'] = round(int(params['capacity']) / 4)
         game_id = games.add(dbconnection=db, **params)
         assigned_responsible(game_id, int(params['responsible_user_id']), db)
-        return bottle.redirect('/games?game_id={}'.format(game_id))
+        return bottle.redirect('/games/{}'.format(game_id))
 
 
 @pages.get('/games/list/<game_id:int>')

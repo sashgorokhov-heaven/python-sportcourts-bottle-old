@@ -66,7 +66,7 @@
         % end
       </div>
       <div class="modal-footer">
-        <a class="btn btn-success" href="/profile?user_id=1">Написать администраторам</a>
+        <a class="btn btn-success" href="/profile/1">Написать администраторам</a>
         <button type="button" data-dismiss="modal" class="btn btn-primary">Закрыть</button>
       </div>
     </div>

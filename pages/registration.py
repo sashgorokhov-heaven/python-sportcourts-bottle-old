@@ -127,17 +127,17 @@ def reg_post():
                     friend_name = friend[1] + ' ' + friend[2]
                     try:
                         notifications.add(friend_id,
-                                          'Ваш друг <a href="/profile?user_id={}">{}</a> зарегистрировался на сайте!'.format(
+                                          'Ваш друг <a href="/profile/{}">{}</a> зарегистрировался на сайте!'.format(
                                               user_id, username))
                         notifications.add(user_id,
-                                          'Ваш друг <a href="/profile?user_id={}">{}</a> уже зарегистрирован на сайте.'.format(
+                                          'Ваш друг <a href="/profile/{}">{}</a> уже зарегистрирован на сайте.'.format(
                                               friend_id, friend_name))
                     except:
                         notifications.add(friend_id,
-                                          'Ваш <a href="/profile?user_id={}">друг</a> зарегистрировался на сайте!'.format(
+                                          'Ваш <a href="/profile/{}">друг</a> зарегистрировался на сайте!'.format(
                                               user_id))
                         notifications.add(user_id,
-                                          'Ваш <a href="/profile?user_id={}">друг</a> уже зарегистрирован на сайте.'.format(
+                                          'Ваш <a href="/profile/{}">друг</a> уже зарегистрирован на сайте.'.format(
                                               friend_id))
                     users.add_friend(user_id, friend_id, dbconnection=db)
                     users.add_friend(friend_id, user_id, dbconnection=db)

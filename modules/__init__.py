@@ -30,12 +30,12 @@ def generate_token():
 class create_link:
     @staticmethod
     def game(game) -> str:
-        link = "<a href=\"/games?game_id={}\">#{} | {}</a>".format(game.game_id(), game.game_id(), game.description())
+        link = "<a href=\"/games/{}\">#{} | {}</a>".format(game.game_id(), game.game_id(), game.description())
         return link
 
     @staticmethod
     def user(user) -> str:
-        link = "<a href=\"/profile?user_id={}\">{}</a>".format(user.user_id(), user.name)
+        link = "<a href=\"/profile/{}\">{}</a>".format(user.user_id(), user.name)
         return link
 
 
