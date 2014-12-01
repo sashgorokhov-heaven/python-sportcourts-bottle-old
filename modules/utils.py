@@ -1,7 +1,7 @@
 import pickle
 import threading
 from .myuwsgi import uwsgidecorators, uwsgi
-from . import logging
+
 
 def format_duration(duration:int) -> str:
     postfix = 'минут'
@@ -34,7 +34,7 @@ def threaded(func):
 
 
 _spoolers = dict() # func key -> func
-
+logfunc = lambda text, error: str(text)+str(error)
 
 @uwsgidecorators.spool
 def _spool_dispatcher(data:dict):
@@ -44,7 +44,7 @@ def _spool_dispatcher(data:dict):
     try:
         retval = _spoolers[spool_key](*args, **kwargs)
     except Exception as e:
-        logging.message('Error while executong spool function <{}> on key <{}>'.format(_spoolers[spool_key].__name__,
+        logfunc('Error while executong spool function <{}> on key <{}>'.format(_spoolers[spool_key].__name__,
                                                                                        spool_key))
         return uwsgi.SPOOL_OK
     if not retval:

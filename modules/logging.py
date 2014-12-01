@@ -83,3 +83,5 @@ def message(msg:str, e:Exception):
         traceback = base64.b64encode(modules.extract_traceback(e).encode()).decode()
         db.execute("INSERT INTO logsdb.messages (message, error, error_description, traceback) VALUES ('{}', '{}', '{}', '{}')".format(msg, error, error_description, traceback))
         return uwsgi.SPOOL_OK
+
+utils.logfunc = message
