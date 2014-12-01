@@ -68,6 +68,6 @@ def spool(spool_key:str):
         return wrapper
     return decorator
 
-
 def spool_func(func, *args, **kwargs):
-    spool(func.__name__)(func)(*args, **kwargs)
+    return func(*args, **kwargs)
+    #spool(func.__name__)(func)(*args, **kwargs)
