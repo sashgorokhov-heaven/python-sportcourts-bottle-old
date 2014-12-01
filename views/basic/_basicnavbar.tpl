@@ -14,7 +14,7 @@
                 <ul class="nav navbar-nav">
                     <li><a class="topmenu" href="/games">Игры</a></li>
                     <li><a class="topmenu" href="/users">Игроки</a></li>
-                    <li><a class="topmenu" href="/courts?all"><span class="glyphicon glyphicon-globe"></span> Карта</a></li>
+                    <li><a class="topmenu" href="/courts"><span class="glyphicon glyphicon-globe"></span> Карта</a></li>
                     % if loggedin:
                         <li>
                           <a class="topmenu" href="/profile">
