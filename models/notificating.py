@@ -52,7 +52,8 @@ class mail:
     def html_to_id(subject:str, body:str, user_id:int, plain:str=None, dbconnection:dbutils.DBConnection=None):
         user = users.get(user_id, dbconnection=dbconnection)
         email = user.email()
-        return mail.html(subject, body, email, plain)
+        if user.settings.send_mail():
+            return mail.html(subject, body, email, plain)
 
     class tpl:
         @staticmethod
@@ -61,7 +62,8 @@ class mail:
             email = user.email()
             plain = 'Уведомление о приближающейся игре - надо заполнить, но лень. Напишите vk.com/sashgorokhov, если прочли это.'
             subject = 'Уведомление о приближающейся игре'
-            mail.html(subject, html_email, email, plain)
+            if user.settings.send_mail():
+                mail.html(subject, html_email, email, plain)
 
         @staticmethod
         def email_confirm(token:str, email:str):
@@ -83,7 +85,8 @@ class mail:
             email = user.email()
             plain = 'Приглашаем вас на игру http://{}/games/{}'.format(config.server, game.game_id())
             subject = 'Приглашение на игру'
-            mail.html(subject, html_email, email, plain)
+            if user.settings.send_mail():
+                mail.html(subject, html_email, email, plain)
 
 class site:
     @staticmethod
