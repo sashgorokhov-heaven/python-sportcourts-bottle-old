@@ -79,7 +79,7 @@ def error(e:Exception, time:float=0.0):
 def message(msg:str, e:Exception):
     with dbutils.dbopen(**dbutils.logsdb_connection) as db:
         error = e.__class__.__name__.replace('"', '').replace("'", '')
-        error_description = ','.join(map(str, error.args)).replace('"', '').replace("'", '')
+        error_description = ','.join(map(str, e.args)).replace('"', '').replace("'", '')
         traceback = base64.b64encode(modules.extract_traceback(e).encode()).decode()
         db.execute("INSERT INTO logsdb.messages (message, error, error_description, traceback) VALUES ('{}', '{}', '{}', '{}')".format(msg, error, error_description, traceback))
         return uwsgi.SPOOL_OK
