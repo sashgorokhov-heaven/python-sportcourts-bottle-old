@@ -65,12 +65,11 @@ def sms():
     return pages.PageBuilder('smstest')
 
 
-@pages.get('/admin/finances')
+@pages.get(['/admin/finances', '/admin/finances/<month:int>'])
 @pages.only_admins
 @yield_handler
-def finances_page():
+def finances_page(month:int=0):
     with dbutils.dbopen() as db:
-        month = int(bottle.request.query.get('month', 0))
         fin = finances.Finances(month, db)
 
         if 'text' not in bottle.request.query:

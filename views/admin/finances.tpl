@@ -2,6 +2,10 @@
 % setdefault("games", list())
 <h1 class="page-header">Финансы</h1>
 
+<h3><a href="/admin/finances/10">Октябрь</a></h3>
+<h3><a href="/admin/finances/11">Ноябрь</a></h3>
+<h3><a href="/admin/finances/12">Декабрь</a></h3>
+
 <div id="piechart_div" style="width: 600px; height: 400px;"></div>
 <div id="linechart_div" style="height: 600px;"></div>
 <div id="linechart2_div" style="height: 600px;"></div>
