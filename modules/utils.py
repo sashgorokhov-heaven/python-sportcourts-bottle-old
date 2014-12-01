@@ -64,4 +64,4 @@ def spool(spool_key:str):
 
 
 def spool_func(func, *args, **kwargs):
-    spool(func.__name__)(*args, **kwargs)
+    spool(func.__name__)(func)(*args, **kwargs)
