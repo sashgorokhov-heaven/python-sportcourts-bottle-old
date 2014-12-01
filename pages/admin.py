@@ -110,6 +110,26 @@ def finances_page(month:int=0):
                                                                                     fin.games_counted[game_id]['rent_charges'],
                                                                                     fin.games_counted[game_id]['profit'])
 
+
+#@pages.get('/admin/loadfinances')
+#@pages.only_admins
+#def load_finances():
+#    with dbutils.dbopen() as db:
+#        fin = finances.Finances(10, db=db)
+#        db.execute("INSERT INTO finances VALUES (2014, 10, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+#            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+#            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+#            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+#        ))
+#
+#        fin = finances.Finances(11, db=db)
+#
+#        db.execute("INSERT INTO finances VALUES (2014, 11, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+#            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+#            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+#            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+#        ))
+
 @pages.get('/admin/logs')
 @pages.only_admins
 def logs_page():
