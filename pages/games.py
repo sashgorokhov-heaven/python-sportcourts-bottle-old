@@ -288,4 +288,4 @@ def post(game_id:int):
         notificating.site.responsible(game.created_by(), 'Ответственный "{}" отправил отчет по игре "{}"'.format(
             modules.create_link.user(users.get(pages.auth.getuserid())),
             modules.create_link.game(game)), game_id)
-    raise bottle.redirect('/report?game_id={}'.format(game_id))
+    raise bottle.redirect('/report/{}'.format(game_id))
