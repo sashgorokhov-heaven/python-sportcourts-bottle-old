@@ -1,7 +1,7 @@
 % rebase("_mail_body", title="Первая игра с нами!")
 <tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
   <td class="content-block" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-    {{user.name.first}}, вчера Вы впервые играли с нами!
+    {{user.name.first()}}, вчера Вы впервые играли с нами!
   </td>
 </tr>
 <tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
