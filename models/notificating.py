@@ -42,9 +42,9 @@ class mail:
         message['Subject'] = '{} | Sportcourts | Спортивные площадки'.format(subject)
         message['From'] = config.email.login
         message['To'] = email
-        message.attach(text.MIMEText(body, 'html'))
         if plain:
             message.attach(text.MIMEText(plain, 'plain'))
+        message.attach(text.MIMEText(body, 'html'))
         return _send_message(email, message)
 
     @staticmethod
@@ -83,7 +83,7 @@ class mail:
         def game_invite(game, user):
             html_email = pages.PageBuilder('mail_invite', game=game, user=user).template()
             email = user.email()
-            plain = 'Приглашаем вас на игру http://{}/games/{}'.format(config.server, game.game_id())
+            plain = 'Приглашаем вас на игру http://{}/games/{}'.format(config.server.str, game.game_id())
             subject = 'Приглашение на игру'
             if user.settings.send_mail():
                 mail.html(subject, html_email, email, plain)
