@@ -286,6 +286,6 @@ def post(game_id:int):
         images.save_report(game_id, bottle.request.files.get("photo"))
     if pages.auth.current().user_id() != game.created_by():
         notificating.site.responsible(game.created_by(), 'Ответственный "{}" отправил отчет по игре "{}"'.format(
-            modules.create_link.user(users.get(pages.auth.getuserid())),
+            modules.create_link.user(users.get(pages.auth.current().user_id())),
             modules.create_link.game(game)), game_id)
-    raise bottle.redirect('/report/{}'.format(game_id))
+    raise bottle.redirect('/games/report/{}'.format(game_id))
