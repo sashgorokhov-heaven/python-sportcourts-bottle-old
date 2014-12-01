@@ -1,3 +1,5 @@
+<script src="/view/js/fuse.min.js"></script>
+
 <script>
   var users = {{!users}};
 
