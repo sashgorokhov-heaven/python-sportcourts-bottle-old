@@ -4,7 +4,7 @@ import os
 import config
 import pages
 import dbutils
-from models import finances, logs, users
+from models import finances, logs, users, notificating
 from modules.myuwsgi import uwsgi, uwsgidecorators
 
 def get_finances(db:dbutils.DBConnection) -> dict:
@@ -159,3 +159,18 @@ def poster():
 @pages.only_admins
 def show_template(tplname:str):
     return pages.PageBuilder(tplname, **{i:bottle.request.query.get(i) for i in bottle.request.query})
+
+
+@pages.get('/admin/sendsms')
+@pages.only_admins
+def sendsms():
+    return pages.PageBuilder('sendsms')
+
+
+@pages.post('/admin/sendsms')
+@pages.only_admins
+def sendsms_post():
+    phone = bottle.request.forms.get('phone')
+    text = bottle.request.forms.get('text')
+    notificating.sms.raw(phone, text)
+    raise bottle.redirect('/admin/sendsms')
