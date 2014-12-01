@@ -108,7 +108,7 @@ class Finances:
         for sport_id in self.sport_games:
             self.sport_money[sport_id] = sum([self.games_counted[game_id]['profit'] for game_id in self.sport_games[sport_id]])
 
-        finances = db.execute("SELECT * FROM finances", dbutils.dbfields['finances'])
+        finances = db.execute("SELECT * FROM salary", dbutils.dbfields['salary'])
         finances_by_user = dict() # user_id -> [finance]
         for fin in finances:
             if fin['user_id'] not in finances_by_user:

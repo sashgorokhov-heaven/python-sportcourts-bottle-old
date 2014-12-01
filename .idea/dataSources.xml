@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="3363984558">
+    <data-source source="LOCAL" name="Test" uuid="21c3d706-316f-4568-9835-78edc3c80a98">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://test.sportcourts.ru:3306/sportcourts</jdbc-url>
+      <user-name>mysqladmin</user-name>
+      <user-password>df9edf98df9adf99</user-password>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Production" uuid="61e801da-e4c6-4e3b-8c35-ad8603ba9435">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://sportcourts.ru:3306/sportcourts</jdbc-url>
+      <user-name>mysqladmin</user-name>
+      <user-password>df9edf98df9adf99</user-password>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
