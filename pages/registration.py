@@ -3,12 +3,11 @@ import json
 import pickle
 
 import bottle
-import config
 
 import dbutils
 import pages
-from modules import vk
-from models import images, cities, notifications, mailing, activation, users
+from modules import vk, utils
+from models import images, cities, activation, users, notificating
 
 
 @pages.get('/registration/reg')
@@ -29,7 +28,7 @@ def email_post():
             return json.dumps({'error_code':2, 'error_data':[list(e.args)[1:]]})
         except KeyError as e: # юзер зареган
             return json.dumps({'error_code':3, 'error_data':[list(e.args)[1:]]})
-        mailing.emailtpl.email_confirm(token, email)
+        utils.spool_func(notificating.mail.tpl.email_confirm, token, email)
         return json.dumps({'error_code':0})
 
 
@@ -126,17 +125,17 @@ def reg_post():
                     friend_id = friend[0]
                     friend_name = friend[1] + ' ' + friend[2]
                     try:
-                        notifications.add(friend_id,
+                        utils.spool_func(notificating.site.all, friend_id,
                                           'Ваш друг <a href="/profile/{}">{}</a> зарегистрировался на сайте!'.format(
                                               user_id, username))
-                        notifications.add(user_id,
+                        utils.spool_func(notificating.site.all, user_id,
                                           'Ваш друг <a href="/profile/{}">{}</a> уже зарегистрирован на сайте.'.format(
                                               friend_id, friend_name))
                     except:
-                        notifications.add(friend_id,
+                        utils.spool_func(notificating.site.all, friend_id,
                                           'Ваш <a href="/profile/{}">друг</a> зарегистрировался на сайте!'.format(
                                               user_id))
-                        notifications.add(user_id,
+                        utils.spool_func(notificating.site.all, user_id,
                                           'Ваш <a href="/profile/{}">друг</a> уже зарегистрирован на сайте.'.format(
                                               friend_id))
                     users.add_friend(user_id, friend_id, dbconnection=db)

@@ -4,8 +4,8 @@ import json
 
 import dbutils
 import pages
-from models import games, notifications
-from modules import create_link
+from models import games, notificating
+from modules import create_link, utils
 
 
 def subscribe(user_id:int, game_id:int):
@@ -27,7 +27,7 @@ def subscribe(user_id:int, game_id:int):
         if game.datetime.tommorow or game.datetime.today:
             message = 'На игру "{}" записался {}'.format(create_link.game(game),
                                                          create_link.user(pages.auth.current()))
-            notifications.add(game.responsible_user_id(), message, 1, game_id, 2)
+            utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id,)
         game = games.get_by_id(game_id, dbconnection=db)
         return pages.PageBuilder("game", game=game)
 
@@ -41,7 +41,7 @@ def unsubscribe(user_id:int, game_id:int):
         if datetime.datetime.now()-game.datetime()<datetime.timedelta(days=3):
             message = '{} отписался от игры "{}"'.format(create_link.user(pages.auth.current()),
                                                          create_link.game(game))
-            notifications.add(game.responsible_user_id(), message, 1, game_id, 2)
+            utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id,)
         game = games.get_by_id(game_id, dbconnection=db)
         return pages.PageBuilder("game", game=game)
 

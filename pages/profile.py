@@ -1,10 +1,10 @@
 import bottle
 import json
-from modules import vk
+from modules import vk, utils
 
 import pages
 import dbutils
-from models import users, cities, images, games, ampluas
+from models import users, cities, images, games, ampluas, notificating
 
 
 @pages.get('/profile/<user_id:int>')
@@ -138,3 +138,30 @@ def setvkid():
         return pages.templates.message(error=e.vkerror['error'], error_description=e.vkerror['error_description'])
     users.setvkuserid(pages.auth.current().user_id(), int(user_id))
     raise bottle.redirect('/profile')
+
+
+@pages.get('/recover')
+def get():
+    if pages.auth.loggedin():
+        raise bottle.redirect('/profile')
+    return pages.PageBuilder('recover')
+
+
+@pages.post('/recover')
+def post():
+    if pages.auth.loggedin() or 'email' not in bottle.request.forms:
+        raise bottle.HTTPError(404)
+    email = bottle.request.forms.get('email')
+    with dbutils.dbopen() as db:
+        db.execute("SELECT user_id, passwd FROM users WHERE email='{}'".format(email))
+        if len(db.last()) == 0:
+            return pages.PageBuilder('text', message='Неверный email',
+                                     description='Пользователь с таким email не найден.')
+        user_id = db.last()[0][0]
+        passwd = db.last()[0][1]
+
+        utils.spool_func(notificating.mail.raw, 'Восстановление пароля', 'Ваш пароль: {}'.format(passwd), email)
+        notificating.site.all(user_id, 'Вы недавно восстанавливливали пароль', 1)
+
+        return pages.PageBuilder('text', message='Проверьте email',
+                                 description='Вам было отправлено письмо с дальнейшими инструкциями.')

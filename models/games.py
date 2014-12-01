@@ -1,8 +1,8 @@
 import dbutils
-from models import autodb, splitstrlist, notifications
+from models import autodb, splitstrlist, notifications, notificating
 from modules.utils import format_duration
 from objects import Game
-from modules import create_link
+from modules import create_link, utils
 
 
 @autodb
@@ -86,10 +86,10 @@ def write_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DB
     game = get_by_id(game_id, dbconnection=dbconnection)
     if not game.datetime.tommorow and not game.datetime.today:
         message = 'До игры "{}" осталось 2 дня!'.format(create_link.game(game))
-        notifications.add(user_id, message, 0, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game.datetime))
+        utils.spool_func(notificating.site.subscribed, user_id, message, 0, game_id, 'TIMESTAMP("{}")-INTERVAL 2 DAY'.format(game.datetime))
     if not game.datetime.today:
         message = 'Завтра состоится игра "{}"<br>Не пропустите!'.format(create_link.game(game))
-        notifications.add(user_id, message, 1, game_id, 1, 'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game.datetime))
+        utils.spool_func(notificating.site.subscribed, user_id, message, 0, game_id, 'TIMESTAMP("{}")-INTERVAL 1 DAY'.format(game.datetime))
 
 
 @autodb
@@ -108,8 +108,7 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
     game = get_by_id(game_id, dbconnection=dbconnection)
     if game.reserved() > 0 and len(game.reserved_people()) > 0:
         for user_id in game.reserved_people():
-            notifications.add(user_id, 'В игре "{}" освободилось место!'.format(create_link.game(game)), 1, game_id, 1)
-
+            utils.spool_func(notificating.site.subscribed, user_id, 'В игре "{}" освободилось место!'.format(create_link.game(game)), 1, game_id)
 
 @autodb
 def delete_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):

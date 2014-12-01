@@ -3,8 +3,9 @@ import json
 
 import pages
 import modules
+from modules import utils
 import dbutils
-from models import sport_types, game_types, cities, courts, games, notifications, users, mailing
+from models import sport_types, game_types, cities, courts, games, users, notificating, reports, images
 
 
 GAMES_PER_PAGE = 4
@@ -28,7 +29,7 @@ def assigned_responsible(game_id:int, user_id:int, db):
     notification = 'Вас назначили ответственным на игру "{}"<br>Свяжитесь с "{}"!'
     notification = notification.format(modules.create_link.game(game),
                                        modules.create_link.user(game.created_by(True)))
-    notifications.add(user_id, notification, 2, game_id, 2)
+    utils.spool_func(notificating.site.responsible, user_id, notification, 2, game_id)
 
 def unassigned_responsible(game_id:int, user_id:int, db):
     if user_id == pages.auth.current().user_id():
@@ -36,7 +37,7 @@ def unassigned_responsible(game_id:int, user_id:int, db):
     game = games.get_by_id(game_id, dbconnection=db)
     notification = 'Вы больше не являетесь ответственным за игру "{}".'
     notification = notification.format(modules.create_link.game(game))
-    notifications.add(user_id, notification, 2, game_id, 2)
+    utils.spool_func(notificating.site.responsible, user_id, notification, 2, game_id)
 
 
 @pages.get('/games/<game_id:int>')
@@ -100,11 +101,11 @@ def edit_post(game_id:int):
         game = games.get_by_id(game_id, dbconnection=db)
         if not game.datetime.passed:
             for user_id in game.subscribed():
-                notifications.add(user_id, 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                    modules.create_link.game(game)), 1, game_id, 1)
+                utils.spool_func(notificating.site.subscribed, user_id, 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
+                    modules.create_link.game(game)), 1, game_id)
             if responsible_old == int(params['responsible_user_id']):
-                notifications.add(responsible_old, 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
-                    modules.create_link.game(game)), 1, game_id, 2)
+                utils.spool_func(notificating.site.responsible, responsible_old, 'Игра "{}" была отредактирована.<br>Проверьте изменения!'.format(
+                    modules.create_link.game(game)), 1, game_id)
         raise bottle.redirect('/games/{}'.format(game_id))
 
 
@@ -237,6 +238,54 @@ def notify(game_id:int):
         if len(db.last())==0: return json.dumps({'users':list(), 'count':0})
         users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
         for user in users_:
-            mailing.emailtpl.game_invite(game, user)
+            utils.spool_func(notificating.mail.tpl.game_invite, game, user)
         ids = list(map(lambda x: x.user_id(), users_))
         return json.dumps({'count':len(ids), 'users':ids})
+
+
+@pages.get('/games/report/<game_id:int>')
+def get(game_id:int):
+    with dbutils.dbopen() as db:
+        game = games.get_by_id(game_id, dbconnection=db)
+        if len(game) == 0:
+            raise bottle.HTTPError(404)
+        if game.created_by() != pages.auth.current().user_id() and game.responsible_user_id() != pages.auth.current().user_id() and not pages.auth.current().userlevel.admin():
+            return pages.templates.permission_denied()
+        if not game.datetime.passed:
+            return pages.templates.message("Вы не можете отправить отчет по игре", "Игра еще не закончилась")
+        return pages.PageBuilder("report", game=game, showreport=game.reported())
+
+
+@pages.post('/games/report/<game_id:int>')
+def post(game_id:int):
+    game = games.get_by_id(game_id)
+    if game.created_by() != pages.auth.current().user_id() and game.responsible_user_id() != pages.auth.current().user_id() and not pages.auth.current().userlevel.admin():
+        return pages.templates.permission_denied()
+    if game.reported(): return pages.templates.message('Чё', 'Эээ')
+    users_ = {int(user_id.split('=')[-1]): {"status": bottle.request.forms.get(user_id)} for user_id in
+              filter(lambda x: x.startswith("status"), bottle.request.forms)}
+    registered = {user_id: users_[user_id] for user_id in filter(lambda x: x > 0, users_)}
+    unregistered = {user_id: users_[user_id] for user_id in filter(lambda x: x < 0, users_)}
+    for user_id in unregistered:
+        info = {key.split('=')[0]: bottle.request.forms.get(key) for key in
+                filter(lambda x: x.endswith(str(user_id)), bottle.request.forms)}
+        unregistered[user_id] = info
+    report = dict()
+    report['registered'] = {'count': len(registered), 'users': registered}
+    report['unregistered'] = {'count': len(unregistered), 'users': unregistered}
+    with dbutils.dbopen() as db:
+        for user_id in report['unregistered']['users']:
+            user = report['unregistered']['users'][user_id]
+            name = user['first_name'].strip()+' '+user['last_name'].strip()
+            reports.report_unregistered(game_id, user['status'], name, user['phone'], dbconnection=db)
+        for user_id in report['registered']['users']:
+            user = report['registered']['users'][user_id]
+            status = user['status']
+            reports.report(game_id, user_id, status, dbconnection=db)
+    if "photo" in bottle.request.files:
+        images.save_report(game_id, bottle.request.files.get("photo"))
+    if pages.auth.current().user_id() != game.created_by():
+        notificating.site.responsible(game.created_by(), 'Ответственный "{}" отправил отчет по игре "{}"'.format(
+            modules.create_link.user(users.get(pages.auth.getuserid())),
+            modules.create_link.game(game)), game_id)
+    raise bottle.redirect('/report?game_id={}'.format(game_id))

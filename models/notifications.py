@@ -4,15 +4,6 @@ from modules import utils
 from models import autodb, splitstrlist
 
 
-@utils.spool('notifications_add')
-def add(user_id:int, text:str, level:int=0, game_id:int=0, type:int=0, date_time:str=None):
-    with dbutils.dbopen() as db:
-        db.execute(
-            "INSERT INTO notifications (user_id, text, level, game_id, type, datetime) VALUES ({}, '{}', {}, {}, {}, {})".format(
-                user_id, text, level, game_id, type,
-                'NOW()' if not date_time else "{}".format(date_time)))
-
-
 @autodb
 def get_count(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=None) -> int:
     return int(dbconnection.execute("SELECT COUNT(*) FROM notifications WHERE datetime<NOW() AND user_id={}{}".format(

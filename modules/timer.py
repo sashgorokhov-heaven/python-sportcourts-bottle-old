@@ -2,8 +2,8 @@ from .myuwsgi import uwsgidecorators
 import dbutils
 import datetime
 from objects import Game
-from models import mailing
-from . import logging
+from models import notificating
+from . import logging, utils
 
 
 _tasks = list()
@@ -28,7 +28,7 @@ def send_notification(game:Game):
         return
     for user in game.subscribed(True):
         try:
-            mailing.emailtpl.oncoming_game(game, user)
+            utils.spool_func(notificating.mail.tpl.oncoming_game, game, user)
         except Exception as e:
             logging.message('Error on sending email of upcoming game <{}> notification for <{}>'.format(game.game_id(), user.user_id()), e)
 
@@ -89,7 +89,7 @@ def continue_registration():
         if len(db.last())==0: return
         for pair in db.last():
             try:
-                mailing.emailtpl.email_confirm_again(*pair)
+                utils.spool_func(notificating.mail.tpl.email_confirm_again, *pair)
                 db.execute("UPDATE activation SET again=1 WHERE email={}".format(pair[1]))
             except Exception as e:
                 logging.message('Error while sending activation email to <{}>'.format(pair[1]), e)
