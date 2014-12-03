@@ -8,17 +8,21 @@ class Finances:
     def percents(n:int, mx:int, digits:int=1) -> int:
         return round((n/mx)*100, digits) if mx!=0 else 0
 
-    def __init__(self, month:int, db:dbutils.DBConnection):
+    def __init__(self, month:int, year:int, db:dbutils.DBConnection):
         self._db = db
 
         if month==0:
             month = 'MONTH(NOW())'
+            year = 'YEAR(NOW())'
+        elif year==0:
+            year = 'YEAR(NOW())'
 
         self.games = db.execute("SELECT * FROM games WHERE "
-                               "MONTH(datetime)={} AND "
-                               "datetime+INTERVAL duration MINUTE<NOW() AND "
-                               "capacity>0 AND deleted=0 AND "
-                               "game_id IN (SELECT game_id FROM reports) ORDER BY datetime DESC".format(month), dbutils.dbfields['games'])
+                                "MONTH(datetime)={} AND "
+                                "YEAR(datetime)={} AND "
+                                "datetime+INTERVAL duration MINUTE<NOW() AND "
+                                "capacity>0 AND deleted=0 AND "
+                                "game_id IN (SELECT game_id FROM reports) ORDER BY datetime DESC".format(month, year), dbutils.dbfields['games'])
         self.games = list(map(lambda x: Game(x, dbconnection=db), self.games))
         self.games_dict = {game.game_id():game for game in self.games}
 
