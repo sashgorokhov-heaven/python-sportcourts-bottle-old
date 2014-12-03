@@ -125,6 +125,7 @@
         </tr>
       </table>
     </div>
+    <div id="chart_div" style="width: 100%; height: 200px;"></div>
   </div>
 </div>
 

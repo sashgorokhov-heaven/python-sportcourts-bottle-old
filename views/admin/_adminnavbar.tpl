@@ -12,6 +12,9 @@
     <div class="navbar-collapse collapse text-right">
       <ul class="nav navbar-nav navbar-right">
         <li>
+          <a class="navbar-brand" href="/" target="_blank">На главную</a>
+        </li>
+        <li>
           <a class="topmenu" href="/profile">
             <img src="/images/avatars/{{current_user.user_id()}}?sq_sm" class="img-circle" width="30" height="30" style="margin-top: -6px; margin-bottom:-5px;">
           </a>
