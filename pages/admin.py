@@ -20,6 +20,9 @@ def get_users(db:dbutils.DBConnection) -> dict:
 def get_logs(db:dbutils.DBConnection) -> dict:
     return {'log':logs.Logs(db)}
 
+def get_logs1(db:dbutils.DBConnection) -> dict:
+    return {'logs':logs.Logs(db)}
+
 
 @pages.get(['/admin', '/admin/'])
 @pages.only_admins
@@ -28,6 +31,7 @@ def index():
         respdict = get_users(db)
         respdict.update(get_finances(db))
         respdict.update(get_logs(db))
+        respdict.update(get_logs1(db))
         return pages.PageBuilder('admin', **respdict)
 
 
@@ -111,24 +115,24 @@ def finances_page(month:int=0):
                                                                                     fin.games_counted[game_id]['profit'])
 
 
-#@pages.get('/admin/loadfinances')
-#@pages.only_admins
-#def load_finances():
-#    with dbutils.dbopen() as db:
-#        fin = finances.Finances(10, db=db)
-#        db.execute("INSERT INTO finances VALUES (2014, 10, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
-#            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
-#            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
-#            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
-#        ))
-#
-#        fin = finances.Finances(11, db=db)
-#
-#        db.execute("INSERT INTO finances VALUES (2014, 11, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
-#            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
-#            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
-#            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
-#        ))
+@pages.get('/admin/loadfinances')
+@pages.only_admins
+def load_finances():
+    with dbutils.dbopen() as db:
+        fin = finances.Finances(10, db=db)
+        db.execute("INSERT INTO finances VALUES (2014, 10, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+        ))
+
+        fin = finances.Finances(11, db=db)
+
+        db.execute("INSERT INTO finances VALUES (2014, 11, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+        ))
 
 @pages.get('/admin/logs')
 @pages.only_admins
