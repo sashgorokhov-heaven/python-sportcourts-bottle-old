@@ -131,11 +131,13 @@ class PageBuilder:
         return item in self._kwargs
 
     def template(self):
-        if self._search_head(self._template_name + '_head.tpl'):
-            return bottle.template(self._template_name, header_name=self._template_name + '_head.tpl', **self._kwargs)
+        if self._search(self._template_name + '_head.tpl'):
+            self._kwargs['header_name'] = self._template_name + '_head.tpl'
+        if self._search(self._template_name + '_footer.tpl'):
+            self._kwargs['footer_name'] = self._template_name + '_head.tpl'
         return bottle.template(self._template_name, **self._kwargs)
 
-    def _search_head(self, tplname:str):
+    def _search(self, tplname:str):
         return any(map(lambda x: os.path.exists(os.path.join(x, tplname)), config.paths.server.views))
 
 
