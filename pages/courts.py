@@ -99,7 +99,7 @@ def add_post():
         court_id = db.execute('SELECT last_insert_id() FROM courts')[0][0]
     if 'photo' in bottle.request.files:
         images.save_court_photo(court_id, bottle.request.files.get('photo'))
-    raise bottle.redirect('/courts?court_id={}'.format(court_id))
+    raise bottle.redirect('/courts/{}'.format(court_id))
 
 
 @pages.get('/courts/edit/<court_id:int>')
@@ -131,7 +131,7 @@ def edit_post(court_id:int):
         db.execute(sql)
     if 'photo' in bottle.request.files:
         images.save_court_photo(court_id, bottle.request.files.get('photo'))
-    raise bottle.redirect('/courts?court_id={}'.format(court_id))
+    raise bottle.redirect('/courts/{}'.format(court_id))
 
 
 @pages.get('/courts')
