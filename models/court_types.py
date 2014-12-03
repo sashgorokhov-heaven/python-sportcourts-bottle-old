@@ -1,12 +1,10 @@
 import dbutils
-from models import autodb, splitstrlist, SimpleCache
+from models import autodb, splitstrlist
 from objects import CourtType
+import cacher
 
 
-_cache = SimpleCache(600, 'type_id')
-
-
-@_cache
+@cacher.create('court_types', 600, cacher.SimpleCache, 'type_id')
 @autodb
 def get(type_id, dbconnection:dbutils.DBConnection=None) -> list:
     if isinstance(type_id, str) and len(type_id.split(',')) > 0:

@@ -2,7 +2,7 @@ import bottle
 import pages
 import dbutils
 import models.notifications
-
+import cacher
 
 @pages.get('/notifications')
 @pages.only_loggedin
@@ -28,6 +28,8 @@ def post():
     if 'read' in bottle.request.forms:
         notification_id = int(bottle.request.forms.get('read'))
         models.notifications.read(notification_id)
+        cacher.drop('notifications_count', pages.auth.current().user_id())
     if 'delete' in bottle.request.forms:
         notification_id = int(bottle.request.forms.get('delete'))
         models.notifications.delete(notification_id)
+        cacher.drop('notifications_count', pages.auth.current().user_id())

@@ -1,14 +1,13 @@
+import cacher
 import dbutils
-from models import autodb, SimpleCache
+from models import autodb
 from objects import Amplua
 
 
-_cache = SimpleCache(600, 'amplua_id')
-
-
-@_cache
+@cacher.create('ampluas', 600, cacher.SimpleCache, 'amplua_id')
 @autodb
 def get(amplua_id, dbconnection:dbutils.DBConnection=None) -> Amplua:
+    # FIXME вроде как str передается иногда
     if isinstance(amplua_id, list) and len(amplua_id) == 0: return list()
 
     if isinstance(amplua_id, int) and amplua_id != 0:

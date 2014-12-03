@@ -3,7 +3,7 @@ import bottle
 import dbutils
 import pages
 from models import courts, games, sport_types, cities, images, court_types
-
+import cacher
 
 def get_courts_map():
     with dbutils.dbopen() as db:
@@ -131,6 +131,7 @@ def edit_post(court_id:int):
         db.execute(sql)
     if 'photo' in bottle.request.files:
         images.save_court_photo(court_id, bottle.request.files.get('photo'))
+    cacher.drop_by_table_name('courts', 'court_id', court_id)
     raise bottle.redirect('/courts/{}'.format(court_id))
 
 

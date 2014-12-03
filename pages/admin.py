@@ -2,6 +2,7 @@ import bottle
 import json
 import os
 import datetime
+import cacher
 import config
 from modules import logging
 import pages
@@ -72,7 +73,7 @@ def sms():
 @yield_handler
 def finances_page(month:int=0, year:int=0):
     with dbutils.dbopen() as db:
-        fin = finances.Finances(month, 0, db=db)
+        fin = finances.Finances(month, year, db=db)
 
         if 'text' not in bottle.request.query:
             yield pages.PageBuilder('finances', **fin.dict()).template()
@@ -214,3 +215,10 @@ def calc_finances(*args):
             ))
     except Exception as e:
         logging.message('Error calcing finances for <{}:{}>'.format(month, year), e)
+
+
+@pages.get('/admin/drop_cache')
+@pages.only_admins
+def drop_cache():
+    cacher.dropall()
+    raise bottle.redirect('/admin')

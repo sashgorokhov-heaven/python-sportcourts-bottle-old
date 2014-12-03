@@ -8,6 +8,7 @@ import config
 from models import autodb, users
 import urllib.request, urllib.parse
 import pages
+import cacher
 
 
 def _send_message(email, message):
@@ -96,6 +97,7 @@ class site:
             "INSERT INTO notifications (user_id, text, level, game_id, type, datetime) VALUES ({}, '{}', {}, {}, {}, {})".format(
                 user_id, text, level, game_id, type,
                 'NOW()' if not date_time else "{}".format(date_time)))
+        cacher.drop('notifications_count', user_id)
 
     @staticmethod
     @autodb

@@ -1,12 +1,10 @@
 import dbutils
 from objects import Court
-from models import autodb, splitstrlist, SimpleCache
+from models import autodb, splitstrlist
+import cacher
 
 
-_cache = SimpleCache(600, 'court_id')
-
-
-@_cache
+@cacher.create_table_name('courts', 'court_id', 600, cacher.SimpleCache, 'court_id')
 @autodb
 def get(court_id, city_id:int=1, dbconnection:dbutils.DBConnection=None) -> Court:
     if isinstance(court_id, str) and len(court_id.split(',')) > 0:

@@ -1,7 +1,8 @@
 import dbutils
 from objects import User
-
 from models import autodb, splitstrlist
+import cacher
+
 
 ADMIN = 0
 ORGANIZER = 1
@@ -10,6 +11,7 @@ COMMON = 3
 JUDGE = 4
 
 
+@cacher.create_table_name('users', 'user_id', 600, cacher.SimpleCache, 'user_id')
 @autodb
 def get(user_id, userlevel:int=-1, count:slice=slice(0, 20), dbconnection:dbutils.DBConnection=None) -> User:
     if isinstance(user_id, str) and len(user_id.split(',')) > 0:
@@ -66,14 +68,17 @@ def remove_friend(user_id:int, friend_id:int, dbconnection:dbutils.DBConnection=
     if not are_friends(user_id, friend_id, dbconnection=dbconnection):
         raise ValueError("User <{}> do not have friend <{}>".format(user_id, friend_id))
     dbconnection.execute("DELETE FROM friends WHERE user_id1={} AND user_id2={}".format(user_id, friend_id))
+    cacher.drop_by_table_name('friends', 'user_id', user_id)
 
 
+@cacher.create_table_name('friends', 'user_id', 600, cacher.KeyCache)
 @autodb
 def are_friends(user_id_1:int, user_id_2:int, dbconnection:dbutils.DBConnection=None) -> bool:
     dbconnection.execute("SELECT * FROM friends WHERE user_id1={} AND user_id2={}".format(user_id_1, user_id_2))
     return len(dbconnection.last()) != 0
 
 
+@cacher.create_table_name('friends', 'user_id', 600, cacher.KeyCache)
 @autodb
 def get_friends(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
     friends = dbconnection.execute("SELECT user_id2 FROM friends WHERE user_id1={}".format(user_id))
@@ -83,6 +88,7 @@ def get_friends(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
 @autodb
 def setvkuserid(user_id:int, vkuserid:int, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("UPDATE users SET vkuserid={} WHERE user_id={}".format(vkuserid, user_id))
+    cacher.drop_by_table_name('users', 'user_id', user_id)
 
 
 @autodb

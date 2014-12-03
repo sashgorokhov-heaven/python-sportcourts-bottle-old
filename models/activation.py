@@ -1,6 +1,8 @@
+import cacher
 import dbutils
 from models import autodb
 import modules
+
 
 @autodb
 def create(email:str, dbconnection:dbutils.DBConnection=None) -> str:
@@ -20,13 +22,16 @@ def create(email:str, dbconnection:dbutils.DBConnection=None) -> str:
 @autodb
 def activate(email:str, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("UPDATE activation SET activated=1 WHERE email='{}'".format(email))
+    cacher.drop_by_table_name('activation', 'email', email)
 
 
 @autodb
 def register(email:str, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("UPDATE activation SET activated=2 WHERE email='{}'".format(email))
+    cacher.drop_by_table_name('activation', 'email', email)
 
 
+@cacher.create_table_name('activation', 'token', 600, cacher.KeyCache)
 @autodb
 def get(token:str, dbconnection:dbutils.DBConnection=None) -> str:
     dbconnection.execute("SELECT email FROM activation WHERE token='{}'".format(token))
@@ -35,5 +40,7 @@ def get(token:str, dbconnection:dbutils.DBConnection=None) -> str:
     return dbconnection.last()[0][0]
 
 
+@cacher.create_table_name('activation', 'email', 600, cacher.KeyCache)
+@autodb
 def status(email:str, dbconnection:dbutils.DBConnection=None) -> int:
     return dbconnection.execute("SELECT activated FROM activation WHERE email='{}'".format(email))[0][0]

@@ -1,5 +1,6 @@
 import bottle
 import json
+import cacher
 from modules import vk, utils
 
 import pages
@@ -73,7 +74,8 @@ def edit_post():
             ', '.join(['{}="{}"'.format(i, params[i]) for i in params]),
             pages.auth.current().user_id())
         db.execute(sql)
-        raise bottle.redirect('/profile')
+    cacher.drop_by_table_name('users', 'user_id', pages.auth.current().user_id())
+    raise bottle.redirect('/profile')
 
 
 @pages.get('/profile')
@@ -111,6 +113,7 @@ def settings_post():
             json.dumps({'send_mail': send_email, 'show_phone': show_phone}), pages.auth.current().user_id()))
         user = users.get(pages.auth.current().user_id(), dbconnection=db)
         pages.auth.reloaduser(user._pure)
+        cacher.drop_by_table_name('users', 'user_id', pages.auth.current().user_id())
         raise bottle.redirect("/profile/settings")
 
 

@@ -2,8 +2,10 @@ import dbutils
 from objects import Notification
 from modules import utils
 from models import autodb, splitstrlist
+import cacher
 
 
+@cacher.create('notifications_count', 600, cacher.KeyCache)
 @autodb
 def get_count(user_id:int, all:bool=False, dbconnection:dbutils.DBConnection=None) -> int:
     return int(dbconnection.execute("SELECT COUNT(*) FROM notifications WHERE datetime<NOW() AND user_id={}{}".format(
@@ -29,7 +31,6 @@ def get(user_id:int, all:bool=False, type:int=-1, dbconnection:dbutils.DBConnect
 
     notifications = dbconnection.last()
     notifications = list(map(lambda x: Notification(x, dbconnection=dbconnection), notifications))
-
     return notifications
 
 

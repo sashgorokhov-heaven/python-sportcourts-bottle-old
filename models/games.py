@@ -3,8 +3,13 @@ from models import autodb, splitstrlist, notifications, notificating
 from modules.utils import format_duration
 from objects import Game
 from modules import create_link, utils
+import cacher
 
 
+games_cache = cacher.create_table_name('games', 'game_id', 600, cacher.SimpleCache, 'game_id')
+
+
+@games_cache
 @autodb
 def get_by_id(game_id, dbconnection:dbutils.DBConnection=None) -> Game:
     if isinstance(game_id, str) and len(game_id.split(',')) > 0:
@@ -45,6 +50,7 @@ def usergames_set(user_id:int, game_id:int, status:int, dbconnection:dbutils.DBC
     else:
         sql = "UPDATE usergames SET status={} WHERE user_id={} AND game_id={}".format(status, user_id, game_id)
     dbconnection.execute(sql)
+    games_cache.drop(game_id)
 
 
 @autodb
@@ -142,6 +148,7 @@ def get_recent(court_id:int=0, city_id:int=1, sport_type:int=0, count:slice=slic
 @autodb
 def delete(game_id:int, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("UPDATE games SET deleted=1 WHERE game_id={}".format(game_id))
+    games_cache.drop(game_id)
 
 
 @autodb
@@ -162,6 +169,7 @@ def court_game_intersection(court_id:int, datetime:str, duration:int, dbconnecti
     return None
 
 
+@autodb
 def user_game_intersection(user_id:int, game:Game, dbconnection:dbutils.DBConnection=None) -> Game:
     sql = (" SELECT * FROM games WHERE game_id!='{game_id}'"
            " AND game_id IN (SELECT game_id FROM usergames WHERE user_id='{user_id}' AND status=2)"
@@ -198,8 +206,10 @@ def update(game_id:int, dbconnection:dbutils.DBConnection=None, **kwargs):
         ', '.join(["{}='{}'".format(i, kwargs[i]) for i in kwargs]),
         game_id)
     dbconnection.execute(sql)
+    games_cache.drop(game_id)
 
 
+@cacher.create_table_name('reports', 'user_id', 600, cacher.KeyCache)
 @autodb
 def get_user_played_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
     dbconnection.execute("SELECT game_id FROM reports WHERE user_id='{}' AND status>0".format(user_id))
@@ -212,12 +222,15 @@ def get_subscribed_games(user_id:int, dbconnection:dbutils.DBConnection=None) ->
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
 
 
+@cacher.create_table_name('usergames', 'game_id', 600, cacher.KeyCache)
 @autodb
 def get_subscribed_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
     dbconnection.execute("SELECT user_id FROM usergames WHERE game_id='{}' AND status=2".format(game_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
 
 
+@cacher.create_table_name('usergames', 'game_id', 600, cacher.KeyCache)
+@autodb
 def get_reserved_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
     dbconnection.execute("SELECT user_id FROM usergames WHERE game_id='{}' AND status=1".format(game_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
@@ -235,6 +248,7 @@ def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> 
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
 
 
+@cacher.create('game_stats_cache', 600, cacher.KeyCache)
 @autodb
 def get_game_stats(user_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
     sql = "SELECT game_id, status FROM reports WHERE user_id={} AND STATUS=2".format(user_id)

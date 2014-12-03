@@ -1,12 +1,10 @@
 import dbutils
-from models import autodb, splitstrlist, SimpleCache
+from models import autodb, splitstrlist
 from objects import SportType
+import cacher
 
 
-_cache = SimpleCache(600, 'sport_id')
-
-
-@_cache
+@cacher.create('sport_types', 600, cacher.SimpleCache, 'sport_id')
 @autodb
 def get(sport_id, dbconnection:dbutils.DBConnection=None) -> list:
     if isinstance(sport_id, str) and len(sport_id.split(',')) > 0:
