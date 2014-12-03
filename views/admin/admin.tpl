@@ -138,7 +138,7 @@
     <br>
     <a href="/admin/reload" class="btn btn-link">Перезагрузка сервера</a>
     <br>
-    <a href="/admin/clear_cache" class="btn btn-link">Сброс кеша</a>
+    <a href="/admin/drop_cache" class="btn btn-link">Сброс кеша</a>
     <br>
     <a href="/admin/dump" class="btn btn-link">Общий дамп</a>
     <br>
