@@ -8,6 +8,8 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">Админка</a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a class="navbar-brand" href="/" target="_blank">На главную</a>
     </div>
     <div class="navbar-collapse collapse text-right">
       <ul class="nav navbar-nav navbar-right">
