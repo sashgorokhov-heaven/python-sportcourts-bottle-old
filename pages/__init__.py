@@ -240,9 +240,6 @@ class _AuthDispatcher:
         return self.loggedin()
 
 
-auth = _AuthDispatcher()
-
-
 for module_name in os.listdir(os.path.join(config.paths.server.root, 'pages')):
     if module_name.startswith('_'):
         continue
@@ -251,3 +248,6 @@ for module_name in os.listdir(os.path.join(config.paths.server.root, 'pages')):
         importlib.import_module('pages.{}'.format(module_name))
     except Exception as e:
         modules.logging.error(e)
+
+auth = _AuthDispatcher()
+
