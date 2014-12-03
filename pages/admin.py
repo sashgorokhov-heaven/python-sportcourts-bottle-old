@@ -1,14 +1,16 @@
 import bottle
 import json
 import os
+import datetime
 import config
+from modules import logging
 import pages
 import dbutils
 from models import finances, logs, users, notificating
 from modules.myuwsgi import uwsgi, uwsgidecorators
 
 def get_finances(db:dbutils.DBConnection) -> dict:
-    return {'fin':finances.Finances(0, db)}
+    return {'fin':finances.Finances(0, 0, db=db)}
 
 
 def get_users(db:dbutils.DBConnection) -> dict:
@@ -20,9 +22,6 @@ def get_users(db:dbutils.DBConnection) -> dict:
 def get_logs(db:dbutils.DBConnection) -> dict:
     return {'log':logs.Logs(db)}
 
-def get_logs1(db:dbutils.DBConnection) -> dict:
-    return {'logs':logs.Logs(db)}
-
 
 @pages.get(['/admin', '/admin/'])
 @pages.only_admins
@@ -31,7 +30,6 @@ def index():
         respdict = get_users(db)
         respdict.update(get_finances(db))
         respdict.update(get_logs(db))
-        respdict.update(get_logs1(db))
         return pages.PageBuilder('admin', **respdict)
 
 
@@ -69,12 +67,12 @@ def sms():
     return pages.PageBuilder('smstest')
 
 
-@pages.get(['/admin/finances', '/admin/finances/<month:int>'])
+@pages.get(['/admin/finances', '/admin/finances/<month:int>', '/admin/finances/<month:int>/<year:int>'])
 @pages.only_admins
 @yield_handler
-def finances_page(month:int=0):
+def finances_page(month:int=0, year:int=0):
     with dbutils.dbopen() as db:
-        fin = finances.Finances(month, db)
+        fin = finances.Finances(month, 0, db=db)
 
         if 'text' not in bottle.request.query:
             yield pages.PageBuilder('finances', **fin.dict()).template()
@@ -115,24 +113,24 @@ def finances_page(month:int=0):
                                                                                     fin.games_counted[game_id]['profit'])
 
 
-@pages.get('/admin/loadfinances')
-@pages.only_admins
-def load_finances():
-    with dbutils.dbopen() as db:
-        fin = finances.Finances(10, db=db)
-        db.execute("INSERT INTO finances VALUES (2014, 10, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
-            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
-            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
-            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
-        ))
-
-        fin = finances.Finances(11, db=db)
-
-        db.execute("INSERT INTO finances VALUES (2014, 11, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
-            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
-            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
-            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
-        ))
+#@pages.get('/admin/loadfinances')
+#@pages.only_admins
+#def load_finances():
+#    with dbutils.dbopen() as db:
+#        fin = finances.Finances(10, db=db)
+#        db.execute("INSERT INTO finances VALUES (2014, 10, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+#            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+#            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+#            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+#        ))
+#
+#        fin = finances.Finances(11, db=db)
+#
+#        db.execute("INSERT INTO finances VALUES (2014, 11, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+#            len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+#            fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+#            len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+#        ))
 
 @pages.get('/admin/logs')
 @pages.only_admins
@@ -198,3 +196,21 @@ def sendsms_post():
     text = bottle.request.forms.get('text')
     notificating.sms.raw(phone, text)
     raise bottle.redirect('/admin/sendsms')
+
+
+@uwsgidecorators.cron(0,0, 1,-1, -1)
+def calc_finances(*args):
+    yesterday = datetime.date.today()-datetime.timedelta(days=1)
+    year = yesterday.year
+    month = yesterday.month
+    try:
+        with dbutils.dbopen() as db:
+            fin = finances.Finances(month, year, db=db)
+            db.execute("INSERT INTO finances VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+                year, month,
+                len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+                fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+                len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+            ))
+    except Exception as e:
+        logging.message('Error calcing finances for <{}:{}>'.format(month, year), e)
