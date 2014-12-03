@@ -24,7 +24,7 @@
           % end
          ]);
         var options = {
-          title: 'График финансов'
+          // title: 'График финансов'
         };
 
         var linechart = new google.visualization.LineChart(document.getElementById('linechart_div'));
@@ -43,7 +43,7 @@
           % end
          ]);
         var options = {
-          title: 'Прибыль по площадкам'
+          // title: 'Прибыль по площадкам'
         };
 
         var piechart = new google.visualization.PieChart(document.getElementById('piechart_div'));
@@ -66,7 +66,7 @@
           % end
          ]);
         var options = {
-          title: 'Прибыль'
+          // title: 'Прибыль'
         };
 
         var linechart2 = new google.visualization.LineChart(document.getElementById('linechart2_div'));

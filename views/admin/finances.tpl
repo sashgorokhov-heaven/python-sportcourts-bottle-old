@@ -2,14 +2,37 @@
 % setdefault("games", list())
 <h1 class="page-header">Финансы</h1>
 
-<h3><a href="/admin/finances/10">Октябрь</a></h3>
-<h3><a href="/admin/finances/11">Ноябрь</a></h3>
-<h3><a href="/admin/finances/12">Декабрь</a></h3>
+<p>
+  <a class="h3" href="/admin/finances/10">Октябрь</a>
+  &nbsp;&nbsp;
+  <a class="h3" href="/admin/finances/11">Ноябрь</a>
+  &nbsp;&nbsp;
+  <a class="h3" href="/admin/finances/12">Декабрь</a>
+</p>
 
-<div id="piechart_div" style="width: 600px; height: 400px;"></div>
-<div id="linechart_div" style="height: 600px;"></div>
-<div id="linechart2_div" style="height: 600px;"></div>
 
+<div class="panel panel-default col-md-6">
+  <div class="panel-body">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#home" data-toggle="tab">Площадки</a></li>
+      <li><a href="#profile" data-toggle="tab">Финансы</a></li>
+      <li><a href="#messages" data-toggle="tab">Прибыль</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="home">
+        <div id="piechart_div" style="height: 250px;"></div>
+      </div>
+      <div class="tab-pane" id="profile">
+        <div id="linechart_div" style="height: 250px;"></div>
+      </div>
+      <div class="tab-pane" id="messages">
+        <div id="linechart2_div" style="height: 250px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <table class="table table-condensed table-hover" style="font-size:80%;">
   <thead>
