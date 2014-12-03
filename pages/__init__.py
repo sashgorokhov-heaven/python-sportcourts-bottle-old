@@ -109,30 +109,6 @@ def only_ajax(func):
     return wrapper
 
 
-class Page:  # this name will be reloaded by PageController.reload(name='Page')
-    def execute(self, method:str, **kwargs):
-        if method == 'POST':
-            data = self.post(**kwargs)
-            if isinstance(data, PageBuilder):
-                return data.template()
-            return data
-        if method == 'GET':
-            data = self.get(**kwargs)
-            if isinstance(data, PageBuilder):
-                return data.template()
-            return data
-        raise bottle.HTTPError(404)
-
-    def get(self, **kwargs):  # name='alex'
-        raise bottle.HTTPError(404)
-
-    def post(self, **kwargs):
-        raise bottle.HTTPError(404)
-
-    get.route = ''  # /hello/<name> - /hello/alex
-    post.route = ''
-
-
 class PageBuilder:
     def __init__(self, template_name:str, **kwargs):
         self._template_name = template_name
@@ -175,120 +151,6 @@ class templates:
     @staticmethod
     def message(text:str, description:str) -> PageBuilder:
         return PageBuilder("text", message=text, description=description)
-
-
-def denypost(func):
-    def wrapper(*args, **kwargs):
-        #serveraddr = 'http://{}'.format(config.server.ip)
-        #if bottle.request.method.lower() == 'post' and not bottle.request.get_header('Referer',
-        #                                                                             serveraddr).startswith(
-        #        serveraddr):
-        #    try:
-        #        raise ValueError('POST request from other domain')
-        #    except Exception as e:
-        #        logging.error(e)
-        #    raise bottle.HTTPError(404)  # TODO: refactor
-        return func(*args, **kwargs)
-
-    return wrapper
-
-
-def access_and_error_log(func):
-    def wrapper(*args, **kwargs):
-        t = time.time()
-        try:
-            response = func(*args, **kwargs)
-            logging.access(time.time() - t)
-            return response
-        except (bottle.HTTPError, bottle.HTTPResponse) as e:
-            logging.access(time.time() - t)
-            raise e
-        except Exception as e:
-            logging.error(e, time.time() - t)
-            if config.debug:
-                return templates.message(e.__class__.__name__,
-                                         extract_traceback(e, '<br>').replace('\n', '<br>')).template()
-            return templates.message("Возникла непредвиденная ошибка", "Сообщите нам об этом, пожалуйста.").template()
-
-    return wrapper
-
-
-class _Executor:
-    def __init__(self, page:Page):
-        self._lock = threading.Lock()
-        self._page = None
-        self.set_page(page)
-
-    def page(self):
-        with self._lock:
-            return self._page
-
-    def set_page(self, page:Page):
-        with self._lock:
-            if self._page:
-                del self._page
-            self._page = page
-            self.name = self._page.__class__.__name__
-
-
-    # @route(self._page.get.route)
-    # @route(self._page.post.route)
-    @access_and_error_log
-    @iplib.ipfilter
-    @denypost
-    def execute(self, **kwargs):
-        with self._lock:
-            return self._page.execute(bottle.request.method, **kwargs)
-
-
-class _PageController:
-    def __init__(self):
-        self._executors = dict()
-        self.loadpages()
-
-    def add_page(self, page_class:type):
-        instance = page_class()
-        executor = _Executor(instance)
-        self._executors[executor.name] = executor
-        if instance.get.route:
-            bottle.get(instance.get.route, callback=executor.execute)  # <------ Route mount point
-        if instance.post.route:
-            bottle.post(instance.post.route, callback=executor.execute)  # <------ Route mount point
-
-    def reload(self, name:str) -> type:
-        if name not in self._executors:
-            raise ValueError('Executor on <{}> not registered'.format(name))
-        executor = self._executors[name]
-        module_name = executor.page().__class__.__module__
-        module = sys.modules[module_name]
-        reloaded = importlib.reload(module)
-        page_class = self._search_module(reloaded)
-        if page_class:
-            executor.set_page(page_class())
-
-    def _search_module(self, module) -> type:
-        page_class = None
-        for smthing in dir(module):
-            if not smthing.startswith('_') \
-                    and type(getattr(module, smthing)) == type(Page) \
-                    and issubclass(getattr(module, smthing), Page) \
-                    and getattr(module, smthing).__module__.startswith('pages.'):
-                page_class = getattr(module, smthing)
-                break
-        return page_class
-
-    def loadpages(self):
-        for module_name in os.listdir(os.path.join(config.paths.server.root, 'pages')):
-            if module_name.startswith('_'):
-                continue
-            try:
-                module_name = os.path.splitext(module_name)[0]
-                module = importlib.import_module('pages.{}'.format(module_name))
-                page_class = self._search_module(module)
-                if page_class and page_class.__name__ not in self._executors:
-                    self.add_page(page_class)
-            except Exception as e:
-                modules.logging.error(e)
 
 
 def set_cookie(name:str, value):
@@ -378,5 +240,14 @@ class _AuthDispatcher:
         return self.loggedin()
 
 
-controller = _PageController()
 auth = _AuthDispatcher()
+
+
+for module_name in os.listdir(os.path.join(config.paths.server.root, 'pages')):
+    if module_name.startswith('_'):
+        continue
+    try:
+        module_name = os.path.splitext(module_name)[0]
+        importlib.import_module('pages.{}'.format(module_name))
+    except Exception as e:
+        modules.logging.error(e)
