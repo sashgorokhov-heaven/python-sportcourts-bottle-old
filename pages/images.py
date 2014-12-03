@@ -5,16 +5,6 @@ import pages
 from models import games
 
 
-@pages.get('/images/courts/<name>')
-def get_court_image(name):
-    return bottle.static_file("{}.jpg".format(name), config.paths.images.courts)
-
-
-@pages.get('/images/static/<name>')
-def get_static_image(name):
-    return bottle.static_file(name, config.paths.images.static)
-
-
 @pages.get('/images/avatars/<name>')
 def get_avatar_image(name):
     filename = str(name)
