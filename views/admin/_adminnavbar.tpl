@@ -8,6 +8,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">Админка</a>
+      <a class="topmenu" href="#">Время запуска: {{starttime}}</a>
     </div>
     <div class="navbar-collapse collapse text-right">
       <ul class="nav navbar-nav navbar-right">
@@ -29,6 +30,7 @@
       <!-- <form class="navbar-form navbar-right">
         <input type="text" class="form-control" placeholder="Search...">
       </form> -->
+      </ul>
     </div>
   </div>
 </div>
