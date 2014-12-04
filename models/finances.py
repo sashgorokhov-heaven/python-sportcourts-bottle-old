@@ -29,6 +29,16 @@ class Finances:
         self.reports = db.execute("SELECT * FROM reports WHERE game_id IN ({})".format(', '.join(map(str, self.games_dict))),
                      dbutils.dbfields['reports']) if len(self.games)>0 else list()
         self.reports_dict = dict()
+
+        self.additional_charges = db.execute("SELECT * FROM additional_charges WHERE game_id IN ({})".format(', '.join(map(str, self.games_dict))),
+                                             dbutils.dbfields['additional_charges'])
+        self.additional_charges_dict = dict()
+        for charge in self.additional_charges:
+            if charge['game_id'] in self.additional_charges_dict:
+                self.additional_charges_dict[charge['game_id']].append(charge)
+            else:
+                self.additional_charges_dict[charge['game_id']] = [charge]
+
         for report in self.reports:
             if report['game_id'] not in self.reports_dict:
                 self.reports_dict[report['game_id']] = [report]
@@ -72,7 +82,11 @@ class Finances:
             counted['playedpayed'] = len(list(filter(lambda x: x['status']==2, self.reports_dict[game.game_id()])))
             counted['real_income'] = counted['playedpayed']*game.cost()
             counted['rent_charges'] = self.courts_dict[game.court_id()].cost()*(game.duration()/60)
-            counted['profit'] = counted['real_income']-counted['rent_charges']
+            if game.game_id() in self.additional_charges_dict:
+                counted['additional_charges'] = sum([i['cost'] for i in self.additional_charges_dict[game.game_id()]])
+            else:
+                counted['additional_charges'] = 0
+            counted['profit'] = counted['real_income']-counted['rent_charges']-counted['additional_charges']
 
             self.games_counted[game.game_id()] = counted
 
