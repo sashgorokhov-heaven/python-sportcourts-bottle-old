@@ -130,6 +130,18 @@ class KeyCache(_Cache):
         return retval
 
 
+class CallCache(_Cache):
+    def cache(self, *args, **kwargs):
+        if self.check('call'):
+            return self.get('call')
+        retval = self._func(*args, **kwargs)
+        self.set('call', retval)
+        return retval
+
+    def drop(self, key):
+        self.dropall()
+
+
 def create(cache_key:str, lifetime:int, cache_class:_Cache=SimpleCache, *args) -> _Cache:
     if cache_key in _instances:
         raise KeyError('Dublicate cache key for <{}>'.format(cache_key))

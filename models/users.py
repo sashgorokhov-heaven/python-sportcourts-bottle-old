@@ -103,3 +103,23 @@ def search(query:str, dbconnection:dbutils.DBConnection=None) -> list:
                 "first_name LIKE '{last}' AND last_name LIKE '{first}'").format(first=query[0], last=query[1])
     users = dbconnection.execute(sql)
     return list(map(lambda x: x[0], users)) if len(users) > 0 else list()
+
+
+@cacher.create_table_name('reports', 'call', 600, cacher.CallCache)
+@autodb
+def most_active(dbconnection:dbutils.DBConnection=None):
+    data = dbconnection.execute("SELECT user_id, game_id FROM reports WHERE game_id in (SELECT game_id FROM games WHERE MONTH(datetime)=MONTH(NOW()) AND YEAR(datetime)=YEAR(NOW())) AND status=2")
+    if len(data)==0:
+        return None
+    counted = dict()
+    for tu in data:
+        user_id, game_id = tu
+        if user_id not in counted:
+            counted[user_id] = 1
+        else:
+            counted[user_id] += 1
+    best = max(counted, key=lambda x: counted[x])
+    for user_id in counted:
+        if user_id!=best and counted[user_id]==counted[best]:
+            return None
+    return {'user':get(best, dbconnection=dbconnection), 'count':counted[best]}
