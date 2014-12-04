@@ -11,7 +11,7 @@ COMMON = 3
 JUDGE = 4
 
 
-@cacher.create_table_name('users', 'user_id', 600, cacher.SimpleCache, 'user_id')
+#@cacher.create_table_name('users', 'user_id', 600, cacher.SimpleCache, 'user_id')
 @autodb
 def get(user_id, userlevel:int=-1, count:slice=slice(0, 20), dbconnection:dbutils.DBConnection=None) -> User:
     if isinstance(user_id, str) and len(user_id.split(',')) > 0:
@@ -88,7 +88,7 @@ def get_friends(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
 @autodb
 def setvkuserid(user_id:int, vkuserid:int, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute("UPDATE users SET vkuserid={} WHERE user_id={}".format(vkuserid, user_id))
-    cacher.drop_by_table_name('users', 'user_id', user_id)
+    #cacher.drop_by_table_name('users', 'user_id', user_id)
 
 
 @autodb

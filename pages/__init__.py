@@ -223,7 +223,7 @@ class _AuthDispatcher:
             if len(user) == 0:
                 raise ValueError("Invalid email or password")
             db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user[0]['user_id']))
-            cacher.drop_by_table_name('users', 'user_id', user[0]['user_id'])
+            #cacher.drop_by_table_name('users', 'user_id', user[0]['user_id'])
             set_cookie('user', pickle.dumps(user[0]))
 
     def logout(self):
