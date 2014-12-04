@@ -25,6 +25,11 @@ def report_unregistered(game_id:int, status:int, name:str, phone:str, dbconnecti
     cacher.drop_by_table_name('reports', 'game_id', game_id)
 
 
+@autodb
+def report_additional_charges(game_id:int, description:str, cost:int, dbconnection:dbutils.DBConnection=None):
+    dbconnection.execute("INSERT INTO additional_charges VALUES ({}, '{}', {})".format(game_id, description, cost))
+
+
 @cacher.create('reports', 600, cacher.KeyCache)
 @autodb
 def get(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:

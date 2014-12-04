@@ -273,6 +273,7 @@ def post(game_id:int):
     report = dict()
     report['registered'] = {'count': len(registered), 'users': registered}
     report['unregistered'] = {'count': len(unregistered), 'users': unregistered}
+    report['additional_charges'] = {i.split('-')[1]:(bottle.request.forms.get(i), i.split('-')[2]) for i in filter(lambda x: x.startswith('additional'), bottle.request.forms)}
     with dbutils.dbopen() as db:
         for user_id in report['unregistered']['users']:
             user = report['unregistered']['users'][user_id]
@@ -282,6 +283,8 @@ def post(game_id:int):
             user = report['registered']['users'][user_id]
             status = user['status']
             reports.report(game_id, user_id, status, dbconnection=db)
+        for n in report['additional_charges']:
+            reports.report_additional_charges(game_id, *report['additional_charges'][n], dbconnection=db)
     if "photo" in bottle.request.files:
         images.save_report(game_id, bottle.request.files.get("photo"))
     if pages.auth.current().user_id() != game.created_by():
