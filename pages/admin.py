@@ -217,6 +217,40 @@ def calc_finances(*args):
         logging.message('Error calcing finances for <{}:{}>'.format(month, year), e)
 
 
+@uwsgidecorators.cron(0,0, 1,-1, -1)
+def drop_logs(*args):
+    yesterday = datetime.date.today()-datetime.timedelta(days=1)
+    year = yesterday.year
+    month = yesterday.month
+    sql = """CREATE TABLE logsdb.`{month}_{year}` (
+             	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+             	`datetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+             	`ip` VARCHAR(15) NOT NULL,
+             	`time` FLOAT UNSIGNED NOT NULL DEFAULT '0',
+             	`httpmethod` VARCHAR(10) NOT NULL DEFAULT 'GET',
+             	`path` VARCHAR(200) NOT NULL,
+             	`referer` VARCHAR(200) NOT NULL,
+             	`user_id` INT UNSIGNED NOT NULL DEFAULT '0',
+             	`useragent` VARCHAR(1000) NOT NULL,
+             	`error` VARCHAR(5000) NULL DEFAULT NULL,
+             	`error_description` VARCHAR(5000) NULL DEFAULT NULL,
+             	`traceback` VARCHAR(10000) NULL DEFAULT NULL,
+             	PRIMARY KEY (`id`),
+             	UNIQUE INDEX `id` (`id`)
+             )
+             COLLATE='utf8_general_ci'
+             ENGINE=MyISAM
+             SELECT * FROM logsdb.access WHERE MONTH(datetime)={month} AND YEAR(datetime)={year};
+    """.format(month=month, year=year)
+    with dbutils.dbopen(**dbutils.logsdb_connection) as db:
+        try:
+            db.execute(sql)
+        except:
+            return
+        else:
+            db.execute("DELETE FROM logsdb.access WHERE MONTH(datetime)={} AND YEAR(datetime)={}".format(month, year))
+
+
 @pages.get('/admin/drop_cache')
 @pages.only_admins
 def drop_cache():
