@@ -51,6 +51,7 @@
                         <td>Фамилия</td>
                         <td>Телефон</td>
                         <td colspan="2">Статус</td>
+                        <td>Цена</td>
                       </tr>
                       % last_n = 0
                       % for n, user in enumerate(game.subscribed(True), 1):
@@ -80,6 +81,9 @@
                             % end
                           % end
                           </td>
+                          <td>
+                            {{game.cost()}}
+                          </td>
                         </tr>
                         % last_n = n
                       % end
@@ -103,6 +107,9 @@
                                     Не пришел
                                 % end
                             </td>
+                            <td>
+                            {{game.cost()}}
+                          </td>
                           </tr>
                         % end
                       % end
