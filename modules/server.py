@@ -1,16 +1,15 @@
 import bottle
-
 import config
 import modules
+import pages
 import modules.myuwsgi
+import modules.backuper
+import modules.timer
 
 
 list(map(bottle.TEMPLATE_PATH.append, config.paths.server.views))
 bottle.debug(config.debug)
 
-import pages
-import modules.backuper
-import modules.timer
 
 @bottle.error(404)
 def error404(error):
