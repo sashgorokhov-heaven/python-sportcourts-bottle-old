@@ -31,7 +31,6 @@ def index():
         respdict = get_users(db)
         respdict.update(get_finances(db))
         respdict.update(get_logs(db))
-        respdict['starttime'] = config.starttime
         return pages.PageBuilder('admin', **respdict)
 
 
