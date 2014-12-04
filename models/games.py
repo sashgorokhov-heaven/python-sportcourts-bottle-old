@@ -51,6 +51,7 @@ def usergames_set(user_id:int, game_id:int, status:int, dbconnection:dbutils.DBC
         sql = "UPDATE usergames SET status={} WHERE user_id={} AND game_id={}".format(status, user_id, game_id)
     dbconnection.execute(sql)
     games_cache.drop(game_id)
+    cacher.drop_by_table_name('usergames', 'game_id', game_id)
 
 
 @autodb
