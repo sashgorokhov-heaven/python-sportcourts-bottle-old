@@ -1,21 +1,17 @@
 import pickle
 import importlib
 import os
-import threading
-import sys
 import time
-
 import bottle
-import cacher
-
 from objects import User
 import modules
 import config
-from modules import iplib, logging, extract_traceback
+from modules import iplib, logging, extract_traceback, utils
 import dbutils
 import models.notifications
 import models
 import models.seo_info
+
 
 
 def log(func):
@@ -206,12 +202,19 @@ class _MockUser:
         return _MockUserLevel
 
 
+@utils.spool('update_lasttime')
+def update_lasttime(user_id:int):
+    with dbutils.dbopen() as db:
+        db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user_id))
+
+
 class _AuthDispatcher:
     def set_user(self, page_builder:PageBuilder):
         page_builder.add_param('current_user', self.current())
         page_builder.add_param('loggedin', self.loggedin())
         if self.loggedin():
-            page_builder.add_param('notifycount', models.notifications.get_count(self.current().user_id())) # TODO: CACHE!
+            page_builder.add_param('notifycount', models.notifications.get_count(self.current().user_id()))
+            update_lasttime(self.current().user_id())
 
 
     def login(self, email:str, password:str):
@@ -222,7 +225,7 @@ class _AuthDispatcher:
                     email, password), dbutils.dbfields['users'])
             if len(user) == 0:
                 raise ValueError("Invalid email or password")
-            db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user[0]['user_id']))
+            #db.execute("UPDATE users SET lasttime=NOW() WHERE user_id={}".format(user[0]['user_id']))
             #cacher.drop_by_table_name('users', 'user_id', user[0]['user_id'])
             set_cookie('user', pickle.dumps(user[0]))
 
