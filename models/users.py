@@ -61,6 +61,7 @@ def add_friend(user_id:int, friend_id:int, dbconnection:dbutils.DBConnection=Non
     if are_friends(user_id, friend_id, dbconnection=dbconnection):
         raise ValueError("User <{}> already have friend <{}>".format(user_id, friend_id))
     dbconnection.execute("INSERT INTO friends (user_id1, user_id2) VALUES ({},{})".format(user_id, friend_id))
+    cacher.drop_by_table_name('friends', 'user_id', user_id)
 
 
 @autodb
