@@ -8,7 +8,8 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">Админка</a>
-      <a class="topmenu" href="#">Время запуска: {{starttime}}</a>
+      % import config
+      <a class="topmenu" href="#">Время запуска: {{config.starttime}}</a>
     </div>
     <div class="navbar-collapse collapse text-right">
       <ul class="nav navbar-nav navbar-right">
