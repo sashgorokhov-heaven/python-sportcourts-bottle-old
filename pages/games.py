@@ -244,6 +244,7 @@ def notify(game_id:int):
 
 
 @pages.get('/games/report/<game_id:int>')
+@pages.only_organizers
 def get(game_id:int):
     with dbutils.dbopen() as db:
         game = games.get_by_id(game_id, dbconnection=db)
@@ -257,6 +258,7 @@ def get(game_id:int):
 
 
 @pages.post('/games/report/<game_id:int>')
+@pages.only_organizers
 def post(game_id:int):
     game = games.get_by_id(game_id)
     if game.created_by() != pages.auth.current().user_id() and game.responsible_user_id() != pages.auth.current().user_id() and not pages.auth.current().userlevel.admin():
@@ -273,7 +275,7 @@ def post(game_id:int):
     report = dict()
     report['registered'] = {'count': len(registered), 'users': registered}
     report['unregistered'] = {'count': len(unregistered), 'users': unregistered}
-    report['additional_charges'] = {i.split('-')[1]:(bottle.request.forms.get(i), i.split('-')[2]) for i in filter(lambda x: x.startswith('additional'), bottle.request.forms)}
+    report['additional_charges'] = {int(i.split('=')[1]):(bottle.request.forms.get(i), bottle.request.forms.get('amount'+i.split('=')[1])) for i in filter(lambda x: x.startswith('description'), bottle.request.forms)}
     with dbutils.dbopen() as db:
         for user_id in report['unregistered']['users']:
             user = report['unregistered']['users'][user_id]

@@ -135,6 +135,15 @@
                         <td>Описание</td>
                         <td colspan="2">Сумма</td>
                       </tr>
+                      % if showreport:
+                        % for n, i in enumerate(game.report()['additional'], 1):
+                            <tr>
+                                <td>{{n}}</td>
+                                <td>{{i[0]}}</td>
+                                <td>{{i[1]}}</td>
+                            </tr>
+                        % end
+                      % end
                     </table>
                   </div>
                 </div>
@@ -148,7 +157,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <p class="text-right amount"></p>
-                    <input type="hidden" class="amount_input" name="amount" value="">
+                    <input type="hidden" class="amount_input" value="">
                   </div>
                   <div class="col-md-12">
                     <p class="text-right dolg_amount"></p>

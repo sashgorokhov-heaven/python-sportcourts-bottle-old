@@ -139,7 +139,7 @@ def logs_page():
     with dbutils.dbopen(**dbutils.logsdb_connection) as db:
         page = pages.PageBuilder('logs', logs=logs.Logs(db))
     with dbutils.dbopen() as db:
-        page.add_param('fin', finances.Finances(11, 0, db))
+        page.add_param('fin', finances.Finances(0, 0, db))
     return page
 
 
