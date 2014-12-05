@@ -139,5 +139,16 @@ class Finances:
         for user_id in finances_by_user:
             self.user_salary[user_id] = sum([self.sport_money[fin['sport_id']]*(fin['percents']/100) for fin in finances_by_user[user_id] if fin['sport_id'] in self.sport_money])
 
+        self.visits = dict()
+        for i in self.reports:
+            user_id = i['user_id']
+            if user_id not in self.visits:
+                self.visits[user_id] = 1
+            else:
+                self.visits[user_id] += 1
+        self.probability_density = dict()
+        for user_id in self.visits:
+            self.probability_density[user_id] = len(list(filter(lambda x: self.visits[x]==self.visits[user_id], self.visits)))
+
     def dict(self) -> dict:
         return {i:self.__dict__[i] for i in self.__dict__ if not i.startswith('_')}

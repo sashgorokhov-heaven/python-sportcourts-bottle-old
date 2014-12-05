@@ -20,5 +20,23 @@
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 
         chart.draw(data, options);
+
+        % sorted_ids = sorted(fin.visits, key=lambda x: fin.visits[x])
+
+        data = google.visualization.arrayToDataTable([
+          ['Посещенных игр', 'Кол-во юзеров'],
+          % for n, user_id in enumerate(sorted_ids):
+            [{{fin.visits[user_id]}}, {{fin.probability_density[user_id]}}] {{',' if n<len(sorted_ids) else ''}}
+          % end
+          ]);
+
+        options = {
+          title: 'Плотность вероятности'
+        };
+
+        var probability_density_chart = new google.visualization.LineChart(document.getElementById('probability_density_div'));
+
+        probability_density_chart.draw(data, options);
+
       }
     </script>
