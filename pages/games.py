@@ -1,5 +1,6 @@
 import bottle
 import json
+import cacher
 
 import pages
 import modules
@@ -293,4 +294,5 @@ def post(game_id:int):
         notificating.site.responsible(game.created_by(), 'Ответственный "{}" отправил отчет по игре "{}"'.format(
             modules.create_link.user(users.get(pages.auth.current().user_id())),
             modules.create_link.game(game)), game_id)
+    cacher.drop_by_table_name('games', 'game_id', game_id)
     raise bottle.redirect('/games/report/{}'.format(game_id))
