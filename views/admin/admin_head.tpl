@@ -61,7 +61,8 @@
       ]);
 
     var options = {
-      title: 'График посещений'
+      title: 'График посещений',
+      curveType: 'function'
     };
 
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
