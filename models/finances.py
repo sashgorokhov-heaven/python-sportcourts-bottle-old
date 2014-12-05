@@ -112,6 +112,7 @@ class Finances:
 
         self.real_income = sumgames('real_income')
         self.rent_charges = sumgames('rent_charges')
+        self.additional_charges = sumgames('additional_charges')
 
         self.profit = sumgames('profit')
 
