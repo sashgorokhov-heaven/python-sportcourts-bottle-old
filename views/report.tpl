@@ -116,12 +116,36 @@
                     </table>
                   </div>
                 </div>
+                % if not showreport:
+                <div class="col-md-12">
+                  <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
+                </div>
+                % end
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <br>
+                  <p>Дополнительные затраты</p>
+                </div>
+                <div class="col-md-6">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="chargestable" style="font-size:90%">
+                      <tr class="success">
+                        <td>№</td>
+                        <td>Описание</td>
+                        <td colspan="2">Сумма</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                % if not showreport:
+                <div class="col-md-12">
+                  <a id="morecharge" class="btn btn-default" role="button">+ добавить затраты</a>
+                </div>
+                % end
               </div>
               % if not showreport:
                 <div class="row">
-                  <div class="col-md-12">
-                    <a id="more" class="btn btn-default" role="button">+ добавить незарегистрированного юзера</a>
-                  </div>
                   <div class="col-md-12">
                     <p class="text-right amount"></p>
                     <input type="hidden" class="amount_input" name="amount" value="">
