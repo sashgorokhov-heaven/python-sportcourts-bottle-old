@@ -4,7 +4,7 @@ import json
 
 import dbutils
 import pages
-from models import games, notificating
+from models import games, notificating, users
 from modules import create_link, utils
 
 
@@ -25,8 +25,8 @@ def subscribe(user_id:int, game_id:int):
             return pages.PageBuilder("game", game=game, conflict=1, conflict_data=another_game)
         games.subscribe(user_id, game_id, dbconnection=db)
         if game.datetime.tommorow or game.datetime.today:
-            message = 'На игру "{}" записался {}'.format(create_link.game(game),
-                                                         create_link.user(pages.auth.current()))
+            user = users.get(user_id, dbconnection=db) if user_id!=pages.auth.current().user_id() else pages.auth.current()
+            message = 'На игру "{}" записался {}'.format(create_link.game(game), create_link.user(user))
             utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id,)
         game = games.get_by_id(game_id, dbconnection=db)
         return pages.PageBuilder("game", game=game)
@@ -39,8 +39,8 @@ def unsubscribe(user_id:int, game_id:int):
             return pages.PageBuilder("game", game=game, conflict=6)
         games.unsubscribe(user_id, game_id, dbconnection=db)
         if datetime.datetime.now()-game.datetime()<datetime.timedelta(days=3):
-            message = '{} отписался от игры "{}"'.format(create_link.user(pages.auth.current()),
-                                                         create_link.game(game))
+            user = users.get(user_id, dbconnection=db) if user_id!=pages.auth.current().user_id() else pages.auth.current()
+            message = '{} отписался от игры "{}"'.format(create_link.user(user), create_link.game(game))
             utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id,)
         game = games.get_by_id(game_id, dbconnection=db)
         return pages.PageBuilder("game", game=game)
