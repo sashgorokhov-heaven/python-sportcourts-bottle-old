@@ -12,6 +12,9 @@
       <p class="lead">{{user.name}}</p>
     </a>
     <p>{{str(user.bdate)+', '+user.city_id(True).title()}}</p>
+    % if len(user.ampluas())>0:
+      {{!'<br>'.join(['{}: {}'.format(amplua.sport_type(True).title(), amplua.title()) for amplua in user.ampluas(True)])}}
+    % end
   </div>
   <div class="col-md-4 col-sm-4 col-xs-4 text-right">
     % if loggedin and user.user_id()!=current_user.user_id():
