@@ -1,7 +1,7 @@
 import os
 import urllib.request
 import config
-
+from modules import logging
 from PIL import Image
 
 
@@ -50,14 +50,21 @@ def save_avatar(user_id:int, bottlefile):
     fullname = os.path.join(config.paths.images.avatars, filename)
     delete_avatar(user_id)
     bottlefile.save(fullname)
-    _save_avatar(user_id)
+    try:
+        _save_avatar(user_id)
+    except Exception as e:
+        logging.message('Error saving avatar <{}>'.format(user_id), e)
+
 
 
 def save_avatar_from_url(user_id:int, url:str):
     fullname = os.path.join(config.paths.images.avatars, str(user_id) + '.jpg')
     delete_avatar(user_id)
     urllib.request.urlretrieve(url, fullname)
-    _save_avatar(user_id)
+    try:
+        _save_avatar(user_id)
+    except Exception as e:
+        logging.message('Error saving avatar <{}>'.format(user_id), e)
 
 
 def have_avatar(user_id:int):
