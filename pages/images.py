@@ -1,5 +1,4 @@
 import os
-import hashlib
 import bottle
 import config
 import pages
@@ -22,11 +21,6 @@ def get_avatar_image(name):
         filename = 'blank'
         return bottle.static_file('{}.jpg'.format(filename), dirname)
     return bottle.static_file('{}.jpg'.format(filename), dirname)
-
-
-@pages.get('/images/og/<name>')
-def get_og_image(name):
-    return bottle.static_file(name, config.paths.images.og)
 
 
 @pages.get('/images/reports/<game_id>')
