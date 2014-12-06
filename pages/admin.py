@@ -256,3 +256,9 @@ def drop_logs(*args):
 def drop_cache():
     cacher.dropall()
     raise bottle.redirect('/admin')
+
+
+@pages.get('/admin/conv')
+@pages.only_admins
+def conversion():
+    return str(logs.conversion())

@@ -2,6 +2,39 @@ import dbutils
 import datetime
 
 
+def conversion():
+    with dbutils.dbopen(**dbutils.logsdb_connection) as db:
+        db.execute("SHOW TABLES;")
+        logs = list()
+        for i in db.last():
+            table_name = i[0].split('_')
+            if len(table_name)==2:
+                month, year = table_name
+                logs.extend(db.execute("SELECT * FROM {}_{}".format(month, year), dbutils.setdbfields(dbutils.logsdb_connection)['access']))
+        logs.extend(db.execute("SELECT * FROM logsdb.access", dbutils.setdbfields(dbutils.logsdb_connection)['access']))
+
+    unique_ips = {i['ip'] for i in logs}
+    conv = dict()
+    conv['visitors'] = len(unique_ips)
+    registered = {i['user_id'] for i in logs if i['user_id']!=0}
+    conv['registered'] = len(registered)
+
+    with dbutils.dbopen() as db:
+        reports = db.execute("SELECT * FROM reports WHERE user_id!=0", dbutils.dbfields['reports'])
+
+    played = {i['user_id'] for i in reports}
+    conv['played'] = len(played)
+    counted = dict()
+    for report in reports:
+        if report['user_id'] in counted:
+            counted[report['user_id']] += 1
+        else:
+            counted[report['user_id']] = 1
+    moreplayed = list(filter(lambda x: counted[x]>1, counted))
+    conv['moreplayed'] = len(moreplayed)
+
+    return conv
+
 class Logs:
     def __init__(self, db:dbutils.DBConnection):
         self._db = db
