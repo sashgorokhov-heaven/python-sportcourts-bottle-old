@@ -85,7 +85,7 @@ def game_notification():
 @add_task
 def continue_registration():
     with dbutils.dbopen() as db:
-        db.execute("SELECT token, email FROM activation WHERE activated=0 AND again=0 AND datetime+INTERVAL 6 HOUR BETWEEN NOW()-INTERVAL 12 MINUTE AND NOW()+INTERVAL 12 MINUTE")
+        db.execute("SELECT token, email FROM activation WHERE activated=0 AND again=0 AND datetime>datetime+INTERVAL 6 HOUR")
         if len(db.last())==0: return
         for pair in db.last():
             try:
