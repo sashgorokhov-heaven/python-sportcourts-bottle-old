@@ -21,12 +21,13 @@
 
         chart.draw(data, options);
 
-        % sorted_ids = sorted(fin.visits, key=lambda x: fin.visits[x])
+        % sorted_visits = sorted(prob_den['visits_val'])
 
         data = google.visualization.arrayToDataTable([
           ['Посещенных игр', 'Кол-во юзеров'],
-          % for n, user_id in enumerate(sorted_ids):
-            [{{fin.visits[user_id]}}, {{fin.probability_density[user_id]}}] {{',' if n<len(sorted_ids) else ''}}
+            [0, {{prob_den['notplayed']}}],
+          % for n, val in enumerate(sorted_visits):
+            [{{val}}, {{prob_den['density'][val]}}] {{',' if n<len(sorted_visits) else ''}}
           % end
           ]);
 

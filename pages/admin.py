@@ -137,10 +137,7 @@ def finances_page(month:int=0, year:int=0):
 @pages.only_admins
 def logs_page():
     with dbutils.dbopen(**dbutils.logsdb_connection) as db:
-        page = pages.PageBuilder('logs', logs=logs.Logs(db))
-    with dbutils.dbopen() as db:
-        page.add_param('fin', finances.Finances(0, 0, db))
-    return page
+        return pages.PageBuilder('logs', logs=logs.Logs(db), prob_den=finances.probability_density())
 
 
 @pages.get('/admin/logs/text')

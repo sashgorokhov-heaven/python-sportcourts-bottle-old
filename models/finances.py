@@ -2,6 +2,24 @@ import dbutils
 from models import sport_types
 from objects import Game, Court
 
+def probability_density():
+    with dbutils.dbopen() as db:
+        reports = db.execute("SELECT * FROM reports WHERE user_id!=0", dbutils.dbfields['reports'])
+        notplayed = db.execute("SELECT COUNT(*) FROM users WHERE user_id NOT IN (SELECT DISTINCT user_id FROM reports)")[0][0]
+        visits = dict()
+        for i in reports:
+            user_id = i['user_id']
+            if user_id not in visits:
+                visits[user_id] = 1
+            else:
+                visits[user_id] += 1
+        density = dict()
+        visits_val = set(list(visits.values()))
+        for n in visits_val:
+            density[n] = len(list(filter(lambda x: n==visits[x], visits)))
+        return {'visits':visits, 'density':density, 'notplayed':notplayed, 'visits_val':visits_val}
+
+
 
 class Finances:
     @staticmethod
@@ -139,16 +157,6 @@ class Finances:
         for user_id in finances_by_user:
             self.user_salary[user_id] = sum([self.sport_money[fin['sport_id']]*(fin['percents']/100) for fin in finances_by_user[user_id] if fin['sport_id'] in self.sport_money])
 
-        self.visits = dict()
-        for i in self.reports:
-            user_id = i['user_id']
-            if user_id not in self.visits:
-                self.visits[user_id] = 1
-            else:
-                self.visits[user_id] += 1
-        self.probability_density = dict()
-        for user_id in self.visits:
-            self.probability_density[user_id] = len(list(filter(lambda x: self.visits[x]==self.visits[user_id], self.visits)))
 
     def dict(self) -> dict:
         return {i:self.__dict__[i] for i in self.__dict__ if not i.startswith('_')}
