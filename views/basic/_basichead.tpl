@@ -1,3 +1,8 @@
+    % if defined("seo_info"):
+        % keywords = seo_info.keywords()
+        % description = seo_info.description()
+    % end
+
     % setdefault("keywords", "")
     % setdefault("description", "")
     <title>{{title}} | SportCourts.ru</title>

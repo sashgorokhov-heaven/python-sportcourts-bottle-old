@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  % include("_basichead", title=title, tplname=tplname)
+  % kwargs = {'title': title, 'tplname':tplname}
+  % if defined("seo_info"):
+      kwargs['seo_info'] = seo_info
+  % end
+  % include("_basichead", **kwargs)
   % if defined("header_name"):
       % include(header_name)
   % end
