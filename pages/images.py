@@ -1,4 +1,5 @@
 import os
+import hashlib
 import bottle
 import config
 import pages
@@ -12,17 +13,15 @@ def get_avatar_image(name):
     fullaname = os.path.join(dirname, filename + '.jpg')
     if not os.path.exists(fullaname):
         filename = 'blank'
-        return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname,
-                                                                                    '{}.jpg'.format(filename))
+        return bottle.static_file('{}.jpg'.format(filename), dirname)
     if 'sq' in bottle.request.query:
         filename += '_sq'
     elif 'sq_sm' in bottle.request.query:
         filename += '_sq_sm'
     if not os.path.exists(os.path.join(dirname, filename + '.jpg')):
         filename = 'blank'
-        return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname,
-                                                                                    '{}.jpg'.format(filename))
-    return bottle.static_file('{}.jpg'.format(filename), dirname), os.path.join(dirname, '{}.jpg'.format(filename))
+        return bottle.static_file('{}.jpg'.format(filename), dirname)
+    return bottle.static_file('{}.jpg'.format(filename), dirname)
 
 
 @pages.get('/images/og/<name>')
@@ -31,7 +30,7 @@ def get_og_image(name):
 
 
 @pages.get('/images/reports/<game_id>')
-@pages.only_loggedin
+@pages.only_organizers
 def get_report_image(game_id):
     game = games.get_by_id(game_id)
     if pages.auth.current().user_id() == game.responsible_user_id() or pages.auth.current().user_id() == \
