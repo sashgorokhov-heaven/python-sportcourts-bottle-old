@@ -113,7 +113,7 @@ def admin_subscribe(game_id:int, user_id:int):
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
     if bottle.request.is_ajax:
         return json.dumps({'error_code':0})
-    raise bottle.redirect(pages.referer)
+    raise bottle.redirect(pages.referer('/games/{}'.format(game_id)))
 
 
 @pages.get('/games/unsubscribe/<game_id:int>')
@@ -137,7 +137,7 @@ def admin_unsubscribe(game_id:int, user_id:int):
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
     if bottle.request.is_ajax:
         return json.dumps({'error_code':0})
-    raise bottle.redirect(pages.referer)
+    raise bottle.redirect(pages.referer('/games/{}'.format(game_id)))
 
 
 @pages.get('/games/reserve/<game_id:int>')
@@ -161,7 +161,7 @@ def admin_reserve(game_id:int, user_id:int):
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
     if bottle.request.is_ajax:
         return json.dumps({'error_code':0})
-    raise bottle.redirect(pages.referer)
+    raise bottle.redirect(pages.referer('/games/{}'.format(game_id)))
 
 
 @pages.get('/games/unreserve/<game_id:int>')
@@ -185,7 +185,7 @@ def admin_unreserve(game_id:int, user_id:int):
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
     if bottle.request.is_ajax:
         return json.dumps({'error_code':0})
-    raise bottle.redirect(pages.referer)
+    raise bottle.redirect(pages.referer('/games/{}'.format(game_id)))
 
 
 @pages.get('/games/fromreserve/<game_id:int>')
@@ -209,4 +209,4 @@ def admin_fromreserve(game_id:int, user_id:int):
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
     if bottle.request.is_ajax:
         return json.dumps({'error_code':0})
-    raise bottle.redirect(pages.referer)
+    raise bottle.redirect(pages.referer('/games/{}'.format(game_id)))

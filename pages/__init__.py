@@ -48,9 +48,8 @@ def execute(func, *args, **kwargs):
     return data
 
 
-@property
-def referer():
-    return bottle.request.get_header('Referer', '/')
+def referer(default:str='/'):
+    return bottle.request.get_header('Referer', default)
 
 
 def route(path=None, method='GET', name=None, apply=None, skip=None, **kwconfig):
