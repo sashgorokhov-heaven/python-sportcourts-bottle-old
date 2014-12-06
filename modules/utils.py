@@ -37,25 +37,30 @@ _spoolers = dict() # func key -> func
 logfunc = lambda text, error: str(text)+str(error)
 
 @uwsgidecorators.spool
-def _spool_dispatcher(data:dict):
-    spool_key = data['spool_key']
-    if spool_key not in _spoolers:
-        try:
-            raise KeyError('Spooler for <{}> not found'.format(spool_key))
-        except KeyError as e:
-            logfunc(e.args[0], e)
-            return uwsgi.SPOOL_OK
-    pickleddata = pickle.loads(data['data'])
-    args, kwargs = pickleddata
+def _spool_dispatcher(*args, **kwargs):
     try:
-        retval = _spoolers[spool_key](*args, **kwargs)
+        data = args[0]
+        spool_key = data['spool_key']
+        if spool_key not in _spoolers:
+            try:
+                raise KeyError('Spooler for <{}> not found'.format(spool_key))
+            except KeyError as e:
+                logfunc(e.args[0], e)
+                return uwsgi.SPOOL_OK
+        pickleddata = pickle.loads(data['data'])
+        args, kwargs = pickleddata
+        try:
+            retval = _spoolers[spool_key](*args, **kwargs)
+        except Exception as e:
+            logfunc('Error while executong spool function <{}> on key <{}>'.format(_spoolers[spool_key].__name__,
+                                                                                           spool_key), e)
+            return uwsgi.SPOOL_OK
+        if not retval:
+            return uwsgi.SPOOL_OK
+        return retval
     except Exception as e:
-        logfunc('Error while executong spool function <{}> on key <{}>'.format(_spoolers[spool_key].__name__,
-                                                                                       spool_key), e)
+        logfunc('Error processing spooler', e)
         return uwsgi.SPOOL_OK
-    if not retval:
-        return uwsgi.SPOOL_OK
-    return retval
 
 
 def spool(spool_key:str):
