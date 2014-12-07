@@ -90,7 +90,7 @@
                       % if showreport:
                         % for n, name in enumerate(game.report()['unregistered'], last_n+1):
                           % status, phone = game.report()['unregistered'][name]
-                          % first_name, last_name = name.split(' ')
+                          % first_name, last_name = name.split(' ')[0], name.split(' ')[1]
                           <tr class="user">
                             <td>{{n}}</td>
                             <td>{{first_name}}</td>
