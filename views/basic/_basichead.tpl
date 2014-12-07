@@ -3,12 +3,15 @@
         % description = seo_info.description()
     % end
 
+    % import datetime
+
     % setdefault("keywords", "")
     % setdefault("description", "")
     <title>{{title}} | SportCourts.ru</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="keywords" content="{{keywords}}" />
     <meta name="description" content="{{description}}" />
+    <meta name="time" content="{{datetime.datetime.now()}}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=600">
 
