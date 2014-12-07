@@ -11,7 +11,7 @@
 </p>
 
 
-<div class="panel panel-default col-md-6">
+<div class="panel panel-default">
   <div class="panel-body">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#home" data-toggle="tab">Площадки</a></li>
