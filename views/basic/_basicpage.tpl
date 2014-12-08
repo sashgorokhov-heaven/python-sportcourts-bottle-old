@@ -23,6 +23,7 @@
     </section>
     </div>
     % include("_basicfooter", loggedin=loggedin, tplname=tplname)
+    % include("_basicpostfooter")
     % if defined("footer_name"):
         % include(footer_name)
     % end

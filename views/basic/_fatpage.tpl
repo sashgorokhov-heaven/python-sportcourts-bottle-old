@@ -48,5 +48,9 @@
     </section>
     </div>
     % include("_basicfooter")
+    % include("_basicpostfooter")
+    % if defined("footer_name"):
+        % include(footer_name)
+    % end
   </body>
 </html>
