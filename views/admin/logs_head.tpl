@@ -39,5 +39,24 @@
 
         probability_density_chart.draw(data, options);
 
+        % total = 0
+        data = google.visualization.arrayToDataTable([
+          ['Дата', 'Регистраций'],
+          % for n, date in enumerate(daterange(start_date, end_date)):
+            % if str(date) in dates_dict:
+                % total += dates_dict[str(date)]
+            % end
+            ['{{'.'.join(str(date).split('-'))}}', {{total}}] {{',' if n<len(list(daterange(start_date, end_date))) else ''}}
+          % end
+          ]);
+
+        options = {
+          title: '{{'Регистрации с {} по {}'.format(start_date, end_date)}}'
+        };
+
+        var reg_chart = new google.visualization.LineChart(document.getElementById('dates_div'));
+
+        reg_chart.draw(data, options);
+
       }
     </script>

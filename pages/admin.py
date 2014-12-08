@@ -137,7 +137,28 @@ def finances_page(month:int=0, year:int=0):
 @pages.only_admins
 def logs_page():
     with dbutils.dbopen(**dbutils.logsdb_connection) as db:
-        return pages.PageBuilder('logs', logs=logs.Logs(db), prob_den=finances.probability_density())
+        page = pages.PageBuilder('logs', logs=logs.Logs(db), prob_den=finances.probability_density())
+    with dbutils.dbopen() as db:
+        dates = db.execute("SELECT regdate FROM users ORDER BY regdate ASC")
+        page.add_param("start_date", dates[0][0])
+        page.add_param("end_date", dates[-1][0])
+        dates = list(map(lambda x: str(x[0]), dates))
+        dates_dict = dict()
+        for date in dates:
+            if date in dates_dict:
+                dates_dict[date] += 1
+            else:
+                dates_dict[date] = 1
+        #page.add_param("dates", dates)
+        page.add_param("dates_dict", dates_dict)
+
+        def daterange(start_date, end_date):
+            for n in range(int ((end_date - start_date).days)):
+                yield start_date + datetime.timedelta(n)
+        page.add_param("daterange", daterange)
+
+
+    return page
 
 
 @pages.get('/admin/logs/text')
