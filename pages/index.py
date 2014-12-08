@@ -21,3 +21,8 @@ def get():
 @bottle.get('/sitemap.xml')
 def sitemap():
     return bottle.static_file('sitemap.xml', config.paths.server.static)
+
+
+@bottle.get('/robots.txt')
+def robots():
+    return bottle.static_file('robots.txt', config.paths.server.static)
