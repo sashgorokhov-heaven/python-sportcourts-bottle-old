@@ -19,3 +19,5 @@
 <meta name="verify-reformal" content="bb4f4af81081a514619ba2c0" />
 
 <link rel="icon" type="image/vnd.microsoft.icon" href="/images/static/favicon.ico" />
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

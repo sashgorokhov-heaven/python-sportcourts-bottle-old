@@ -10,7 +10,6 @@
 <link href="/view/bootstrap/css/sticky-footer.css" rel="stylesheet">
 <link rel="stylesheet" href="/view/bootstrap/bootstrap_validator/css/bootstrapValidator.css"/>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script src="/view/js/jquery.mask.min.js" type="text/javascript"></script>
 
