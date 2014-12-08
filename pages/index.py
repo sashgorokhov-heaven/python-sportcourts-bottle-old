@@ -1,3 +1,5 @@
+import bottle
+import config
 import pages
 
 
@@ -14,3 +16,8 @@ def about():
 @pages.get('/contacts')
 def get():
     return pages.PageBuilder('contacts')
+
+
+@bottle.get('/sitemap.xml')
+def sitemap():
+    return bottle.static_file('sitemap.xml', config.paths.server.static)
