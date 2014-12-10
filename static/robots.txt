@@ -5,5 +5,6 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /games/
 Disallow: /notifications
+Disallow: /recover
 Sitemap: http://sportcourts.ru/sitemap.xml
 Host: sportcourts.ru
