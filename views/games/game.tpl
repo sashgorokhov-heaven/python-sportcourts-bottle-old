@@ -30,12 +30,16 @@
   </div>
   <div class="col-md-9">
 % end
-    <div id="gamepane-{{game.game_id()}}-{{'None' if standalone else tab_name}}">
+    <div id="gamepane-{{game.game_id()}}-{{'None' if standalone else tab_name}}" itemscope itemtype="http://schema.org/Event">
       <div class="panel panel-default {{'panel-success' if current_user.user_id()==game.created_by() else 'panel-default'}} "><a name="{{game.game_id()}}"></a>
         <div class="panel-heading">
           <div class="panel_head">
             <div style="float:left; max-width:60%; overflow:hidden; height: 21px;">
-              <a href="/games/{{game.game_id()}}">#{{game.game_id()}} | {{game.description()}}</a>
+              <a itemprop="url" href="/games/{{game.game_id()}}">
+                <span itemprop="name">
+                  #{{game.game_id()}} | {{game.description()}}
+                </span>
+              </a>
             </div>
             <div class="organizer" style="float:right; max-width:40%; height: 21px;">
               <p class="text-right">
@@ -45,7 +49,9 @@
                 % if current_user.user_id()!=game.created_by():
                 &nbsp;&nbsp;
                 <a href="/profile/{{game.created_by()}}" target="_blank">
-                  {{game.created_by(True).name}}
+                  <span itemprop="organizer">
+                    {{game.created_by(True).name}}
+                  </span>
                 </a>
                 <span class="hidden-xs hidden-sm">
                   &nbsp;
@@ -62,6 +68,7 @@
               <div class="panel panel-warning" style="max-width:150px; margin: 0 auto 15px auto;">
                 <div class="panel-heading" style="padding:4px; text-align:center;"><small>{{game.datetime.beautiful.month()}}</small></div>
                 <div class="panel-body" style="padding:4px; padding-bottom:0; text-align:center;">
+                  <meta itemprop="startDate" content="{{game.datetime()}}">
                   <p style="margin-top:-4px; font-size: 180%;">{{game.datetime.beautiful.day()}}</p>
                   <small><p style="margin-top:-11px;">{{game.datetime.beautiful.day_name()}}</p></small>
                   <p style="margin-top:-7px;">{{game.datetime.beautiful.time()}}</p>
@@ -76,7 +83,13 @@
             </div>
             <div class="col-md-6">
               <p>{{game.sport_type(True).title()}} - {{game.game_type(True).title()}}</p>
-              <p><a href="/courts/{{game.court_id()}}" target="_blank">{{game.court_id(True).title()}}</a></p>
+              <p>
+                <a itemprop="url" href="/courts/{{game.court_id()}}" target="_blank">
+                  <span itemscope itemtype="http://schema.org/Place">
+                    {{game.court_id(True).title()}}
+                  </span>
+                </a>
+              </p>
 
               % if conflict>0:
                 % include("game_conflict_handler", game=game, conflict=conflict, conflict_data=conflict_data)
