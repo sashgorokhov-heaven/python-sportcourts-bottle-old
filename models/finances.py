@@ -90,7 +90,7 @@ class Finances:
                 counted['ideal_income'] = game.capacity()*game.cost()
             else:
                 counted['ideal_income'] = len(self.reports_dict[game.game_id()])*game.cost()
-            counted['empty'] = game.capacity()-len(list(filter(lambda x: x['status']>=0 and x['user_id']!=0, self.reports_dict[game.game_id()])))
+            counted['empty'] = game.capacity()-len(self.reports_dict[game.game_id()])
             if counted['empty']<0: counted['empty']=0
             counted['lost_empty'] = counted['empty']*game.cost()
             counted['notvisited'] = len(list(filter(lambda x: x['status']==0, self.reports_dict[game.game_id()])))
