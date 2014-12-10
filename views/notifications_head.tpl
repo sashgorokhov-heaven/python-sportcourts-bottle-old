@@ -1,3 +1,5 @@
+<meta name="robots" content="noindex"/>
+
 <script type="text/javascript">
   $(document).on('click', 'button', function() {
     n_id = $(this).attr("id");

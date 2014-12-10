@@ -1,4 +1,4 @@
-% rebase("_fatpage", title="Главная")
+% rebase("_fatpage", title="Будь в игре!")
 % import random
 <div class="row hidden-xs bigheadrow">
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">

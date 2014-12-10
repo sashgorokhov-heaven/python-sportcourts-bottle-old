@@ -1,3 +1,5 @@
+<meta name="robots" content="noindex"/>
+
 <style media="print">
   body{
     visibility: hidden;
