@@ -6,7 +6,7 @@
         </div>
         <div class="row">
           <div class="col-md-8">
-            <img src="/images/courts/{{court.court_id()}}" alt="Изображение" class="img-thumbnail" style="width:100%;">
+            <img src="/images/courts/{{court.court_id()}}" alt="Изображение" class="img-thumbnail" alt="Court {{court.court_id()}} photo" style="width:100%;">
           </div>
           <div class="col-md-4">
             <p class="lead">{{court.title()}}

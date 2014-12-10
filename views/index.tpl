@@ -36,7 +36,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" style="overflow:hidden;">
       <div class="item active">
-        <img src="/images/static/main_1.jpg">
+        <img src="/images/static/main_1.jpg" alt="Играем в баскетбол в Екатеринбурге">
         <div class="carousel-caption">
         </div>
       </div>
@@ -75,7 +75,7 @@
             </div>
           </div>
           <div class="col-md-4 hidden-sm">
-            <img src="/images/static/site_preview.png" style="width:100%;"/>
+            <img src="/images/static/site_preview.png" style="width:100%;" alt="SportCourts - это удобное приложение для любителей спорта."/>
           </div>
           <div class="col-sm-5 col-sm-offset-2 col-md-4 col-md-offset-0 text-left">
             <h2>Удобно</h2>
@@ -101,7 +101,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <img src="/images/static/main_2.jpg">
+        <img src="/images/static/main_2.jpg" alt="SportCourts решает все острые проблемы в организации любительских игр">
         <div class="carousel-caption">
         </div>
       </div>
@@ -152,7 +152,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <img src="/images/static/main_3.jpg">
+        <img src="/images/static/main_3.jpg" alt="SportCourts - это развивающееся спортивное сообщество">
         <div class="carousel-caption">
         </div>
       </div>
@@ -191,7 +191,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <img src="/images/static/main_5.jpg">
+        <img src="/images/static/main_5.jpg" alt="SportCourts. Будь в игре!">
         <div class="carousel-caption">
         </div>
       </div>
