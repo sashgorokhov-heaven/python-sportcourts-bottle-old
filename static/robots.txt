@@ -1,0 +1,10 @@
+User-agent: *
+Crawl-delay: 2
+Disallow: /profile
+Disallow: /admin
+Disallow: /admin/
+Disallow: /games/
+Disallow: /notifications
+Disallow: /recover
+Sitemap: http://sportcourts.ru/sitemap.xml
+Host: sportcourts.ru

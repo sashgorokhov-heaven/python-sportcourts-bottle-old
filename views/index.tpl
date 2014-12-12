@@ -1,4 +1,4 @@
-% rebase("_fatpage", title="Главная")
+% rebase("_fatpage", title="Будь в игре!")
 % import random
 <div class="row hidden-xs bigheadrow">
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -12,7 +12,7 @@
     </ol> -->
     <div class="text-center bighead">
       <h1>SportCourts</h1>
-      <p class="h3">Ваш проводник в мире любительского спорта.</p>
+      <h2 class="h3">Ваш проводник в мире любительского спорта.</h2>
       <p class="h3">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
       <br><br>
       % if not loggedin:
@@ -36,7 +36,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" style="overflow:hidden;">
       <div class="item active">
-        <img src="/images/static/main_1.jpg">
+        <img src="/images/static/main_1.jpg" alt="Играем в баскетбол в Екатеринбурге">
         <div class="carousel-caption">
         </div>
       </div>
@@ -66,7 +66,7 @@
         <div class="row">
           <div class="col-sm-5 col-md-4">
             <div class="text-left" style="float:right;">
-              <h2>Просто</h2>
+              <h3 class="h2">Просто</h3>
               <ul class="promo-ul" style="margin-left: -24px;">
                 <li class="promo-li">регистрируйся в системе</li>
                 <li class="promo-li">выбирай подходящую игру</li>
@@ -75,10 +75,10 @@
             </div>
           </div>
           <div class="col-md-4 hidden-sm">
-            <img src="/images/static/site_preview.png" style="width:100%;"/>
+            <img src="/images/static/site_preview.png" style="width:100%;" alt="SportCourts - это удобное приложение для любителей спорта."/>
           </div>
           <div class="col-sm-5 col-sm-offset-2 col-md-4 col-md-offset-0 text-left">
-            <h2>Удобно</h2>
+            <h3 class="h2">Удобно</h3>
             <ul class="promo-ul" style="margin-left: -24px;">
               <li class="promo-li">пользуйся с любого устройства</li>
               <li class="promo-li">задавай вопросы организаторам</li>
@@ -94,14 +94,14 @@
 <div class="row hidden-xs bigheadrow">
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
     <div class="text-center page1head">
-      <h2>Вы уже играете и вам не хватает игроков? Подключайтесь к нам! Проблем с составом больше не будет.</h2>
+      <h3 class="h2">Вы уже играете и вам не хватает игроков? Подключайтесь к нам! Проблем с составом больше не будет.</h3>
       <br>
-      <h2>Мы провели уже более 300 игр!</h2>
+      <h3 class="h2">Мы провели уже более 300 игр!</h3>
     </div>
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <img src="/images/static/main_2.jpg">
+        <img src="/images/static/main_2.jpg" alt="SportCourts решает все острые проблемы в организации любительских игр">
         <div class="carousel-caption">
         </div>
       </div>
@@ -125,7 +125,7 @@
           <img src="/images/static/9.png" style="width:100px;"/>
         </div>
         <br><br>
-        <h2>Найди свое место в мире любительского спорта!</h2>
+        <h3 class="h2">Найди свое место в мире любительского спорта!</h3>
         <p>Пройди весь путь от интереса к игре, через тренировки, поиск команды, участие в турнирах к получению необходимой игровой практики, достижению собственных целей.</p>
         <br><br>
         <div class="img-row">
@@ -147,12 +147,12 @@
 <div class="row hidden-xs bigheadrow">
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
     <div class="text-center page2head">
-      <h2>Мы мечтаем построить в России динамичное и здоровое спортивное сообщество</h2>
+      <p class="h2">Мы мечтаем построить в России динамичное и здоровое спортивное сообщество</p>
     </div>
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <img src="/images/static/main_3.jpg">
+        <img src="/images/static/main_3.jpg" alt="SportCourts - это развивающееся спортивное сообщество">
         <div class="carousel-caption">
         </div>
       </div>
@@ -164,11 +164,11 @@
   <div class="row marketing" style="margin-top: 10vh;">
     <div class="col-md-12 text-center indexpromo">
       <div id="" style="max-width: 60%; margin: 0 auto;">
-        <h2>Не можешь играть каждую неделю? Отвлекает семья и работа? </h2>
+        <p class="h2">Не можешь играть каждую неделю? Отвлекает семья и работа? </p>
         <br>
         <img src="/images/static/main_4.png" alt="" height="300">
         <br>
-        <h2>Со SportCourts это не помеха. Планируй свое время удобным образом!</h2>
+        <p class="h2">Со SportCourts это не помеха. Планируй свое время удобным образом!</p>
       </div>
     </div>
   </div>
@@ -177,7 +177,7 @@
 <div class="row hidden-xs emailrow" style="margin-bottom: -52px;">
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
     <div class="text-center emailhead">
-      <h2>Будь в игре!</h2>
+      <h3 class="h2">Будь в игре!</h3>
       <br><br>
       <div class="input-group" style="min-width:498px; margin: 0 auto;">
         <form action="" style="text-align: center">
@@ -191,7 +191,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <div class="item active">
-        <img src="/images/static/main_5.jpg">
+        <img src="/images/static/main_5.jpg" alt="SportCourts. Будь в игре!">
         <div class="carousel-caption">
         </div>
       </div>
@@ -203,7 +203,7 @@
 
 <div class="jumbotron visible-xs smallhead smallpage">
   <h1>SportCourts</h1>
-  <p class="lead">Ваш проводник в мире любительского спорта.</p>
+  <h2 class="lead">Ваш проводник в мире любительского спорта.</h2>
   <p class="lead">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
   % if not loggedin:
       <div id="reg3">
@@ -242,7 +242,7 @@
 
   <div class="row marketing">
     <div class="col-md-12 text-center">
-      <h3 class="h1">Чем мы занимаемся?</h3>
+      <h2 class="h1">Чем мы занимаемся?</h3>
       <br>
       <br>
       <br>

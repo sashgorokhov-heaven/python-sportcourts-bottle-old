@@ -94,11 +94,11 @@ background-color: #f6f6f6;
             <tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
               <td class="aligncenter content-block" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
                 <a href="http://vk.com/sportcourts" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:none" target="_blank">
-                  <img align="none" height="30" src="https://gallery.mailchimp.com/95395cdb22d7d7c78768f2381/images/5b6640c7-135a-4070-9ac8-dc750d89f7b1.png" style="width:30px;min-height:auto;margin:0px;border:0;outline:none;text-decoration:none" width="30" class="CToWUd">
+                  <img align="none" height="30" src="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/images/static/mail_vk.png" style="width:30px;min-height:auto;margin:0px;border:0;outline:none;text-decoration:none" width="30" class="CToWUd">
                 </a>
                 <span style="text-align:center">&nbsp; &nbsp;&nbsp;</span>
                 <a href="http://instagram.com/sportcourts" style="text-align:center;word-wrap:break-word;color:#606060;font-weight:normal;text-decoration:none" target="_blank">
-                  <img align="none" height="30" src="https://gallery.mailchimp.com/95395cdb22d7d7c78768f2381/images/1df4c872-41a2-41b1-94d4-d23a58801d1e.png" style="width:30px;min-height:auto;margin:0px;border:0;outline:none;text-decoration:none" width="30" class="CToWUd">
+                  <img align="none" height="30" src="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/images/static/mail_inst.png" style="width:30px;min-height:auto;margin:0px;border:0;outline:none;text-decoration:none" width="30" class="CToWUd">
                 </a>
               </td>
             </tr>
