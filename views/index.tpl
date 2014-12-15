@@ -199,6 +199,22 @@
   </div>
 </div>
 
+<div class="modal fade" id="activateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Активируйте свой профиль</h4>
+      </div>
+      <div class="modal-body text-center">
+        <br><br>
+        <span id="userclient"></span>
+        <br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Началь мобильного -->
 
 <div class="jumbotron visible-xs smallhead smallpage">
