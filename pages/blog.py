@@ -25,7 +25,14 @@ def post_blog(): # добавление новости
 def get_article(article_id:int): # просмотр отдельной новости
     return pages.PageBuilder('blog_article')
 
+
 @pages.get('/blog/add')
-@pages.only_admins
+@pages.only_organizers
 def get_blog(): # для добавления статьи
     return pages.PageBuilder('addarticle')
+
+
+@pages.get('/blog/moderate')
+@pages.only_admins
+def get_moderate(): # для добавления статьи
+    return pages.PageBuilder('blogmoderate')
