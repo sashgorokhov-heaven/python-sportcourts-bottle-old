@@ -1,6 +1,8 @@
 % rebase("_adminpage", title="Добавить группу")
 <div class="row">
   <div class="col-md-6">
+    <h2 class="page_header">Рассылка приглашений</h2>
+    <br>
     <label for="group_id">Выберите шаблон сообщения</label>
     <select id="sporttype" name="tpl_id" class="form-control input-xs" data-bv-notempty="true"
     data-bv-notempty-message="Укажите вид шаблона">
@@ -8,6 +10,8 @@
         <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
       % end
     </select>
+    <button type="button" id="showbutton" class="btn btn-link">Показать шаблон</button>
+    <br>
     <br>
     <label for="group_id">Выберите вид спорта</label>
     <select id="sporttype" name="sport_type" class="form-control input-xs" data-bv-notempty="true"
@@ -16,8 +20,7 @@
         <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
       % end
     </select>
-    <button type="button" id="showbutton" class="btn btn-success">Показать шаблон</button>
-    <br><br>
+    <br>
     <button type="button" id="sendbutton" class="btn btn-success">Начать рассылку</button>
   </div>
 </div>

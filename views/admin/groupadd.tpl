@@ -1,6 +1,8 @@
 % rebase("_adminpage", title="Добавить группу")
 <div class="row">
   <div class="col-md-6">
+    <h2 class="page_header">Добавить группы для рассылки</h2>
+    <br>
     <label for="group_id">Введите ссылку на группу</label>
     <input type="text" id="group_id" class="form-control input-xs">
     <br>
