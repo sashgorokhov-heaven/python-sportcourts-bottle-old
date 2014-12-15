@@ -6,7 +6,7 @@ import base64
 
 @pages.get(['/blog'])
 def get_blog(): # для всего блога
-    return pages.PageBuilder('blog')
+    return pages.PageBuilder('blog_main')
 
 
 @pages.post('/blog/add')
@@ -23,7 +23,7 @@ def post_blog(): # добавление новости
 
 @pages.get('/blog/<article_id:int>')
 def get_article(article_id:int): # просмотр отдельной новости
-    raise NotImplementedError
+    return pages.PageBuilder('blog_article')
 
 @pages.get('/blog/add')
 @pages.only_admins
