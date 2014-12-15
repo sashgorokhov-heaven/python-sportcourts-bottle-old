@@ -7,7 +7,7 @@ import config
 from modules import logging
 import pages
 import dbutils
-from models import finances, logs, users, notificating
+from models import finances, logs, users, notificating, sport_types
 from modules.myuwsgi import uwsgi, uwsgidecorators
 
 def get_finances(db:dbutils.DBConnection) -> dict:
@@ -66,6 +66,20 @@ def index():
 @pages.only_admins
 def sms():
     return pages.PageBuilder('smstest')
+
+
+@pages.get('/admin/social/groupadd')
+@pages.only_admins
+def groupadd():
+    with dbutils.dbopen() as db:
+        _sport_types = sport_types.get(0, dbconnection=db)
+        return pages.PageBuilder('groupadd', sports=_sport_types)
+
+
+@pages.get('/admin/social/spam')
+@pages.only_admins
+def groupadd():
+    return pages.PageBuilder('spam')
 
 
 @pages.get(['/admin/finances', '/admin/finances/<month:int>', '/admin/finances/<month:int>/<year:int>'])
