@@ -10,7 +10,7 @@ def get_blog(): # для всего блога
 
 
 @pages.post('/blog/add')
-@pages.only_admins
+@pages.only_organizers
 def post_blog(): # добавление новости
     with dbutils.dbopen() as db:
         text = base64.b64encode(bottle.request.forms.get('text').encode()).decode()
