@@ -143,9 +143,9 @@ def reg_post():
         activation.register(params['email'], dbconnection=db)
         pages.delete_cookie('referer')
         pages.delete_cookie('token')
-        #pages.auth.login(email, passwd)
-        #raise bottle.redirect('/profile')
-        return pages.PageBuilder('auth', email=email, error='Вы успешно зарегестрированы', error_description='Войдите, используя пароль.')
+        pages.auth.login(email, passwd)
+        raise bottle.redirect('/profile')
+        #return pages.PageBuilder('auth', email=email, error='Вы успешно зарегестрированы', error_description='Войдите, используя пароль.')
 
 
 @pages.get('/registration')
