@@ -34,11 +34,20 @@
               <div class="col-sm-4">
                 <label for="iMale" class="control-label">Пол</label>
                 <select class="form-control" id="iMale">
+                  <option value=""></option>
                   <option value="male">муж.</option>
                   <option value="female">жен.</option>
                 </select>
               </div>
-              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <label for="iAct" class="control-label">Активность</label>
+                <select class="form-control" id="iAct">
+                  <option value=""></option>
+                  <option value="0">Низкая</option>
+                  <option value="1">Умеренная</option>
+                  <option value="2">Высокая</option>
+                </select>
+              </div>
               <div class="col-sm-4"></div>
             </div>
             <br>
