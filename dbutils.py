@@ -62,6 +62,9 @@ class DBConnection:
                           data] if data else list()
         return self._last
 
+    def execute_sql_query(self, sql:SqlQuery) -> list:
+        pass
+
     def last(self) -> list:
         return self._last
 
@@ -114,3 +117,43 @@ def setdbfields(kwargs=default_connection):
 
 
 dbfields = setdbfields()
+
+
+class SqlQuery:
+    def __init__(self, statement:str, table_name:str):
+        self._statement = statement
+        self._table_name = table_name
+        self._fields = '*'
+        self._where = list()
+
+    def set_fields(self, fields:list):
+        self._fields = fields
+
+    def add_where_and(self, value:str):
+        self._where.append(('AND', value))
+
+    def add_where_or(self, value:str):
+        self._where.append(('OR', value))
+
+    def add_where(self, value:str):
+        self._where.append((None, value))
+
+    def __str__(self):
+        pass
+
+class sql:
+    @staticmethod
+    def select(table_name:str):
+        return
+
+    @staticmethod
+    def insert(table_name:str):
+        pass
+
+    @staticmethod
+    def delete(table_name:str):
+        pass
+
+    @staticmethod
+    def update(table_name:str):
+        pass
