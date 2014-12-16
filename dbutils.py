@@ -62,9 +62,6 @@ class DBConnection:
                           data] if data else list()
         return self._last
 
-    def execute_sql_query(self, sql:SqlQuery) -> list:
-        pass
-
     def last(self) -> list:
         return self._last
 
