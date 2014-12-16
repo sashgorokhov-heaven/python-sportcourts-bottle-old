@@ -42,9 +42,6 @@
                     data-bv-lessthan-inclusive="false"
                     data-bv-lessthan-message="Ты гигант?)"
 
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите рост"
-
                     pattern="[0-9]"
                     data-bv-regexp-message="Рост указывается числом"
                     />
@@ -61,9 +58,6 @@
                     max="230"
                     data-bv-lessthan-inclusive="false"
                     data-bv-lessthan-message="Ты гигант?)"
-
-                    data-bv-notempty="true"
-                    data-bv-notempty-message="Укажите вес"
 
                     pattern="[0-9]"
                     data-bv-regexp-message="Вес указывается числом"
