@@ -234,8 +234,8 @@ def get():
 def notify(game_id:int):
     with dbutils.dbopen() as db:
         game = games.get_by_id(game_id, dbconnection=db)
-        db.execute("SELECT DISTINCT user_id FROM reports WHERE user_id!=0 AND status=2 AND game_id IN (SELECT game_id FROM games WHERE deleted=0 AND datetime+INTERVAL duration MINUTE < NOW() AND court_id='{}' AND sport_type='{}')".format( # as long as my dick
-            game.court_id(), game.sport_type()))
+        db.execute("SELECT DISTINCT user_id FROM reports WHERE user_id!=0 AND status=2 AND game_id IN (SELECT game_id FROM games WHERE deleted=0 AND datetime+INTERVAL duration MINUTE < NOW() AND court_id='{}' AND sport_type='{}' AND game_type='{}')".format( # as long as my dick
+            game.court_id(), game.sport_type(), game.game_type()))
         if len(db.last())==0: return json.dumps({'users':list(), 'count':0})
         users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
         for user in users_:
