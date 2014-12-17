@@ -1,3 +1,10 @@
+<meta property="og:title" content="Спортивный калькулятор" />
+<meta property="og:site_name" content="SportCourts.ru" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://{{serverinfo['ip']}}:{{serverinfo['port']}}/calc"/>
+<meta property="og:image" content="/images/static/calc.jpg" />
+<meta property="og:description" content="Проверьте свое тело и получите рекомендации по тренировкам!"/>
+
 <script>
   // проверяет величины на абсурдность
   function validate(arr) {
@@ -7,7 +14,10 @@
     male = arr['male'],
     neck = parseFloat(arr['neck']),
     hips = parseFloat(arr['hips']),
-    waist = parseFloat(arr['waist']);
+    waist = parseFloat(arr['waist']),
+    elbow = parseFloat(arr['elbow']);
+    activity = parseInt(arr['activity']);
+    rhr = parseFloat(arr['rhr']);
 
     var val_flag = true;
 
@@ -39,19 +49,24 @@
       height = parseFloat(arr['height']),
       male = arr['male'],
       activity = arr['activity'],
+      target = arr['target'],
       neck = parseFloat(arr['neck']),
       hips = parseFloat(arr['hips']),
       waist = parseFloat(arr['waist']);
+      elbow = parseFloat(arr['elbow']);
+      rhr = parseFloat(arr['rhr']);
 
-      arr['pulse_1'] = 220 - age;
-      arr['pulse_2'] = 150 - age;
-      arr['pulse_3'] = 190 - age;
+      if (age) {
+        arr['pulse_1'] = 220 - age;
+        arr['pulse_2'] = 150 - age;
+        arr['pulse_3'] = 190 - age;
+      };
 
-      if(!age) {
-        arr['pulse_flag'] = false;
-      } else {
-        arr['pulse_flag'] = true;
-      }
+      if (target && age && rhr) {
+        var koef = 0.5 + (0.1 * target);
+        arr['pulse_min'] = Math.floor(((220 - age - rhr) * koef) + rhr * 1);
+        arr['pulse_max'] = Math.floor(((220 - age - rhr) * (koef + 0.1)) + rhr * 1);
+      };
 
       if(height && weight) {
         arr['mass_imt'] = (weight/height/height*100*100).toFixed(2);
@@ -77,13 +92,88 @@
 
       if (activity == '0') {
         var mass_protein_per = 0.8;
-      } else if (activity == '1') {
+      } else if (activity <= '2') {
         var mass_protein_per = 1.1;
-      } else if (activity == '2') {
+      } else if (activity <= '4') {
         var mass_protein_per = 1.4;
       };
 
-      arr['mass_protein'] = Math.floor(mass_protein_per * (25 * height * height / 10000));
+      if (activity && height) {
+        arr['mass_protein'] = Math.floor(mass_protein_per * (25 * height * height / 10000));
+      };
+
+      var mass_sizes = Array("хрупкое", "нормальное", "крупное");
+
+      if (male == 'male' && height && elbow) {
+        if (height < 162) {
+          if (elbow < 6.35) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 7.28) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        } else if (height < 172) {
+          if (elbow < 6.65) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 7.28) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        } else if (height < 182) {
+          if (elbow < 6.98) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 7.62) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        } else if (height < 192) {
+          if (elbow < 6.98) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 7.92) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        } else if(height < 202) {
+          if (elbow < 7.28) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 8.25) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        } else {
+          if (elbow < 7.45) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 8.5) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        };
+      } else if (male == 'female' && height && elbow) {
+        if (height < 162) {
+          if (elbow < 5.71) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 6.35) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        } else if(height > 180) {
+          if (elbow < 6.35) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 6.98) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        } else {
+          if (elbow < 6.02) { var mass_size = mass_sizes[0]; }
+          else if (elbow > 6.65) { var mass_size = mass_sizes[2]; }
+          else { var mass_size = mass_sizes[1]; };
+        };
+      };
+
+      arr['mass_size'] = mass_size;
+
+      if (waist && hips) {
+      var WtHR = Math.round(waist / hips * 100);
+        var body_shape = '';
+        if (male == 'male')
+          if(WtHR <= 95)
+            body_shape = ', грушевидное.';
+          else
+            body_shape = ', "яблоко"';
+        else if (male == 'female')
+          if(WtHR <= 80)
+            body_shape = ', грушевидное.';
+          else
+            body_shape = ', "яблоко"';
+      };
+
+      // arr['mass_form'] = body_shape;
+
+      if (weight && height && age) {
+        arr['mass_rmr'] = (66 + (6.23 * (weight * 2.2)) + (12.7 * (height / 2.54)) - (6.8 * age)).toFixed(0);
+      };
+
+      if (arr['mass_rmr'] && activity) {
+        var activity_factor = Array(1.3, 1.4, 1.55, 1.725, 1.9);
+        arr['mass_aam'] = (arr['mass_rmr'] * activity_factor[activity]).toFixed(0);
+      };
+
       return arr;
     } else {
       return false;
@@ -101,7 +191,10 @@
     result['waist'] = $('#iWaist').val();
     result['neck'] = $('#iNeck').val();
     result['hips'] = $('#iHips').val();
+    result['elbow'] = $('#iElbow').val();
     result['activity'] = $('#iAct').val();
+    result['target'] = $('#iTarget').val();
+    result['rhr'] = $('#iRhr').val();
 
     return result;
   };
@@ -109,16 +202,42 @@
   function writeresults (arr) {
     console.log(arr);
 
-    if (arr['pulse_flag']) {
-      $('#pulse_content').html('<p>Критическая частота сердцебиения: <span id="pulse_1"></span> уд/мин</p><p>Диапазон частот для кардионагрузки: от <span id="pulse_2"></span> до <span id="pulse_3"></span> уд/мин</p>');
-      $('#pulse_1').html(arr['pulse_1']);
-      $('#pulse_2').html(arr['pulse_2']);
-      $('#pulse_3').html(arr['pulse_3']);
-      $('#pulse_body').addClass('bg-success');
+    var pulse_err_flag = false;
+
+    // смотрим недостающие величины, формируем рекомендацию
+    var pulse_err_str = '';
+    if (!arr['age']) { pulse_err_str += ', возраст'; };
+    if (!arr['target']) { pulse_err_str += ', цели занятия спортом'; };
+    if (!arr['rhr']) { pulse_err_str += ', пульс в покое'; };
+    if (pulse_err_str){
+      pulse_err_str = pulse_err_str.slice(2);
+      pulse_err_str = '<br><small><p>*Для полной рекомендации укажите: ' + pulse_err_str;
+      pulse_err_str += '.</p></small>';
+    }
+
+    if (arr['pulse_1'] && arr['pulse_2'] && arr['pulse_3']) {
+      var pulse_1_msg = '<p>Критическая частота сердцебиения: '+arr['pulse_1']+' уд/мин</p><p>Диапазон частот для кардионагрузки: от '+arr['pulse_2']+' до '+arr['pulse_3']+' уд/мин</p>';
     } else {
-      $('#pulse_content').html('<p>Для подсчета рекомендаций укажите, пожалуйста, свой возраст.</p>');
-      $('#pulse_body').removeClass('bg-success');
+      pulse_1_msg='';
+      pulse_err_flag = true;
     };
+
+    if (arr['pulse_min'] && arr['pulse_max']) {
+      var pulse_2_msg = '<p>Оптимальная частота сердцебиения: от '+arr['pulse_min']+' уд/мин до '+arr['pulse_max']+' уд/мин</p>';
+    } else {
+      pulse_2_msg='';
+      pulse_err_flag = true;
+    };
+
+    if (!pulse_err_flag) {
+      $('#pulse_body').addClass('bg-success');
+    }
+
+    if (!pulse_1_msg && !pulse_2_msg) {
+      pulse_err_str = '<p>Недостаточно данных</p>' + pulse_err_str;
+    };
+
+    $('#pulse_content').html(pulse_1_msg + pulse_2_msg + pulse_err_str);
 
     // работаем с аудитом массы
     var mass_err_flag = false;
@@ -214,21 +333,33 @@
       mass_err_flag = true;
     };
 
+    // формируем отчет по телосложению
+    if (arr['mass_size']) {
+      var mass_size_msg = '';
+      mass_size_msg += '<p>Ваше телосложение: <strong>' + arr['mass_size'] + '</strong></p>';
+    } else {
+      var mass_size_msg = '';
+    };
+
     // формируем отчет по калориям
+    var mass_cal_msg = '';
+    if (arr['mass_rmr']) {
+      mass_cal_msg += '<p>Метаболизм покоя: <strong>' + arr['mass_rmr'] + ' ккал в день</strong></p>';
+    };
+
     if (arr['mass_calmin'] && arr['mass_imt']) {
-      var mass_cal_msg = '';
-      mass_cal_msg += '<p>Минимальное число калорий: <strong>' + arr['mass_calmin'] + ' ккал в день';
-      mass_cal_msg += '</strong>';
-      if (arr['mass_imt'] >= 30) {
-        mass_cal_msg += '<small><p>Ограничьте Вашу диету ' + Math.floor(arr['mass_calmin']*0.75) + ' ккалл в день, чтобы терять ' + Math.floor(arr['mass_calmin']*0.25*30/4086/2.2) + ' кг в месяц</p>';
-      } else if (arr['mass_imt'] >= 25) {
-        mass_cal_msg += '<small><p>Ограничьте Вашу диету ' + Math.floor(arr['mass_calmin']*0.85) + ' ккалл в день, чтобы терять ' + Math.floor(arr['mass_calmin']*0.15*30/4086/2.2) + ' кг в месяц</p>';
+      mass_cal_msg += '<p>Минимум потребления: <strong>' + arr['mass_calmin'] + ' ккал в день</strong></p>';
+      if (arr['mass_imt'] >= 25) {
+        mass_cal_msg += '<small><p>Ограничьте Вашу диету ' + Math.floor(arr['mass_calmin']*0.85) + ' ккалл в день, чтобы терять ' + Math.floor(arr['mass_calmin']*0.15*30/4086/2.2) + ' кг в месяц</p></small>';
       } else {
         mass_cal_msg += '';
       };
     } else {
-      var mass_cal_msg = '';
       mass_err_flag = true;
+    };
+
+    if (arr['mass_aam']) {
+      mass_cal_msg += '<p>Рекомендуемый метаболизм: <strong>' + arr['mass_aam'] + ' ккал в день</strong></p>';
     };
 
     // формируем отчет по белку
@@ -240,11 +371,11 @@
       mass_err_flag = true;
     };
 
-    if (!mass_imt_msg && !mass_2_msg && !mass_fat_msg && !mass_cal_msg && !mass_protein_msg) {
+    if (!mass_imt_msg && !mass_2_msg && !mass_fat_msg && !mass_cal_msg && !mass_protein_msg && !mass_size_msg) {
       mass_err_str = '<p>Недостаточно данных</p>' + mass_err_str;
     };
 
-    $('#mass_content').html(mass_imt_msg+mass_2_msg+mass_fat_msg+mass_cal_msg+mass_protein_msg+mass_err_str);
+    $('#mass_content').html(mass_imt_msg+mass_2_msg+mass_fat_msg+mass_cal_msg+mass_protein_msg+mass_size_msg+mass_err_str);
     $('#mass_2').html(arr['mass_2']);
     $('#mass_3').html(arr['mass_3']);
     if (!mass_err_flag) {

@@ -1,13 +1,19 @@
 % rebase("_basicpage",title="Калькулятор")
 % setdefault("showreport", False)
     <div class="row">
-      <div class="col-md-12"  style="margin-top:50px;">
+      <div class="col-md-12"  style="margin-top:20px;">
         &nbsp;
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <h2 class="page-header">Спортивный калькулятор</h2>
+      <div class="col-md-12 page-header">
+        <h2>
+          Спортивный калькулятор
+          &nbsp;&nbsp;&nbsp;
+          <script type="text/javascript" src="//yandex.st/share/share.js"
+          charset="utf-8"></script>
+          <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
+        </h2>
       </div>
     </div>
     <div class="row">
@@ -43,12 +49,24 @@
                 <label for="iAct" class="control-label">Активность</label>
                 <select class="form-control" id="iAct">
                   <option value=""></option>
-                  <option value="0">Низкая</option>
-                  <option value="1">Умеренная</option>
-                  <option value="2">Высокая</option>
+                  <option value="0">Отсутствует</option>
+                  <option value="1">Легкая</option>
+                  <option value="2">Средняя</option>
+                  <option value="3">Хорошая</option>
+                  <option value="4">Высокая</option>
                 </select>
               </div>
-              <div class="col-sm-4"></div>
+              <div class="col-sm-4">
+                <label for="iTarget" class="control-label">Ваша цель</label>
+                <select class="form-control" id="iTarget">
+                  <option value=""></option>
+                  <option value="0">вернуть форму</option>
+                  <option value="1">похудение</option>
+                  <option value="2">выносливость</option>
+                  <option value="3">улучшить форму</option>
+                  <option value="4">соревнования</option>
+                </select>
+              </div>
             </div>
             <br>
             <div class="row">
@@ -63,6 +81,20 @@
               <div class="col-sm-4">
                 <label for="iHips" class="control-label">Бедра</label>
                 <input type="text" class="form-control" id="iHips">
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-sm-4">
+                <label for="iElbow" class="control-label">Локоть</label>
+                <input type="text" class="form-control" id="iElbow">
+              </div>
+              <div class="col-sm-4">
+                <label for="iRhr" class="control-label">Пульс в покое</label>
+                <input type="text" class="form-control" id="iRhr">
+              </div>
+              <div class="col-sm-4">
+                
               </div>
             </div>
             <div class="row">
