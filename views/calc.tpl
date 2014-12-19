@@ -1,22 +1,23 @@
 % rebase("_basicpage",title="Калькулятор")
 % setdefault("showreport", False)
     <div class="row">
-      <div class="col-md-12"  style="margin-top:20px;">
+      <div class="col-md-12"  style="margin-top:35px;">
         &nbsp;
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 page-header">
-        <h2>
+      <div class="col-md-12">
+        <h1 class="h3">
           Спортивный калькулятор
           &nbsp;&nbsp;&nbsp;
           <script type="text/javascript" src="//yandex.st/share/share.js"
           charset="utf-8"></script>
           <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
-        </h2>
+        </h1>
+        <hr>
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="calculator">
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-body bg-info">
@@ -49,11 +50,11 @@
                 <label for="iAct" class="control-label">Активность</label>
                 <select class="form-control" id="iAct">
                   <option value=""></option>
-                  <option value="0">Отсутствует</option>
-                  <option value="1">Легкая</option>
-                  <option value="2">Средняя</option>
-                  <option value="3">Хорошая</option>
-                  <option value="4">Высокая</option>
+                  <option value="0">отсутствует</option>
+                  <option value="1">легкая</option>
+                  <option value="2">средняя</option>
+                  <option value="3">хорошая</option>
+                  <option value="4">высокая</option>
                 </select>
               </div>
               <div class="col-sm-4">
@@ -97,12 +98,12 @@
                 
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-sm-12 text-center">
                 <br>
-                <a id="calcButton" class="btn btn-default">Расчитать параметры</a>
+                <input id="calcButton" class="btn btn-primary" value="Расчитать параметры">
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
