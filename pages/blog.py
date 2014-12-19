@@ -3,6 +3,8 @@ import dbutils
 import pages
 import base64
 
+from models import users
+
 
 @pages.get(['/blog'])
 def get_blog(): # для всего блога
@@ -34,5 +36,13 @@ def get_blog(): # для добавления статьи
 
 @pages.get('/blog/moderate')
 @pages.only_admins
-def get_moderate(): # для добавления статьи
+def get_moderate(): # для модерации статей
     return pages.PageBuilder('blogmoderate')
+
+
+@pages.get('/calc')
+def get_calc(): # для калькулятора
+    with dbutils.dbopen() as db:
+        user_id = pages.auth.current().user_id()
+        user = users.get(user_id, dbconnection=db)
+        return pages.PageBuilder('calc', user=user)
