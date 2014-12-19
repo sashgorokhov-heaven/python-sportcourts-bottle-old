@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  % kwargs = {'title': title, 'tplname':tplname}
-  % if defined("seo_info"):
-      kwargs['seo_info'] = seo_info
-  % end
-  % include("_basichead", **kwargs)
+  % include("_basichead")
   % if defined("header_name"):
       % include(header_name)
   % end
   </head>
   <body>
-    % include("_basicnavbar", loggedin=loggedin, current_user=current_user, tplname=tplname)
+    % include("_basicnavbar")
     <div class="container theme-showcase">
     <section id="content">
         % setdefault("error_description", '')
@@ -22,7 +18,7 @@
       {{!base}}
     </section>
     </div>
-    % include("_basicfooter", loggedin=loggedin, tplname=tplname)
+    % include("_basicfooter")
     % include("_basicpostfooter")
     % if defined("footer_name"):
         % include(footer_name)
