@@ -9,6 +9,7 @@ from models import autodb, users
 import urllib.request, urllib.parse
 import pages
 import cacher
+from modules import logging
 
 
 def _send_message(email, message):
@@ -87,7 +88,11 @@ class mail:
             plain = 'Приглашаем вас на игру http://{}/games/{}'.format(config.server.str, game.game_id())
             subject = 'Приглашение на игру'
             if user.settings.send_mail():
-                mail.html(subject, html_email, email, plain)
+                try:
+                    mail.html(subject, html_email, email, plain)
+                except Exception as e:
+                    logging.message("Error sending email to <{}>".format(email), e)
+
 
 class site:
     @staticmethod

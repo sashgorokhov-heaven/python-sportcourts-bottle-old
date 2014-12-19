@@ -296,3 +296,10 @@ def post(game_id:int):
             modules.create_link.game(game)), game_id)
     cacher.drop_by_table_name('games', 'game_id', game_id)
     raise bottle.redirect('/games/report/{}'.format(game_id))
+
+
+@pages.get("/games/autocreate/<game_id:int>")
+@pages.only_organizers
+def autocreate(game_id:int):
+    with dbutils.dbopen() as db:
+        game = games.get_by_id(game_id, dbconnection=db)
