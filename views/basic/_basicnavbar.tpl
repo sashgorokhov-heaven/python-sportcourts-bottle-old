@@ -16,10 +16,10 @@
                     <li><a class="topmenu" href="/users">Игроки</a></li>
                     <li><a class="topmenu" href="/courts"><span class="glyphicon glyphicon-globe"></span> Карта</a></li>
                     % if tplname=='2015':
-                    <li><a class="topmenu topmenu-promo-act" href="/2015"><span class="glyphicon glyphicon-tree-conifer"></span>Конкурс</a></li>
+                    <li><a class="topmenu topmenu-promo-act" href="/2015"><span class="glyphicon glyphicon-tree-conifer"></span> Конкурс</a></li>
                     % end
                     % if tplname!='2015':
-                    <li><a class="topmenu" href="/2015" style="background-image: linear-gradient(to bottom, rgb(200,15,25) 0, #222 100%) !important; color:#bbb !important; height:52px !important; margin-bottom: -2px !important;"><span class="glyphicon glyphicon-tree-conifer"></span>Конкурс</a></li>
+                    <li><a class="topmenu topmenu-promo" href="/2015"><span class="glyphicon glyphicon-tree-conifer"></span> Конкурс</a></li>
                     % end
                     <!-- <li><a class="topmenu" href="/blog">Блог</a></li> -->
                     % if loggedin:
