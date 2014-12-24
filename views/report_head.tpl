@@ -96,3 +96,9 @@
     });
   });
 </script>
+
+% if ask_autocreate:
+<script>
+  $('#nextGameModal').modal('show');
+</script>
+% end 
