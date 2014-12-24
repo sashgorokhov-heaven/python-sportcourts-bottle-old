@@ -2,6 +2,7 @@ import bottle
 import json
 import datetime
 import cacher
+from objects import User
 
 import pages
 import modules
@@ -229,6 +230,10 @@ def get():
     return get_all(int(bottle.request.query.get('page')) if 'page' in bottle.request.query else 1)
 
 
+def user_visits(user:User, db:dbutils.DBConnection) -> int:
+    return db.execute("SELECT COUNT(*) FROM reports WHERE status=2 AND user_id='{}' AND game_id IN (SELECT game_id FROM games WHERE datetime BETWEEN NOW() AND NOW()-INTERVAL 30 DAY)".format(user.user_id()))[0][0]
+
+
 @pages.get('/games/notify/<game_id:int>')
 @pages.only_ajax
 @pages.only_organizers
@@ -240,7 +245,8 @@ def notify(game_id:int):
         if len(db.last())==0: return json.dumps({'users':list(), 'count':0})
         users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
         for user in users_:
-            utils.spool_func(notificating.mail.tpl.game_invite, game, user)
+            if user_visits(user, db)<3:
+                utils.spool_func(notificating.mail.tpl.game_invite, game, user)
         ids = list(map(lambda x: x.user_id(), users_))
         return json.dumps({'count':len(ids), 'users':ids})
 
