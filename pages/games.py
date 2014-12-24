@@ -245,7 +245,7 @@ def notify(game_id:int):
         if len(db.last())==0: return json.dumps({'users':list(), 'count':0})
         users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
         for user in users_:
-            if user_visits(user, db)<3:
+            if user_visits(user, db)<3 and user.user_id() not in set(game.subscribed()):
                 utils.spool_func(notificating.mail.tpl.game_invite, game, user)
         ids = list(map(lambda x: x.user_id(), users_))
         return json.dumps({'count':len(ids), 'users':ids})
