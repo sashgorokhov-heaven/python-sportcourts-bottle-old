@@ -257,7 +257,7 @@ def notify(game_id:int):
         for user in users_:
             send_notify_email(user.user_id(), game.game_id())
         ids = list(map(lambda x: x.user_id(), users_))
-        return json.dumps({'count':len(ids), 'users':ids})
+        return json.dumps({'count':len(ids), 'users':[[user.user_id(), str(user.name)] for user in users_]})
 
 
 @pages.get('/games/report/<game_id:int>')
