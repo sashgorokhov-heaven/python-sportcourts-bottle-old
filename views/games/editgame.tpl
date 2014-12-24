@@ -177,8 +177,29 @@
               <br><br>
             % end
             % if not game.reported():
-              <a class="btn btn-success" role="button" href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Пригласить бывших</a>
+              <a class="btn btn-success" id="inviteoldbutton" role="button" href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Пригласить бывших</a>
             <br><br>
+            % end
+            % if game.reported():
+              <a class="btn btn-success" data-toggle="modal" data-target="#nextGameModal">Создать следующую</a>
+              <br><br>
+              <div class="modal fade" id="nextGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>Создать игру через неделю?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a class="btn btn-success" href="/games/autocreate/{{game.game_id()}}">Создать</a>
+                      <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             % end
             <a class="btn btn-success" role="button" href="/games/report/{{game.game_id()}}"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;
               {{'Смотреть отчет' if game.reported() else 'Заполнить отчет по игре'}}
