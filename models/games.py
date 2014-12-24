@@ -120,7 +120,7 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
 @autodb
 def delete_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):
     dbconnection.execute(
-        "SELECT notification_id FROM notifications WHERE type=1 AND game_id={} AND DATETIME>NOW()".format(game_id))
+        "SELECT notification_id FROM notifications WHERE type=1 AND game_id={} AND user_id={} AND DATETIME>NOW()".format(game_id, user_id))
     if len(dbconnection.last()) == 0:
         return
     notifications.delete(list(map(lambda x: x[0], dbconnection.last())))
