@@ -7,7 +7,18 @@
       data: {},
       async: true,
       success: function (responseData, textStatus) {
-        alert('Приглашения высланы!');
+        data = jQuery.parseJSON(responseData);
+        count = data['count'];
+        list = data['users'];
+        if (list.length > 0) {
+          $.each(list, function(index, list){
+            $('#invitelistTable').append('<tr class="success"><td>'+list['index']['id']+'</td><td>'+list['index']['name']+'</td><td>'+list['index']['surname']+'</td></tr>');
+          });
+        } else {
+          alert('Никого не найдено');
+        };
+        $('#invitelistCount').html(count);
+        $('#invitelistModal').modal('show');
       },
       error: function (response, status, errorThrown) {
         alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
