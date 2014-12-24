@@ -308,7 +308,7 @@
         <h4 class="modal-title" id="myModalLabel">Список оповещенных</h4>
       </div>
       <div class="modal-body">
-        <h2>Оповещено: <span id="invitelistCount"></span></h2>
+        <p class="lead">Оповещено: <span id="invitelistCount"></span></p>
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="invitelistTable">
           </table>

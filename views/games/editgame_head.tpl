@@ -10,12 +10,8 @@
         data = jQuery.parseJSON(responseData);
         count = data['count'];
         list = data['users'];
-        if (list.length > 0) {
-          $.each(list, function(index, list){
-            $('#invitelistTable').append('<tr class="success"><td>'+list['index']['id']+'</td><td>'+list['index']['name']+'</td><td>'+list['index']['surname']+'</td></tr>');
-          });
-        } else {
-          alert('Никого не найдено');
+        for (var i = 0; i < count; i++) {
+          $('#invitelistTable').append('<tr class="success"><td>'+list[i][0]+'</td><td>'+list[i][1]+'</td></tr>');
         };
         $('#invitelistCount').html(count);
         $('#invitelistModal').modal('show');
