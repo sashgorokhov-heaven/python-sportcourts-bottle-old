@@ -7,7 +7,14 @@
       data: {},
       async: true,
       success: function (responseData, textStatus) {
-        alert('Приглашения высланы!');
+        data = jQuery.parseJSON(responseData);
+        count = data['count'];
+        list = data['users'];
+        for (var i = 0; i < count; i++) {
+          $('#invitelistTable').append('<tr class="success"><td>'+list[i][0]+'</td><td>'+list[i][1]+'</td></tr>');
+        };
+        $('#invitelistCount').html(count);
+        $('#invitelistModal').modal('show');
       },
       error: function (response, status, errorThrown) {
         alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
