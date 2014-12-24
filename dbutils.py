@@ -107,7 +107,7 @@ class dbopen:
         self._db.close()
 
 
-def setdbfields(kwargs=default_connection):
+def setdbfields(kwargs=default_connection) -> dict:
     with dbopen(**kwargs) as db:
         tables = [i[0] for i in db.execute('SHOW TABLES;')]
         return {table: [i[0] for i in db.execute('SHOW FIELDS FROM {};'.format(table))] for table in tables}
