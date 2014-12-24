@@ -13,6 +13,11 @@ def about():
     return pages.PageBuilder('about')
 
 
+@pages.get('/2015')
+def promo():
+    return pages.PageBuilder('2015')
+
+
 @pages.get('/contacts')
 def get():
     return pages.PageBuilder('contacts')

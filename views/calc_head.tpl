@@ -396,7 +396,20 @@
     if (arr) {
       writeresults(arr);
     };
-    showresults();
+  });
+
+  $(document).on('change','input:text',function(){
+    arr = calculate();
+    if (arr) {
+      writeresults(arr);
+    };
+  });
+
+  $(document).on('change','select',function(){
+    arr = calculate();
+    if (arr) {
+      writeresults(arr);
+    };
   });
 
   $(document).ready(function() {
