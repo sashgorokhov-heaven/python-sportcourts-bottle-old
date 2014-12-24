@@ -129,7 +129,7 @@ class PageBuilder:
         if self._search(self._template_name + '_head.tpl'):
             self._kwargs['header_name'] = self._template_name + '_head.tpl'
         if self._search(self._template_name + '_footer.tpl'):
-            self._kwargs['footer_name'] = self._template_name + '_head.tpl'
+            self._kwargs['footer_name'] = self._template_name + '_footer.tpl'
         return bottle.template(self._template_name, **self._kwargs)
 
     def _search(self, tplname:str):
