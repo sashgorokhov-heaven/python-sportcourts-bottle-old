@@ -1,5 +1,6 @@
 import bottle
 import json
+import datetime
 import cacher
 
 import pages
@@ -303,3 +304,29 @@ def post(game_id:int):
 def autocreate(game_id:int):
     with dbutils.dbopen() as db:
         game = games.get_by_id(game_id, dbconnection=db)
+        newgame = {
+            "description": game.description(),
+            "city_id": game.city_id(),
+            "sport_type": game.sport_type(),
+            "game_type": game.game_type(),
+            "court_id": game.court_id(),
+            "duration": game.duration(),
+            "cost": game.cost(),
+            "capacity": game.capacity(),
+            "responsible_user_id": game.responsible_user_id(),
+            "created_by": game.created_by(),
+            "reserved": game.reserved(),
+            "datetime": str(game.datetime()+datetime.timedelta(days=7)).split('.')[0]
+        }
+        intersection = games.court_game_intersection(newgame['court_id'],newgame['datetime'],newgame['duration'],
+                                                     dbconnection=db)
+        if intersection:
+            return pages.PageBuilder('text', message='Обнаружен конфликт',
+                                     description='В это время уже идет другая <a href="/games/{}">игра</a>'.format(
+                                         intersection))
+        page = check_responsible(newgame['responsible_user_id'], newgame['datetime'],
+                                      newgame['duration'], db)
+        if page: return page
+        game_id = games.add(dbconnection=db, **newgame)
+        assigned_responsible(game_id, int(newgame['responsible_user_id']), db)
+        raise bottle.redirect("/games/edit/{}".format(game_id))
