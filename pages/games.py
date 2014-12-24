@@ -237,7 +237,9 @@ def user_visits(user:User, db:dbutils.DBConnection) -> int:
 
 
 @utils.spool("send_notify_email")
-def send_notify_email(user, game):
+def send_notify_email(user_id, game_id):
+    user = users.get(user_id)
+    game = games.get_by_id(game_id)
     notificating.mail.tpl.game_invite(game, user)
 
 
@@ -253,7 +255,7 @@ def notify(game_id:int):
         users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
         users_ = list(filter(lambda x: user_visits(x, db)<3 and x.user_id() not in set(game.subscribed()), users_))
         for user in users_:
-            send_notify_email(user, game)
+            send_notify_email(user.user_id(), game.game_id())
         ids = list(map(lambda x: x.user_id(), users_))
         return json.dumps({'count':len(ids), 'users':ids})
 
