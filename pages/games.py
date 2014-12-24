@@ -256,7 +256,8 @@ def get_report(game_id:int):
             return pages.templates.permission_denied()
         if not game.datetime.passed:
             return pages.templates.message("Вы не можете отправить отчет по игре", "Игра еще не закончилась")
-        return pages.PageBuilder("report", game=game, showreport=game.reported())
+        return pages.PageBuilder("report", game=game, showreport=game.reported(),
+                                 ask_autocreate=('ask_autocreate' in bottle.request.query and game.reported()))
 
 
 @pages.post('/games/report/<game_id:int>')
@@ -296,7 +297,7 @@ def post(game_id:int):
             modules.create_link.user(users.get(pages.auth.current().user_id())),
             modules.create_link.game(game)), game_id)
     cacher.drop_by_table_name('games', 'game_id', game_id)
-    raise bottle.redirect('/games/report/{}'.format(game_id))
+    raise bottle.redirect('/games/report/{}?ask_autocreate'.format(game_id))
 
 
 @pages.get("/games/autocreate/<game_id:int>")
