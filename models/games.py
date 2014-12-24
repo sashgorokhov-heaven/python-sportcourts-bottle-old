@@ -116,6 +116,7 @@ def unsubscribe(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None
     if game.reserved() > 0 and len(game.reserved_people()) > 0:
         for user_id in game.reserved_people():
             utils.spool_func(notificating.site.subscribed, user_id, 'В игре "{}" освободилось место!'.format(create_link.game(game)), 1, game_id)
+            utils.spool_func(notificating.mail.tpl.notify_reserved, game, user_id)
 
 @autodb
 def delete_future_notifications(user_id:int, game_id:int, dbconnection:dbutils.DBConnection=None):

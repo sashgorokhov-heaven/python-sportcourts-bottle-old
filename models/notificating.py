@@ -93,6 +93,18 @@ class mail:
                 except Exception as e:
                     logging.message("Error sending email to <{}>".format(email), e)
 
+        @staticmethod
+        def notify_reserved(game, user_id:int):
+            user = users.get(user_id)
+            html_email = pages.PageBuilder('mail_notify_reserved', game=game, user=user).template()
+            email = user.email()
+            plain = 'На игре освободилось место http://{}/games/{}'.format(config.server.str, game.game_id())
+            subject = 'В игре освободилось место!'
+            if user.settings.send_mail():
+                try:
+                    mail.html(subject, html_email, email, plain)
+                except Exception as e:
+                    logging.message("Error sending email to <{}>".format(email), e)
 
 class site:
     @staticmethod
