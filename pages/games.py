@@ -234,6 +234,13 @@ def user_visits(user:User, db:dbutils.DBConnection) -> int:
     return db.execute("SELECT COUNT(*) FROM reports WHERE status=2 AND user_id='{}' AND game_id IN (SELECT game_id FROM games WHERE datetime BETWEEN NOW() AND NOW()-INTERVAL 30 DAY)".format(user.user_id()))[0][0]
 
 
+
+
+@utils.spool("send_notify_email")
+def send_notify_email(user, game):
+    notificating.mail.tpl.game_invite(game, user)
+
+
 @pages.get('/games/notify/<game_id:int>')
 @pages.only_ajax
 @pages.only_organizers
@@ -244,9 +251,9 @@ def notify(game_id:int):
             game.court_id(), game.sport_type(), game.game_type()))
         if len(db.last())==0: return json.dumps({'users':list(), 'count':0})
         users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
+        users_ = list(filter(lambda x: user_visits(x, db)<3 and x.user_id() not in set(game.subscribed()), users_))
         for user in users_:
-            if user_visits(user, db)<3 and user.user_id() not in set(game.subscribed()):
-                utils.spool_func(notificating.mail.tpl.game_invite, game, user)
+            send_notify_email(user, game)
         ids = list(map(lambda x: x.user_id(), users_))
         return json.dumps({'count':len(ids), 'users':ids})
 
