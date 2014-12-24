@@ -113,6 +113,8 @@ def admin_subscribe(game_id:int, user_id:int):
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
     if bottle.request.is_ajax:
         return json.dumps({'error_code':0})
+    game = games.get_by_id(game_id)
+    notificating.site.subscribed(user_id, "Вы были записаны на игру {}".format(create_link.game(game)), 1, game_id)
     raise bottle.redirect(pages.referer('/games/{}'.format(game_id)))
 
 
@@ -137,6 +139,8 @@ def admin_unsubscribe(game_id:int, user_id:int):
         return pages.templates.message('Ошибка', 'Конфликт: {}'.format(resp.param('conflict')))
     if bottle.request.is_ajax:
         return json.dumps({'error_code':0})
+    game = games.get_by_id(game_id)
+    notificating.site.subscribed(user_id, "Вы были отписаны от игры {}".format(create_link.game(game)), 1, game_id)
     raise bottle.redirect(pages.referer('/games/{}'.format(game_id)))
 
 
