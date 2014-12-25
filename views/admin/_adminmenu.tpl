@@ -2,6 +2,7 @@
   <li><a class="adminmenu" href="/admin">Обзор</a></li>
   <li><a class="adminmenu" href="/admin/finances">Финансы</a></li>
   <li><a class="adminmenu" href="/admin/users">Клиенты</a></li>
+  <li><a class="adminmenu" href="/admin/courts">Площадки</a></li>
 </ul>
 <ul class="nav nav-sidebar">
   <li><a class="adminmenu" href="/blog" target="_blank">Блог</a></li>
