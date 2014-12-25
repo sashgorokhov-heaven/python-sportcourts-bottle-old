@@ -41,7 +41,7 @@
       <br>
       <p class="text-center">расскажи про нас своим друзьям</p>
       <br>
-      <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
+      <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
       % end
       <br><br><br><br>
       <small><p class="text-center">*победитель будет выявлен 16 января 2015 года из числа участников конкурса случайно</p></small>

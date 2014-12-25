@@ -28,7 +28,7 @@
       % if loggedin:
       <p class="text-center">Чтобы пригласить своих друзей на эту страницу</p>
       <p class="text-center">расскажите про нее в соцсетях:</p>
-      <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
+      <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
       % end
     </div>
   </div>
