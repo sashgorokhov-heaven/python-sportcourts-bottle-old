@@ -1,6 +1,9 @@
 import bottle
 import config
 import pages
+import dbutils
+
+from models import users
 
 
 @pages.get(['/', '/main', '/index'])
@@ -16,6 +19,15 @@ def about():
 @pages.get('/2015')
 def promo():
     return pages.PageBuilder('2015')
+
+
+@pages.get('/referal/<user_id:int>')
+def referal(user_id:int):
+    with dbutils.dbopen() as db:
+        user = users.get(user_id, dbconnection=db)
+        if len(user) == 0:
+            raise bottle.HTTPError(404)
+        return pages.PageBuilder('referal', user=user)
 
 
 @pages.get('/contacts')
