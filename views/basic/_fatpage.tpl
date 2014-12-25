@@ -49,6 +49,7 @@
     </div>
     % include("_basicfooter")
     % include("_basicpostfooter")
+    % include("_fatfooter")
     % if defined("footer_name"):
         % include(footer_name)
     % end
