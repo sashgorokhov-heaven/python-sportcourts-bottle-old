@@ -109,7 +109,7 @@
           success: function (data, textStatus) {
             if (data['error_code']==0) {
                 $('#'+item+'button').html('Отправлено');
-                if (!user_client) {
+                if (user_client) {
                   $('#userclient').html('<p class="lead">Мы отправили вам письмо.<br>Пожалуйста, проверьте вашу почту</p><br><p class="lead" style="font-size:200%;"><a class="clienthref" href="'+user_client[1]+'" target="_blank">'+user_client[0]+'</a></p>');
                   console.log('Определили');
                 } else {
