@@ -64,6 +64,12 @@
         % if conflict == 10:
           <p>Вы не в резерве чтобы из него выходить</p>
         % end
+        % if conflict == 11:
+          <p>Вы не можете отписаться от игры, т.к. она начнется завтра утром.</p>
+          <ul>
+            <li>Вы можете связаться с <a href="/profile/{{game.responsible_user_id()}}">ответсвенным</a></li>
+          </ul>
+        % end
       </div>
       <div class="modal-footer">
         <a class="btn btn-success" href="/profile/1">Написать администраторам</a>

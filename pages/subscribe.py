@@ -37,11 +37,13 @@ def unsubscribe(user_id:int, game_id:int):
         if game.datetime.passed: raise bottle.HTTPError(404)
         if user_id not in set(game.subscribed()):
             return pages.PageBuilder("game", game=game, conflict=6)
+        if game.datetime.tommorow and game.datetime.time().hour<=12 and datetime.datetime.now().hour>=20:
+            return pages.PageBuilder("game", game=game, conflict=11)
         games.unsubscribe(user_id, game_id, dbconnection=db)
         if datetime.datetime.now()-game.datetime()<datetime.timedelta(days=3):
             user = users.get(user_id, dbconnection=db) if user_id!=pages.auth.current().user_id() else pages.auth.current()
             message = '{} отписался от игры "{}"'.format(create_link.user(user), create_link.game(game))
-            utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id,)
+            utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id)
         game = games.get_by_id(game_id, dbconnection=db)
         return pages.PageBuilder("game", game=game)
 
