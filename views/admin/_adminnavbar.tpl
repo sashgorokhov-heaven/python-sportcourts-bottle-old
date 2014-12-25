@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Админка</a>
+      <a class="navbar-brand" href="/admin">Админка</a>
       % import config
       <a class="topmenu" href="#">Время запуска: {{config.starttime}}</a>
     </div>
