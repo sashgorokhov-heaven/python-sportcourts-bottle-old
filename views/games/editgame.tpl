@@ -274,7 +274,8 @@
       <div class="modal-body">
         <div class="table-responsive">
           <table class="table table-hover table-bordered">
-            % for n, user in enumerate(game.subscribed(True), 1):
+            % for n, i in enumerate(unsubscribed, 1):
+            % user, dt = i
             <tr class="success">
               <td>{{n}}</td>
               <td>
@@ -289,7 +290,7 @@
               </td>
               <td>{{user.phone()}}</td>
               <td>
-                Время
+                {{str(dt)}}
               </td>
             </tr>
             % end

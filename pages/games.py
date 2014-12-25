@@ -79,8 +79,14 @@ def edit(game_id:int):
         _cities = cities.get(0, dbconnection=db)
         _courts = courts.get(0, dbconnection=db)
         responsibles = users.get(0, 2, dbconnection=db)
+        unsubscribed = games.get_unsubscribed_users(game_id, dbconnection=db)
+        unsubscribed_list = list()
+        for i in unsubscribed:
+            user = users.get(i[0], dbconnection=db)
+            dt = i[1]
+            unsubscribed_list.append((user, dt))
         return pages.PageBuilder('editgame', game=game, sports=_sport_types, game_types=_game_types, cities=_cities,
-                                 courts=_courts, responsibles=responsibles)
+                                 courts=_courts, responsibles=responsibles, unsubscribed=unsubscribed_list)
 
 
 @pages.post('/games/edit/<game_id:int>')

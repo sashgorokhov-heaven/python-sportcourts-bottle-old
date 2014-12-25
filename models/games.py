@@ -224,6 +224,11 @@ def get_subscribed_games(user_id:int, dbconnection:dbutils.DBConnection=None) ->
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
 
 
+@autodb
+def get_unsubscribed_users(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    return dbconnection.execute("SELECT user_id, datetime FROM usergames WHERE game_id='{}' AND status=0 ORDER BY datetime DESC".format(game_id))
+
+
 @cacher.create_table_name('usergames', 'game_id', 600, cacher.KeyCache)
 @autodb
 def get_subscribed_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
