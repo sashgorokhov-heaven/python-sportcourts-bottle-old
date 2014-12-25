@@ -67,7 +67,7 @@
         % if conflict == 11:
           <p>Вы не можете отписаться от игры, т.к. она начнется завтра утром.</p>
           <ul>
-            <li>Вы можете связаться с <a href="/profile/{{game.responsible_user_id()}}">ответсвенным</a></li>
+            <li>Пожалуйста, свяжитесь с <a href="/profile/{{game.responsible_user_id()}}">ответственным</a></li>
           </ul>
         % end
       </div>
