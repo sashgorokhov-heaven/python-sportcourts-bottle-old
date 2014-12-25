@@ -66,7 +66,7 @@
       <span class="glyphicon glyphicon-chevron-right"></span>
     </a> -->
   </div>
-</div>42
+</div>
 
 <div class="row hidden-xs bigheadrow">
   <div class="row marketing" style="margin-top: 10vh;">
