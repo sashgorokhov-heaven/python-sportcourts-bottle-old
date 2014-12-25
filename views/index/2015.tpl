@@ -41,8 +41,7 @@
       <br>
       <p class="text-center">расскажи про нас своим друзьям</p>
       <br>
-      <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
-      <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
+      <div class="yashare-auto-init" data-yashareL10n="ru"data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter" style="margin-left: -5px; display: inline;"></div>
       % end
       <br><br><br><br>
       <small><p class="text-center">*победитель будет выявлен 16 января 2015 года из числа участников конкурса случайно</p></small>
@@ -67,10 +66,7 @@
       <span class="glyphicon glyphicon-chevron-right"></span>
     </a> -->
   </div>
-</div>
-<script>
-  $('.carousel').carousel();
-</script>
+</div>42
 
 <div class="row hidden-xs bigheadrow">
   <div class="row marketing" style="margin-top: 10vh;">

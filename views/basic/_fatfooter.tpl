@@ -1,3 +1,5 @@
+<script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+
 <script>
   function inputfunc (item) {
     $(document).on('input','#'+item, function(){
