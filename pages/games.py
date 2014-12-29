@@ -209,7 +209,7 @@ def get():
                                         count=slice(*modules.pager(page_n, count=GAMES_PER_PAGE)), dbconnection=db)
 
             if not bottle.request.is_ajax:
-                return pages.PageBuilder('games', games=allgames, sports=sports, bysport=sport_type, old=ptype == 'old')
+                return pages.PageBuilder('games', games=allgames, sports=sports, total_count=count, bysport=sport_type, old=ptype == 'old')
             else:
                 data = {"stop": page_n >= total_pages, "games": list()}
                 page = pages.PageBuilder("game", tab_name="all")
