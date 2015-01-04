@@ -31,13 +31,13 @@ def subscribe(user_id:int, game_id:int):
         game = games.get_by_id(game_id, dbconnection=db)
         return pages.PageBuilder("game", game=game)
 
-def unsubscribe(user_id:int, game_id:int):
+def unsubscribe(user_id:int, game_id:int, suspress:bool=False):
     with dbutils.dbopen() as db:
         game = games.get_by_id(game_id, dbconnection=db)
         if game.datetime.passed: raise bottle.HTTPError(404)
         if user_id not in set(game.subscribed()):
             return pages.PageBuilder("game", game=game, conflict=6)
-        if game.datetime.tommorow and game.datetime.time().hour<=12 and datetime.datetime.now().hour>=20:
+        if not suspress and game.datetime.tommorow and game.datetime.time().hour<=12 and datetime.datetime.now().hour>=20:
             return pages.PageBuilder("game", game=game, conflict=11)
         games.unsubscribe(user_id, game_id, dbconnection=db)
         if datetime.datetime.now()-game.datetime()<datetime.timedelta(days=3):
@@ -134,7 +134,7 @@ def get_unsubscribe(game_id:int):
 @pages.get('/games/unsubscribe/<game_id:int>/<user_id:int>')
 @pages.only_organizers
 def admin_unsubscribe(game_id:int, user_id:int):
-    resp = unsubscribe(user_id, game_id)
+    resp = unsubscribe(user_id, game_id, suspress=True)
     if 'conflict' in resp:
         if bottle.request.is_ajax:
             return json.dumps({'error_code':resp.param('conflict')})
