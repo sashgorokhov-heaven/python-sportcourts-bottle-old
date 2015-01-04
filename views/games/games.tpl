@@ -53,7 +53,11 @@
         </div>
         <div class="col-md-9">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#all" data-toggle="tab">Все <b>({{total_count}})</b></a></li>
+            <li class="active"><a href="#all" data-toggle="tab">Все
+                % if defined("total_count"):
+                <b>({{total_count}})</b>
+                % end
+                </a></li>
             % if loggedin and (len([game for game in games if current_user.user_id() in set(game.subscribed())])>0 or len([game for game in games if current_user.user_id() in set(game.reserved_people())])>0):
             <li><a href="#my" data-toggle="tab">Мои игры</a></li>
             % end
