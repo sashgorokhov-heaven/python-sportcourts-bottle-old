@@ -49,7 +49,7 @@ class Finances:
         self.reports_dict = dict()
 
         self.additional_charges = db.execute("SELECT * FROM additional_charges WHERE game_id IN ({})".format(', '.join(map(str, self.games_dict))),
-                                             dbutils.dbfields['additional_charges'])
+                                             dbutils.dbfields['additional_charges'])  if len(self.games)>0 else list()
         self.additional_charges_dict = dict()
         for charge in self.additional_charges:
             if charge['game_id'] in self.additional_charges_dict:
