@@ -10,13 +10,18 @@
         <th>Сумма</th>
       </thead>
       <tbody>
-        <tr>
-          <td>21.12.14</td>
-          <td>Трата</td>
-          <td>Охуенная трата</td>
-          <td>100500</td>
-        </tr>
-        <tr><td>Затрат нет. (может есть, но это тест)</td></tr>
+        % if len(outlays)>0:
+        % for i in outlays:
+            <tr>
+              <td>{{i.datetime()}}</td>
+              <td>{{i.title()}}</td>
+              <td>{{i.description()}}</td>
+              <td>{{i.cost()}}</td>
+            </tr>
+        % end
+        % else:
+        <tr><td>Затрат нет.</td></tr>
+        % end
       </tbody>
     </table>
   </div>
