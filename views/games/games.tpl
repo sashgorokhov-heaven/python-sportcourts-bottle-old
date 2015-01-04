@@ -77,11 +77,11 @@
                 % end
                 % if len(games)==0:
                   <div class="alert alert-info fade in" style="text-center">
-                    <p class="lead">Игры теперь в 2015!</p>
-                    <p class="lead">Всех с наступающим Новым Годом!)</p>
-                    <a class="text-center">
+                    <p class="lead">Игр пока нет)</p>
+                    <p class="lead">Ожидайте, скоро все будет.</p>
+                    <!-- <a class="text-center">
                       <img src="/images/static/2015.png" alt="" style="width:60%; margin:15px auto; margin-left:20%">
-                    </a>
+                    </a> -->
                   </div>
                 % end
               </div>
