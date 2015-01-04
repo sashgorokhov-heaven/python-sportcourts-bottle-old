@@ -299,3 +299,24 @@ def drop_cache():
 @pages.only_admins
 def conversion():
     return str(logs.conversion())
+
+
+@pages.get('/admin/outlays')
+@pages.only_admins
+def get_outlays():
+    return pages.PageBuilder('outlays_table', outlays=finances.get_outlays())
+
+
+@pages.get('/admin/outlays/add')
+@pages.only_admins
+def get_add_outlays():
+    return pages.PageBuilder('outlays_add')
+
+
+@pages.post('/admin/outlays/add')
+@pages.only_admins
+def get_add_outlays():
+    param = lambda x: bottle.request.forms.get(x)
+    dt = param('date') + ' ' + param('time') + ':00'
+    finances.add_outlay(dt, param('title'), param('description'), param('cost'))
+    raise bottle.redirect("/admin/outlays")

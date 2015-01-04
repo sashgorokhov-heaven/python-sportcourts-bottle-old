@@ -1,6 +1,6 @@
 import dbutils
-from models import sport_types
-from objects import Game, Court
+from models import sport_types, autodb
+from objects import Game, Court, Outlay
 
 def probability_density():
     with dbutils.dbopen() as db:
@@ -19,6 +19,17 @@ def probability_density():
             density[n] = len(list(filter(lambda x: n==visits[x], visits)))
         return {'visits':visits, 'density':density, 'notplayed':notplayed, 'visits_val':visits_val}
 
+
+@autodb
+def get_outlays(dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT * FROM outlays", dbutils.dbfields['outlays'])
+    return list(map(lambda x: Outlay(x), dbconnection.last()))
+
+
+def add_outlay(datetime:str, title:str, description:str, cost:int):
+    with dbutils.dbopen() as db:
+        db.execute("INSERT INTO outlays (datetime, title, description, cost) VALUES ('{}', '{}', '{}', {})".format(
+            datetime, title, description, cost))
 
 
 class Finances:

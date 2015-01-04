@@ -1,4 +1,5 @@
 import json
+import datetime
 
 import dbutils
 from objects.mydatetime import GameDateTime, DateTime, UserAge, UserLastTime
@@ -90,6 +91,26 @@ class GameType:
 
     def __len__(self):
         return 1
+
+
+class Outlay:
+    def __init__(self, outlay:dict):
+        self._outlay = outlay
+
+    def id(self) -> int:
+        return self._outlay['id']
+
+    def datetime(self) -> datetime.datetime:
+        return self._outlay['datetime']
+
+    def title(self) -> str:
+        return self._outlay['title']
+
+    def description(self) -> str:
+        return self._outlay['description']
+
+    def cost(self) -> int:
+        return self._outlay['cost']
 
 
 class Comand:
