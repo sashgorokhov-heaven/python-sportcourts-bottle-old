@@ -154,10 +154,10 @@ class getters:
         pass
 
 
-@pages.get('/api/users/get')
+@pages.get(['/api/users/get', '/api/users/get/<user_id:int>'])
 @handle_error
 @check_auth
-def users_get():
+def users_get(user_id:int=0):
     fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else '*'
     fields = fields.split(',')
 
@@ -165,10 +165,14 @@ def users_get():
         this = current_user(db, True)
         if len(fields)==1 and fields[0]=='*':
             fields = dbutils.dbfields['users']
-            if not this.userlevel.admin():
+            if not this.userlevel.admin() and (user_id!=0 and user_id!=this.user_id()):
                 fields = list(set(fields).difference_update(_available_fields['users_get']['restricted']))
-        check_fields_access(fields, 'users_get', db)
-        users_ = db.execute("SELECT {} FROM users".format(', '.join(fields)), fields)
+        if user_id==0 or (user_id!=0 and user_id!=this.user_id()):
+            check_fields_access(fields, 'users_get', db)
+        users_ = db.execute("SELECT {} FROM users{}".format(
+            ', '.join(fields),
+            ' WHERE user_id={}'.format(user_id) if user_id!=0 else ''),
+                            fields)
         list(map(strdatetime, users_))
         for user in users_:
             if 'city_id' in user:
