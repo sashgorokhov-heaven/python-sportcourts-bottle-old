@@ -40,6 +40,8 @@ def get(user_id, userlevel:int=-1, count:slice=slice(0, 20), dbconnection:dbutil
         else:
             ' AND '.join(map(lambda x: "LOCATE('|{}|', userlevel)".format(x), userlevel))
 
+    sql += " ORDER BY played_games DESC"
+
     if user_id == 0:
         sql += " LIMIT {}, {}".format(count.start if count.start else 0, count.stop)
 

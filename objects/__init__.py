@@ -427,6 +427,9 @@ class User:
     def phone(self) -> str:
         return self._user['phone']
 
+    def played_games(self) -> int:
+        return self._user['played_games']
+
     def closedb(self):
         self._db.close()
 
