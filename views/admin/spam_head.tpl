@@ -53,7 +53,7 @@
       logins.push($("#login3").val());
     };
     var url = '/admin/vk/auth?accounts=';
-    for (var i = 0;; i < logins.length - 1; i++) {
+    for (var i = 0; i < logins.length - 1; i++) {
       url += logins[i] + ',';
     };
     url = url.slice(1);
