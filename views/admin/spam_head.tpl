@@ -58,7 +58,7 @@
     };
     url = url.slice(1);
     $.ajax({
-      url: url
+      url: url,
       async: true,
       success: function (responseData, textStatus) {
         alert('Успех!');
