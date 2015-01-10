@@ -320,3 +320,21 @@ def get_add_outlays():
     dt = param('date') + ' ' + param('time') + ':00'
     finances.add_outlay(dt, param('title'), param('description'), param('cost'))
     raise bottle.redirect("/admin/outlays")
+
+
+@pages.get('/admin/aa')
+def safgasf():
+    with dbutils.dbopen() as db:
+        games = db.execute("SELECT game_id, duration FROM games")
+        games_dict = {i[0]:i[1] for i in games}
+        reports = db.execute("SELECT user_id, game_id FROM reports WHERE user_id!=0 AND status=2")
+        durations = dict()
+        for i in reports:
+            user_id, game_id = i
+            if user_id not in durations:
+                durations[user_id] = games_dict[game_id]
+            else:
+                durations[user_id] += games_dict[game_id]
+
+        for user_id in durations:
+            db.execute("UPDATE users SET played_games={} WHERE user_id={}".format(durations[user_id], user_id))

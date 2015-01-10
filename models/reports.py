@@ -15,7 +15,8 @@ def report(game_id:int, user_id:int, status:int, dbconnection:dbutils.DBConnecti
     dbconnection.execute(
         "INSERT INTO reports (game_id, user_id, status) VALUES ({}, {}, {})".format(game_id, user_id, status))
     if status==2:
-        dbconnection.execute("UPDATE users SET played_games=played_games+1")
+        duration = dbconnection.execute("SELECT duration FROM games WHERE game_id={}".format(game_id))[0][0]
+        dbconnection.execute("UPDATE users SET played_games=played_games+{} WHERE user_id={}".format(duration, user_id))
 #    cacher.drop_by_table_name('reports', 'game_id', game_id)
 
 
