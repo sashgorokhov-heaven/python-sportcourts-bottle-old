@@ -12,7 +12,7 @@
       <tbody>
         % if len(outlays)>0:
         % for i in outlays:
-            <tr>
+            <tr class="{{'success' if i.cost()>0 else 'danger'}}">
               <td>{{i.datetime()}}</td>
               <td>{{i.title()}}</td>
               <td>{{i.description()}}</td>
