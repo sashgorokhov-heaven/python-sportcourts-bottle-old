@@ -236,22 +236,22 @@ def sendsms_post():
     raise bottle.redirect('/admin/sendsms')
 
 
-@uwsgidecorators.cron(0,0, 1,-1, -1)
-def calc_finances(*args):
-    yesterday = datetime.date.today()-datetime.timedelta(days=1)
-    year = yesterday.year
-    month = yesterday.month
-    try:
-        with dbutils.dbopen() as db:
-            fin = finances.Finances(month, year, db=db)
-            db.execute("INSERT INTO finances VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
-                year, month,
-                len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
-                fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
-                len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
-            ))
-    except Exception as e:
-        logging.message('Error calcing finances for <{}:{}>'.format(month, year), e)
+#@uwsgidecorators.cron(0,0, 1,-1, -1)
+#def calc_finances(*args):
+#    yesterday = datetime.date.today()-datetime.timedelta(days=1)
+#    year = yesterday.year
+#    month = yesterday.month
+#    try:
+#        with dbutils.dbopen() as db:
+#            fin = finances.Finances(month, year, db=db)
+#            db.execute("INSERT INTO finances VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})".format(
+#                year, month,
+#                len(fin.games), fin.ideal_income, fin.empty, fin.lost_empty, fin.notvisited,
+#                fin.lost_notvisited, fin.notpayed, fin.lost_notpayed, len(fin.played_users),
+#                len(fin.played_unique), fin.real_income, fin.rent_charges, fin.profit
+#            ))
+#    except Exception as e:
+#        logging.message('Error calcing finances for <{}:{}>'.format(month, year), e)
 
 
 @uwsgidecorators.cron(0,0, 1,-1, -1)
@@ -328,3 +328,9 @@ def get_add_outlays():
     dt = param('date') + ' ' + param('time') + ':00'
     finances.add_outlay(dt, param('title'), param('description'), param('cost'))
     raise bottle.redirect("/admin/outlays")
+
+
+@pages.get('/admin/recalc_game/<game_id:int>')
+@pages.only_admins
+def recalc_game(game_id:int):
+    finances.update_game_finances(game_id)

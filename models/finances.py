@@ -171,3 +171,51 @@ class Finances:
 
     def dict(self) -> dict:
         return {i:self.__dict__[i] for i in self.__dict__ if not i.startswith('_')}
+
+
+@autodb
+def calc_game(game_id:int, dbconnection:dbutils.DBConnection) -> dict:
+    game = dbconnection.execute("SELECT * FROM games WHERE game_id={}".format(game_id), dbutils.dbfields['games'])[0]
+    game = Game(game, dbconnection=dbconnection)
+    reports = dbconnection.execute("SELECT * FROM reports WHERE game_id={}".format(game_id), dbutils.dbfields['reports'])
+    additional_charges = dbconnection.execute("SELECT * FROM additional_charges WHERE game_id={}".format(game_id), dbutils.dbfields['additional_charges'])
+
+    finances = dict()
+    finances['game_id'] = game_id
+    finances['datetime'] = game.datetime()
+    finances['capacity'] = game.capacity()
+    finances['cost'] = game.cost()
+    finances['sport_id'] = game.sport_type()
+    finances['responsible_user_id'] = game.responsible_user_id()
+    finances['created_by'] = game.created_by()
+
+    finances['visited'] = len(list(filter(lambda x: x['status']!=0, reports)))
+    finances['empty'] = finances['capacity']-finances['visited']
+    if finances['empty']<0: finances['empty']=0
+    finances['lost_empty'] = finances['empty']*finances['cost']
+    finances['notvisited'] = len(list(filter(lambda x: x['status']==0, reports)))
+    finances['lost_notvisited'] = finances['notvisited']*finances['cost']
+    finances['notpayed'] = len(list(filter(lambda x: x['status']==1, reports)))
+    finances['lost_notpayed'] = finances['notpayed']*finances['cost']
+
+    finances['playedpayed'] = len(list(filter(lambda x: x['status']==2, reports)))
+    finances['real_income'] = finances['playedpayed']*finances['cost']
+    finances['ideal_income'] = finances['cost']*finances['capacity'] if finances['capacity']>0 else finances['real_income']
+    finances['rent_charges'] = game.court_id(True).cost()*(game.duration()/60)
+    finances['additional_charges'] = sum([i['cost'] for i in additional_charges])
+    finances['profit'] = finances['real_income']-finances['rent_charges']-finances['additional_charges']
+
+    return finances
+
+@autodb
+def add_game_finances(game_id:int, dbconnection:dbutils.DBConnection):
+    finances = calc_game(game_id, dbconnection=dbconnection)
+    sql = "INSERT INTO finances VALUES ({})".format(', '.join(["'{}'".format(finances[i]) for i in dbutils.dbfields['finances']]))
+    dbconnection.execute(sql)
+
+
+@autodb
+def update_game_finances(game_id:int, dbconnection:dbutils.DBConnection):
+    finances = calc_game(game_id, dbconnection=dbconnection)
+    sql = "UPDATE finances SET {} WHERE game_id={}".format(', '.join(["{}='{}'".format(i, finances[i]) for i in dbutils.dbfields['finances'] if i!='game_id']), game_id)
+    dbconnection.execute(sql)

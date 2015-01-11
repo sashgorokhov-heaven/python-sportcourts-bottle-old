@@ -8,7 +8,7 @@ import pages
 import modules
 from modules import utils
 import dbutils
-from models import sport_types, game_types, cities, courts, games, users, notificating, reports, images
+from models import sport_types, game_types, cities, courts, games, users, notificating, reports, images, finances
 
 
 GAMES_PER_PAGE = 4
@@ -317,6 +317,7 @@ def post(game_id:int):
         notificating.site.responsible(game.created_by(), 'Ответственный "{}" отправил отчет по игре "{}"'.format(
             modules.create_link.user(users.get(pages.auth.current().user_id())),
             modules.create_link.game(game)), game_id)
+    finances.add_game_finances(game_id, dbconnection=db)
     cacher.drop_by_table_name('games', 'game_id', game_id)
     raise bottle.redirect('/games/report/{}?ask_autocreate'.format(game_id))
 
