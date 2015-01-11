@@ -190,12 +190,12 @@
 
 <!-- Модалка создания следующей игры -->
 
-<div class="modal fade" id="nextGameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+<div class="modal" id="nextGameModal">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Подтвердите действие</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="false">&times;</button>
+        <h4 class="modal-title" id="nextGameLabel">Подтвердите действие</h4>
       </div>
       <div class="modal-body">
         <p>Создать игру через неделю?</p>
@@ -204,6 +204,6 @@
         <a class="btn btn-success" href="/games/autocreate/{{game.game_id()}}">Создать</a>
         <button type="button" data-dismiss="modal" class="btn btn-primary">Отмена</button>
       </div>
-    </div>
-  </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div> <!-- Модалка создания следующей игры -->

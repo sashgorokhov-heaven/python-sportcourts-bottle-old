@@ -3,6 +3,14 @@
 <link rel="stylesheet" href="/view/jasny/css/jasny-bootstrap.css">
 <script src="/view/jasny/js/jasny-bootstrap.js"></script>
 
+% if ask_autocreate:
+<script>
+  $(document).ready(function() {
+    $('#nextGameModal').modal('show');
+  });
+</script>
+% end 
+
 <script>
   function writeamount (summ,summ1) {
     $('.amount').html('<p class="lead">Сумма к расчету: ' + summ + ' руб.</p>');
@@ -96,11 +104,3 @@
     });
   });
 </script>
-
-% if ask_autocreate:
-<script>
-  $( document ).ready(function() {
-    $('#nextGameModal').modal('show');
-  });
-</script>
-% end 
