@@ -3,11 +3,11 @@
 <h1 class="page-header">Финансы</h1>
 
 <p>
-  <a class="h3" href="/admin/finances/10">Октябрь</a>
+  <a class="h3" href="/admin/finances/10/2014">Октябрь</a>
   &nbsp;&nbsp;
-  <a class="h3" href="/admin/finances/11">Ноябрь</a>
+  <a class="h3" href="/admin/finances/11/2014">Ноябрь</a>
   &nbsp;&nbsp;
-  <a class="h3" href="/admin/finances/12">Декабрь</a>
+  <a class="h3" href="/admin/finances/12/2014">Декабрь</a>
 </p>
 
 
