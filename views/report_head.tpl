@@ -99,6 +99,8 @@
 
 % if ask_autocreate:
 <script>
-  $('#nextGameModal').modal('show');
+  $( document ).ready(function() {
+    $('#nextGameModal').modal('show');
+  });
 </script>
 % end 
