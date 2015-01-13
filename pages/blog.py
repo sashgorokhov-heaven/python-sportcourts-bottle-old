@@ -3,35 +3,53 @@ import dbutils
 import pages
 import base64
 
-from models import users
+from models import users, blog
 
 
-@pages.get(['/blog'])
-def get_blog(): # для всего блога
-    return pages.PageBuilder('blog_main')
-
-
-@pages.post('/blog/add')
-@pages.only_organizers
-def post_blog(): # добавление новости
+@pages.get('/blog')
+def get_blog():
     with dbutils.dbopen() as db:
-        text = base64.b64encode(bottle.request.forms.get('text').encode()).decode()
-        sql = 'INSERT INTO blog_posts (content) VALUES ({})'.format(text)
-        db.execute(sql)
-        article_id = db.execute('SELECT last_insert_id() FROM games')[0][0]
-        raise bottle.redirect("/blog")
-        # raise bottle.redirect("/blog/{}".format(article_id))
+        posts = blog.get_posts()
+        tags = blog.get_all_tags()
+        tags_posts = list()
+        for tag in tags:
+            tags_posts.append((tag, len(blog.get_posts_by_tag(tag.tag_id(), dbconnection=db))))
+        tags_posts = sorted(tags_posts, reverse=True, key= lambda x: x[1])[:11] # первые десять
+        return pages.PageBuilder('blog_main', posts=posts, alltags=tags_posts)
 
 
-@pages.get('/blog/<article_id:int>')
-def get_article(article_id:int): # просмотр отдельной новости
-    return pages.PageBuilder('blog_article')
+@pages.get('/blog/tag/<tag_id:int>')
+def get_tag(tag_id:int):
+    tag = blog.get_tag(tag_id)
+    if not tag: raise bottle.HTTPError(404)
+    posts = blog.get_posts_by_tag(tag_id=tag_id)
+    return '# TODO страница с отображением списка постов по тэгу'
+
+
+@pages.get('/blog/<post_id:int>')
+def get_article(post_id:int):
+    post = blog.get_post(post_id)
+    if not post: raise bottle.HTTPError(404)
+    return pages.PageBuilder('blog_post', post=post)
 
 
 @pages.get('/blog/add')
-@pages.only_organizers
-def get_blog(): # для добавления статьи
-    return pages.PageBuilder('addarticle')
+@pages.only_writers
+def get_add_blog():
+    tags = blog.get_all_tags()
+    return pages.PageBuilder('add_post', tags=tags)
+
+
+@pages.post('/blog/add')
+@pages.only_writers
+def post_add_blog():
+    forms = lambda x: bottle.request.query.get(x)
+    datetime = forms('date')+' '+forms('time')+':00'
+    tags = list()
+    if 'tags' in bottle.request.forms:
+        tags = bottle.request.forms.getall('tags')
+    post_id = blog.add_post(forms('keywords'), forms('description'), forms('title'), forms('text'), forms('created_by'), datetime, tags)
+    raise bottle.redirect('/blog/{}'.format(post_id))
 
 
 @pages.get('/blog/moderate')

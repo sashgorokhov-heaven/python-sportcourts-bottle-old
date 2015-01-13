@@ -89,6 +89,22 @@ def only_organizers(func):
     return wrapper
 
 
+def only_writers(func):
+    def wrapper(*args, **kwargs):
+        if not auth.current().userlevel.writer():
+            return templates.permission_denied()
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def only_moderators(func):
+    def wrapper(*args, **kwargs):
+        if not auth.current().userlevel.moderator():
+            return templates.permission_denied()
+        return func(*args, **kwargs)
+    return wrapper
+
+
 def only_loggedin(func):
     def wrapper(*args, **kwargs):
         if not auth.loggedin():
@@ -181,11 +197,11 @@ class _MockUserLevel(set):
         return False
 
     @staticmethod
-    def judge() -> bool:
+    def writer() -> bool:
         return False
 
     @staticmethod
-    def resporgadmin() -> bool:
+    def moderator() -> bool:
         return False
 
     def __contains__(self, item):

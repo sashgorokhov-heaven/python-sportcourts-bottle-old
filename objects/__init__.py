@@ -1,3 +1,4 @@
+import base64
 import json
 import datetime
 
@@ -189,6 +190,26 @@ class Amplua:
         return 1
 
 
+class Tag:
+    def __init__(self, tag:dict):
+        self._tag = tag
+
+    def tag_id(self) -> int:
+        return self._tag['tag_id']
+
+    def title(self) -> str:
+        return self._tag['title']
+
+    def description(self) -> str:
+        return self._tag['description']
+
+    def keywords(self) -> str:
+        return self._tag['keywords']
+
+    def general_description(self) -> str:
+        return self._tag['general_description']
+
+
 class Court:
     def __init__(self, court:dict, dbconnection:dbutils.DBConnection=None):
         self._court = court
@@ -315,16 +336,14 @@ class _UserLevel:
     def common(self) -> bool:
         return 3 in self or self.responsible() or self.organizer() or self.admin()
 
+    def writer(self) -> bool:
+        return 4 in self or self.admin()
+
+    def moderator(self) -> bool:
+        return 5 in self or self.writer() or self.admin()
+
     def resporgadmin(self) -> bool:
         return self.admin() or self.organizer() or self.responsible()
-
-    def judge(self) -> bool:
-        return 4 in self
-
-    def max(self) -> int:
-        for n, i in enumerate(range(5)):
-            if i in self:
-                return n
 
     def __contains__(self, item):
         return item in self._userlevel
@@ -438,6 +457,46 @@ class User:
 
     def __len__(self):
         return 1
+
+
+class BlogPost:
+    def __init__(self, blog_post:dict, dbconnection:dbutils.DBConnection=None):
+        self._blog_post = blog_post
+        self._db = dbconnection
+        self.datetime = DateTime(self._blog_post['datetime'])
+
+    def post_id(self) -> int:
+        return self._blog_post['post_id']
+
+    def status(self) -> bool:
+        return bool(self._blog_post['status'])
+
+    def keywords(self) -> str:
+        return self._blog_post['keywords']
+
+    def description(self) -> str:
+        return self._blog_post['description']
+
+    def title(self) -> str:
+        return self._blog_post['title']
+
+    def content(self) -> str:
+        return base64.b64decode(self._blog_post['content']).decode()
+
+    def created_by(self, detalized:bool) -> User:
+        if not detalized:
+            if isinstance(self._blog_post['created_by'], User):
+                return self._blog_post['created_by'].user_id()
+            else:
+                return self._blog_post['created_by']
+        if not isinstance(self._blog_post['created_by'], User):
+            self._blog_post['created_by'] = users.get(self._blog_post['created_by'], dbconnection=self._db)
+        return self._blog_post['created_by']
+
+    def tags(self) -> list:
+        if 'tags' not in self._blog_post:
+            self._blog_post['tags'] = blog.get_tags(self.post_id(), dbconnection=self._db)
+        return self._blog_post['tags']
 
 
 class Game:
@@ -671,3 +730,4 @@ import models.ban as ban
 import models.comands as comands
 import models.court_types as court_types
 import models.reports as reports
+import models.blog as blog
