@@ -28,9 +28,15 @@ def get_tag(tag_id:int):
 
 @pages.get('/blog/<post_id:int>')
 def get_article(post_id:int):
-    post = blog.get_post(post_id)
-    if not post: raise bottle.HTTPError(404)
-    return pages.PageBuilder('blog_post', post=post)
+    with dbutils.dbopen() as db:
+        post = blog.get_post(post_id, dbconnection=db)
+        if not post: raise bottle.HTTPError(404)
+        tags = blog.get_all_tags(dbconnection=db)
+        tags_posts = list()
+        for tag in tags:
+            tags_posts.append((tag, len(blog.get_posts_by_tag(tag.tag_id(), dbconnection=db))))
+        tags_posts = sorted(tags_posts, reverse=True, key= lambda x: x[1])[:11] # первые десять
+        return pages.PageBuilder('blog_post', post=post, alltags=tags_posts)
 
 
 @pages.get('/blog/add')
