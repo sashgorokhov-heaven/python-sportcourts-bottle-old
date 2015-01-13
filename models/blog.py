@@ -6,7 +6,7 @@ from objects import Tag, BlogPost
 
 _connection = dbutils.default_connection.copy()
 _connection['db'] = 'blog'
-_fields = dbutils.setdbfields(**_connection)
+_fields = dbutils.setdbfields(_connection)
 
 
 @autodb
@@ -53,7 +53,7 @@ def get_tag(tag_id:int, dbconnection:dbutils.DBConnection=None) -> BlogPost:
 
 @autodb
 def get_all_tags(dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT * FROM blog.tags")
+    dbconnection.execute("SELECT * FROM blog.tags", _fields['tags'])
     return list(map(lambda x: Tag(x), dbconnection.last()))
 
 

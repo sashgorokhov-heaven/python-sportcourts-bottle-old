@@ -66,4 +66,26 @@ tinymce.init({
     ],
     pagebreak_separator: "<!-- my page break -->"
 });
+
+$(document).on('click','#submittext',function(){
+
+    var value = tinyMCE.get('textcontent').getContent();
+
+    $.ajax({
+      url: '/blog/add',
+      data: {
+        text: value
+      },
+      async: true,
+      success: function (responseData, textStatus) {
+        alert('Success');
+      },
+      error: function (response, status, errorThrown) {
+        alert('Error \n\r\n\r' + response + '\n\r' + status + '\n\r' + errorThrown);
+      },
+      type: "POST",
+      dataType: "text"
+    });
+
+});
 </script>
