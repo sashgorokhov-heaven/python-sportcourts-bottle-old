@@ -4,7 +4,7 @@ import pages
 import base64
 
 from models import users, blog
-
+from objects import SeoInfo
 
 @pages.get('/blog')
 def get_blog():
@@ -23,6 +23,7 @@ def get_tag(tag_id:int):
     tag = blog.get_tag(tag_id)
     if not tag: raise bottle.HTTPError(404)
     posts = blog.get_posts_by_tag(tag_id=tag_id)
+    seo_info = SeoInfo({'tplname':'blog_post', 'keywords':tag.keywords(), 'description':tag.description()})
     return '# TODO страница с отображением списка постов по тэгу'
 
 
@@ -36,7 +37,8 @@ def get_article(post_id:int):
         for tag in tags:
             tags_posts.append((tag, len(blog.get_posts_by_tag(tag.tag_id(), dbconnection=db))))
         tags_posts = sorted(tags_posts, reverse=True, key= lambda x: x[1])[:11] # первые десять
-        return pages.PageBuilder('blog_post', post=post, alltags=tags_posts)
+        seo_info = SeoInfo({'tplname':'blog_post', 'keywords':post.keywords(), 'description':post.description()})
+        return pages.PageBuilder('blog_post', post=post, alltags=tags_posts, seo_info=seo_info)
 
 
 @pages.get('/blog/add')

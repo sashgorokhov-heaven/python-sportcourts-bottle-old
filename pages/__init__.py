@@ -127,7 +127,7 @@ class PageBuilder:
         self._kwargs = kwargs
         auth.set_user(self)
         seo_info = models.seo_info.get(template_name)
-        if seo_info:
+        if seo_info and 'seo_info' not in kwargs:
             self.add_param('seo_info', seo_info)
         self.add_param('serverinfo', {'ip': config.server.ip, 'port': config.server.port})
         self.add_param('tplname', template_name)
