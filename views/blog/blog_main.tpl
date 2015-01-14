@@ -22,7 +22,7 @@
             % end
           </div>
           <div class="blog_post">
-            {{!post.content().split('<br id="breaker">')[0]}}
+            {{!post.content().split('<!-- my page break -->')[0]}}
             <p><a href="/blog/{{post.post_id()}}">Читать далее...</a></p>
           </div>
         </div>

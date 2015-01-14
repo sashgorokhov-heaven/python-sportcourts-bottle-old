@@ -32,7 +32,14 @@ def get_posts_by_tags(tag_ids:list, dbconnection:dbutils.DBConnection=None) -> l
 
 @autodb
 def get_posts(dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT * FROM blog.posts WHERE status>=0", _fields['posts'])
+    dbconnection.execute("SELECT * FROM blog.posts WHERE status=1", _fields['posts'])
+    if len(dbconnection.last())==0: return list()
+    return list(map(lambda x: BlogPost(x, dbconnection=dbconnection), dbconnection.last()))
+
+
+@autodb
+def get_moderating_posts(dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT * FROM blog.posts WHERE status=0", _fields['posts'])
     if len(dbconnection.last())==0: return list()
     return list(map(lambda x: BlogPost(x, dbconnection=dbconnection), dbconnection.last()))
 
@@ -58,10 +65,9 @@ def get_all_tags(dbconnection:dbutils.DBConnection=None) -> list:
 
 
 @autodb
-def add_post(keywords:str, description:str, title:str, content:str, created_by:int, datetime:str, tags:list, dbconnection:dbutils.DBConnection=None) -> int:
+def add_post(title:str, content:str, created_by:int, tags:list, dbconnection:dbutils.DBConnection=None) -> int:
     content = base64.b64encode(content.encode()).decode()
-    dbconnection.execute("INSERT INTO blog.posts (keywords, description, title, content, created_by, datetime) VALUES ('{}', '{}', '{}', '{}', {}, '{}')".format(
-        keywords, description, title, content, created_by, datetime))
+    dbconnection.execute("INSERT INTO blog.posts (keywords, description, title, content, created_by, datetime) VALUES ('', '', '{}', '{}', {}, NOW())".format(title, content, created_by))
     post_id = dbconnection.execute("SELECT last_insert_id() FROM blog.posts")[0][0]
     for tag_id in tags:
         dbconnection.execute("INSERT INTO blog.post_tags VALUES ({}, {})".format(post_id, tag_id))

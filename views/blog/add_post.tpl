@@ -16,18 +16,6 @@
         <span id="valid"></span>
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" name="keywords" placeholder="Ключевые слова" value="">
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="description" placeholder="Описание" value="">
-      </div>
-      <div class="form-group">
-        <input type="time" class="form-control" name="time" value="{{':'.join(str(datetime.datetime.now().time()).split('.')[0].split(':')[:-1])}}"/>
-      </div>
-      <div class="form-group">
-        <input type="date" class="form-control" name="date" value="{{str(datetime.date.today())}}"/>
-      </div>
-      <div class="form-group">
         <select data-placeholder="Выберите разделы для статьи"  multiple="multiple" class="form-control chosen-select chosen-select-1" tabindex="-1" name="tag">
           % for tag in tags:
             <option value="{{tag.tag_id()}}">{{tag.title()}}</option>

@@ -52,11 +52,10 @@ def get_add_blog():
 @pages.only_writers
 def post_add_blog():
     forms = lambda x: bottle.request.query.get(x)
-    datetime = forms('date')+' '+forms('time')+':00'
     tags = list()
     if 'tags' in bottle.request.forms:
         tags = bottle.request.forms.getall('tags')
-    post_id = blog.add_post(forms('keywords'), forms('description'), forms('title'), forms('text'), forms('created_by'), datetime, tags)
+    post_id = blog.add_post(forms('title'), forms('text'), forms('created_by'), tags)
     raise bottle.redirect('/blog/{}'.format(post_id))
 
 
