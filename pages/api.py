@@ -14,8 +14,8 @@ def dump(obj) -> str:
     return json.dumps(obj, ensure_ascii=False)
 
 
-def generate_token() -> str:
-    return ''.join(random.sample(list(itertools.chain(map(chr, range(65, 91)), map(chr, range(97, 122)), map(str, range(1, 10)))), 20))
+def generate_token(length:int=30) -> str:
+    return ''.join(random.sample(list(itertools.chain(map(chr, range(65, 91)), map(chr, range(97, 122)), map(str, range(1, 10)))), length))
 
 
 class Error(Exception):
@@ -48,6 +48,25 @@ class Error(Exception):
     @staticmethod
     def restricted_fields(fields:list):
         return Error(5, 'Restricted fields:{}'.format(','.join(fields)))
+
+    @staticmethod
+    def user_not_found(user_id:int):
+        return Error(6, 'User <{}> not found'.format(user_id))
+
+
+    @staticmethod
+    def method_not_allowed():
+        return Error(7, 'Method not allowed')
+
+
+    @staticmethod
+    def court_not_found(court_id:int):
+        return Error(8, 'Court <{}> not found'.format(court_id))
+
+
+    @staticmethod
+    def unknown_field(field:str):
+        return Error(9, 'Unknown field:{}'.format(field))
 
 #    @staticmethod
 #    def invalid_field(fields:list):
@@ -99,6 +118,36 @@ def check_auth(func):
     return required_param('token')(wrapper)
 
 
+def only_organizers(func):
+    def wrapper(*args, **kwargs):
+        with dbutils.dbopen() as db:
+            user = current_user(db, True)
+            if not user.userlevel.organizer():
+                raise Error.method_not_allowed()
+            return func(*args, **kwargs)
+    return wrapper
+
+
+def only_admins(func):
+    def wrapper(*args, **kwargs):
+        with dbutils.dbopen() as db:
+            user = current_user(db, True)
+            if not user.userlevel.admin():
+                raise Error.method_not_allowed()
+            return func(*args, **kwargs)
+    return wrapper
+
+
+def admins_and_organizers(func):
+    def wrapper(*args, **kwargs):
+        with dbutils.dbopen() as db:
+            user = current_user(db, True)
+            if not user.userlevel.admin() and not user.userlevel.organizer():
+                raise Error.method_not_allowed()
+            return func(*args, **kwargs)
+    return wrapper
+
+
 def strdatetime(d:dict) -> dict:
     for key in d:
         if isinstance(d[key], (datetime.datetime, datetime.date, datetime.time)):
@@ -127,20 +176,9 @@ _available_fields = {
 }
 
 
-def check_fields_access(fields:list, key:str, db:dbutils.DBConnection):
-    fields = set(fields)
-    f = _available_fields[key]
-    user = current_user(db, True)
-    if 'available' in f:
-        f = f['available']
-        if not fields.issubset(f) and not user.userlevel.admin():
-            r = set(f).difference_update(f)
-            raise Error.restricted_fields(r)
-    elif 'restricted' in f:
-        f = f['restricted']
-        if not fields.isdisjoint(f) and not user.userlevel.admin():
-            r = set(fields).intersection(f)
-            raise Error.restricted_fields(r)
+def check_fields(fields:list, table_name:str, db:dbutils.DBConnection):
+    if len(set(fields).difference_update(set(dbutils.dbfields[table_name])))>0:
+        raise Error.unknown_field('TODO')
 
 
 class getters:
@@ -153,12 +191,33 @@ class getters:
     def court(court_id:int, db:dbutils.DBConnection) -> dict:
         pass
 
+    @staticmethod
+    def sport_type(sport_id:int) -> dict:
+        pass
+
+    @staticmethod
+    def game_type(type_int:int) -> dict:
+        pass
+
+    @staticmethod
+    def user(user_id:int, db:dbutils.DBConnection) -> dict:
+        pass
+
+    @staticmethod
+    def game(game_id:int, db:dbutils.DBConnection) -> dict:
+        pass
+
+    @staticmethod
+    def amplua(ampluas_str:str, db:dbutils.DBConnection) -> list:
+        amp = ampluas.get(decode_set(ampluas_str), dbconnection=db)
+        return [{"amplua_id":a.amplua_id(), "sport_type":a.sport_type(), "title":a.title()} for a in amp]
+
 
 @pages.get(['/api/users/get', '/api/users/get/<user_id:int>'])
 @handle_error
 @check_auth
 def users_get(user_id:int=0):
-    fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else '*'
+    fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else ('user_id' if user_id==0 else '*')
     fields = fields.split(',')
 
     with dbutils.dbopen() as db:
@@ -173,20 +232,33 @@ def users_get(user_id:int=0):
             ', '.join(fields),
             ' WHERE user_id={}'.format(user_id) if user_id!=0 else ''),
                             fields)
+        if len(users_)==0:
+            raise Error.user_not_found(user_id)
         list(map(strdatetime, users_))
         for user in users_:
             if 'city_id' in user:
-                city = cities.get(user['city_id'], dbconnection=db)
-                user['city'] = {
-                    "city_id": city.city_id(),
-                    "title": city.title(),
-                    "geopoint": city.geopoint()}
+                user['city'] = getters.city(user['city_id'], db=db)
             if 'ampluas' in user:
-                amplua = ampluas.get(decode_set(user['ampluas']), dbconnection=db)
-                user['ampluas'] = [{"amplua_id":a.amplua_id(), "sport_type":a.sport_type(), "title":a.title()} for a in amplua]
+                user['ampluas'] = getters.amplua(user['ampluas'], db=db)
+            if 'userlevel' in user:
+                user['userlevel'] = decode_set(user['userlevel'])
             if 'settings' in user:
                 user['settings'] = json.loads(user['settings'])
         return dump({'count':len(users_), 'users':users_})
+
+
+@pages.get('/api/users/current')
+@handle_error
+@check_auth
+def current_user_get():
+    with dbutils.dbopen() as db:
+        user = current_user(db, True)._user
+        strdatetime(user)
+        user['city'] = getters.city(user['city_id'], db=db)
+        user['ampluas'] = getters.amplua(user['ampluas'], db=db)
+        user['userlevel'] = decode_set(user['userlevel'])
+        user['settings'] = json.loads(user['settings'])
+        return dump(user)
 
 
 @pages.get('/api/courts/get')
@@ -196,14 +268,34 @@ def courts_get():
     fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else 'court_id'
     fields = fields.split(',')
     with dbutils.dbopen() as db:
-        this = current_user(db, True)
         if len(fields)==1 and fields[0]=='*':
             fields = dbutils.dbfields['courts']
-            if not this.userlevel.admin():
-                fields = list(set(fields).difference_update(_available_fields['courts_get']['restricted']))
-        check_fields_access(fields, 'courts_get', db)
+            fields = list(set(fields).difference_update(_available_fields['courts_get']['restricted']))
         courts = db.execute("SELECT {} FROM courts".format(', '.join(fields)), fields)
-        list(map(strdatetime, courts))
+        return dump({'count':len(courts), 'courts':courts})
+
+
+@pages.get(['/api/admin/courts/get', '/api/admin/courts/get/<court_id:int>'])
+@handle_error
+@check_auth
+@admins_and_organizers
+def courts_get_admin(court_id:int=0):
+    fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else ('court_id' if court_id==0 else '*')
+    fields = fields.split(',')
+
+    with dbutils.dbopen() as db:
+        if len(fields)==1 and fields[0]=='*':
+            fields = dbutils.dbfields['courts']
+        courts = db.execute("SELECT {} FROM courts{}".format(', '.join(fields), ' WHERE court_id={}'.format(court_id) if court_id!=0 else ''), fields)
+        if len(courts)==0:
+            raise Error.court_not_found(court_id)
+        for court in courts:
+            if 'city_id' in court:
+                court['city'] = getters.city(court['city_id'], db=db)
+            if 'type' in court:
+                court['type'] = db.execute("SELECT * FROM court_types WHERE type_id={}".format(court['type']), dbutils.dbfields['court_types'])[0]
+            if 'sport_types' in court:
+                court['sport_types'] = list(map(lambda x: int(x), court['sport_types'].split(',')))
         return dump({'count':len(courts), 'courts':courts})
 
 
@@ -230,6 +322,13 @@ def games_get():
                     "title": city.title(),
                     "geopoint": city.geopoint()}
         return dump({'count':len(games), 'games':games})
+
+
+def get_sport_types():
+    pass
+
+def get_game_types():
+    pass
 
 
 @pages.get('/api/auth')
