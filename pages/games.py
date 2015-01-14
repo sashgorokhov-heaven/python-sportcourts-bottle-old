@@ -240,8 +240,6 @@ def user_visits(user:User, db:dbutils.DBConnection) -> int:
     return db.execute("SELECT COUNT(*) FROM reports WHERE status=2 AND user_id='{}' AND game_id IN (SELECT game_id FROM games WHERE datetime BETWEEN NOW() AND NOW()-INTERVAL 30 DAY)".format(user.user_id()))[0][0]
 
 
-
-
 @utils.spool("send_notify_email")
 def send_notify_email(user_id, game_id):
     user = users.get(user_id)
@@ -264,6 +262,20 @@ def notify(game_id:int):
             send_notify_email(user.user_id(), game.game_id())
         ids = list(map(lambda x: x.user_id(), users_))
         return json.dumps({'count':len(ids), 'users':[[user.user_id(), str(user.name)] for user in users_]})
+
+
+@pages.get('/games/notify_array/<game_id:int>')
+@pages.only_ajax
+@pages.only_organizers
+def notify_array(game_id:int):
+    with dbutils.dbopen() as db:
+        game = games.get_by_id(game_id, dbconnection=db)
+        db.execute("SELECT DISTINCT user_id FROM reports WHERE user_id!=0 AND status=2 AND game_id IN (SELECT game_id FROM games WHERE deleted=0 AND datetime+INTERVAL duration MINUTE < NOW() AND court_id='{}' AND sport_type='{}' AND game_type='{}')".format( # as long as my dick
+            game.court_id(), game.sport_type(), game.game_type()))
+        if len(db.last())==0: return json.dumps({'users':list(), 'count':0})
+        users_ = users.get(list(map(lambda x: x[0], db.last())), dbconnection=db)
+        users_ = list(map(lambda x: {'user_id':x.user_id(), 'name':str(x.name), 'visits':user_visits(x, db)}, users_))
+        return json.dumps({'count':len(users_), 'users':users_})
 
 
 @pages.get('/games/report/<game_id:int>')
