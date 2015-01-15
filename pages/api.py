@@ -8,6 +8,7 @@ import dbutils
 import json
 from modules import logging
 from models import users, cities, ampluas, decode_set, courts, sport_types, game_types, court_types, games
+from models import notifications
 
 
 def dump(obj) -> str:
@@ -165,7 +166,7 @@ def strdatetime(d:dict) -> dict:
     return d
 
 
-def current_user(db:dbutils.DBConnection, detalized:bool=False) -> int:
+def current_user(db:dbutils.DBConnection, detalized:bool=False):
     token = bottle.request.query.get('token')
     user_id = db.execute("SELECT user_id FROM api_auth WHERE token='{}'".format(token))[0][0]
     if detalized:
@@ -353,6 +354,48 @@ def subscribe(game_id:int):
     with dbutils.dbopen() as db:
         user_id = current_user(db)
         games.subscribe(user_id, game_id, dbconnection=db)
+        raise NotImplementedError
+
+
+@pages.get('/api/notifications/count')
+@handle_error
+@check_auth
+def notifications_count():
+    with dbutils.dbopen() as db:
+        user_id = current_user(db)
+        count = notifications.get_count(user_id, dbconnection=db)
+        return {'count':count}
+
+
+@pages.get('/api/notifications/read/<notification_id:int>')
+@handle_error
+@check_auth
+def read_notification(notification_id:int):
+    notifications.read(notification_id)
+    return {'status':'ok'}
+
+
+@pages.get('/api/notifications/delete/<notification_id:int>')
+@handle_error
+@check_auth
+def delete_notification(notification_id:int):
+    notifications.delete(notification_id)
+    return {'status':'ok'}
+
+
+@pages.get('/api/notifications/get')
+@handle_error
+@check_auth
+def get_notifications():
+    with dbutils.dbopen() as db:
+        user = current_user(db, True)
+        count = notifications.get_count(user.user_id(), dbconnection=db)
+        notif = dict()
+        notif['all'] = list(map(lambda x: x._notification, notifications.get(user.user_id(), type=0, all=count==0, dbconnection=db)))
+        notif['subscribed'] = list(map(lambda x: x._notification, notifications.get(user.user_id(), type=1, all=count==0, dbconnection=db)))
+        if user.userlevel.resporgadmin():
+            notif['responsible'] = list(map(lambda x: x._notification, notifications.get(user.user_id(), type=2, all=count==0, dbconnection=db)))
+        return {'notifications':notif, 'all':count==0}
 
 
 @pages.get('/api/auth')
