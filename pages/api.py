@@ -20,7 +20,7 @@ def response(obj) -> str:
 def error(obj) -> str:
     return dump({'error':obj})
 
-def generate_token(length:int=30) -> str:
+def generate_token(length:int=20) -> str:
     return ''.join(random.sample(list(itertools.chain(map(chr, range(65, 91)), map(chr, range(97, 122)), map(str, range(1, 10)))), length))
 
 
