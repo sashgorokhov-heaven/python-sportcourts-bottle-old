@@ -280,6 +280,7 @@ def recalc_game(game_id:int):
 
 
 @pages.get(['/admin/finances', '/admin/finances/<month:int>', '/admin/finances/<month:int>/<year:int>'])
+@pages.only_admins
 def new_finances(month:int=0, year:int=0):
     with dbutils.dbopen() as db:
         dates = db.execute("SELECT DISTINCT MONTH(datetime), YEAR(datetime) FROM finances ORDER BY datetime DESC")
