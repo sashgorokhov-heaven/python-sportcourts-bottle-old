@@ -36,6 +36,9 @@ class BeautifulDatetime:
     def day_month(self) -> str:  # '25 Сентября'
         return self.day() + ' ' + self.month(True)
 
+    def month_year(self, parent:bool=False) -> str:
+        return self.month(parent)+' '+str(self._datetime.year)
+
     def __str__(self) -> str:
         return self.day_month() + ', ' + self.time()
 

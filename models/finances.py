@@ -1,6 +1,6 @@
 import dbutils
 from models import sport_types, autodb
-from objects import Game, Court, Outlay
+from objects import Game, Court, Outlay, GameFinance
 
 def probability_density():
     with dbutils.dbopen() as db:
@@ -21,9 +21,22 @@ def probability_density():
 
 
 @autodb
-def get_outlays(dbconnection:dbutils.DBConnection=None) -> list:
+def get_all_outlays(dbconnection:dbutils.DBConnection=None) -> list:
     dbconnection.execute("SELECT * FROM outlays", dbutils.dbfields['outlays'])
-    return list(map(lambda x: Outlay(x), dbconnection.last()))
+    return list(map(Outlay, dbconnection.last()))
+
+
+@autodb
+def get_outlays_by_date(month:int=0, year:int=0, dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT * FROM outlays WHERE MONTH(datetime)={} AND YEAR(datetime)={}".format(
+        'NOW()' if month==0 else month,
+        'NOW()' if year==0 else year), dbutils.dbfields['outlays'])
+    return list(map(Outlay, dbconnection.last()))
+
+
+@autodb
+def get_current_month_outlays(dbconnection:dbutils.DBConnection=None):
+    return get_outlays_by_date(dbconnection=dbconnection)
 
 
 def add_outlay(datetime:str, title:str, description:str, cost:int):
@@ -173,8 +186,58 @@ class Finances:
         return {i:self.__dict__[i] for i in self.__dict__ if not i.startswith('_')}
 
 
+class NewFinances:
+    @staticmethod
+    def percents(n:int, mx:int, digits:int=1) -> int:
+        return round((n/mx)*100, digits) if mx!=0 else 0
+
+    def __init__(self, game_finances_list:list, db:dbutils.DBConnection):
+        self.games = game_finances_list
+        self.games_dict = {game.game_id():game for game in self.games}
+        self.sports = {sport.sport_id():sport for sport in sport_types.get(0, dbconnection=db)}
+        self.real_games = db.execute("SELECT * FROM games WHERE game_id IN ({})".format(
+            ', '.join(list(map(str, self.games_dict.keys())))), dbutils.dbfields['games'])
+        self.real_games_dict = {game['game_id']:game for game in self.real_games}
+        summ = lambda field: sum([getattr(game, field)() for game in self.games])
+
+        self.ideal_income = summ('ideal_income')
+        self.empty = summ('empty')
+        self.lost_empty = summ('lost_empty')
+        self.notvisited = summ('notvisited')
+        self.lost_notvisited = summ('lost_notvisited')
+        self.notpayed = summ('notpayed')
+        self.lost_notpayed = summ('lost_notpayed')
+        self.real_income = summ('real_income')
+        self.rent_charges = summ('rent_charges')
+        self.additional_charges = summ('additional_charges')
+        self.profit = summ('profit')
+
+        self.sport_games = dict() # sport_type -> [game_id]
+        for game in self.games:
+            if game.sport_id() not in self.sport_games:
+                self.sport_games[game.sport_id()] = [game.game_id()]
+            else:
+                self.sport_games[game.sport_id()].append(game.game_id())
+
+        self.sport_money = dict()
+        for sport_id in self.sport_games:
+            self.sport_money[sport_id] = sum([self.games_dict[game_id].profit() for game_id in self.sport_games[sport_id]])
+
+        finances = db.execute("SELECT * FROM salary", dbutils.dbfields['salary'])
+        finances_by_user = dict()  # user_id -> [finance]
+        for fin in finances:
+            if fin['user_id'] not in finances_by_user:
+                finances_by_user[fin['user_id']] = [fin]
+            else:
+                finances_by_user[fin['user_id']].append(fin)
+
+        self.user_salary = dict()
+        for user_id in finances_by_user:
+            self.user_salary[user_id] = sum([self.sport_money[fin['sport_id']]*(fin['percents']/100) for fin in finances_by_user[user_id] if fin['sport_id'] in self.sport_money])
+
+
 @autodb
-def calc_game(game_id:int, dbconnection:dbutils.DBConnection) -> dict:
+def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
     game = dbconnection.execute("SELECT * FROM games WHERE game_id={}".format(game_id), dbutils.dbfields['games'])[0]
     game = Game(game, dbconnection=dbconnection)
     reports = dbconnection.execute("SELECT * FROM reports WHERE game_id={}".format(game_id), dbutils.dbfields['reports'])
@@ -208,14 +271,45 @@ def calc_game(game_id:int, dbconnection:dbutils.DBConnection) -> dict:
     return finances
 
 @autodb
-def add_game_finances(game_id:int, dbconnection:dbutils.DBConnection):
+def add_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):
     finances = calc_game(game_id, dbconnection=dbconnection)
     sql = "INSERT INTO finances VALUES ({})".format(', '.join(["'{}'".format(finances[i]) for i in dbutils.dbfields['finances']]))
     dbconnection.execute(sql)
 
 
 @autodb
-def update_game_finances(game_id:int, dbconnection:dbutils.DBConnection):
+def update_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):
     finances = calc_game(game_id, dbconnection=dbconnection)
     sql = "UPDATE finances SET {} WHERE game_id={}".format(', '.join(["{}='{}'".format(i, finances[i]) for i in dbutils.dbfields['finances'] if i!='game_id']), game_id)
     dbconnection.execute(sql)
+
+
+@autodb
+def get(game_id:int, dbconnection:dbutils.DBConnection=None) -> GameFinance:
+    dbconnection.execute("SELECT * FROM finances WHERE game_id={}".format(game_id), dbutils.dbfields['finances'])
+    if len(dbconnection.last())==0:
+        return None
+    return GameFinance(dbconnection.last()[0])
+
+
+@autodb
+def get_all(dbconnection:dbutils.DBConnection=None) -> GameFinance:
+    dbconnection.execute("SELECT * FROM finances", dbutils.dbfields['finances'])
+    return list(map(lambda x: GameFinance(x, dbconnection), dbconnection.last()))
+
+
+@autodb
+def get_by_date(month:int=0, year:int=0, dbconnection:dbutils.DBConnection=None) -> GameFinance:
+    dbconnection.execute("SELECT * FROM finances WHERE MONTH(datetime)={} AND YEAR(datetime)={}".format(
+        'NOW()' if month==0 else month,
+        'NOW()' if year==0 else year), dbutils.dbfields['finances'])
+    return list(map(lambda x: GameFinance(x, dbconnection), dbconnection.last()))
+
+@autodb
+def get_current_month(dbconnection:dbutils.DBConnection=None) -> GameFinance:
+    return get_by_date(dbconnection=dbconnection)
+
+@autodb
+def get_additional_charges(game_id:int, dbconnection:dbutils.DBConnection=None) -> list:
+    dbconnection.execute("SELECT * FROM additional_charges WHERE game_id={}".format(game_id), dbutils.dbfields['additional_charges'])
+    return dbconnection.last()

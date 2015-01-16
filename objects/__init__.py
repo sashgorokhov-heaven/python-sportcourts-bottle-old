@@ -459,6 +459,95 @@ class User:
         return 1
 
 
+class GameFinance:
+    def __init__(self, finance:dict, dbconnection:dbutils.DBConnection=None):
+        self._finance = finance
+        self._db = dbconnection
+        self.datetime = DateTime(self._finance['datetime'])
+
+    def game_id(self) -> int:
+        return self._finance['game_id']
+
+    def capacity(self) -> int:
+        return self._finance['capacity']
+
+    def cost(self) -> int:
+        return self._finance['cost']
+
+    def sport_id(self, detalized:bool=False) -> SportType:
+        if not detalized:
+            if isinstance(self._finance['sport_id'], SportType):
+                return self._finance['sport_id'].sport_id()
+            else:
+                return self._finance['sport_id']
+        if not isinstance(self._finance['sport_id'], SportType):
+            self._finance['sport_id'] = sport_types.get(self._finance['sport_id'], dbconnection=self._db)
+        return self._finance['sport_id']
+
+    def responsible_user_id(self, detalized:bool=False) -> User:
+        if not detalized:
+            if isinstance(self._finance['responsible_user_id'], User):
+                return self._finance['responsible_user_id'].user_id()
+            else:
+                return self._finance['responsible_user_id']
+        if not isinstance(self._finance['responsible_user_id'], User):
+            self._finance['responsible_user_id'] = users.get(self._finance['responsible_user_id'], dbconnection=self._db)
+        return self._finance['responsible_user_id']
+
+    def created_by(self, detalized:bool=False) -> User:
+        if not detalized:
+            if isinstance(self._finance['created_by'], User):
+                return self._finance['created_by'].user_id()
+            else:
+                return self._finance['created_by']
+        if not isinstance(self._finance['created_by'], User):
+            self._finance['created_by'] = users.get(self._finance['created_by'], dbconnection=self._db)
+        return self._finance['created_by']
+
+    def visited(self) -> int:
+        return self._finance['visited']
+
+    def empty(self) -> int:
+        return self._finance['empty']
+
+    def lost_empty(self) -> int:
+        return self._finance['lost_empty']
+
+    def notvisited(self) -> int:
+        return self._finance['notvisited']
+
+    def lost_notvisited(self) -> int:
+        return self._finance['lost_notvisited']
+
+    def notpayed(self) -> int:
+        return self._finance['notpayed']
+
+    def lost_notpayed(self) -> int:
+        return self._finance['lost_notpayed']
+
+    def playedpayed(self) -> int:
+        return self._finance['playedpayed']
+
+    def real_income(self) -> int:
+        return self._finance['real_income']
+
+    def ideal_income(self) -> int:
+        return self._finance['ideal_income']
+
+    def rent_charges(self) -> float:
+        return self._finance['rent_charges']
+
+    def additional_charges(self, detalized:bool=False):
+        if detalized:
+            if '_additional_charges' not in self._finance:
+                self._finance['_additional_charges'] = finances.get_additional_charges(self.game_id(), dbconnection=self._db)
+            return self._finance['_additional_charges']
+        return self._finance['additional_charges']
+
+    def profit(self) -> float:
+        return self._finance['profit']
+
+
 class BlogPost:
     def __init__(self, blog_post:dict, dbconnection:dbutils.DBConnection=None):
         self._blog_post = blog_post
@@ -728,6 +817,7 @@ import models.users as users
 import models.ampluas as ampluas
 import models.ban as ban
 import models.comands as comands
+import models.finances as finances
 import models.court_types as court_types
 import models.reports as reports
 import models.blog as blog
