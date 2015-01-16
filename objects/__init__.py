@@ -550,6 +550,9 @@ class GameFinance:
     def profit(self) -> float:
         return self._finance['profit']
 
+    def real_profit(self) -> int:
+        return self._finance['real_profit']
+
 
 class BlogPost:
     def __init__(self, blog_post:dict, dbconnection:dbutils.DBConnection=None):

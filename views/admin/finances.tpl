@@ -31,10 +31,23 @@
                 Прибыль: <span class="label label-{{'danger' if fin.profit<0 else 'success'}}">{{round(fin.profit)}}</span><br>
             </p>
             <p class="text-default">
+                Зарплаты ответсвенным: <span class="label label-danger">{{fin.responsible_salary}}</span>
+            </p>
+            <p class="lead text-{{'danger' if fin.real_profit<0 else 'success'}}">
+                Итого: <span class="label label-{{'danger' if fin.real_profit<0 else 'success'}}">{{round(fin.real_profit)}}</span><br>
+            </p>
+            <p class="text-default">
                 <h4 style="margin-top:40px; margin-bottom:0">Зарплаты:</h4><br>
                 % for user_id in fin.user_salary:
                     % user, salary = fin.user_salary[user_id]
-                    {{user.name}}: <span class="label label-{{'danger' if salary<0 else 'success'}}">{{round(salary)}}</span><br>
+                    {{user.name}}: <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span>
+                    % if user_id in fin.game_by_responsible:
+                        % resp_salary = sum([game.responsible_salary() for game in fin.game_by_responsible[user_id]])
+                        + <span class="label label-{{'danger' if resp_salary<=0 else 'success'}}">{{round(resp_salary)}}</span>
+                        % salary += resp_salary
+                        = <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span>
+                    % end
+                    <br>
                 % end
             </p>
 		</div>

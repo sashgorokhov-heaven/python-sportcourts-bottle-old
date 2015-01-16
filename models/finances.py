@@ -1,6 +1,15 @@
 import dbutils
-from models import sport_types, autodb
+from models import sport_types, autodb, users
 from objects import Game, Court, Outlay, GameFinance
+
+def group(key, iterable) -> dict:
+    d = dict()
+    for i in iterable:
+        if key(i) not in d:
+            d[key(i)] = [i]
+        else:
+            d[key(i)].append(i)
+    return d
 
 def probability_density():
     with dbutils.dbopen() as db:
@@ -211,30 +220,31 @@ class NewFinances:
         self.rent_charges = summ('rent_charges')
         self.additional_charges = summ('additional_charges')
         self.profit = summ('profit')
+        self.responsible_salary = summ('responsible_salary')
+        self.real_profit = summ('real_profit')
 
-        self.sport_games = dict() # sport_type -> [game_id]
-        for game in self.games:
-            if game.sport_id() not in self.sport_games:
-                self.sport_games[game.sport_id()] = [game.game_id()]
-            else:
-                self.sport_games[game.sport_id()].append(game.game_id())
+        self.game_by_responsible = group(lambda x: x.responsible_user_id(), self.games)
+
+        db.execute("SELECT * FROM responsible_games_salary WHERE game_id IN ({})".format(
+            ', '.join([str(game.game_id()) for game in self.games])), dbutils.dbfields['responsible_games_salary'])
+        self.salary = group(lambda x: x['user_id'], db.last())
+        self.users_get = users.get
+
+        self.sport_games = group(lambda x: x.sport_id(), self.games)
 
         self.sport_money = dict()
         for sport_id in self.sport_games:
-            self.sport_money[sport_id] = sum([self.games_dict[game_id].profit() for game_id in self.sport_games[sport_id]])
+            self.sport_money[sport_id] = sum([game.real_profit() for game in self.sport_games[sport_id]])
 
         finances = db.execute("SELECT * FROM salary", dbutils.dbfields['salary'])
-        finances_by_user = dict()  # user_id -> [finance]
-        for fin in finances:
-            if fin['user_id'] not in finances_by_user:
-                finances_by_user[fin['user_id']] = [fin]
-            else:
-                finances_by_user[fin['user_id']].append(fin)
+        finances_by_user = group(lambda x: x['user_id'], finances)
 
         self.user_salary = dict()
         for user_id in finances_by_user:
             self.user_salary[user_id] = sum([self.sport_money[fin['sport_id']]*(fin['percents']/100) for fin in finances_by_user[user_id] if fin['sport_id'] in self.sport_money])
-
+        #for user_id in self.game_by_responsible:
+        #    if user_id in self.user_salary:
+        #        self.user_salary[user_id] += sum([game.responsible_salary() for game in self.game_by_responsible[user_id]])
 
 @autodb
 def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
@@ -270,10 +280,11 @@ def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
     finances['profit'] = finances['real_income']-finances['rent_charges']-finances['additional_charges']
 
     dbconnection.execute("SELECT percents FROM responsible_salary WHERE user_id={}".format(game.responsible_user_id()))
-    if len(dbconnection.last())==0:
-        finances['responsible_salary'] = 0
-    else:
+    finances['responsible_salary'] = 0
+    if len(dbconnection.last())>0 and finances['profit']>0:
         finances['responsible_salary'] = round(finances['profit']*(dbconnection.last()[0][0]/100))
+
+    finances['real_profit'] = finances['profit'] - finances['responsible_salary']
 
     return finances
 
@@ -283,7 +294,7 @@ def add_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):
     sql = "INSERT INTO finances VALUES ({})".format(', '.join(["'{}'".format(finances[i]) for i in dbutils.dbfields['finances']]))
     dbconnection.execute(sql)
     dbconnection.execute("SELECT percents FROM responsible_salary WHERE user_id={}".format(finances['responsible_user_id']))
-    if len(dbconnection.last())==0:
+    if finances['profit']>0 and len(dbconnection.last())>0:
         percents = dbconnection.last()[0][0]
         dbconnection.execute("INSERT INTO responsible_games_salary VALUES ({}, {}, {}, {}, {})".format(
             finances['responsible_user_id'], game_id, finances['profit'], percents, finances['responsible_salary']))
