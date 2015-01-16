@@ -273,6 +273,12 @@ def get_add_outlays():
     raise bottle.redirect("/admin/outlays")
 
 
+@pages.get('/admin/add_game_finance/<game_id:int>')
+@pages.only_admins
+def add_game_finance(game_id:int):
+    finances.add_game_finances(game_id)
+
+
 @pages.get('/admin/recalc_game/<game_id:int>')
 @pages.only_admins
 def recalc_game(game_id:int):
