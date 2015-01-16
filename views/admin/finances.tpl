@@ -1,9 +1,10 @@
 % rebase("_adminpage", title="Админка")
-<h2 class="page-header">Финансы -
+<h2 class="page-header">Финансы {{current_date}} -
     <select id="date_select">
         % for date in dates:
             <option value="{{date[0]}}" {{'selected' if date[1]==current_date else ''}}>{{date[1]}}</option>
         % end
+    % print(current_date)
     </select>
 </h2>
 <div class="container">
