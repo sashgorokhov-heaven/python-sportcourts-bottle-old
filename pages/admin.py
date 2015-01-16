@@ -256,18 +256,6 @@ def conversion():
     return str(logs.conversion())
 
 
-@pages.get('/admin/outlays')
-@pages.only_admins
-def get_outlays():
-    return pages.PageBuilder('outlays_table', outlays=finances.get_all_outlays())
-
-
-@pages.get('/admin/outlays/add')
-@pages.only_admins
-def get_add_outlays():
-    return pages.PageBuilder('outlays_add')
-
-
 @pages.post('/admin/outlays/addnegative')
 @pages.only_admins
 def get_add_outlays():
@@ -307,4 +295,4 @@ def new_finances(month:int=0, year:int=0):
         for user_id in fin.user_salary:
             fin.user_salary[user_id] = (users.get(user_id, dbconnection=db), fin.user_salary[user_id])
         return pages.PageBuilder('finances', dates=dates, current_date='{}/{}'.format(month, year),
-                                 fin=fin)
+                                 fin=fin, outlays=outlays)
