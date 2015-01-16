@@ -47,8 +47,7 @@ def _spool_dispatcher(*args, **kwargs):
             except KeyError as e:
                 logfunc(e.args[0], e)
                 return uwsgi.SPOOL_OK
-        pickleddata = pickle.loads(data['data'])
-        args, kwargs = pickleddata
+        args, kwargs = data['data']
         try:
             retval = _spoolers[spool_key](*args, **kwargs)
         except Exception as e:
