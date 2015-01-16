@@ -51,7 +51,7 @@ $(document).on('change','#date_select',function(){
         data.addColumn('number', 'Аренда');
         data.addColumn('number', 'Доптраты');
         data.addColumn('number', 'Прибыль');
-        % games = sorted(fin.games, key=lambda x: x.datetime(), reverse=True)
+        % games = sorted(fin.games, key=lambda x: x.datetime())
         data.addRows([
           % for n, game in enumerate(games):
             ['{{game.game_id()}}',
