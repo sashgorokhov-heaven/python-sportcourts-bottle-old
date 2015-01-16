@@ -266,7 +266,14 @@ def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
     finances['ideal_income'] = finances['cost']*finances['capacity'] if finances['capacity']>0 else finances['real_income']
     finances['rent_charges'] = game.court_id(True).cost()*(game.duration()/60)
     finances['additional_charges'] = sum([i['cost'] for i in additional_charges])
+
     finances['profit'] = finances['real_income']-finances['rent_charges']-finances['additional_charges']
+
+    dbconnection.execute("SELECT percents FROM responsible_salary WHERE user_id={}".format(game.responsible_user_id()))
+    if len(dbconnection.last())==0:
+        finances['responsible_salary'] = 0
+    else:
+        finances['responsible_salary'] = round(finances['profit']*(dbconnection.last()[0][0]/100))
 
     return finances
 
@@ -275,7 +282,11 @@ def add_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):
     finances = calc_game(game_id, dbconnection=dbconnection)
     sql = "INSERT INTO finances VALUES ({})".format(', '.join(["'{}'".format(finances[i]) for i in dbutils.dbfields['finances']]))
     dbconnection.execute(sql)
-
+    dbconnection.execute("SELECT percents FROM responsible_salary WHERE user_id={}".format(finances['responsible_user_id']))
+    if len(dbconnection.last())==0:
+        percents = dbconnection.last()[0][0]
+        dbconnection.execute("INSERT INTO responsible_games_salary VALUES ({}, {}, {}, {}, {})".format(
+            finances['responsible_user_id'], game_id, finances['profit'], percents, finances['responsible_salary']))
 
 @autodb
 def update_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):

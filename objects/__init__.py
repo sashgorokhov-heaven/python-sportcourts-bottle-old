@@ -544,6 +544,9 @@ class GameFinance:
             return self._finance['_additional_charges']
         return self._finance['additional_charges']
 
+    def responsible_salary(self) -> int:
+        return self._finance['responsible_salary']
+
     def profit(self) -> float:
         return self._finance['profit']
 
