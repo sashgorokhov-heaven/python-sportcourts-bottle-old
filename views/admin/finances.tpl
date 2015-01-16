@@ -94,7 +94,7 @@
                         </p>
                       </td>
                       <td>
-                        <p>{{fin.percents(game.profit(), game.playedpayed(), 0)}} RUB</p>
+                        <p>{{round(game.profit()/game.playedpayed())}} RUB</p>
                       </td>
                     </tr>
                 % end
