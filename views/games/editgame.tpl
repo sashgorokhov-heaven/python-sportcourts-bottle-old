@@ -175,6 +175,10 @@
                 Посмотреть отписавшихся
               </a>
               <br><br>
+              <a class="btn btn-success" data-toggle="modal" data-target="#oldlistModal">
+                Посмотреть бывших
+              </a>
+              <br><br>
             % end
             % if not game.reported():
               <a class="btn btn-success" id="inviteoldbutton" role="button" href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Пригласить бывших</a>
@@ -313,6 +317,67 @@
         <div class="table-responsive">
           <table class="table table-hover table-bordered" id="invitelistTable">
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="oldlistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Список прошлых посетителей</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          % if len(game.subscribed())>0:
+            <table class="table table-hover table-bordered">
+              % for n, user in enumerate(game.subscribed(True), 1):
+              <tr class="success">
+                <td>{{n}}</td>
+                <td>
+                  <a href="/profile/{{user.user_id()}}" target="_blank">
+                    {{user.name.first()}}
+                  </a>
+                </td>
+                <td>
+                  <a href="/profile/{{user.user_id()}}" target="_blank">
+                    {{user.name.last()}}
+                  </a>
+                </td>
+                <td>{{user.phone()}}</td>
+                <td>
+                  % if not game.reported() and not game.datetime.passed:
+                    <a href="/games/unsubscribe/{{game.game_id()}}/{{user.user_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
+                  % end
+                </td>
+              </tr>
+              % end
+              % for n, user in enumerate(game.reserved_people(True), 1):
+              <tr class="warning">
+                <td>{{n}}</td>
+                <td>
+                  <a href="/profile/{{user.user_id()}}" target="_blank">
+                    {{user.name.first()}}
+                  </a>
+                </td>
+                <td>
+                  <a href="/profile/{{user.user_id()}}" target="_blank">
+                    {{user.name.last()}}
+                  </a>
+                </td>
+                <td>{{user.phone()}}</td>
+                <td>
+                  % if not game.reported() and not game.datetime.passed:
+                    <a href="/games/unreserve/{{game.game_id()}}/{{user.user_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
+                  % end
+                </td>
+              </tr>
+              % end
+            </table>
+          % end
         </div>
       </div>
     </div>
