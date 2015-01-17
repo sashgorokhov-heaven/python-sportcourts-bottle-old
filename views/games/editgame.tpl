@@ -348,32 +348,6 @@
                   </a>
                 </td>
                 <td>{{user.phone()}}</td>
-                <td>
-                  % if not game.reported() and not game.datetime.passed:
-                    <a href="/games/unsubscribe/{{game.game_id()}}/{{user.user_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
-                  % end
-                </td>
-              </tr>
-              % end
-              % for n, user in enumerate(game.reserved_people(True), 1):
-              <tr class="warning">
-                <td>{{n}}</td>
-                <td>
-                  <a href="/profile/{{user.user_id()}}" target="_blank">
-                    {{user.name.first()}}
-                  </a>
-                </td>
-                <td>
-                  <a href="/profile/{{user.user_id()}}" target="_blank">
-                    {{user.name.last()}}
-                  </a>
-                </td>
-                <td>{{user.phone()}}</td>
-                <td>
-                  % if not game.reported() and not game.datetime.passed:
-                    <a href="/games/unreserve/{{game.game_id()}}/{{user.user_id()}}"><span class="glyphicon glyphicon-remove"></span></a>
-                  % end
-                </td>
               </tr>
               % end
             </table>
