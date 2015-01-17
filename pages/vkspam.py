@@ -10,7 +10,7 @@ import json
 _time_format_ = '%Y-%m-%d %H:%M:%S'
 
 
-connection = dbutils.default_connection
+connection = dbutils.default_connection.copy()
 connection['host'] = 'test.sportcourts.ru'
 connection['db'] = 'vkbot'
 
