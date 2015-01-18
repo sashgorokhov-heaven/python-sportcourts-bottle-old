@@ -39,15 +39,9 @@
             <p class="text-default">
                 <h4 style="margin-top:40px; margin-bottom:0">Зарплаты:</h4><br>
                 % for user_id in fin.user_salary:
-                    % user, salary = fin.user_salary[user_id]
-                    {{user.name}}: <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span>
-                    % if user_id in fin.game_by_responsible:
-                        % resp_salary = sum([game.responsible_salary() for game in fin.game_by_responsible[user_id]])
-                        + <span class="label label-{{'danger' if resp_salary<=0 else 'success'}}">{{round(resp_salary)}}</span>
-                        % salary += resp_salary
-                        = <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span>
-                    % end
-                    <br>
+                    % salary = fin.user_salary[user_id]
+                    % user = fin.users_get(user_id)
+                    {{user.name}}: <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span><br>
                 % end
             </p>
 		</div>

@@ -59,147 +59,6 @@ class Finances:
     def percents(n:int, mx:int, digits:int=1) -> int:
         return round((n/mx)*100, digits) if mx!=0 else 0
 
-    def __init__(self, month:int, year:int, db:dbutils.DBConnection):
-        self._db = db
-
-        if month==0:
-            month = 'MONTH(NOW())'
-            year = 'YEAR(NOW())'
-        elif year==0:
-            year = 'YEAR(NOW())'
-
-        self.games = db.execute("SELECT * FROM games WHERE "
-                                "MONTH(datetime)={} AND "
-                                "YEAR(datetime)={} AND "
-                                "datetime+INTERVAL duration MINUTE<NOW() AND "
-                                "capacity>0 AND deleted=0 AND "
-                                "game_id IN (SELECT game_id FROM reports) ORDER BY datetime DESC".format(month, year), dbutils.dbfields['games'])
-        self.games = list(map(lambda x: Game(x, dbconnection=db), self.games))
-        self.games_dict = {game.game_id():game for game in self.games}
-
-        self.reports = db.execute("SELECT * FROM reports WHERE game_id IN ({})".format(', '.join(map(str, self.games_dict))),
-                     dbutils.dbfields['reports']) if len(self.games)>0 else list()
-        self.reports_dict = dict()
-
-        self.additional_charges = db.execute("SELECT * FROM additional_charges WHERE game_id IN ({})".format(', '.join(map(str, self.games_dict))),
-                                             dbutils.dbfields['additional_charges'])  if len(self.games)>0 else list()
-        self.additional_charges_dict = dict()
-        for charge in self.additional_charges:
-            if charge['game_id'] in self.additional_charges_dict:
-                self.additional_charges_dict[charge['game_id']].append(charge)
-            else:
-                self.additional_charges_dict[charge['game_id']] = [charge]
-
-        for report in self.reports:
-            if report['game_id'] not in self.reports_dict:
-                self.reports_dict[report['game_id']] = [report]
-            else:
-                self.reports_dict[report['game_id']].append(report)
-
-        self.courts = db.execute("SELECT * FROM courts", dbutils.dbfields['courts'])
-        self.courts = list(map(lambda x: Court(x, dbconnection=db), self.courts))
-        self.courts_dict = {court.court_id():court for court in self.courts}
-        self.sports = {sport.sport_id():sport for sport in sport_types.get(0, dbconnection=db)}
-
-        self.games_by_courts = {court_id:list(filter(lambda x: x.court_id()==court_id, self.games)) for court_id in {game.court_id() for game in self.games}}
-
-        delete_keys = list()
-        for game_id in self.games_dict:
-            if game_id not in self.reports_dict:
-                delete_keys.append(game_id)
-        for game_id in delete_keys:
-            self.games_dict.pop(game_id)
-            p = None
-            for n, game in enumerate(self.games):
-                if game['game_id']==game_id:
-                    p = n
-                    break
-            self.games.pop(p)
-
-        self.games_counted = dict() # game_id -> data
-        for game in self.games:
-            counted = dict()
-            if len(self.reports_dict[game.game_id()])<=game.capacity():
-                counted['ideal_income'] = game.capacity()*game.cost()
-            else:
-                counted['ideal_income'] = len(self.reports_dict[game.game_id()])*game.cost()
-            counted['empty'] = game.capacity()-len(self.reports_dict[game.game_id()])
-            if counted['empty']<0: counted['empty']=0
-            counted['lost_empty'] = counted['empty']*game.cost()
-            counted['notvisited'] = len(list(filter(lambda x: x['status']==0, self.reports_dict[game.game_id()])))
-            counted['lost_notvisited'] = counted['notvisited']*game.cost()
-            counted['notpayed'] = len(list(filter(lambda x: x['status']==1, self.reports_dict[game.game_id()])))
-            counted['lost_notpayed'] = counted['notpayed']*game.cost()
-            counted['playedpayed'] = len(list(filter(lambda x: x['status']==2, self.reports_dict[game.game_id()])))
-            counted['real_income'] = counted['playedpayed']*game.cost()
-            counted['rent_charges'] = self.courts_dict[game.court_id()].cost()*(game.duration()/60)
-            if game.game_id() in self.additional_charges_dict:
-                counted['additional_charges'] = sum([i['cost'] for i in self.additional_charges_dict[game.game_id()]])
-            else:
-                counted['additional_charges'] = 0
-            counted['profit'] = counted['real_income']-counted['rent_charges']-counted['additional_charges']
-
-            self.games_counted[game.game_id()] = counted
-
-        def sumgames(attr:str) -> int:
-            return sum(map(lambda x: self.games_counted[x.game_id()][attr], self.games))
-
-
-
-        self.ideal_income = sumgames('ideal_income')
-        #self.ideal_income += sum([len(self.reports_dict[game['game_id']])*game['cost'] for game in self.games if game['capacity']<0])
-
-        self.played_users = list(filter(lambda x: x['status']==2, self.reports))
-        self.played_unique = {i['user_id'] for i in self.played_users if i['user_id']!=0}
-
-        self.empty = sumgames('empty')
-        self.lost_empty = sumgames('lost_empty')
-
-        self.notvisited = sumgames('notvisited')
-        self.lost_notvisited = sumgames('lost_notvisited')
-
-        self.notpayed = sumgames('notpayed')
-        self.lost_notpayed = sumgames('lost_notpayed')
-
-        self.real_income = sumgames('real_income')
-        self.rent_charges = sumgames('rent_charges')
-        self.additional_charges = sumgames('additional_charges')
-
-        self.profit = sumgames('profit')
-
-        self.sport_games = dict() # sport_type -> [game_id]
-        for game in self.games:
-            if game.sport_type() not in self.sport_games:
-                self.sport_games[game.sport_type()] = [game.game_id()]
-            else:
-                self.sport_games[game.sport_type()].append(game.game_id())
-
-        self.sport_money = dict()
-        for sport_id in self.sport_games:
-            self.sport_money[sport_id] = sum([self.games_counted[game_id]['profit'] for game_id in self.sport_games[sport_id]])
-
-        finances = db.execute("SELECT * FROM salary", dbutils.dbfields['salary'])
-        finances_by_user = dict() # user_id -> [finance]
-        for fin in finances:
-            if fin['user_id'] not in finances_by_user:
-                finances_by_user[fin['user_id']] = [fin]
-            else:
-                finances_by_user[fin['user_id']].append(fin)
-
-        self.user_salary = dict()
-        for user_id in finances_by_user:
-            self.user_salary[user_id] = sum([self.sport_money[fin['sport_id']]*(fin['percents']/100) for fin in finances_by_user[user_id] if fin['sport_id'] in self.sport_money])
-
-
-    def dict(self) -> dict:
-        return {i:self.__dict__[i] for i in self.__dict__ if not i.startswith('_')}
-
-
-class NewFinances:
-    @staticmethod
-    def percents(n:int, mx:int, digits:int=1) -> int:
-        return round((n/mx)*100, digits) if mx!=0 else 0
-
     def __init__(self, game_finances_list:list, db:dbutils.DBConnection):
         self.games = game_finances_list
         self.games_dict = {game.game_id():game for game in self.games}
@@ -236,15 +95,11 @@ class NewFinances:
         for sport_id in self.sport_games:
             self.sport_money[sport_id] = sum([game.real_profit() for game in self.sport_games[sport_id]])
 
-        finances = db.execute("SELECT * FROM salary", dbutils.dbfields['salary'])
-        finances_by_user = group(lambda x: x['user_id'], finances)
+        a = db.execute("SELECT * FROM finance_balance WHERE user_id!=0 AND YEAR(date)={} AND MONTH(date)={}".format(
+            self.games[-1].datetime().date().year, self.games[0].datetime().date().month
+        ), dbutils.dbfields['finance_balance']) if len(self.games)>0 else list()
+        self.user_salary = {i['user_id']:i['value'] for i in a}
 
-        self.user_salary = dict()
-        for user_id in finances_by_user:
-            self.user_salary[user_id] = sum([self.sport_money[fin['sport_id']]*(fin['percents']/100) for fin in finances_by_user[user_id] if fin['sport_id'] in self.sport_money])
-        #for user_id in self.game_by_responsible:
-        #    if user_id in self.user_salary:
-        #        self.user_salary[user_id] += sum([game.responsible_salary() for game in self.game_by_responsible[user_id]])
 
 @autodb
 def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
@@ -298,6 +153,24 @@ def add_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):
         percents = dbconnection.last()[0][0]
         dbconnection.execute("INSERT INTO responsible_games_salary VALUES ({}, {}, {}, {}, {})".format(
             finances['responsible_user_id'], game_id, finances['profit'], percents, finances['responsible_salary']))
+    dbconnection.execute("SELECT * FROM finance_balance WHERE user_id!=0 AND YEAR(date)={} AND MONTH(date)={}".format(
+        finances['datetime'].date().year, finances['datetime'].date().month), dbutils.dbfields['finance_balance'])
+    if len(dbconnection.last())==0:
+        dbconnection.execute("INSERT INTO finance_balance VALUES ('Александр Горохов', 0, 3, '{year}-{month}-01', 50), ('Виталий Харченко', 0, 1, '{year}-{month}-01', 50)".format(
+            year=finances['datetime'].date().year, month=finances['datetime'].date().month))
+    owners = dbconnection.last()
+    balance = dbconnection.execute("SELECT * FROM finance_balance WHERE user_id=0", dbutils.dbfields['finance_balance'])[0]
+    for owner in owners:
+        percents = owner['percents']
+        money = round(finances['real_profit']*(percents/100))
+        if owner['user_id']==finances['responsible_user_id']:
+            money += finances['responsible_salary']
+        dbconnection.execute("UPDATE finance_balance SET value=value+{} WHERE user_id={} AND YEAR(date)={} AND MONTH(date)={}".format(
+            money, owner['user_id'], finances['datetime'].date().year, finances['datetime'].date().month))
+    percents = balance['percents']
+    money = finances['real_profit']*(percents/100)
+    dbconnection.execute("UPDATE finance_balance SET value=value+{} WHERE user_id=0".format(money))
+
 
 @autodb
 def update_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):

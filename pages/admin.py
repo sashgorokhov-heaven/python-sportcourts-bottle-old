@@ -297,9 +297,7 @@ def new_finances(month:int=0, year:int=0):
             year = datetime.date.today().year
         outlays = finances.get_outlays_by_date(month, year, dbconnection=db)
         games_finances = finances.get_by_date(month, year, dbconnection=db)
-        fin = finances.NewFinances(games_finances, db)
+        fin = finances.Finances(games_finances, db)
         dates = list(map(lambda x: ('{}/{}'.format(*x), '{} {}'.format(mydatetime._months[x[0]-1], x[1])), dates))
-        for user_id in fin.user_salary:
-            fin.user_salary[user_id] = (users.get(user_id, dbconnection=db), fin.user_salary[user_id])
         return pages.PageBuilder('finances', dates=dates, current_date='{}/{}'.format(month, year),
                                  fin=fin, outlays=outlays)
