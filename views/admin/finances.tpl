@@ -32,6 +32,7 @@
             </p>
             <p class="text-default">
                 Зарплаты ответсвенным: <span class="label label-danger">{{fin.responsible_salary}}</span>
+                <button style="margin:10px;"  type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#responsible_salary_modal">Просмотреть</button>
             </p>
             <p class="lead text-{{'danger' if fin.real_profit<0 else 'success'}}">
                 Итого: <span class="label label-{{'danger' if fin.real_profit<0 else 'success'}}">{{round(fin.real_profit)}}</span><br>
@@ -108,7 +109,7 @@
             </tbody>
         </table>
         <h4 class="page_header">Дополнительные затраты и доходы</h4>
-        <table class="table table-condensed table-hover" style="font-size:80%;">
+        <table class="table table-condensed table-hover" style="font-size:80%; width:800px;">
           <thead>
             <th>Дата</th>
             <th>Название</th>
@@ -191,6 +192,68 @@
           <br><br>
           <button type="submit" class="btn btn-success">Добавить доход</button>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="responsible_salary_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Зарплаты ответственным</h4>
+      </div>
+      <div class="modal-body">
+	    <div class="tabbable" id="tabs-548140">
+	      <ul class="nav nav-tabs">
+            % ordered_ids = sorted(fin.salary.keys(), key=lambda x: len(fin.salary[x]), reverse=True)
+            % for n, user_id in enumerate(ordered_ids):
+              % user = fin.users_get(user_id)
+	      	    <li {{'class=active' if n==0 else ''}}>
+	      	    	<a href="#panel-{{user_id}}" data-toggle="tab">{{user.name}} <b>({{len(fin.salary[user_id])}})</b></a>
+	      	    </li>
+            % end
+	      </ul>
+	      <div class="tab-content">
+            % for n, user_id in enumerate(ordered_ids):
+                <div class="tab-pane {{'active' if n==0 else ''}}" id="panel-{{user_id}}">
+	      	    	<p>
+                        <p>
+                            % salary = sum([game_salary['salary'] for game_salary in fin.salary[user_id]])
+                            Итого: <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{salary}}</span>
+                        </p>
+	      	    		<table class="table table-condensed table-hover" id="table-{{user_id}}">
+                            <thead>
+                              <th>Дата</th>
+                              <th>Игра</th>
+                              <th>Вид спорта</th>
+                              <th>Доход</th>
+                              <th>Аренда</th>
+                              <th>Допрасход</th>
+                              <th>Прибыль</th>
+                              <th>Зарплата</th>
+                            </thead>
+                            <tbody>
+                              % for game_salary in fin.salary[user_id]:
+                                % game = fin.games_dict[game_salary['game_id']]
+                                  <tr class="{{'success' if game_salary['salary']>0 else 'danger'}}">
+                                    <td>{{'.'.join(str(game.datetime.date()).split('-')[::-1])}}</td>
+                                    <td><a target="_blank" href="/games/{{game.game_id()}}">#{{game.game_id()}} | {{fin.real_games_dict[game.game_id()]['description']}}</a></td>
+                                    <td>{{fin.sports[game.sport_id()].title()}}</td>
+                                    <td class="{{'success' if game.real_income()>0 else 'danger'}}">{{game.real_income()}}</td>
+                                    <td>{{game.rent_charges()}}</td>
+                                    <td class="{{'danger' if game.additional_charges()>0 else 'success'}}">{{game.additional_charges()}}</td>
+                                    <td class="{{'success' if game.profit()>0 else 'danger'}}">{{round(game.profit())}}</td>
+                                    <td class="{{'success' if game.responsible_salary()>0 else 'danger'}}">{{game.responsible_salary()}} ({{game_salary['percents']}}%)</td>
+                                  </tr>
+                              % end
+                            </tbody>
+	      	    		</table>
+	      	    	</p>
+	      	    </div>
+            % end
+	      </div>
+	    </div>
       </div>
     </div>
   </div>
