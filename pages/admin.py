@@ -11,9 +11,6 @@ from models import finances, logs, users, notificating, sport_types, courts
 from modules.myuwsgi import uwsgi, uwsgidecorators
 from objects import mydatetime
 
-def get_finances(db:dbutils.DBConnection) -> dict:
-    return {'fin':finances.Finances(0, 0, db=db)}
-
 
 def get_users(db:dbutils.DBConnection) -> dict:
     users_ = db.execute("SELECT user_id, first_name, last_name, email, phone  FROM users",
@@ -30,9 +27,10 @@ def get_logs(db:dbutils.DBConnection) -> dict:
 def index():
     with dbutils.dbopen() as db:
         respdict = get_users(db)
-        respdict.update(get_finances(db))
+        fin = finances.get_current_month(dbconnection=db)
+        fin = finances.Finances(fin, db)
         respdict.update(get_logs(db))
-        return pages.PageBuilder('admin', **respdict)
+        return pages.PageBuilder('admin', fin=fin, **respdict)
 
 
 def percents(n:int, mx:int, digits:int=1) -> float:

@@ -196,8 +196,8 @@ def get_all(dbconnection:dbutils.DBConnection=None) -> GameFinance:
 @autodb
 def get_by_date(month:int=0, year:int=0, dbconnection:dbutils.DBConnection=None) -> GameFinance:
     dbconnection.execute("SELECT * FROM finances WHERE MONTH(datetime)={} AND YEAR(datetime)={}".format(
-        'NOW()' if month==0 else month,
-        'NOW()' if year==0 else year), dbutils.dbfields['finances'])
+        'MONTH(NOW())' if month==0 else month,
+        'YEAR(NOW())' if year==0 else year), dbutils.dbfields['finances'])
     return list(map(lambda x: GameFinance(x, dbconnection), dbconnection.last()))
 
 @autodb
