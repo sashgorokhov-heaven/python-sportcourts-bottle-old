@@ -262,7 +262,7 @@ def get_add_outlays():
     param = lambda x: bottle.request.forms.get(x)
     dt = param('date') + ' ' + param('time') + ':00'
     finances.add_outlay(dt, param('title'), param('description'), -int(param('cost')))
-    raise bottle.redirect("/admin/outlays")
+    raise bottle.redirect("/admin/finances")
 
 @pages.post('/admin/outlays/add')
 @pages.only_admins
@@ -270,7 +270,7 @@ def get_add_outlays():
     param = lambda x: bottle.request.forms.get(x)
     dt = param('date') + ' ' + param('time') + ':00'
     finances.add_outlay(dt, param('title'), param('description'), param('cost'))
-    raise bottle.redirect("/admin/outlays")
+    raise bottle.redirect("/admin/finances")
 
 
 @pages.get('/admin/add_game_finance/<game_id:int>')
