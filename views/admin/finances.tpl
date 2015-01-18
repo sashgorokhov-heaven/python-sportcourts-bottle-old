@@ -113,7 +113,7 @@
                 % end
             </tbody>
         </table>
-        <h4 class="page_header">Дополнительные затраты</h4>
+        <h4 class="page_header">Дополнительные затраты и доходы</h4>
         <table class="table table-condensed table-hover" style="font-size:80%;">
           <thead>
             <th>Дата</th>

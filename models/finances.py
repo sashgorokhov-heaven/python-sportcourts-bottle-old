@@ -205,7 +205,7 @@ class NewFinances:
         self.games_dict = {game.game_id():game for game in self.games}
         self.sports = {sport.sport_id():sport for sport in sport_types.get(0, dbconnection=db)}
         self.real_games = db.execute("SELECT * FROM games WHERE game_id IN ({})".format(
-            ', '.join(list(map(str, self.games_dict.keys())))), dbutils.dbfields['games'])
+            ', '.join(list(map(str, self.games_dict.keys())))), dbutils.dbfields['games']) if len(self.games)>0 else list()
         self.real_games_dict = {game['game_id']:game for game in self.real_games}
         summ = lambda field: sum([getattr(game, field)() for game in self.games])
 
@@ -225,9 +225,9 @@ class NewFinances:
 
         self.game_by_responsible = group(lambda x: x.responsible_user_id(), self.games)
 
-        db.execute("SELECT * FROM responsible_games_salary WHERE game_id IN ({})".format(
-            ', '.join([str(game.game_id()) for game in self.games])), dbutils.dbfields['responsible_games_salary'])
-        self.salary = group(lambda x: x['user_id'], db.last())
+        a = db.execute("SELECT * FROM responsible_games_salary WHERE game_id IN ({})".format(
+            ', '.join([str(game.game_id()) for game in self.games])), dbutils.dbfields['responsible_games_salary']) if len(self.games)>0 else list()
+        self.salary = group(lambda x: x['user_id'], a)
         self.users_get = users.get
 
         self.sport_games = group(lambda x: x.sport_id(), self.games)
@@ -281,7 +281,7 @@ def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
 
     dbconnection.execute("SELECT percents FROM responsible_salary WHERE user_id={}".format(game.responsible_user_id()))
     finances['responsible_salary'] = 0
-    if len(dbconnection.last())>0 and finances['profit']>0:
+    if len(dbconnection.last())>0:
         finances['responsible_salary'] = round(finances['profit']*(dbconnection.last()[0][0]/100))
 
     finances['real_profit'] = finances['profit'] - finances['responsible_salary']
@@ -294,7 +294,7 @@ def add_game_finances(game_id:int, dbconnection:dbutils.DBConnection=None):
     sql = "INSERT INTO finances VALUES ({})".format(', '.join(["'{}'".format(finances[i]) for i in dbutils.dbfields['finances']]))
     dbconnection.execute(sql)
     dbconnection.execute("SELECT percents FROM responsible_salary WHERE user_id={}".format(finances['responsible_user_id']))
-    if finances['profit']>0 and len(dbconnection.last())>0:
+    if len(dbconnection.last())>0:
         percents = dbconnection.last()[0][0]
         dbconnection.execute("INSERT INTO responsible_games_salary VALUES ({}, {}, {}, {}, {})".format(
             finances['responsible_user_id'], game_id, finances['profit'], percents, finances['responsible_salary']))
