@@ -209,6 +209,9 @@
                                 <td>Статус отчета</td>
                               </tr>
                               % for game in responsible_games:
+                                % if game.deleted():
+                                    % continue
+                                % end
                                 <tr {{'class=active' if not game.reported() else ''}}>
                                   <td><a href="/games/{{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
                                   <td>{{game.datetime.beautiful.day_month()}}</td>
@@ -263,6 +266,9 @@
                                 <td>Передача денег</td>
                               </tr>
                               % for game in organizer_games:
+                                % if game.deleted():
+                                    % continue
+                                % end
                                 <tr {{'class=active' if not game.reported() else ''}}>
                                   <td><a href="/games/{{game.game_id()}}" target="_blank">{{game.game_id()}}</a></td>
                                   <td>{{game.datetime.beautiful.day_month()}}</td>

@@ -299,7 +299,7 @@ def post(game_id:int):
     game = games.get_by_id(game_id)
     if game.created_by() != pages.auth.current().user_id() and game.responsible_user_id() != pages.auth.current().user_id() and not pages.auth.current().userlevel.admin():
         return pages.templates.permission_denied()
-    if game.reported(): return pages.templates.message('Чё', 'Эээ')
+    if game.reported() or game.deleted(): return pages.templates.message('Чё', 'Эээ')
     users_ = {int(user_id.split('=')[-1]): {"status": bottle.request.forms.get(user_id)} for user_id in
               filter(lambda x: x.startswith("status"), bottle.request.forms)}
     registered = {user_id: users_[user_id] for user_id in filter(lambda x: x > 0, users_)}
