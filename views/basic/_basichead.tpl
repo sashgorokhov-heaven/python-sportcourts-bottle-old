@@ -21,12 +21,3 @@
 <link rel="icon" type="image/vnd.microsoft.icon" href="/images/static/favicon.ico" />
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-<style>
-  .topmenu-promo{
-    background-image: linear-gradient(to bottom, rgb(200,15,25) 0, #222 100%) !important;
-    color:#bbb;
-    height:52px !important;
-    margin-bottom: -2px !important;
-  }
-</style>
