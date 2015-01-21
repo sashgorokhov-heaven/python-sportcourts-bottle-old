@@ -36,6 +36,7 @@
             </p>
             <p class="lead text-{{'danger' if fin.real_profit<0 else 'success'}}">
                 Итого: <span class="label label-{{'danger' if fin.real_profit<0 else 'success'}}">{{round(fin.real_profit)}}</span><br>
+                Итого с арендой: <span class="label label-{{'danger' if fin.real_profit-fin.rent_charges<0 else 'success'}}">{{round(fin.real_profit-fin.rent_charges)}}</span><br>
             </p>
             <p class="text-default">
                 <h4 style="margin-top:40px; margin-bottom:0">Зарплаты:</h4><br>

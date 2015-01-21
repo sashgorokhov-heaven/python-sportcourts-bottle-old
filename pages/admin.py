@@ -299,3 +299,16 @@ def new_finances(month:int=0, year:int=0):
         dates = list(map(lambda x: ('{}/{}'.format(*x), '{} {}'.format(mydatetime._months[x[0]-1], x[1])), dates))
         return pages.PageBuilder('finances', dates=dates, current_date='{}/{}'.format(month, year),
                                  fin=fin, outlays=outlays)
+
+
+@pages.get('/admin/finances/recount')
+@pages.only_admins
+def recount_finances():
+    with dbutils.dbopen() as db:
+        db.execute("TRUNCATE finances;")
+        db.execute("TRUNCATE responsible_games_salary;")
+        db.execute("DELETE FROM finance_balance WHERE user_id!=0")
+        db.execute("SELECT game_id FROM games WHERE deleted=0 AND datetime<NOW() AND game_id IN (SELECT DISTINCT game_id FROM reports)")
+        for game_id in db.last().copy():
+            finances.add_game_finances(game_id[0], dbconnection=db)
+        raise bottle.redirect('/admin/finances')

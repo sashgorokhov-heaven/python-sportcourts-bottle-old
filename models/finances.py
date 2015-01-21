@@ -132,14 +132,14 @@ def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
     finances['rent_charges'] = game.court_id(True).cost()*(game.duration()/60)
     finances['additional_charges'] = sum([i['cost'] for i in additional_charges])
 
-    finances['profit'] = finances['real_income']-finances['rent_charges']-finances['additional_charges']
+    finances['profit'] = finances['real_income']-finances['additional_charges']-finances['rent_charges']
 
     dbconnection.execute("SELECT percents FROM responsible_salary WHERE user_id={}".format(game.responsible_user_id()))
     finances['responsible_salary'] = 0
     if len(dbconnection.last())>0:
-        finances['responsible_salary'] = round(finances['profit']*(dbconnection.last()[0][0]/100))
+        finances['responsible_salary'] = round((finances['profit'])*(dbconnection.last()[0][0]/100))
 
-    finances['real_profit'] = finances['profit'] - finances['responsible_salary']
+    finances['real_profit'] = finances['profit'] - finances['responsible_salary']+finances['rent_charges']
 
     return finances
 
