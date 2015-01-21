@@ -42,19 +42,7 @@
   });
 
   $(document).on('click', '#loginAdmins', function(){
-    if ($("#login").val().length > 0) {
-      var login = $("#login").val();
-    } else {
-      alert('Введите логин');
-      return;
-    };
-    if ($("#password").val().length > 0) {
-      var password = $("#password").val();
-    } else {
-      alert('Введите пароль');
-      return;
-    };
-    var url = '/admin/bad_vk/auth?account='+login+','+password;
+    var url = '/admin/bad_vk/auth';
     $.ajax({
       url: url,
       async: true,
@@ -67,5 +55,27 @@
       type: "GET",
       dataType: "text"
     });
+  });
+
+  $(document).on('change','#sporttype',function(){
+
+    var value = $('#sporttype').val();
+    if (value){
+      var url = '/admin/bad_vk/get_users/'+value;
+      $.ajax({
+        url: url,
+        async: true,
+        success: function (responseData, textStatus) {
+          alert('Список получен!\n' + responseData);
+          $('#userslist').html(responseData);
+        },
+        error: function (response, status, errorThrown) {
+          alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+        },
+        type: "GET",
+        dataType: "text"
+      });
+    }
+
   });
 </script>

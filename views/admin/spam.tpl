@@ -3,6 +3,17 @@
   <div class="col-md-6">
     <h2 class="page_header">Рассылка приглашений</h2>
     <br>
+    <label for="group_id">Выберите вид спорта</label>
+    <select id="sporttype" name="sport_type" class="form-control input-xs" data-bv-notempty="true"
+    data-bv-notempty-message="Укажите вид спорта">
+      <option value="">---</option>
+      % for sport_type in sports:
+        <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
+      % end
+    </select>
+    <br>
+    <p id="userslist"></p>
+    <br>
     <label for="group_id">Выберите шаблон сообщения</label>
     <select id="sporttype" name="tpl_id" class="form-control input-xs" data-bv-notempty="true"
     data-bv-notempty-message="Укажите вид шаблона">
@@ -13,13 +24,6 @@
     <button type="button" id="showbutton" class="btn btn-link">Показать шаблон</button>
     <br>
     <br>
-    <label for="group_id">Выберите вид спорта</label>
-    <select id="sporttype" name="sport_type" class="form-control input-xs" data-bv-notempty="true"
-    data-bv-notempty-message="Укажите вид спорта">
-      % for sport_type in sports:
-        <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
-      % end
-    </select>
     <br>
     <button type="button" id="sendbutton" class="btn btn-success">Начать рассылку</button>
   </div>
@@ -44,14 +48,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Авторизовать аккаунты</h4>
-      </div>
-      <div class="modal-body">
-        <label for="title">Логин</label>
-        <input type="text" id="login" class="form-control input-xs">
-        <br>
-        <label for="title">Пароль</label>
-        <input type="text" id="зфыыцщкв" class="form-control input-xs">
+        <h4 class="modal-title" id="myModalLabel">Авторизовать аккаунт</h4>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
