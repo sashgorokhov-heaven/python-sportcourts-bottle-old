@@ -37,7 +37,7 @@ def get_by_id(game_id, dbconnection:dbutils.DBConnection=None) -> Game:
 
 
 def get_all(dbconnection:dbutils.DBConnection=None) -> Game:
-    dbconnection.execute("SELECT * FROM games", dbutils.dbfields['games'])
+    dbconnection.execute("SELECT * FROM games WHERE deleted=0", dbutils.dbfields['games'])
     if len(dbconnection.last()) == 0: return list()
     return list(map(lambda x: Game(x, dbconnection), dbconnection.last()))
 
@@ -245,13 +245,13 @@ def get_reserved_to_game(game_id:int, dbconnection:dbutils.DBConnection=None) ->
 
 @autodb
 def get_responsible_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list:
-    dbconnection.execute("SELECT game_id FROM games WHERE responsible_user_id='{}'".format(user_id))
+    dbconnection.execute("SELECT game_id FROM games WHERE responsible_user_id='{}' and deleted=0".format(user_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
 
 
 @autodb
 def get_organizer_games(user_id:int, dbconnection:dbutils.DBConnection=None) -> list():
-    dbconnection.execute("SELECT game_id FROM games WHERE created_by='{}'".format(user_id))
+    dbconnection.execute("SELECT game_id FROM games WHERE created_by='{}' and deleted=0".format(user_id))
     return list(map(lambda x: x[0], dbconnection.last())) if len(dbconnection.last()) > 0 else list()
 
 
