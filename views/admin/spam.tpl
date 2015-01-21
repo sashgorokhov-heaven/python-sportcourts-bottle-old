@@ -47,14 +47,11 @@
         <h4 class="modal-title" id="myModalLabel">Авторизовать аккаунты</h4>
       </div>
       <div class="modal-body">
-        <label for="title">Логин1</label>
-        <input type="text" id="login1" class="form-control input-xs">
+        <label for="title">Логин</label>
+        <input type="text" id="login" class="form-control input-xs">
         <br>
-        <label for="title">Логин2</label>
-        <input type="text" id="login2" class="form-control input-xs">
-        <br>
-        <label for="title">Логин3</label>
-        <input type="text" id="login3" class="form-control input-xs">
+        <label for="title">Пароль</label>
+        <input type="text" id="зфыыцщкв" class="form-control input-xs">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

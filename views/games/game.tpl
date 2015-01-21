@@ -41,25 +41,27 @@
                 </span>
               </a>
             </div>
+            % if not standalone:
             <div class="organizer" style="float:right; max-width:40%; height: 21px;">
               <p class="text-right">
                 % if current_user.user_id()==game.created_by() or current_user.user_id()==game.responsible_user_id() or current_user.userlevel.admin():
                 <a href="/games/edit/{{game.game_id()}}"><span class="glyphicon glyphicon-pencil"></span></a>
                 % end
-                % if current_user.user_id()!=game.created_by():
+                % if current_user.user_id()!=game.responsible_user_id():
                 &nbsp;&nbsp;
-                <a href="/profile/{{game.created_by()}}" target="_blank">
+                <a href="/profile/{{game.responsible_user_id()}}" target="_blank">
                   <span itemprop="organizer">
-                    {{game.created_by(True).name}}
+                    {{game.responsible_user_id(True).name}}
                   </span>
                 </a>
                 <span class="hidden-xs hidden-sm">
                   &nbsp;
-                  <img src="/images/avatars/{{game.created_by()}}?sq_sm" class="round" width="30" height="30" >
+                  <img src="/images/avatars/{{game.responsible_user_id()}}?sq_sm" class="round" width="30" height="30" >
                 </span>
                 % end
               </p>
             </div>
+            % end
           </div>
         </div>
         <div class="panel-body" style="padding-bottom:0px;">
