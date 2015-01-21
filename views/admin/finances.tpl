@@ -7,50 +7,50 @@
     % end
   </select>
 </h2>
-<div class="container">
-	<div class="row clearfix">
-        <div class="col-md-4 column">
-            <p class="text-default">
-                Идеальный доход: <span class="label label-info">{{fin.ideal_income}}</span> ({{len(fin.games)}} игр)<br>
-                % if fin.lost_empty>0:
-                Потеряно изза пустых мест: <span class="label label-danger">{{fin.lost_empty}}</span> ({{fin.empty}})<br>
-                % end
-                % if fin.lost_notvisited>0:
-                Потеряно изза непришедших: <span class="label label-danger">{{fin.lost_notvisited}}</span> ({{fin.notvisited}})<br>
-                % end
-                % if fin.lost_notpayed>0:
-                Потеряно изза неоплативших: <span class="label label-danger">{{fin.lost_notpayed}}</span> ({{fin.notpayed}})<br>
-                % end
-                Реальный доход: <span class="label label-{{'danger' if fin.real_income<=0 else 'success'}}">{{fin.real_income}}</span><br>
-                Расходы на аренду: <span class="label label-danger">{{round(fin.rent_charges)}}</span><br>
-                % if fin.additional_charges>0:
-                Допрасходы на играх: <span class="label label-danger">{{fin.additional_charges}}</span><br>
-                % end
-            </p>
-            <p class="lead text-{{'danger' if fin.profit<0 else 'success'}}">
-                Прибыль: <span class="label label-{{'danger' if fin.profit<0 else 'success'}}">{{round(fin.profit)}}</span><br>
-            </p>
-            <p class="text-default">
-                Зарплаты ответсвенным: <span class="label label-danger">{{fin.responsible_salary}}</span>
-                <button style="margin:10px;"  type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#responsible_salary_modal">Просмотреть</button>
-            </p>
-            <p class="lead text-{{'danger' if fin.real_profit<0 else 'success'}}">
-                Итого: <span class="label label-{{'danger' if fin.real_profit<0 else 'success'}}">{{round(fin.real_profit)}}</span><br>
-            </p>
-            <p class="text-default">
-                <h4 style="margin-top:40px; margin-bottom:0">Зарплаты:</h4><br>
-                % for user_id in fin.user_salary:
-                    % salary = fin.user_salary[user_id]
-                    % user = fin.users_get(user_id)
-                    {{user.name}}: <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span><br>
-                % end
-            </p>
-		</div>
-        <div class="col-md-8 column">
-            <div id="sport_money_chart" style="width:322px;"></div>
-            <div id="salary_chart" style="width:322px;"></div>
-		</div>
-    </div>
+<div class="row clearfix">
+    <div class="col-md-4 column">
+        <p class="text-default">
+            Идеальный доход: <span class="label label-info">{{fin.ideal_income}}</span> ({{len(fin.games)}} игр)<br>
+            % if fin.lost_empty>0:
+            Потеряно изза пустых мест: <span class="label label-danger">{{fin.lost_empty}}</span> ({{fin.empty}})<br>
+            % end
+            % if fin.lost_notvisited>0:
+            Потеряно изза непришедших: <span class="label label-danger">{{fin.lost_notvisited}}</span> ({{fin.notvisited}})<br>
+            % end
+            % if fin.lost_notpayed>0:
+            Потеряно изза неоплативших: <span class="label label-danger">{{fin.lost_notpayed}}</span> ({{fin.notpayed}})<br>
+            % end
+            Реальный доход: <span class="label label-{{'danger' if fin.real_income<=0 else 'success'}}">{{fin.real_income}}</span><br>
+            Расходы на аренду: <span class="label label-danger">{{round(fin.rent_charges)}}</span><br>
+            % if fin.additional_charges>0:
+            Допрасходы на играх: <span class="label label-danger">{{fin.additional_charges}}</span><br>
+            % end
+        </p>
+        <p class="lead text-{{'danger' if fin.profit<0 else 'success'}}">
+            Прибыль: <span class="label label-{{'danger' if fin.profit<0 else 'success'}}">{{round(fin.profit)}}</span><br>
+        </p>
+        <p class="text-default">
+            Зарплаты ответсвенным: <span class="label label-danger">{{fin.responsible_salary}}</span>
+            <button style="margin:10px;"  type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#responsible_salary_modal">Просмотреть</button>
+        </p>
+        <p class="lead text-{{'danger' if fin.real_profit<0 else 'success'}}">
+            Итого: <span class="label label-{{'danger' if fin.real_profit<0 else 'success'}}">{{round(fin.real_profit)}}</span><br>
+        </p>
+        <p class="text-default">
+            <h4 style="margin-top:40px; margin-bottom:0">Зарплаты:</h4><br>
+            % for user_id in fin.user_salary:
+                % salary = fin.user_salary[user_id]
+                % user = fin.users_get(user_id)
+                {{user.name}}: <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span><br>
+            % end
+        </p>
+	</div>
+    <div class="col-md-8 column">
+        <div id="sport_money_chart" style="width:322px;"></div>
+        <div id="salary_chart" style="width:322px;"></div>
+	</div>
+</div>
+<div class="row clearfix">
     <div class="col-md-12 column">
         <div id="game_finances_chart" style="height:350px;max-width:700px"></div>
         <div id="profit_chart" style="height:350px;max-width:700px"></div>
