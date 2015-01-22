@@ -7,6 +7,7 @@
     <select id="sporttype" name="sport_type" class="form-control input-xs" data-bv-notempty="true"
     data-bv-notempty-message="Укажите вид спорта">
       <option value="">---</option>
+      <option value="100">Test</option>
       % for sport_type in sports:
         <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
       % end
@@ -14,14 +15,15 @@
     <br>
     <p id="userslist"></p>
     <br>
-    <label for="group_id">Выберите шаблон сообщения</label>
-    <select id="sporttype" name="tpl_id" class="form-control input-xs" data-bv-notempty="true"
+    <!-- <label for="tpl_id">Выберите шаблон сообщения</label>
+    <select id="tpl_id" name="tpl_id" class="form-control input-xs" data-bv-notempty="true"
     data-bv-notempty-message="Укажите вид шаблона">
       % for sport_type in sports:
         <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
       % end
-    </select>
-    <button type="button" id="showbutton" class="btn btn-link">Показать шаблон</button>
+      <option value="100">Test</option>
+    </select> -->
+    <button type="button" id="showbutton" class="btn btn-default">Показать шаблон</button>
     <br>
     <br>
     <br>
@@ -48,11 +50,34 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Авторизовать аккаунт</h4>
+        <h4 class="modal-title" id="myModalLabel">Авторизация</h4>
+      </div>
+      <div class="modal-body">
+        <p>Подождите, идет авторизация...</p>
+        <span id="authinfo"></span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-        <button type="button" id="loginAdmins" class="btn btn-primary">Авторизовать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Идет отсылка сообщений</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table id="sendtable" class="table table-hover table-bordered">
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>
