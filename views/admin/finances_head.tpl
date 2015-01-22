@@ -25,22 +25,22 @@ $(document).on('change','#date_select',function(){
         piechart.draw(data, options);
 
 
-        data = new google.visualization.DataTable();
-        data.addColumn('string', 'Человек');
-        data.addColumn('number', 'Зарплата');
-        data.addRows([
-          % for n, user_id in enumerate(fin.user_salary):
-               % salary = fin.user_salary[user_id]
-               % user = fin.users_get(user_id)
-               ['{{user.name}}', {{salary}}] {{',' if n<len(fin.user_salary) else ''}}
-          % end
-         ]);
-        var options = {
-          title: 'Зарплаты'
-        };
+        // data = new google.visualization.DataTable();
+        // data.addColumn('string', 'Человек');
+        // data.addColumn('number', 'Зарплата');
+        // data.addRows([
+        //   % for n, user_id in enumerate(fin.user_salary):
+        //        % salary = fin.user_salary[user_id]
+        //        % user = fin.users_get(user_id)
+        //        ['{{user.name}}', {{salary}}] {{',' if n<len(fin.user_salary) else ''}}
+        //   % end
+        //  ]);
+        // var options = {
+        //   title: 'Зарплаты'
+        // };
 
-        piechart = new google.visualization.PieChart(document.getElementById('salary_chart'));
-        piechart.draw(data, options);
+        // piechart = new google.visualization.PieChart(document.getElementById('salary_chart'));
+        // piechart.draw(data, options);
 
 
         data = new google.visualization.DataTable();
