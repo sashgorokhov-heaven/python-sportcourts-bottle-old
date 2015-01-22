@@ -22,13 +22,18 @@
   });
 
   $(document).on('click', '#sendbutton', function(){
-    var tpl_id = $('#tpl_id').val();
+    var tpl_id = $('#sporttype').val();
     $('#sendtable').html('');
     $('#sendModal').modal('show');
 
     var ids = [];
 
-    for(var i=0; i<users.length; i++) {
+    ulength = users.length;
+    if (ulength > 15) {
+      ulength = 15;
+    }
+
+    for(var i=0; i<ulength; i++) {
       id = users[i];
       var url = '/admin/bad_vk/send/'+id+'/spam'+tpl_id+'/0';
       $.ajax({
@@ -36,10 +41,10 @@
         async: false,
         success: function (responseData, textStatus) {
           console.log(id);
-          $('#sendtable').append('<tr class="success"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td></tr>');
+          $('#sendtable').append('<tr class="success"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td><td>'+responseData+'</td></tr>');
         },
         error: function (response, status, errorThrown) {
-          $("#sendtable").append('<tr class="danger"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td></tr>');
+          $("#sendtable").append('<tr class="danger"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td><td>'+responseData+'</td></tr>');
         },
         type: "GET",
         dataType: "text"
@@ -54,7 +59,14 @@
       url: url,
       async: true,
       success: function (responseData, textStatus) {
-        $('#authinfo').html(responseData);
+        var json = JSON.parse(responseData);
+        success = json['success'];
+        if (success) {
+          $('#adminslist').html(responseData);
+          $('#adminModal').modal('hide');
+        } else {
+          $('#authinfo').html(responseData);
+        }
       },
       error: function (response, status, errorThrown) {
         alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
