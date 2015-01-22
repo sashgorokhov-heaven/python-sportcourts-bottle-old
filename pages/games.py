@@ -81,12 +81,16 @@ def edit(game_id:int):
         responsibles = users.get(0, 2, dbconnection=db)
         unsubscribed = games.get_unsubscribed_users(game_id, dbconnection=db)
         unsubscribed_list = list()
+        db.execute("SELECT * FROM users WHERE user_id IN (SELECT DISTINCT user_id FROM reports WHERE user_id!=0 AND status=2 AND game_id IN (SELECT game_id FROM games WHERE deleted=0 AND datetime+INTERVAL duration MINUTE < NOW() AND court_id='{}' AND sport_type='{}' AND game_type='{}'))".format( # as long as my dick
+            game.court_id(), game.sport_type(), game.game_type()), dbutils.dbfields['users'])
+        last_users = list(map(lambda x: User(x, db), db.last()))
         for i in unsubscribed:
             user = users.get(i[0], dbconnection=db)
             dt = i[1]
             unsubscribed_list.append((user, dt))
         return pages.PageBuilder('editgame', game=game, sports=_sport_types, game_types=_game_types, cities=_cities,
-                                 courts=_courts, responsibles=responsibles, unsubscribed=unsubscribed_list)
+                                 courts=_courts, responsibles=responsibles, unsubscribed=unsubscribed_list,
+                                 last_users=last_users)
 
 
 @pages.post('/games/edit/<game_id:int>')

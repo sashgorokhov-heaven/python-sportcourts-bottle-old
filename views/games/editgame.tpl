@@ -170,14 +170,18 @@
             </div>
             % if not game.reported():
               <a class="btn btn-success" role="button" href="/games/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
-              <br><br>
-              <a class="btn btn-success" data-toggle="modal" data-target="#otpisModal">
-                Посмотреть отписавшихся
-              </a>
-              <br><br>
-              <a class="btn btn-success" data-toggle="modal" data-target="#oldlistModal">
-                Посмотреть бывших
-              </a>
+              % if len(unsubscribed)>0:
+                <br><br>
+                <a class="btn btn-success" data-toggle="modal" data-target="#otpisModal">
+                  Посмотреть отписавшихся
+                </a>
+                % end
+              % if len(last_users)>0:
+                <br><br>
+                <a class="btn btn-success" data-toggle="modal" data-target="#oldlistModal">
+                  Посмотреть бывших
+                </a>
+              % end
               <br><br>
             % end
             % if not game.reported():
@@ -332,26 +336,19 @@
       </div>
       <div class="modal-body">
         <div class="table-responsive">
-          % if len(game.subscribed())>0:
             <table class="table table-hover table-bordered">
-              % for n, user in enumerate(game.subscribed(True), 1):
+              % for n, user in enumerate(last_users, 1):
               <tr class="success">
                 <td>{{n}}</td>
                 <td>
                   <a href="/profile/{{user.user_id()}}" target="_blank">
-                    {{user.name.first()}}
-                  </a>
-                </td>
-                <td>
-                  <a href="/profile/{{user.user_id()}}" target="_blank">
-                    {{user.name.last()}}
+                    {{user.name}}
                   </a>
                 </td>
                 <td>{{user.phone()}}</td>
               </tr>
               % end
             </table>
-          % end
         </div>
       </div>
     </div>
