@@ -6,8 +6,8 @@ import random
 import pages
 import dbutils
 import json
-from modules import logging
-from models import users, cities, ampluas, decode_set, courts, sport_types, game_types, court_types, games
+from modules import logging, create_link, utils
+from models import users, cities, ampluas, decode_set, courts, sport_types, game_types, court_types, games, notificating
 from models import notifications
 
 
@@ -76,8 +76,8 @@ class Error(Exception):
         return Error(10, 'Game <{}> not found'.format(game_id))
 
     @staticmethod
-    def game_conflict(conflict:int):
-        return Error(11, 'Conflict <{}>'.format(conflict))
+    def game_conflict(conflict:int, data:str=None):
+        return Error(11, 'Conflict <{}>{}'.format(conflict, (': '+str(data) if data else '')))
 
 #    @staticmethod
 #    def invalid_field(fields:list):
@@ -107,7 +107,7 @@ def handle_error(func):
         try:
             return response(func(*args, **kwargs))
         except Error as e:
-            return dump(e.json())
+            return error(e.json())
         except Exception as e:
             logging.error(e)
             return error(Error.unhandled(e).json())
@@ -127,6 +127,10 @@ def check_auth(func):
                 return func(*args, **kwargs)
             raise Error.invalid_token()
     return required_param('token')(wrapper)
+
+
+def handle_error_and_check_auth(func):
+    return handle_error(check_auth(func))
 
 
 def only_organizers(func):
@@ -267,8 +271,7 @@ class formatters:
 
 
 @pages.get(['/api/users/get', '/api/users/get/<user_id:int>'])
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def users_get(user_id:int=0):
     fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else ('user_id' if user_id==0 else '*')
     fields = fields.split(',')
@@ -291,8 +294,7 @@ def users_get(user_id:int=0):
 
 
 @pages.get('/api/users/current')
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def current_user_get():
     with dbutils.dbopen() as db:
         user = current_user(db, True)._user
@@ -301,9 +303,8 @@ def current_user_get():
         return dump(user)
 
 
-@pages.get(['/api/admin/courts/get', '/api/admin/courts/get/<court_id:int>'])
-@handle_error
-@check_auth
+@pages.get(['/api/courts/get', '/api/courts/get/<court_id:int>'])
+@handle_error_and_check_auth
 def courts_get_admin(court_id:int=0):
     fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else ('court_id' if court_id==0 else '*')
     fields = fields.split(',')
@@ -325,8 +326,7 @@ def courts_get_admin(court_id:int=0):
 
 
 @pages.get(['/api/games/get', '/api/games/get/<game_id:int>'])
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def games_get(game_id:int=0):
     fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else '*'
     fields = fields.split(',')
@@ -348,18 +348,56 @@ def games_get(game_id:int=0):
 
 
 @pages.get('/api/games/subscribe/<game_id:int>')
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def subscribe(game_id:int):
     with dbutils.dbopen() as db:
-        user_id = current_user(db)
-        games.subscribe(user_id, game_id, dbconnection=db)
-        raise NotImplementedError
+        user = current_user(db, detalized=True)
+        game = games.get_by_id(game_id, dbconnection=db)
+        if user.banned():
+            raise Error.game_conflict(2)
+        if 0 < game.capacity() == len(game.subscribed()):
+            raise Error.game_conflict(4)
+        if user.user_id() in set(game.subscribed()):
+            raise Error.game_conflict(5)
+        another_game = games.user_game_intersection(user.user_id(), game, dbconnection=db)
+        if another_game:
+            raise Error.game_conflict(1, another_game.game_id())
+        games.subscribe(user.user_id(), game_id, dbconnection=db)
+        if game.datetime.tommorow or game.datetime.today:
+            user = users.get(user.user_id(), dbconnection=db) if user.user_id()!=pages.auth.current().user_id() else pages.auth.current()
+            message = 'На игру "{}" записался {}'.format(create_link.game(game), create_link.user(user))
+            utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id,)
+        return {'status':'ok'}
+
+
+@pages.get('/api/games/unsubscribe/<game_id:int>')
+@handle_error_and_check_auth
+def unsubscribe(game_id:int):
+    with dbutils.dbopen() as db:
+        user = current_user(db, detalized=True)
+        game = games.get_by_id(game_id, dbconnection=db)
+        if user.user_id() not in set(game.subscribed()):
+            return pages.PageBuilder("game", game=game, conflict=6)
+        if game.datetime.tommorow and game.datetime.time().hour<=12 and datetime.datetime.now().hour>=20:
+            return pages.PageBuilder("game", game=game, conflict=11)
+        games.unsubscribe(user.user_id(), game_id, dbconnection=db)
+        if datetime.datetime.now()-game.datetime()<datetime.timedelta(days=3):
+            user = users.get(user.user_id(), dbconnection=db) if user.user_id()!=pages.auth.current().user_id() else pages.auth.current()
+            message = '{} отписался от игры "{}"'.format(create_link.user(user), create_link.game(game))
+            utils.spool_func(notificating.site.responsible, game.responsible_user_id(), message, 1, game_id)
+        return {'status':'ok'}
+
+
+@pages.get('/api/games/get_subscribed/<game_id:int>')
+@handle_error_and_check_auth
+def get_subscribed(game_id:int):
+    game = games.get_by_id(game_id)
+    if not game: raise Error.game_not_found(game_id)
+    return {'count': len(game.subscribed()), 'users':[{'user_id':user.user_id(), 'name':user.name} for user in game.subscribed(True)]}
 
 
 @pages.get('/api/notifications/count')
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def notifications_count():
     with dbutils.dbopen() as db:
         user_id = current_user(db)
@@ -368,24 +406,21 @@ def notifications_count():
 
 
 @pages.get('/api/notifications/read/<notification_id:int>')
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def read_notification(notification_id:int):
     notifications.read(notification_id)
     return {'status':'ok'}
 
 
 @pages.get('/api/notifications/delete/<notification_id:int>')
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def delete_notification(notification_id:int):
     notifications.delete(notification_id)
     return {'status':'ok'}
 
 
 @pages.get('/api/notifications/get')
-@handle_error
-@check_auth
+@handle_error_and_check_auth
 def get_notifications():
     with dbutils.dbopen() as db:
         user = current_user(db, True)
