@@ -51,7 +51,7 @@
             </small>
           </td>
           <td>
-            <span class="label label-danger">{{fin.lost_empty}}</span> ({{fin.empty}})
+            <span class="label label-danger">{{fin.lost_empty}}</span> <small>({{fin.empty}})</small>
           </td>
         </tr>
         % end
@@ -65,7 +65,7 @@
             </small>
           </td>
           <td>
-            <span class="label label-danger">{{fin.lost_notvisited}}</span> ({{fin.notvisited}})
+            <span class="label label-danger">{{fin.lost_notvisited}}</span> <small>({{fin.notvisited}})</small>
           </td>
         </tr>
         % end
@@ -79,7 +79,7 @@
             </small>
           </td>
           <td>
-            <span class="label label-danger">{{fin.lost_notpayed}}</span> ({{fin.notpayed}})
+            <span class="label label-danger">{{fin.lost_notpayed}}</span> <small>({{fin.notpayed}})</small>
           </td>
         </tr>
         % end
@@ -127,7 +127,9 @@
           </td>
           <td>
             <small>
-              {{fin.responsible_salary}}
+              <strong class="text-success">
+                {{fin.responsible_salary}}
+              </strong>
             </small>
           </td>
         </tr>
@@ -232,7 +234,7 @@
       </tbody>
     </table>
     <h3>Дополнительные затраты и доходы</h3>
-    <table class="table table-condensed table-hover" style="font-size:80%; width:800px;">
+    <table class="table table-condensed table-hover" style="font-size:80%;">
       <thead>
         <th>Дата</th>
         <th>Название</th>
