@@ -62,7 +62,7 @@
         var json = JSON.parse(responseData);
         success = json['success'];
         if (success) {
-          $('#adminslist').html(responseData);
+          $('#adminslist').html(success);
           $('#adminModal').modal('hide');
         } else {
           $('#authinfo').html(responseData);
