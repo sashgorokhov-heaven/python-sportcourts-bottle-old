@@ -393,7 +393,7 @@ def unsubscribe(game_id:int):
 def get_subscribed(game_id:int):
     game = games.get_by_id(game_id)
     if not game: raise Error.game_not_found(game_id)
-    return {'count': len(game.subscribed()), 'users':[{'user_id':user.user_id(), 'name':user.name} for user in game.subscribed(True)]}
+    return {'count': len(game.subscribed()), 'users':[{'user_id':user.user_id(), 'name':str(user.name)} for user in game.subscribed(True)]}
 
 
 @pages.get('/api/notifications/count')
