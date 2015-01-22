@@ -16,14 +16,14 @@
 
     if (item == false) {
       for (var i = 0; i < l; i++) {
-        $('#courtssearchtable').append('<tr><td><a target="_blank" href="/courts/' + res[i]["court_id"] + '">' + res[i]["court_id"] + '</a></td><td><a target="_blank" href="/courts/' + res[i]["court_id"] + '">' + res[i]["title"] + '</a></td><td>' + res[i]["phone"] + '</td><td>' + res[i]["cost"] + '</td></tr>');
+        $('#courtssearchtable').append('<tr><td><a target="_blank" href="/courts/' + res[i]["court_id"] + '">' + res[i]["court_id"] + '</a></td><td><a target="_blank" href="/courts/' + res[i]["court_id"] + '">' + res[i]["title"] + '</a></td><td>' + res[i]["phone"] + '</td><td>' + res[i]["cost"] + '</td><td>' + res[i]["admin_description"] + '</td></tr>');
       }
     }
     else
     {
       console.log(l);
       for (var i = 0; i < l; i++) {
-        $('#courtssearchtable').append('<tr><td><a target="_blank" href="/courts/' + res[i]["item"]["court_id"] + '">' + res[i]["item"]["court_id"] + '</a></td><td><a target="_blank" href="/courts/' + res[i]["item"]["court_id"] + '">' + res[i]["item"]["title"] + '</a></td><td>' + res[i]["item"]["phone"] + '</td><td>' + res[i]["item"]["cost"] + '</td></tr>');
+        $('#courtssearchtable').append('<tr><td><a target="_blank" href="/courts/' + res[i]["item"]["court_id"] + '">' + res[i]["item"]["court_id"] + '</a></td><td><a target="_blank" href="/courts/' + res[i]["item"]["court_id"] + '">' + res[i]["item"]["title"] + '</a></td><td>' + res[i]["item"]["phone"] + '</td><td>' + res[i]["item"]["cost"] + '</td><td>' + res[i]["item"]["admin_description"] + '</td></tr>');
       }
     }
   }

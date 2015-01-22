@@ -18,6 +18,12 @@ def get_users(db:dbutils.DBConnection) -> dict:
     return {'users': json.dumps(users_,ensure_ascii=False)}
 
 
+def get_courts(db:dbutils.DBConnection) -> dict:
+    courts_ = db.execute("SELECT court_id, title, cost, sport_types, phone  FROM courts",
+                       ['court_id', 'title', 'cost', 'sport_types', 'phone'])
+    return {'courts': json.dumps(courts_,ensure_ascii=False)}
+
+
 def get_logs(db:dbutils.DBConnection) -> dict:
     return {'log':logs.Logs(db)}
 
@@ -61,10 +67,25 @@ def index():
         respdict = get_users(db)
         return pages.PageBuilder('userbase', **respdict)
 
+
+@pages.get('/admin/courts')
+@pages.only_admins
+def index():
+    with dbutils.dbopen() as db:
+        respdict = get_courts(db)
+        return pages.PageBuilder('courtsbase', **respdict)
+
+
 @pages.get('/admin/sms')
 @pages.only_admins
 def sms():
     return pages.PageBuilder('smstest')
+
+
+@pages.get('/admin/email')
+@pages.only_admins
+def sms():
+    return pages.PageBuilder('email')
 
 
 @pages.get('/admin/social/groupadd')

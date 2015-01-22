@@ -2,7 +2,7 @@
 <h1 class="page-header">База площадок</h1>
 
 <div class="row">
-  <div class="col-xs-12 col-sm-6">
+  <div class="col-md-12">
     <form>
       <input id="searchTextbox" type="text" class="form-control col-sm-6" placeholder="Search..." style="max-width:60%;">
       <!-- <a href="" class="btn btn-link">Найти</a> -->
@@ -14,6 +14,7 @@
           <td>Название</td>
           <td>Телефон</td>
           <td>Стоимость</td>
+          <td>Комментарии</td>
         </thead>
         <tbody id="courtssearchtable">
         </tbody>

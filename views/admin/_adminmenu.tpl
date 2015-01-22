@@ -13,5 +13,6 @@
 </ul>
 <ul class="nav nav-sidebar">
   <li><a class="adminmenu" href="/admin/social/groupadd" target="_blank">Добавить группу</a></li>
-  <li><a class="adminmenu" href="/admin/social/spam">Рассылка</a></li>
+  <li><a class="adminmenu" href="/admin/social/spam">Рассылка ВК</a></li>
+  <li><a class="adminmenu" href="/admin/social/spam">Рассылка ВК</a></li>
 </ul>
