@@ -305,7 +305,7 @@ def current_user_get():
 
 @pages.get(['/api/courts/get', '/api/courts/get/<court_id:int>'])
 @handle_error_and_check_auth
-def courts_get_admin(court_id:int=0):
+def courts_get(court_id:int=0):
     fields = bottle.request.query.get('fields') if 'fields' in bottle.request.query else ('court_id' if court_id==0 else '*')
     fields = fields.split(',')
     with dbutils.dbopen() as db:
