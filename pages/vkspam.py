@@ -134,33 +134,48 @@ users = {'users':set(), 'timestamp':0}
 @handle_error
 def send_message(user_id:int, template_name:str, spam_type:int):
     t = time.time()
-    if user_id in users['users']: return {'continued':user_id}
+    #print()
+    #print('User id:', user_id)
+    #print('Template:', template_name)
+    #print('Spam_type:', spam_type)
+    if user_id in users['users']:
+        #print('User in users')
+        return {'continued':user_id}
     if t-users['timestamp']>300:
+        #print('Updating users')
         with dbutils.dbopen() as db:
-            db.execute("SELECT DISTINCT vkuserid FROM users WHERE vkuserid!=0")
-            users['users'] = set(map(lambda x: x[0], db.last()))
+            db.execute("SELECT DISTINCT vkuserid FROM sportcourts.users WHERE vkuserid!=0")
+            users['users'] = set(list(map(lambda x: int(x[0]), db.last())))
             users['timestamp'] = t
-    if user_id in users['users']: return {'continued':user_id}
+    if user_id in users['users']:
+        #print('User in users')
+        return {'continued':user_id}
     with dbutils.dbopen(**connection) as db:
         db.execute("SELECT login, last FROM auth_sessions")
         if len(db.last())==0: raise Error.no_tokens()
         last = min(db.last(), key=lambda x: x[1])[1]
+        #print('Last:', last)
         account = db.execute("SELECT login, access_token, datetime FROM auth_sessions WHERE last={}".format(last),
                    ['login', 'access_token', 'datetime'])[0]
+        #print('Account:', account)
         db.execute("SELECT spam_type FROM users WHERE user_id={}".format(user_id))
+        #print('User spam_type:', db.last())
         if len(db.last())==0: raise Error.user_not_found(user_id)
         if db.last()[0][0]==spam_type: raise Error.already_sent(user_id, spam_type)
         try:
+            #print('Sending...', flush=True)
             vkuser = vk.exec(account['access_token'], "users.get", user_id=user_id)[0]
             message = bottle.template(template_name, first_name=vkuser['first_name'])
             vk.exec(account['access_token'], "messages.send", user_id=user_id, message=message)
+            #print('Sent', flush=True)
         except vk.VKError as e:
             raise Error.vk_error(e)
         except bottle.HTTPError:
             raise Error.template_not_found(template_name)
-
+        #print('Updating')
         db.execute("UPDATE users SET lasttime=NOW(), spam_type={} WHERE user_id={}".format(spam_type, user_id))
-        db.execute("UPDATE auth_sessions SET last=last+1 WHERE last={}".format(last))
+        db.execute("UPDATE auth_sessions SET last=last+1 WHERE login='{}'".format(account['login']))
+        #print('Updated')
         account.pop('access_token')
         account['datetime'] = str(account['datetime'])
         return {'account':account, 'time':time.time()-t}
