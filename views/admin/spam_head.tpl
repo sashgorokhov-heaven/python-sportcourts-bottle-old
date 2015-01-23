@@ -28,9 +28,13 @@
     $('#sendModal').modal('show');
 
     var sent = 0;
+    var errors = 0;
+    var sentlimit = 2;
+    var errorslimit = 3;
 
     for(key in users) {
-      if (sent == 15) break;
+      if (sent == sentlimit) break;
+      if (errors == errorslimit) break;
       id = key;
       var url = '/admin/new_vk/users/send/'+id+'/spam'+tpl_id+'/1';
       $.ajax({
@@ -46,16 +50,20 @@
           if (error) {
             type = 'danger';
             str = error["description"];
+            sent++;
+            errors++;
           } else if (response) {
             if ("continued" in response) {
               type = 'warning';
               str = 'Пользователь уже зарегистрирован у нас';
+              sent++;
             } else {
               type = 'success';
               str = 'Успешно: '+responseData;
               sent++;
             }
           };
+          console.log(str);
           $('#sendtable').append('<tr class="'+type+'"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td><td>'+str+'</td></tr>');
         },
         error: function (response, status, errorThrown) {
