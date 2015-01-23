@@ -68,7 +68,4 @@ def get_moderate(): # для модерации статей
 
 @pages.get('/calc')
 def get_calc(): # для калькулятора
-    with dbutils.dbopen() as db:
-        user_id = pages.auth.current().user_id()
-        user = users.get(user_id, dbconnection=db)
-        return pages.PageBuilder('calc', user=user)
+    return pages.PageBuilder('calc')

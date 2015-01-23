@@ -414,19 +414,19 @@
 
   $(document).ready(function() {
     % if loggedin:
-      % if user.height() > 0:
-      $('#iHeight').val('{{user.height()}}')
+      % if current_user.height() > 0:
+      $('#iHeight').val('{{current_user.height()}}')
       % end
-      % if user.weight() > 0:
-      $('#iWeight').val('{{user.weight()}}')
+      % if current_user.weight() > 0:
+      $('#iWeight').val('{{current_user.weight()}}')
       % end
-      % if user.bdate():
-      $('#iAge').val('{{(user.bdate.age-1)}}')
+      % if current_user.bdate():
+      $('#iAge').val('{{(current_user.bdate.age-1)}}')
       % end
-      % if user.sex() == 'female':
+      % if current_user.sex() == 'female':
       $('#iMale>option[value="female"]').attr("selected", "selected");
       % end
-      % if user.sex() == 'male':
+      % if current_user.sex() == 'male':
       $('#iMale>option[value="male"]').attr("selected", "selected");
       % end
     % end
