@@ -7,6 +7,10 @@ import bottle
 
 import config
 
+class VKError(Exception):
+    def __init__(self, error:dict):
+        self.error_dict = error
+        super().__init__()
 
 def exec(token, method:str, **kwargs) -> dict:
     params = list()
@@ -22,6 +26,7 @@ def exec(token, method:str, **kwargs) -> dict:
     url = 'https://api.vk.com/method/{0}?{1}'.format(method, urllib.parse.urlencode(params))
     response = urllib.request.urlopen(url).read().decode()
     response = json.loads(response)
+    if 'response' not in response: raise VKError(response['error'])
     return response['response']
 
 

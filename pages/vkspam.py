@@ -1,13 +1,76 @@
 import bottle
 import pages
 import config
-from modules import vk, logging, utils
+from modules import vk, logging
 import dbutils
-import os
-import time
 import json
+import time
 
-_time_format_ = '%Y-%m-%d %H:%M:%S'
+
+def dump(obj) -> str:
+    return json.dumps(obj, ensure_ascii=False)
+
+def response(obj) -> str:
+    return dump({'response':obj})
+
+def error(obj) -> str:
+    return dump({'error':obj})
+
+class Error(Exception):
+    def __init__(self, code:int, description:str, e:Exception=None, data:dict=None):
+        self.code = code
+        self.description = description
+        self.e=e
+        self.data = data
+        super().__init__(code, description, e)
+
+    @staticmethod
+    def unhandled(e:Exception):
+        return Error(0, 'Unhandled exception', e)
+
+    @staticmethod
+    def auth_error(login:str, e:Exception):
+        return Error(1, 'Auth error for <{}>'.format(login), e)
+
+    @staticmethod
+    def no_tokens():
+        return Error(2, 'No tokens found')
+
+    @staticmethod
+    def vk_error(e:vk.VKError):
+        return Error(3, '{}: {}'.format(e.error_dict['error_msg'], e.error_dict['error_msg']), data=e.error_dict)
+
+    @staticmethod
+    def template_not_found(name:str):
+        return Error(4, 'Template not found:{}'.format(name))
+
+    @staticmethod
+    def user_not_found(user_id:int):
+        return Error(5, 'User not found:{}'.format(user_id))
+
+    @staticmethod
+    def already_sent(user_id:int, spam_type:int):
+        return Error(6, 'Already sent user <{}> spam <{}>'.format(user_id, spam_type))
+
+    def json(self) -> dict:
+        ret = {'code':self.code, 'description':self.description}
+        if self.e:
+            ret['eclass'] = self.e.__class__.__name__
+            ret['eargs'] = ','.join(list(map(str,self.e.args))) if len(self.e.args)>0 else ''
+        if self.data:
+            ret['data'] = self.data
+        return ret
+
+def handle_error(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return response(func(*args, **kwargs))
+        except Error as e:
+            return error(e.json())
+        except Exception as e:
+            logging.error(e)
+            return error(Error.unhandled(e).json())
+    return wrapper
 
 
 connection = dbutils.default_connection.copy()
@@ -15,133 +78,79 @@ connection['host'] = 'test.sportcourts.ru'
 connection['db'] = 'vkbot'
 
 
-status = 0
-data = None
-
-
-# 0 - стоит
-# 1 - входит
-# -1 - нет токенов
-
-
-@utils.spool("vkmassauth")
-def get_access() -> list:
-    global data, status
-    status = 1
-    if not os.path.exists("actk"):
-        with open('actk', 'w') as f:
-            tokens = dict()
-            for account in config.vkspam.accounts:
-                try:
-                    access_token, user_id, expires = vk.auth(account[0], account[1], config.vkspam.app_id, config.vkspam.scope)
-                except Exception as e:
-                    logging.message('Error while logging in with VK <{}:{}>'.format(*account), e)
-                    continue
-                tokens[account[0]] = (access_token, user_id, expires, time.strftime(_time_format_))
-            if len(tokens)==0:
-                status = -1
-                f.write(json.dumps(tokens, ensure_ascii=False))
-                data = [i[0] for i in tokens.items()]
-                return
-            f.write(json.dumps(tokens, ensure_ascii=False))
-            data = [i[0] for i in tokens.items()]
-            status = 2
-            return
-    tokens = json.load(open('actc', 'r'))
-    for account in config.vkspam.accounts:
-        if account[0] not in tokens or int(time.time()) - int(time.mktime(time.strptime(tokens[account[0]][-1], _time_format_))) >= tokens[account[0]][2]:
-            try:
-                access_token, user_id, expires = vk.auth(account[0], account[1], config.vkspam.app_id, config.vkspam.scope)
-            except Exception as e:
-                logging.message('Error auth with VK <{}:{}>'.format(*account), e)
-                continue
-            tokens[account[0]] = (access_token, user_id, expires, time.strftime(_time_format_))
-    if len(tokens)==0:
-        status = -1
-        json.dump(tokens, open('actc', 'w'))
-        data = [i[0] for i in tokens.items()]
-        return
-    json.dump(tokens, open('actc', 'w'))
-    data = [i[0] for i in tokens.items()]
-    status = 2
-
-
-@pages.get('/admin/vk')
+@pages.post('/admin/new_vk/auth')
+@pages.only_ajax
 @pages.only_admins
 def auth():
-    global status, data
-    if status==0 or status==1:
-        get_access()
-        return 'Выполняется вход. Обождите...'
-    elif status==-1:
-        if 'reload' not in bottle.request.query:
-            return 'Ошибка входа. Добавьте параметр ?reload чтобы попробывать войти снова'
-        status = 0
-        raise bottle.redirect('/admin/vk')
-    return 'Вошел'
-
-
-accounts = dict()
-account_list = list()
-last_account = 0
-
-@pages.get('/admin/bad_vk/auth')
-@pages.only_ajax
-@pages.only_admins
-def bad_auth():
-    for account in config.vkspam.accounts:
-        try:
-            access_token, user_id, expires = vk.auth(account[0], account[1], config.vkspam.app_id, config.vkspam.scope)
-        except Exception as e:
-            logging.message("Error auth <{}>".format(account[0]), e)
-            continue
-        accounts[account[0]] = access_token
-    if len(accounts)>0:
-        global account_list
-        account_list = list(accounts.keys())
-        return {'success':account_list}
-    return json.dumps({'Error':'no tokens'})
-
-
-#@pages.get('/admin/bad_vk/check')
-#@pages.only_ajax
-#@pages.only_admins
-#def bad_check():
-#    pass
-
-
-@pages.get('/admin/bad_vk/get_users/<sport_id:int>')
-@pages.only_ajax
-@pages.only_admins
-def get_users(sport_id:int):
     with dbutils.dbopen(**connection) as db:
-        db.execute("SELECT user_id FROM users WHERE sport_type={} AND spam_type=0".format(sport_id))
-        users = list(map(lambda x: x[0], db.last()))
-        return json.dumps({'users':users})
+        db.execute("TRUNCATE auth_sessions;")
+        accounts = db.execute("SELECT * FROM accounts", ['login', 'password'])
+        errors = list()
+        success = list()
+        for account in accounts:
+            try:
+                access_token, user_id, expires = vk.auth(account['login'], account['password'], config.vkspam.app_id, config.vkspam.scope)
+            except Exception as e:
+                errors.append((account['login'], e))
+            else:
+                db.execute("INSERT INTO auth_sessions (login, access_token) VALUES ('{}', '{}')".format(account['login'], access_token))
+                success.append(account['login'])
+        errors = [{'login':e[0], 'error':Error.auth_error(*e).json()} for e in errors]
+        if len(success)>0:
+            if len(errors)==0:
+                return response({'success':success})
+            else:
+                return response({'success':success, 'errors':errors})
+        else:
+            return error({'errors':errors})
 
 
-def get_next_token() -> str:
-    global last_account
-    last_account += 1
-    if last_account==len(account_list):
-        last_account = 0
-    account = account_list[last_account]
-    token = accounts[account]
-    return account, token
-
-
-@pages.get('/admin/bad_vk/send/<user_id:int>/<template>/<spam_type:int>')
+@pages.post('/admin/new_vk/auth/check')
 @pages.only_ajax
 @pages.only_admins
-def bad_send(user_id:int, template:str, spam_type:int):
-    account, token = get_next_token()
-    try:
-        vkuser = vk.exec(token, "users.get", user_id=user_id)[0]
-        message = bottle.template(template, first_name=vkuser['first_name'])
-        vk.exec(token, "messages.send", user_id=user_id, message=message)
-        with dbutils.dbopen(**connection) as db:
-            db.execute("UPDATE users SET spam_type={} WHERE user_id={}".format(spam_type, user_id))
-    except Exception as e:
-        logging.message('Error sending message to <{}>: {}'.format(user_id, template), e)
-        return json.dumps({'account':account, 'result':'error', 'error':e.__class__.__name__})
-    return json.dumps({'account':account, 'result':'success'})
+@handle_error
+def check():
+    with dbutils.dbopen(**connection) as db:
+        db.execute("SELECT login, datetime FROM auth_sessions", ['login', 'datetime'])
+        return {i['login']:str(i['datetime'])  for i in db.last()}
+
+
+@pages.post('/admin/new_vk/users/get/<sport_type:int>')
+@pages.only_ajax
+@pages.only_admins
+@handle_error
+def get_users(sport_type:int):
+    with dbutils.dbopen(**connection) as db:
+        db.execute("SELECT user_id, spam_type, datetime, lasttime FROM users WHERE sport_type={}".format(sport_type),
+                   ['user_id', 'spam_type', 'datetime', 'lasttime'])
+        return {i['user_id']:{'spam_type':i['spam_type'], 'datetime':str(i['datetime']), 'lasttime':str(i['lasttime'])} for i in db.last()}
+
+
+@pages.post('/admin/new_vk/users/send/<user_id:int>/<template_name>/<spam_type:int>')
+@pages.only_ajax
+@pages.only_admins
+@handle_error
+def send_message(user_id:int, template_name:str, spam_type:int):
+    t = time.time()
+    with dbutils.dbopen(**connection) as db:
+        db.execute("SELECT login, last FROM auth_sessions")
+        if len(db.last())==0: raise Error.no_tokens()
+        last = min(db.last(), key=lambda x: x[1])
+        account = db.execute("SELECT login, access_token, datetime FROM auth_sessions WHERE last={}".format(last),
+                   ['login', 'access_token', 'datetime'])[0]
+        db.execute("SELECT spam_type WHERE user_id={}".format(user_id))
+        if len(db.last())==0: raise Error.user_not_found(user_id)
+        if db.last()[0][0]==spam_type: raise Error.already_sent(user_id, spam_type)
+        try:
+            vkuser = vk.exec(account['access_token'], "users.get", user_id=user_id)[0]
+            message = bottle.template(template_name, first_name=vkuser['first_name'])
+            vk.exec(account['access_token'], "messages.send", user_id=user_id, message=message)
+        except vk.VKError as e:
+            raise Error.vk_error(e)
+        except bottle.HTTPError:
+            raise Error.template_not_found(template_name)
+
+        db.execute("UPDATE users SET lasttime=NOW(), spam_type={} WHERE user_id={}".format(spam_type, user_id))
+        account.pop('access_token')
+        account['datetime'] = str(account['datetime'])
+        return {'account':account, 'time':time.time()-t}
