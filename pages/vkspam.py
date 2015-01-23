@@ -138,7 +138,7 @@ def send_message(user_id:int, template_name:str, spam_type:int):
         last = min(db.last(), key=lambda x: x[1])[1]
         account = db.execute("SELECT login, access_token, datetime FROM auth_sessions WHERE last={}".format(last),
                    ['login', 'access_token', 'datetime'])[0]
-        db.execute("SELECT spam_type WHERE user_id={}".format(user_id))
+        db.execute("SELECT spam_type FROM users WHERE user_id={}".format(user_id))
         if len(db.last())==0: raise Error.user_not_found(user_id)
         if db.last()[0][0]==spam_type: raise Error.already_sent(user_id, spam_type)
         try:
