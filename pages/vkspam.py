@@ -135,7 +135,7 @@ def send_message(user_id:int, template_name:str, spam_type:int):
     with dbutils.dbopen(**connection) as db:
         db.execute("SELECT login, last FROM auth_sessions")
         if len(db.last())==0: raise Error.no_tokens()
-        last = min(db.last(), key=lambda x: x[1])
+        last = min(db.last(), key=lambda x: x[1])[1]
         account = db.execute("SELECT login, access_token, datetime FROM auth_sessions WHERE last={}".format(last),
                    ['login', 'access_token', 'datetime'])[0]
         db.execute("SELECT spam_type WHERE user_id={}".format(user_id))
