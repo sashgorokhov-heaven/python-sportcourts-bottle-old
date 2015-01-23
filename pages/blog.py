@@ -1,9 +1,8 @@
 import bottle
 import dbutils
 import pages
-import base64
 
-from models import users, blog
+from models import blog
 from objects import SeoInfo
 
 @pages.get('/blog')
