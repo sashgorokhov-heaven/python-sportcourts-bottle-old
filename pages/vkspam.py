@@ -126,12 +126,21 @@ def get_users(sport_type:int):
         return {i['user_id']:{'spam_type':i['spam_type'], 'datetime':str(i['datetime']), 'lasttime':str(i['lasttime'])} for i in db.last()}
 
 
+users = {'users':set(), 'timestamp':0}
+
 @pages.post('/admin/new_vk/users/send/<user_id:int>/<template_name>/<spam_type:int>')
 @pages.only_ajax
 @pages.only_admins
 @handle_error
 def send_message(user_id:int, template_name:str, spam_type:int):
     t = time.time()
+    if user_id in users['users']: return {'continued':user_id}
+    if t-users['timestamp']>300:
+        with dbutils.dbopen() as db:
+            db.execute("SELECT DISTINCT vkuserid FROM users WHERE vkuserid!=0")
+            users['users'] = set(map(lambda x: x[0], db.last()))
+            users['timestamp'] = t
+    if user_id in users['users']: return {'continued':user_id}
     with dbutils.dbopen(**connection) as db:
         db.execute("SELECT login, last FROM auth_sessions")
         if len(db.last())==0: raise Error.no_tokens()
