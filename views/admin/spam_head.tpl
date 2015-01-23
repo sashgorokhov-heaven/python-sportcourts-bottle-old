@@ -42,14 +42,19 @@
           var json = JSON.parse(responseData);
           var error = json["error"];
           var response = json["response"];
+          console.log(responseData);
           if (error) {
             type = 'danger';
             str = error["description"];
-          } else {
-            type = 'success';
-            str = 'Успешно с аккаунта: '+response["account"]["login"];
-            console.log(response);
-            sent++;
+          } else if (response) {
+            if ("continued" in response) {
+              type = 'warning';
+              str = 'Пользователь уже зарегистрирован у нас';
+            } else {
+              type = 'success';
+              str = 'Успешно: '+responseData;
+              sent++;
+            }
           };
           $('#sendtable').append('<tr class="'+type+'"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td><td>'+str+'</td></tr>');
         },
@@ -70,12 +75,11 @@
       async: true,
       success: function (responseData, textStatus) {
         var json = JSON.parse(responseData);
-        console.log(json);
         response = json['response'];
         if (response) {
           var str = '';
           for (key in response) {
-            str += key+'<br>';
+            str += key+' ('+response[key]+')'+'<br>';
           };
           $('#adminslist').html(str);
           $('#adminModal').modal('hide');
@@ -94,7 +98,6 @@
                   str += success[i]+'<br>';
                 };
                 $('#adminslist').html(str);
-                console.log(str);
                 $('#adminModal').modal('hide');
               } else {
                 $('#authinfo').html(responseData);

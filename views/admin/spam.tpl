@@ -5,7 +5,7 @@
     <br>
     <label>Аккаунты</label>
     <p id="adminslist"></p>
-    <br><br>
+    <br>
     <label for="group_id">Выберите вид спорта</label>
     <select id="sporttype" name="sport_type" class="form-control input-xs" data-bv-notempty="true"
     data-bv-notempty-message="Укажите вид спорта">
@@ -15,7 +15,6 @@
         <option value="{{sport_type.sport_id()}}">{{sport_type.title()}}</option>
       % end
     </select>
-    <br>
     <p id="userslist"></p>
     <br>
     <!-- <label for="tpl_id">Выберите шаблон сообщения</label>
@@ -27,7 +26,6 @@
       <option value="100">Test</option>
     </select> -->
     <button type="button" id="showbutton" class="btn btn-default">Показать шаблон</button>
-    <br>
     <br>
     <br>
     <button type="button" id="sendbutton" class="btn btn-success">Начать рассылку</button>
