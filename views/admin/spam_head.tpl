@@ -1,5 +1,6 @@
 <script type="text/javascript">
-  var users = [];
+  var users = {};
+  var count = 0;
 
   $(document).on('click', '#showbutton', function(){
     var tpl_id = $('#sporttype').val();
@@ -26,27 +27,36 @@
     $('#sendtable').html('');
     $('#sendModal').modal('show');
 
-    var ids = [];
+    var sent = 0;
 
-    ulength = users.length;
-    if (ulength > 15) {
-      ulength = 15;
-    }
-
-    for(var i=0; i<ulength; i++) {
-      id = users[i];
-      var url = '/admin/bad_vk/send/'+id+'/spam'+tpl_id+'/0';
+    for(key in users) {
+      if (sent == 15) break;
+      id = key;
+      var url = '/admin/new_vk/users/send/'+id+'/spam'+tpl_id+'/1';
       $.ajax({
         url: url,
         async: false,
         success: function (responseData, textStatus) {
-          console.log(id);
-          $('#sendtable').append('<tr class="success"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td><td>'+responseData+'</td></tr>');
+          var str = '';
+          var type = '';
+          var json = JSON.parse(responseData);
+          var error = json["error"];
+          var response = json["response"];
+          if (error) {
+            type = 'danger';
+            str = error["description"];
+          } else {
+            type = 'success';
+            str = 'Успешно с аккаунта: '+response["account"]["login"];
+            console.log(response);
+            sent++;
+          };
+          $('#sendtable').append('<tr class="'+type+'"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td><td>'+str+'</td></tr>');
         },
         error: function (response, status, errorThrown) {
           $("#sendtable").append('<tr class="danger"><td><a href="http://vk.com/id'+id+'">'+id+'</a></td><td>'+responseData+'</td></tr>');
         },
-        type: "GET",
+        type: "POST",
         dataType: "text"
       });
     }
@@ -54,29 +64,54 @@
 
   $( document ).ready(function() {
     $('#adminModal').modal('show');
-    var url = '/admin/bad_vk/auth';
+    var url = '/admin/new_vk/auth/check';
     $.ajax({
       url: url,
       async: true,
       success: function (responseData, textStatus) {
         var json = JSON.parse(responseData);
-        success = json['success'];
-        if (success) {
+        console.log(json);
+        response = json['response'];
+        if (response) {
           var str = '';
-          for (i=0; i<success.length; i++) {
-            str += success[i]+'<br>';
+          for (key in response) {
+            str += key+'<br>';
           };
           $('#adminslist').html(str);
-          console.log(str);
           $('#adminModal').modal('hide');
         } else {
-          $('#authinfo').html(responseData);
+          var url = '/admin/new_vk/auth';
+          $.ajax({
+            url: url,
+            async: true,
+            success: function (responseData, textStatus) {
+              var json = JSON.parse(responseData);
+              response = json['response'];
+              success = response['success'];
+              if (success) {
+                var str = '';
+                for (i=0; i<success.length; i++) {
+                  str += success[i]+'<br>';
+                };
+                $('#adminslist').html(str);
+                console.log(str);
+                $('#adminModal').modal('hide');
+              } else {
+                $('#authinfo').html(responseData);
+              }
+            },
+            error: function (response, status, errorThrown) {
+              alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+            },
+            type: "POST",
+            dataType: "text"
+          });
         }
       },
       error: function (response, status, errorThrown) {
         alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
       },
-      type: "GET",
+      type: "POST",
       dataType: "text"
     });
   });
@@ -85,19 +120,23 @@
 
     var value = $('#sporttype').val();
     if (value){
-      var url = '/admin/bad_vk/get_users/'+value;
+      var url = '/admin/new_vk/users/get/'+value;
       $.ajax({
         url: url,
         async: true,
         success: function (responseData, textStatus) {
           var json = JSON.parse(responseData);
-          users = json['users'];
-          $('#userslist').html('Найдено людей: '+users.length);
+          users = json["response"];
+          count = 0;
+          for (key in users) {
+            count++;
+          };
+          $('#userslist').html('Найдено людей: '+count);
         },
         error: function (response, status, errorThrown) {
           alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
         },
-        type: "GET",
+        type: "POST",
         dataType: "text"
       });
     }
