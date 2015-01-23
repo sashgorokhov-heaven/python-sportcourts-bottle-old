@@ -151,6 +151,7 @@ def send_message(user_id:int, template_name:str, spam_type:int):
             raise Error.template_not_found(template_name)
 
         db.execute("UPDATE users SET lasttime=NOW(), spam_type={} WHERE user_id={}".format(spam_type, user_id))
+        db.execute("UPDATE auth_sessions SET last=last+1 WHERE last={}".format(last))
         account.pop('access_token')
         account['datetime'] = str(account['datetime'])
         return {'account':account, 'time':time.time()-t}
