@@ -9,7 +9,7 @@
       </button>
       <a class="navbar-brand" href="/admin">Админка</a>
       % import config
-      <a class="topmenu" href="#">Время запуска: {{config.starttime}}</a>
+      <a class="topmenu" style="margin-top: 15px; min-width: 400px; display: block;" href="#">Время запуска: {{config.starttime}}</a>
     </div>
     <div class="navbar-collapse collapse text-right">
       <ul class="nav navbar-nav navbar-right">
