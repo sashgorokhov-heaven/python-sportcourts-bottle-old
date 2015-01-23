@@ -421,7 +421,7 @@
       $('#iWeight').val('{{current_user.weight()}}')
       % end
       % if current_user.bdate():
-      $('#iAge').val('{{(current_user.bdate.age-1)}}')
+      $('#iAge').val('{{(current_user.bdate.age)}}')
       % end
       % if current_user.sex() == 'female':
       $('#iMale>option[value="female"]').attr("selected", "selected");
