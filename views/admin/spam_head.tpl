@@ -29,7 +29,7 @@
 
     var sent = 0;
     var errors = 0;
-    var sentlimit = 2;
+    var sentlimit = 15;
     var errorslimit = 3;
 
     for(key in users) {
@@ -48,10 +48,14 @@
           var response = json["response"];
           console.log(responseData);
           if (error) {
-            type = 'danger';
+            type = 'warning';
             str = error["description"];
-            sent++;
-            errors++;
+            var already = str.slice(0,7);
+            if (already != 'Already') {
+              sent++;
+              errors++;
+              type = 'danger';
+            };
           } else if (response) {
             if ("continued" in response) {
               type = 'warning';
@@ -59,7 +63,7 @@
               sent++;
             } else {
               type = 'success';
-              str = 'Успешно: '+responseData;
+              str = 'Успешно с аккаунта: '+response["account"]["login"];
               sent++;
             }
           };
