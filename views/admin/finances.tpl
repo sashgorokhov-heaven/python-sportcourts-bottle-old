@@ -83,7 +83,7 @@
           </td>
         </tr>
         % end
-        <tr>
+        <!-- <tr>
           <td>
             <small>
               <strong>
@@ -95,6 +95,23 @@
             <small>
               <strong class="text-danger">
                 {{round(fin.rent_charges)}}
+              </strong>
+            </small>
+          </td>
+        </tr> -->
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Регулярные затраты
+              </strong>
+            </small>
+          </td>
+          <td>
+            % money = sum([i.cost() for i in outlays])
+            <small>
+              <strong class="text-{{'danger' if money<0 else 'success'}}">
+                {{money}}
               </strong>
             </small>
           </td>
@@ -137,7 +154,7 @@
           <td>
             <small>
               <strong>
-                Прибыль с арендой но без доптрат
+                Оценочная прибыль
               </strong>
             </small>
           </td>
@@ -145,7 +162,7 @@
             <span class="label label-{{'danger' if fin.profit<0 else 'success'}}">{{round(fin.profit)}}</span>
           </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>
             <strong>
               <p class="lead">Итого (прибыль с зарплатами но без аренды и доптрат)</p>
@@ -156,48 +173,41 @@
               <span class="label label-{{'danger' if fin.real_profit<0 else 'success'}}">{{round(fin.real_profit)}}</span>
             </p>
           </td>
-        </tr>
+        </tr> -->
         <tr>
           <td>
             <strong>
-              <p class="lead">Доптраты (таблица ниже)</p>
+              <p class="lead" style="margin-bottom:5px;">Итого</p>
             </strong>
           </td>
           <td>
-            <p class="lead">
-              % money = sum([i.cost() for i in outlays])
-              <span class="label label-{{'danger' if money<0 else 'success'}}">{{money}}</span>
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>
-              <p class="lead">Итого</p>
-            </strong>
-          </td>
-          <td>
-            <p class="lead">
+            <p class="lead" style="margin-bottom:5px;">
               % money = fin.real_profit+sum([i.cost() for i in outlays])
               <span class="label label-{{'danger' if money<0 else 'success'}}">{{money}}</span>
             </p>
           </td>
         </tr>
-        % if money<0:
-            <tr>
-              <td>
-                <small>
-                    <strong>
-                      <p class="lead">Чтобы выйти в плюс:</p>
-                    </strong>
-                </small>
-              </td>
-              <td>
-                  % average = sum([game.profit() for game in fin.games if game.profit()>0])/len(fin.games)
-                  % count = abs(money/average)
-                  {{round(count, 1)}} ({{round(average, 1)}} ср)
-              </td>
-            </tr>
+        % if money < 0:
+        <tr>
+          <td>
+            <small>
+                <strong>
+                  Чтобы выйти в плюс:
+                </strong>
+            </small>
+          </td>
+          <td>
+            <small>
+              <strong>
+                % average = sum([game.profit() for game in fin.games if game.profit()>0])/len(fin.games)
+                % count = abs(money/average)
+                {{round(count, 1)}} игры
+                <br>
+                ({{round(average, 1)}} ср)
+              </strong>
+            </small>
+          </td>
+        </tr>
         % end
       </table>
     </div>
