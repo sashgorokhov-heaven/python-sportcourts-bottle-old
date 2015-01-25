@@ -168,21 +168,22 @@
                 <span id="valid"></span>
               </div>
             </div>
+            % if len(last_users)>0:
+              <br>
+              <a class="btn btn-success" data-toggle="modal" data-target="#oldlistModal">
+                Посмотреть бывших
+              </a>
+              <br><br>
+            % end
             % if not game.reported():
               <a class="btn btn-success" role="button" href="/games/list/{{game.game_id()}}"><span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Распечатать списки на игру</a>
+              <br><br>
               % if len(unsubscribed)>0:
-                <br><br>
                 <a class="btn btn-success" data-toggle="modal" data-target="#otpisModal">
                   Посмотреть отписавшихся
                 </a>
-                % end
-              % if len(last_users)>0:
                 <br><br>
-                <a class="btn btn-success" data-toggle="modal" data-target="#oldlistModal">
-                  Посмотреть бывших
-                </a>
               % end
-              <br><br>
             % end
             % if not game.reported():
               <a class="btn btn-success" id="inviteoldbutton" role="button" href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Пригласить бывших</a>
