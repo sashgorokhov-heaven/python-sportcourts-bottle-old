@@ -18,7 +18,7 @@ $(document).on('change','#date_select',function(){
           % end
          ]);
         var options = {
-          title: 'Прибыль по видам спорта'
+          title: 'Доход по видам спорта'
         };
 
         var piechart = new google.visualization.PieChart(document.getElementById('sport_money_chart'));
