@@ -108,9 +108,9 @@
             </small>
           </td>
           <td>
-            % money = sum([i.cost() for i in outlays])
+            % money = sum([i.cost() for i in outlays])*(-1)
             <small>
-              <strong class="text-{{'danger' if money<0 else 'success'}}">
+              <strong class="text-{{'danger' if money>0 else 'success'}}">
                 {{money}}
               </strong>
             </small>
