@@ -127,7 +127,7 @@
           </td>
           <td>
             <small>
-              <strong class="text-success">
+              <strong class="text-danger">
                 {{fin.additional_charges}}
               </strong>
             </small>
@@ -144,7 +144,7 @@
           </td>
           <td>
             <small>
-              <strong class="text-success">
+              <strong class="text-danger">
                 {{fin.responsible_salary}}
               </strong>
             </small>
