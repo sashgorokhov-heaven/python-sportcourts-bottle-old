@@ -137,7 +137,7 @@
           <td>
             <small>
               <strong>
-                Грязная прибыль
+                Прибыль с арендой но без доптрат
               </strong>
             </small>
           </td>
@@ -148,7 +148,7 @@
         <tr>
           <td>
             <strong>
-              <p class="lead">Итого</p>
+              <p class="lead">Итого (прибыль с зарплатами но без аренды и доптрат)</p>
             </strong>
           </td>
           <td>
@@ -157,6 +157,48 @@
             </p>
           </td>
         </tr>
+        <tr>
+          <td>
+            <strong>
+              <p class="lead">Доптраты (таблица ниже)</p>
+            </strong>
+          </td>
+          <td>
+            <p class="lead">
+              % money = sum([i.cost() for i in outlays])
+              <span class="label label-{{'danger' if money<0 else 'success'}}">{{money}}</span>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>
+              <p class="lead">Итого</p>
+            </strong>
+          </td>
+          <td>
+            <p class="lead">
+              % money = fin.real_profit+sum([i.cost() for i in outlays])
+              <span class="label label-{{'danger' if money<0 else 'success'}}">{{money}}</span>
+            </p>
+          </td>
+        </tr>
+        % if money<0:
+            <tr>
+              <td>
+                <small>
+                    <strong>
+                      <p class="lead">Чтобы выйти в плюс:</p>
+                    </strong>
+                </small>
+              </td>
+              <td>
+                  % average = sum([game.profit() for game in fin.games if game.profit()>0])/len(fin.games)
+                  % count = abs(money/average)
+                  {{round(count, 1)}} ({{round(average, 1)}} ср)
+              </td>
+            </tr>
+        % end
       </table>
     </div>
   </div>
