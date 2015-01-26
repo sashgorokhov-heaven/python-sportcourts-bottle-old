@@ -8,3 +8,5 @@ Disallow: /notifications
 Disallow: /recover
 Sitemap: http://sportcourts.ru/sitemap.xml
 Host: sportcourts.ru
+
+Clean-param: token /registration
