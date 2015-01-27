@@ -138,8 +138,9 @@ def calc_game(game_id:int, dbconnection:dbutils.DBConnection=None) -> dict:
     finances['responsible_salary'] = 0
     if len(dbconnection.last())>0:
         finances['responsible_salary'] = round((finances['profit'])*(dbconnection.last()[0][0]/100))
+    finances['profit'] -= finances['responsible_salary']
 
-    finances['real_profit'] = finances['profit'] - finances['responsible_salary']+finances['rent_charges']
+    finances['real_profit'] = finances['profit'] + finances['rent_charges']
 
     return finances
 

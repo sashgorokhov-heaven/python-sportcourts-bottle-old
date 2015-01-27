@@ -25,22 +25,6 @@
             </small>
           </td>
         </tr>
-        <tr>
-          <td>
-            <small>
-              <strong>
-                Реальный доход:
-              </strong>
-            </small>
-          </td>
-          <td>
-            <small>
-              <strong class="text-success">
-                {{fin.real_income}}
-              </strong>
-            </small>
-          </td>
-        </tr>
         % if fin.lost_empty>0:
         <tr>
           <td>
@@ -83,6 +67,22 @@
           </td>
         </tr>
         % end
+        <tr>
+          <td>
+            <small>
+              <strong>
+                Реальный доход:
+              </strong>
+            </small>
+          </td>
+          <td>
+            <small>
+              <strong class="text-success">
+                {{fin.real_income}}
+              </strong>
+            </small>
+          </td>
+        </tr>
         <!-- <tr>
           <td>
             <small>
@@ -103,14 +103,14 @@
           <td>
             <small>
               <strong>
-                Регулярные затраты
+                Допрасходы и допдоходы
               </strong>
             </small>
           </td>
           <td>
-            % money = sum([i.cost() for i in outlays])*(-1)
+            % money = sum([i.cost() for i in outlays])
             <small>
-              <strong class="text-{{'danger' if money>0 else 'success'}}">
+              <strong class="text-{{'danger' if money<0 else 'success'}}">
                 {{money}}
               </strong>
             </small>
@@ -182,7 +182,7 @@
           </td>
           <td>
             <p class="lead" style="margin-bottom:5px;">
-              % money = fin.real_profit+sum([i.cost() for i in outlays])
+              % money += fin.real_profit
               <span class="label label-{{'danger' if money<0 else 'success'}}">{{money}}</span>
             </p>
           </td>
@@ -199,7 +199,8 @@
           <td>
             <small>
               <strong>
-                % average = sum([game.profit() for game in fin.games if game.profit()>0])/len(fin.games)
+                % games = list(filter(lambda x: x.real_profit()>0, fin.games))
+                % average = sum([game.real_profit() for game in games])/len(games)
                 % count = abs(money/average)
                 {{round(count, 1)}} игры
                 <br>
@@ -218,7 +219,7 @@
       <p style="font-size:150%;">Зарплаты:</p>
     </strong>
     % for user_id in fin.user_salary:
-      % salary = fin.user_salary[user_id]
+      % salary = fin.user_salary[user_id]+money/len(fin.user_salary)
       % user = fin.users_get(user_id)
       <p>
         {{user.name}}: <span class="label label-{{'danger' if salary<=0 else 'success'}}">{{round(salary)}}</span><br>
