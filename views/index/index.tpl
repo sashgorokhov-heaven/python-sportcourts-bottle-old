@@ -14,6 +14,36 @@
       <h1>SportCourts</h1>
       <h2 class="h3">Ваш проводник в мире любительского спорта.</h2>
       <p class="h3">Играй в <span class="gamestyped"></span> вместе с {{random.choice(["нами", "друзьями"])}}!</p>
+      <br>
+      <div class="row text-center" style="max-height:80px; overflow:hidden;">
+        <a href="/profile/14">
+          <img src="/images/avatars/14" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/90">
+          <img src="/images/avatars/90" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/28">
+          <img src="/images/avatars/28" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/47">
+          <img src="/images/avatars/47" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/126">
+          <img src="/images/avatars/126" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/111">
+          <img src="/images/avatars/111" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/217">
+          <img src="/images/avatars/217" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/214">
+          <img src="/images/avatars/214" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/51">
+          <img src="/images/avatars/51" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+      </div>
       <br><br>
       % if not loggedin:
         <div id="reg1">

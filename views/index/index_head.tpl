@@ -60,7 +60,7 @@
 
   .bighead{
     position:absolute;
-    top:{{'37' if loggedin else '20'}}%;
+    top:{{'20' if loggedin else '10'}}%;
     left:15%;
     z-index:30;
     width:70%;
@@ -156,5 +156,10 @@
     overflow: hidden;
     width:100%;
     text-align: center;
+  }
+
+  .referal-avatar {
+    border: 4px white solid;
+    margin: 0 10px;
   }
 </style>
