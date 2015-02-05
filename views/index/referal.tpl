@@ -7,7 +7,37 @@
       <img src="/images/avatars/{{user.user_id()}}" class="img-circle referal-avatar" width="150" height="150">
       <h1 class="h2">{{user.name}}</h1>
       <p class="lead">Приглашает вас присоединиться к SportCourts.ru</p>
-      <p class="h4">Зарегистрируйтесь прямо сейчас и получите пробную тренировку в подарок</p>
+      <p class="h4">Зарегистрируйтесь прямо сейчас и примите участие в наших играх!</p>
+      <br>
+      <div class="row text-center" style="max-height:80px; overflow:hidden;">
+        <a href="/profile/14">
+          <img src="/images/avatars/14" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/90">
+          <img src="/images/avatars/90" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/28">
+          <img src="/images/avatars/28" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/47">
+          <img src="/images/avatars/47" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/126">
+          <img src="/images/avatars/126" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/111">
+          <img src="/images/avatars/111" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/217">
+          <img src="/images/avatars/217" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/214">
+          <img src="/images/avatars/214" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/51">
+          <img src="/images/avatars/51" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+      </div>
       <br><br>
       % if not loggedin:
       <div id="reg1">
@@ -173,7 +203,37 @@
   <img src="/images/avatars/{{user.user_id()}}" class="img-circle referal-avatar" width="150" height="150">
   <h1 class="h2">{{user.name}}</h1>
   <p class="lead">Приглашает вас присоединиться к SportCourts.ru</p>
-  <p class="h4">Зарегистрируйтесь прямо сейчас и получите пробную тренировку в подарок</p>
+  <br>
+  <p class="h4">Зарегистрируйтесь прямо сейчас и примите участие в наших играх!</p>
+      <div class="row text-center" style="max-height:80px; overflow:hidden;">
+        <a href="/profile/14">
+          <img src="/images/avatars/14" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/90">
+          <img src="/images/avatars/90" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/28">
+          <img src="/images/avatars/28" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/47">
+          <img src="/images/avatars/47" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/126">
+          <img src="/images/avatars/126" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/111">
+          <img src="/images/avatars/111" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/217">
+          <img src="/images/avatars/217" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/214">
+          <img src="/images/avatars/214" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+        <a href="/profile/51">
+          <img src="/images/avatars/51" class="img-circle referal-avatar" width="80" height="80">
+        </a>
+      </div>
   <br><br>
   % if not loggedin:
   <div id="reg1">
