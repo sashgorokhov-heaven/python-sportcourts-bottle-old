@@ -10,9 +10,9 @@
   }
 
   .referalheadrow{
-    height:70vh;
+    height:100vh;
     max-height:700px;
-    min-height:500px;
+    min-height:600px;
   }
 
   .referalhead{
@@ -21,9 +21,9 @@
     left:0%;
     z-index:30;
     width:100%;
-    height: 70vh;
+    height: 100vh;
     max-height:700px;
-    min-height:500px;
+    min-height:600px;
     color: rgb(255, 255, 255);
     text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
   }
@@ -31,10 +31,10 @@
   .referalheaddark{
     margin:0 auto;
     width:100%;
-    max-width: 1000px;
-    height: 70vh;
+    /*max-width: 1000px;*/
+    height: 100vh;
     max-height:700px;
-    min-height:500px;
+    min-height:600px;
     color: rgb(255, 255, 255);
     text-shadow: rgba(0, 0, 0, 0.6) 0px 1px 2px;
     background-color: rgba(0,0,0, 0.6);
@@ -79,9 +79,9 @@
 
   .item-ref{
     background-color:black;
-    height:70vh;
+    height:100vh;
     max-height:700px;
-    min-height:500px;
+    min-height:600px;
     overflow:hidden;
   }
 
