@@ -52,15 +52,14 @@
             str = error["description"];
             var already = str.slice(0,7);
             if (already != 'Already') {
-              sent++;
               errors++;
               type = 'danger';
+              // str = error["description"];
             };
           } else if (response) {
             if ("continued" in response) {
               type = 'warning';
               str = 'Пользователь уже зарегистрирован у нас';
-              sent++;
             } else {
               type = 'success';
               str = 'Успешно с аккаунта: '+response["account"]["login"];
@@ -121,6 +120,35 @@
             type: "POST",
             dataType: "text"
           });
+        }
+      },
+      error: function (response, status, errorThrown) {
+        alert('Все плохо, расскажите нам про эту ошибку \n\r\n\r' + response + status + errorThrown);
+      },
+      type: "POST",
+      dataType: "text"
+    });
+  });
+
+  $(document).on('click', '#authbutton', function(){
+    $('#adminModal').modal('show');
+    var url = '/admin/new_vk/auth';
+    $.ajax({
+      url: url,
+      async: true,
+      success: function (responseData, textStatus) {
+        var json = JSON.parse(responseData);
+        response = json['response'];
+        success = response['success'];
+        if (success) {
+          var str = '';
+          for (i=0; i<success.length; i++) {
+            str += success[i]+'<br>';
+          };
+          $('#adminslist').html(str);
+          $('#adminModal').modal('hide');
+        } else {
+          $('#authinfo').html(responseData);
         }
       },
       error: function (response, status, errorThrown) {
