@@ -8,7 +8,9 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">SportCourts</a>
+                <a class="navbar-brand" href="/" style="padding:0">
+                  <img src="/images/static/logo.png" alt="" height="55">
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
